@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI影视创作超级工作台 · 151种进阶语法 | 老许Gary</title>
+<meta name="description" content="AI影视创作超级工作台 · 151种进阶语法：光影×转场×场景×表演×剪辑，五大模块全覆盖，中英双语提示词直接用于ComfyUI/无限画布/分镜脚本。B站老许爱吃肉丶整理">
+<meta name="keywords" content="AI影视,分镜模板,提示词,光影,转场,场景,表演,剪辑,ComfyUI,无限画布,老许Gary,AI视频">
+<meta name="author" content="B站老许爱吃肉丶">
+<meta property="og:title" content="AI影视创作超级工作台 · 151种进阶语法 | 老许Gary">
+<meta property="og:description" content="AI影视创作五大模块全覆盖，从单帧到成片的完整AI影视创作系统">
+<meta property="og:type" content="website">
+<meta property="og:url" content="">
+<meta property="og:image" content="">
+<link rel="canonical" href="">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--card:#13131f;--card-hover:#1a1a2e;--border:#2a2a3a;--accent:#00d4ff;--accent-dim:rgba(0,212,255,0.1);--text:#e0e0e0;--text-dim:#888;--text-dark:#555;--c1:#ff6b6b;--c2:#4ecdc4;--c3:#ffe66d;--c4:#a8e6cf;--c5:#c084fc}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.6;min-height:100vh}
+.header{background:linear-gradient(135deg,#0f0f1e 0%,#1a1a2e 100%);border-bottom:1px solid var(--border);padding:40px 60px;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-50%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,255,0.08) 0%,transparent 70%);pointer-events:none}
+.header-inner{display:flex;justify-content:space-between;align-items:flex-start;gap:40px;position:relative;z-index:1}
+.header-left{flex:1;min-width:0}
+.header h1{font-size:42px;font-weight:800;background:linear-gradient(135deg,#fff 0%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px;letter-spacing:-1px}
+.header .subtitle{color:var(--text-dim);font-size:18px;max-width:700px}
+.header .meta{margin-top:20px;display:flex;gap:24px;font-size:14px;color:var(--text-dark);flex-wrap:wrap}
+.meta-item{display:flex;align-items:center;gap:8px}
+.meta-item::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.author-card{background:linear-gradient(135deg,rgba(255,255,255,0.06) 0%,rgba(255,255,255,0.02) 100%);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px 28px;min-width:280px;backdrop-filter:blur(10px);box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+.author-card-label{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+.author-card-name{font-size:22px;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.author-card-name::before{content:'';width:4px;height:22px;background:linear-gradient(180deg,var(--c5),var(--accent));border-radius:2px}
+.author-links{display:flex;flex-direction:column;gap:10px}
+.author-link{display:flex;align-items:center;gap:10px;font-size:15px;color:var(--text-dim);text-decoration:none;transition:all .2s;padding:4px 0}
+.author-link:hover{color:#fff}
+.author-link-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.icon-bilibili{background:rgba(0,161,214,0.15);color:#00a1d6;border:1px solid rgba(0,161,214,0.3)}
+.icon-wechat{background:rgba(7,193,96,0.15);color:#07c160;border:1px solid rgba(7,193,96,0.3)}
+.author-link-text{font-family:"SF Mono",Monaco,monospace;font-size:13px}
+
+/* Tab栏 */
+.tab-bar{display:flex;gap:4px;padding:20px 60px 0;background:var(--bg);border-bottom:1px solid var(--border);overflow-x:auto}
+.tab-btn{padding:12px 24px;border-radius:8px 8px 0 0;background:transparent;border:1px solid transparent;border-bottom:none;color:var(--text-dim);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab-btn:hover{background:var(--card-hover);color:var(--text)}
+.tab-btn.active{background:var(--card);color:var(--accent);border-color:var(--border);border-bottom:1px solid var(--card);margin-bottom:-1px}
+
+.main-container{display:grid;grid-template-columns:320px 1fr;gap:0;min-height:calc(100vh - 280px)}
+.sidebar{background:var(--card);border-right:1px solid var(--border);padding:30px 20px;overflow-y:auto;max-height:calc(100vh - 280px);position:sticky;top:0}
+.chapter{margin-bottom:24px}
+.chapter-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;padding-left:12px;border-left:3px solid}
+.ch1 .chapter-title{color:var(--c1);border-color:var(--c1)}
+.ch2 .chapter-title{color:var(--c2);border-color:var(--c2)}
+.ch3 .chapter-title{color:var(--c3);border-color:var(--c3)}
+.ch4 .chapter-title{color:var(--c4);border-color:var(--c4)}
+.ch5 .chapter-title{color:var(--c5);border-color:var(--c5)}
+.shot-list{list-style:none}
+.shot-item{padding:10px 14px;margin-bottom:6px;border-radius:8px;cursor:pointer;font-size:14px;color:var(--text-dim);transition:all .2s;border:1px solid transparent;display:flex;justify-content:space-between;align-items:center}
+.shot-item:hover{background:var(--card-hover);color:var(--text);border-color:var(--border)}
+.shot-item.active{background:var(--accent-dim);color:var(--accent);border-color:rgba(0,212,255,0.3);font-weight:600}
+.shot-num{font-size:11px;opacity:.5;font-variant-numeric:tabular-nums}
+.workspace{padding:40px 50px;overflow-y:auto;max-height:calc(100vh - 280px)}
+.section-title{font-size:32px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:15px}
+.section-title .tag{font-size:12px;padding:4px 12px;border-radius:20px;font-weight:600;letter-spacing:1px}
+.section-desc{color:var(--text-dim);margin-bottom:30px;font-size:15px;line-height:1.8;max-width:800px}
+.storyboard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:24px;margin-bottom:40px}
+.story-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:transform .2s,border-color .2s}
+.story-card:hover{transform:translateY(-4px);border-color:var(--accent)}
+.card-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.card-id{font-size:24px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}
+.card-type{font-size:12px;padding:6px 14px;border-radius:6px;background:rgba(255,255,255,0.05);color:var(--text-dim);font-weight:600;letter-spacing:1px}
+.card-body{padding:24px}
+.prompt-block{background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:10px;padding:20px 16px 16px;margin-bottom:16px;font-family:"SF Mono",Monaco,"Cascadia Code",monospace;font-size:13px;line-height:1.8;color:#a0a0b0;position:relative}
+.prompt-block::before{content:'PROMPT';position:absolute;top:-10px;left:16px;background:var(--card);padding:0 8px;font-size:10px;color:var(--accent);font-weight:700;letter-spacing:1px}
+.info-row{display:flex;gap:20px;margin-top:16px}
+.info-item{flex:1}
+.info-label{font-size:11px;color:var(--text-dark);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:700}
+.info-value{font-size:14px;color:var(--text);line-height:1.6}
+.emotion-tags{display:flex;gap:8px;flex-wrap:wrap}
+.tag-pill{padding:4px 10px;border-radius:4px;font-size:12px;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text-dim)}
+.table-section{margin-top:50px;background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.table-header{padding:24px 30px;border-bottom:1px solid var(--border);font-size:20px;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:16px 20px;color:var(--text-dark);font-size:11px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);font-weight:700}
+td{padding:16px 20px;border-bottom:1px solid var(--border);color:var(--text-dim);vertical-align:top}
+tr:hover td{background:rgba(255,255,255,0.02);color:var(--text)}
+.td-prompt{font-family:monospace;font-size:12px;color:#7a7a9a;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.td-scene{color:var(--text);font-weight:500}
+.export-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(10,10,15,0.95);backdrop-filter:blur(10px);border-top:1px solid var(--border);padding:20px 60px;display:flex;justify-content:space-between;align-items:center;z-index:100}
+.export-info{font-size:14px;color:var(--text-dim)}
+.export-btn{background:var(--accent);color:#000;border:none;padding:12px 32px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+.export-btn:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(0,212,255,0.3)}
+.search-bar{padding:16px 60px;background:var(--card);border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:center}.search-input{flex:1;max-width:500px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:10px;padding:12px 20px;color:var(--text);font-size:14px;outline:none}.search-input:focus{border-color:var(--accent)}.search-input::placeholder{color:var(--text-dark)}.search-stats{font-size:13px;color:var(--text-dim)}.copy-btn{position:absolute;top:8px;right:8px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:var(--accent);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px}.copy-btn:hover{background:var(--accent);color:#000}.copy-btn.copied{background:#07c160;border-color:#07c160;color:#fff}.mobile-toggle{display:none;position:fixed;top:16px;left:16px;z-index:200;background:var(--card);border:1px solid var(--border);color:var(--accent);width:44px;height:44px;border-radius:10px;align-items:center;justify-content:center;font-size:20px;cursor:pointer}.sidebar-drawer{display:block}.drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:90}.drawer-overlay.active{display:block}.inspiration-bar{padding:24px 60px;background:linear-gradient(135deg,rgba(0,212,255,0.05) 0%,rgba(192,132,252,0.05) 100%);border-top:1px solid var(--border);display:flex;gap:20px;align-items:center;flex-wrap:wrap}.inspiration-title{font-size:14px;font-weight:700;color:var(--accent);letter-spacing:1px}.inspiration-result{flex:1;min-width:300px;font-size:15px;color:var(--text);background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:10px;padding:14px 18px}.inspiration-result span{color:var(--text-dark)}.dice-btn{background:linear-gradient(135deg,var(--accent),#c084fc);color:#000;border:none;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}.dice-btn:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(0,212,255,0.3)}.dice-btn:active{transform:scale(0.95)}.hidden-item{display:none!important}.hidden-row{display:none!important}@media(max-width:1200px){.mobile-toggle{display:flex}.main-container{grid-template-columns:1fr}.sidebar-drawer{position:fixed;top:0;left:0;width:320px;height:100vh;z-index:100;transform:translateX(-100%);transition:transform .3s ease;max-height:100vh}.sidebar-drawer.open{transform:translateX(0)}.sidebar{max-height:none;position:relative;border-right:none;border-bottom:none;padding-top:60px}.workspace{max-height:none;padding:20px}.storyboard-grid{grid-template-columns:1fr}.header{padding:30px 20px}.header-inner{flex-direction:column}.author-card{width:100%;min-width:auto}.header h1{font-size:28px}.export-bar{padding:15px 20px;flex-direction:column;gap:10px}.tab-bar{padding:16px 20px;overflow-x:auto}.search-bar{padding:12px 20px}.inspiration-bar{padding:16px 20px}.inspiration-result{min-width:auto;width:100%}    /* ===== 移动端表格适配修复 ===== */
+    .table-section {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .table-section table {
+        min-width: 680px;
+        font-size: 13px;
+    }
+    .table-section th,
+    .table-section td {
+        padding: 12px 14px;
+        white-space: normal;
+    }
+    .td-prompt {
+        max-width: 220px;
+        font-size: 11px;
+        line-height: 1.5;
+        word-break: break-all;
+    }
+    .table-header {
+        font-size: 16px;
+        padding: 18px 20px;
+    }}
+</style>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?e459d7329e9da999a234c4dfcb681691";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?e459d7329e9da999a234c4dfcb681691";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<body>
+<button class="mobile-toggle" onclick="toggleDrawer()" title="打开导航">☰</button>
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="header">
+<div class="header-inner">
+<div class="header-left">
+<h1>AI影视创作超级工作台 · 151种进阶语法</h1>
+<div class="subtitle">光影×转场×场景×表演×剪辑，五大模块全覆盖，从单帧到成片的完整AI影视创作系统</div>
+<div class="meta">
+<div class="meta-item">151种进阶语法</div>
+<div class="meta-item">5大核心模块</div>
+<div class="meta-item">中英双语提示词</div>
+<div class="meta-item">适用 ComfyUI / 无限画布 / 分镜脚本</div>
+</div>
+</div>
+<div class="author-card">
+<div class="author-card-label">Author</div>
+<div class="author-card-name">B站老许爱吃肉丶</div>
+<div class="author-links">
+<a href="https://space.bilibili.com/669645699" target="_blank" class="author-link"><span class="author-link-icon icon-bilibili">B</span><span>space.bilibili.com/669645699</span></a>
+<div class="author-link"><span class="author-link-icon icon-wechat">V</span><span class="author-link-text">VX: GaryAigo</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="search-bar">
+<input type="text" class="search-input" id="search-input" placeholder="搜索名称 / 提示词 / 场景 / 情绪...">
+<span class="search-stats" id="search-stats">共 151 项</span>
+</div>
+
+<div class="tab-bar">
+<button class="tab-btn active" onclick="switchModule(0)">30种光影布光</button>
+<button class="tab-btn" onclick="switchModule(1)">40种转场衔接</button>
+<button class="tab-btn" onclick="switchModule(2)">35种场景美术</button>
+<button class="tab-btn" onclick="switchModule(3)">20种表演指导</button>
+<button class="tab-btn" onclick="switchModule(4)">25种剪辑节奏</button>
+</div>
+
+<div class="main-container">
+<div class="sidebar-drawer" id="sidebar-drawer"><div class="sidebar" id="sidebar"></div></div>
+<div class="workspace">
+<div id="detail-view"></div>
+<div class="table-section">
+<div class="table-header" id="table-title">📋 分镜速查总表</div>
+<table>
+<thead><tr><th style="width:50px">#</th><th style="width:140px">名称</th><th style="width:120px">分类</th><th>核心提示词（英文）</th><th style="width:160px">适用场景</th><th style="width:120px">情绪关键词</th></tr></thead>
+<tbody id="table-body"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="inspiration-bar">
+<span class="inspiration-title">🎲 随机灵感组合</span>
+<div class="inspiration-result" id="inspiration-result">
+<span>点击骰子按钮，从5大模块各抽1种，生成一套完整分镜方案...</span>
+</div>
+<button class="dice-btn" onclick="randomInspiration()">🎲 随机组合</button>
+</div>
+
+<div class="export-bar">
+<div class="export-info">💡 点击顶部Tab切换模块，左侧列表切换详情，表格可直接复制提示词 | v2 支持搜索/路由/复制/移动端</div>
+<button class="export-btn" onclick="exportJSON()">导出 JSON 分镜模板</button>
+</div>
+
+<script>
+
+var modules = [
+  {
+    title: "30种光影布光",
+    chClass: "ch1",
+    color: "var(--c1)",
+    items: [
+      {
+        name: "黄金时刻 Golden Hour",
+        cat: "自然光效",
+        desc: "日出后/日落前1小时，色温3000K左右，长阴影+暖金色调。最具电影感的基础自然光。",
+        prompt: "golden hour lighting, warm 3000K color temperature, long soft shadows, amber glow on skin, cinematic sunset atmosphere, magic hour photography",
+        scene: "浪漫场景、公路片、回忆、开场/结尾、人像",
+        mood: ["温暖","怀旧","浪漫"],
+        motion: "sun slowly dipping below horizon, golden light gradually shifting to orange, shadows lengthening in real time",
+        motionTip: "光线角度持续降低，阴影逐渐拉长",
+        combo: "+ 逆光轮廓 / + 远景"
+      },
+      {
+        name: "蓝调时刻 Blue Hour",
+        cat: "自然光效",
+        desc: "日落后/日出前20分钟，天空深蓝，色温9000K+，无直射光，城市灯光刚亮。",
+        prompt: "blue hour lighting, deep cyan sky, 9000K cold color temperature, city lights beginning to glow, twilight atmosphere, cool serene mood",
+        scene: "城市夜景开场、孤独、悬疑、霓虹前奏、静谧",
+        mood: ["孤独","神秘","静谧"],
+        motion: "sky transitioning from deep blue to black, artificial lights flickering on, natural light fading away",
+        motionTip: "天光逐渐消失，人造光源次第亮起",
+        combo: "+ 高角度俯拍 / + 留白构图"
+      },
+      {
+        name: "阴天柔光 Overcast",
+        cat: "自然光效",
+        desc: "云层作为巨大柔光箱，无方向性阴影，肤色均匀，适合情绪戏和女性人像。",
+        prompt: "overcast soft lighting, giant cloud softbox, no harsh shadows, even skin tones, diffused natural light, flat emotional lighting",
+        scene: "情绪戏、采访、女性人像、悲伤、文艺片",
+        mood: ["柔和","压抑","真实"],
+        motion: "clouds slowly drifting changing light intensity subtly, soft shadows remaining gentle, consistent diffused quality",
+        motionTip: "云层移动带来微弱光强变化，阴影始终柔和",
+        combo: "+ 中近景 / + 浅景深"
+      },
+      {
+        name: "窗光 Window Light",
+        cat: "自然光效",
+        desc: "单侧窗户入射的定向柔光，明暗对比明显但边缘柔和。伦勃朗光效的自然版本。",
+        prompt: "window light, single directional soft light from window, gentle shadow on opposite cheek, natural rembrandt triangle, indoor daylight atmosphere",
+        scene: "室内对话、书房、卧室、文艺片、复古",
+        mood: ["私密","安静","文艺"],
+        motion: "subject moves within window light zone, shadow shifting on face, dust particles visible in light beam",
+        motionTip: "人物在窗光区域内移动，阴影在脸上流动",
+        combo: "+ 过肩镜头 / + 框架式构图"
+      },
+      {
+        name: "逆光剪影 Backlight",
+        cat: "自然光效",
+        desc: "光源在主体正后方，主体呈暗色轮廓，边缘可能有轻微光晕。去细节化，重情绪。",
+        prompt: "strong backlight, subject as dark silhouette, rim edge glow, sun directly behind figure, blown out background, dramatic outline",
+        scene: "离别、英雄登场、日落、神秘、仪式感",
+        mood: ["轮廓","戏剧","离别"],
+        motion: "subject slowly turns revealing partial face, rim light shifting along body, maintaining silhouette dominance",
+        motionTip: "慢速转身，边缘光流动但保持剪影主导",
+        combo: "+ 剪影构图 / + 定格"
+      },
+      {
+        name: "顶光 noon Sun",
+        cat: "自然光效",
+        desc: "正午太阳直射，眼窝/鼻下浓重阴影，顶光压迫感。常用于表现疲惫、残酷、无遮蔽。",
+        prompt: "harsh noon sun, top-down direct lighting, deep eye socket shadows, nose shadow on upper lip, unflattering overhead light, oppressive brightness",
+        scene: "沙漠、求生、残酷现实、疲惫、战争",
+        mood: ["残酷","疲惫","压迫"],
+        motion: "subject looks up squinting into sun, shadows deepening under brow, sweat visible in harsh light",
+        motionTip: "人物抬头眯眼，眼窝阴影加深",
+        combo: "+ 高角度俯拍 / + 填充构图"
+      },
+      {
+        name: "底光 Up Light",
+        cat: "自然光效",
+        desc: "光源从下方照射，面部阴影倒置，违反自然规律，产生恐怖/诡异/戏剧效果。",
+        prompt: "underlighting, light source from below face, inverted shadows on cheeks, unnatural upward illumination, horror theatrical lighting, campfire effect",
+        scene: "恐怖、鬼故事、营火会、戏剧、心理惊悚",
+        mood: ["恐怖","诡异","戏剧"],
+        motion: "flame flickering creating dancing shadows on face, light source pulsing, shadow directions constantly shifting",
+        motionTip: "光源闪烁，面部阴影不断跳动",
+        combo: "+ 特写 / + 荷兰角"
+      },
+      {
+        name: "侧逆光 Rim Light",
+        cat: "自然光效",
+        desc: "光源从侧后方45度照射，勾勒主体轮廓，分离主体与背景，增强三维感。",
+        prompt: "rim lighting, 45 degree backlight from side, subject edge glowing, hair and shoulder outlined, separation from background, heroic edge glow",
+        scene: "英雄、神明、发丝光、分离背景、质感",
+        mood: ["神圣","分离","质感"],
+        motion: "subject turns slowly, rim light traveling along silhouette, glowing edge shifting continuously",
+        motionTip: "慢速转身，边缘光沿轮廓流动",
+        combo: "+ 逆光轮廓 / + 浅景深"
+      },
+      {
+        name: "三点布光 Three Point",
+        cat: "人工光效",
+        desc: "主光+辅光+轮廓光的标准工业布光。最基础也最万能的人像布光方案。",
+        prompt: "three point lighting, key light dominant, fill light softening shadows, back light separating subject, professional studio setup, balanced portrait",
+        scene: "采访、直播、标准人像、产品讲解、证件照",
+        mood: ["专业","标准","清晰"],
+        motion: "subject turns head showing light transition on face, three distinct light sources visible in eye reflections",
+        motionTip: "转头展示主辅光过渡，眼神光可见三光源",
+        combo: "+ 中景 / + 平视"
+      },
+      {
+        name: "伦勃朗光 Rembrandt",
+        cat: "人工光效",
+        desc: "主光高位侧45度，鼻影与脸颊阴影形成三角形光斑。古典油画质感。",
+        prompt: "rembrandt lighting, 45 degree high key light, triangular light patch on shadow cheek, classical portrait, dramatic single source, painterly shadows",
+        scene: "古典肖像、严肃访谈、艺术家、历史剧、质感",
+        mood: ["古典","严肃","质感"],
+        motion: "subject slightly turns maintaining rembrandt triangle, shadow shape shifting but triangle preserved",
+        motionTip: "保持面部转动，伦勃朗三角始终存在",
+        combo: "+ 近景 / + 深景深"
+      },
+      {
+        name: "蝴蝶光 Butterfly",
+        cat: "人工光效",
+        desc: "主光正前方高位，鼻下形成对称蝴蝶状阴影。好莱坞经典女性布光。",
+        prompt: "butterfly lighting, key light directly above lens, symmetrical nose shadow under nostrils, glamour Hollywood portrait, even frontal beauty light",
+        scene: "时尚、美妆、明星访谈、女性主角、 glamour",
+        mood: [" glamour","对称","完美"],
+        motion: "subject tilts chin slightly, butterfly shadow changing shape, symmetrical light maintaining beauty aesthetic",
+        motionTip: "微收下巴，蝴蝶阴影形状变化",
+        combo: "+ 中近景 / + 浅景深"
+      },
+      {
+        name: "分割光 Split",
+        cat: "人工光效",
+        desc: "主光正侧方90度，面部一半亮一半暗。强烈的二元对立和戏剧感。",
+        prompt: "split lighting, 90 degree side light, half face illuminated half in shadow, dramatic contrast, film noir aesthetic, stark duality",
+        scene: "反派、内心挣扎、黑色电影、悬疑、对峙",
+        mood: ["对立","戏剧","危险"],
+        motion: "subject turns from split to front, shadow slowly swallowing or revealing face, duality emphasized",
+        motionTip: "从侧脸转向正面，阴影逐渐吞噬或揭示面部",
+        combo: "+ 特写 / + 黑白"
+      },
+      {
+        name: "环形光 Loop",
+        cat: "人工光效",
+        desc: "主光稍侧，鼻影与脸颊阴影相连形成小环形。比蝴蝶光更自然，比伦勃朗更柔和。",
+        prompt: "loop lighting, slight side key, nose shadow connecting to cheek shadow, small loop shape, natural flattering portrait, soft directional",
+        scene: "商务肖像、新闻主播、自然人像、标准采访",
+        mood: ["自然"," flattering","标准"],
+        motion: "small head movement keeping loop shadow intact, subtle and professional, corporate video aesthetic",
+        motionTip: "小幅头部运动保持环形阴影完整",
+        combo: "+ 中景 / + 平视"
+      },
+      {
+        name: "剪影光 Silhouette",
+        cat: "人工光效",
+        desc: "背景极亮，主体无补光，纯黑轮廓。强调形态而非表情。",
+        prompt: "silhouette lighting, background overexposed, subject completely dark, pure shape and posture, no facial detail, dramatic contrast ratio",
+        scene: "舞蹈轮廓、武术、形体、离别、抽象",
+        mood: ["形态","抽象","强烈"],
+        motion: "subject moves in pure silhouette, body language only, gesture and posture telling entire story",
+        motionTip: "纯轮廓运动，肢体语言是唯一叙事",
+        combo: "+ 填充构图 / + 逆光构图"
+      },
+      {
+        name: "轮廓光 Edge",
+        cat: "人工光效",
+        desc: "背景光和轮廓光极强，主体正面极暗。分离主体与背景，营造神秘氛围。",
+        prompt: "edge lighting, strong backlight and background light, subject front in darkness, glowing outline separation, mysterious figure emerging from dark",
+        scene: "神秘人物、科幻、登场、幽灵、舞台",
+        mood: ["神秘","分离","登场"],
+        motion: "figure steps forward from darkness, edge light revealing shape gradually, face still hidden in shadow",
+        motionTip: "从黑暗中走出，轮廓光逐步揭示身形",
+        combo: "+ 低角度仰拍 / + 推镜头"
+      },
+      {
+        name: "背景光 Background",
+        cat: "人工光效",
+        desc: "单独照亮背景，增加层次和景深。避免背景死黑，提升画面精致度。",
+        prompt: "background light, separate illumination on backdrop, gradient or patterned background, depth enhancement, layered lighting setup, professional depth",
+        scene: "演播室、访谈、产品、直播间、精致人像",
+        mood: ["层次","精致","专业"],
+        motion: "subtle background light color shift, maintaining separation, atmospheric depth without distracting from subject",
+        motionTip: "背景光色温微调，保持分离感不抢主体",
+        combo: "+ 浅景深 / + 中景"
+      },
+      {
+        name: "眼神光 Catch Light",
+        cat: "人工光效",
+        desc: "眼睛反射光源形成高光点。赋予人物生命力，无眼神光则显得呆滞。",
+        prompt: "catch light in eyes, single specular highlight in each eye, life and soul in gaze, ring light reflection or softbox sparkle, engaging portrait",
+        scene: "所有近景人像、对话、情感戏、广告",
+        mood: ["生命","灵动","连接"],
+        motion: "subject blinks and refocuses, catch light shifting slightly, eyes alive with reflected light source",
+        motionTip: "眨眼后眼神光重新稳定，赋予生命力",
+        combo: "+ 近景 / + 浅景深"
+      },
+      {
+        name: "顶光压迫 Top",
+        cat: "人工光效",
+        desc: "垂直顶光无辅光，眼窝深陷，鼻影浓重。审讯室、监狱、恐怖片常用。",
+        prompt: "oppressive top lighting, single overhead source, deep eye sockets in shadow, harsh nose shadow, interrogation room aesthetic, institutional horror",
+        scene: "审讯、监狱、恐怖、压迫、心理崩溃",
+        mood: ["压迫","恐惧","崩溃"],
+        motion: "subject looks up into light then down, eyes disappearing into sockets, oppressive institutional atmosphere",
+        motionTip: "抬头看光然后低头，眼窝陷入黑暗",
+        combo: "+ 特写 / + 高角度俯拍"
+      },
+      {
+        name: "Noir黑白",
+        cat: "戏剧光效",
+        desc: "高对比黑白，硬光+浓重阴影，百叶窗投影， cynical世界观视觉化。",
+        prompt: "film noir lighting, high contrast black and white, venetian blind shadows, hard light sharp edges, cynical atmosphere, 1940s detective aesthetic",
+        scene: "侦探、悬疑、复古、道德模糊、 rain scene",
+        mood: [" cynical","悬疑","复古"],
+        motion: "blind shadows stripe across face, smoke drifting through light beams, hard light cutting through darkness",
+        motionTip: "百叶窗阴影在面部条纹化，烟雾穿过光束",
+        combo: "+ 侧逆光 / + 吸烟"
+      },
+      {
+        name: "赛博霓虹 Cyber Neon",
+        cat: "戏剧光效",
+        desc: "高饱和青蓝+洋红对比，湿地面反射，亚洲城市夜景，未来感与颓废感并存。",
+        prompt: "cyberpunk neon lighting, cyan and magenta color contrast, wet pavement reflections, futuristic Asian city night, high saturation, technological melancholy",
+        scene: "科幻、未来城市、夜总会、黑客、雨夜",
+        mood: ["未来","颓废","科技"],
+        motion: "neon signs flickering, reflections rippling on wet ground, colored light washing over face, rain droplets glowing",
+        motionTip: "霓虹闪烁+地面水波纹反射",
+        combo: "+ 低角度仰拍 / + 慢门拖影"
+      },
+      {
+        name: "蒸汽朋克 Steam",
+        cat: "戏剧光效",
+        desc: "暖黄铜色调，蒸汽弥漫，侧逆光勾勒机械轮廓，维多利亚工业美学。",
+        prompt: "steampunk lighting, warm brass tones, steam and fog atmosphere, side rim light on mechanical gears, victorian industrial, amber volumetric haze",
+        scene: "机械工厂、复古科幻、齿轮、实验室、飞艇",
+        mood: ["复古","机械","神秘"],
+        motion: "steam billowing through warm light beams, brass surfaces gleaming, mechanical parts moving with rim light",
+        motionTip: "蒸汽穿过暖色光束，黄铜表面反光",
+        combo: "+ 侧逆光 / + 前景遮挡"
+      },
+      {
+        name: "恐怖顶光 Horror Top",
+        cat: "戏剧光效",
+        desc: "单一顶光+绿色色调，面部阴影倒置，经典恐怖片布光。",
+        prompt: "horror top lighting, single overhead source with green tint, inverted facial shadows, sickly green cast, classic horror movie lighting, unsettling atmosphere",
+        scene: "恐怖片、鬼屋、实验室、变异、惊悚",
+        mood: ["病态","恐怖","不安"],
+        motion: "subject looks up revealing full horror face, green light pulsing, shadows dancing in sickly hue",
+        motionTip: "抬头瞬间露出完整恐怖面部",
+        combo: "+ 底光 / + 荷兰角"
+      },
+      {
+        name: "圣光 God Ray",
+        cat: "戏剧光效",
+        desc: "强烈光束从上方/窗户射入，灰尘粒子形成光路，神圣、救赎、超自然。",
+        prompt: "god rays, volumetric light beams from above, dust particles visible in light path, divine illumination, cathedral atmosphere, spiritual transcendence",
+        scene: "教堂、救赎、神迹、觉醒、森林晨雾",
+        mood: ["神圣","救赎","超自然"],
+        motion: "dust particles dancing in light beams, subject reaching into light, volumetric rays shifting with air currents",
+        motionTip: "灰尘粒子在光束中舞动，人物伸手触光",
+        combo: "+ 逆光轮廓 / + 升镜头"
+      },
+      {
+        name: "火灾模拟 Fire",
+        cat: "戏剧光效",
+        desc: "橙红暖光快速闪烁，模拟火焰的不稳定照明，紧张、危险、毁灭。",
+        prompt: "fire simulation lighting, orange red warm light flickering rapidly, unstable flame illumination, danger and destruction, warm light pulsing, emergency atmosphere",
+        scene: "火灾、战场、营地、暴动、末日",
+        mood: ["危险","紧张","毁灭"],
+        motion: "light flickering violently creating jittery shadows, warm orange glow pulsing, embers floating in air",
+        motionTip: "光线剧烈闪烁，阴影不稳定跳动",
+        combo: "+ 手持晃动 / + 特写"
+      },
+      {
+        name: "月光冷调 Moonlight",
+        cat: "戏剧光效",
+        desc: "冷蓝白色调，低照度，长阴影，模拟满月的自然夜光。浪漫而清冷。",
+        prompt: "moonlight lighting, cold blue white tone, low illumination level, long soft shadows, full moon simulation, romantic cold night, pale silver glow",
+        scene: "月夜、浪漫、狼人、恐怖、海边夜晚",
+        mood: ["清冷","浪漫","神秘"],
+        motion: "clouds passing over moon, light intensity fluctuating, silver glow washing over landscape in waves",
+        motionTip: "云层飘过，月光强度波动",
+        combo: "+ 留白构图 / + 蓝调时刻"
+      },
+      {
+        name: "青橙对比 Teal Orange",
+        cat: "色彩氛围",
+        desc: "阴影偏青、高光偏橙的互补色搭配。好莱坞大片标准调色，肤色突出。",
+        prompt: "teal and orange color grading, shadows tinted cyan, highlights warm amber, complementary color scheme, blockbuster cinematic look, skin tones popping",
+        scene: "动作片、大片、汽车广告、日落、城市",
+        mood: ["大片","冲突","商业"],
+        motion: "warm subject against cool background, color contrast intensifying, skin remaining warm while environment cools",
+        motionTip: "人物暖色+环境冷色，肤色始终突出",
+        combo: "+ 中景 / + 推镜头"
+      },
+      {
+        name: "单色调 Monochrome",
+        cat: "色彩氛围",
+        desc: "单一色相的不同饱和度/明度组合。极简、统一、强烈的风格化。",
+        prompt: "monochromatic color scheme, single hue variations only, desaturated unified palette, minimalist aesthetic, strong stylized look, color isolation",
+        scene: "时尚、艺术片、情绪、极简、概念",
+        mood: ["极简","统一","风格"],
+        motion: "varying shades of single color moving in frame, no color distraction, tonal composition dominant",
+        motionTip: "画面中只有单一色相的深浅变化",
+        combo: "+ 留白构图 / + 对称构图"
+      },
+      {
+        name: "互补色 Complementary",
+        cat: "色彩氛围",
+        desc: "色轮对立的两种颜色并置。红绿、蓝橙、黄紫，视觉冲击力极强。",
+        prompt: "complementary color scheme, opposite hues on color wheel, red and green or blue and orange, maximum visual contrast, vibrant clashing palette",
+        scene: "戏剧、冲突、节日、时尚、视觉系",
+        mood: ["冲突","活力","戏剧"],
+        motion: "two complementary colored elements moving against each other, visual tension through color opposition",
+        motionTip: "互补色元素相互运动，视觉张力",
+        combo: "+ 对角线构图 / + 双人景"
+      },
+      {
+        name: "去饱和 Desaturated",
+        cat: "色彩氛围",
+        desc: "低饱和度+保留单一强调色。压抑中的一点希望，或彻底绝望。",
+        prompt: "desaturated color grading, low saturation with single accent color preserved, muted palette, selective color technique, bleak with one hope spot",
+        scene: "末日、战争、回忆、悲伤、Schindler's List",
+        mood: ["压抑","绝望","希望"],
+        motion: "mostly gray world with one colored element moving, accent color drawing all attention, symbolic isolation",
+        motionTip: "灰色世界中唯一彩色元素运动，吸引全部注意",
+        combo: "+ 反应镜头 / + 空镜头"
+      },
+      {
+        name: "高饱和复古 Vintage",
+        cat: "色彩氛围",
+        desc: "夸张的高饱和度+色偏，模拟胶片过期或 cross-processing 效果。怀旧、迷幻、B级片。",
+        prompt: "high saturation vintage look, cross processed film aesthetic, exaggerated color shift, expired film tones, nostalgic psychedelic, 1970s exploitation film",
+        scene: "复古、迷幻、B级片、音乐MV、回忆",
+        mood: ["迷幻","怀旧","夸张"],
+        motion: "colors bleeding and shifting unnaturally, highlights blooming, vintage film grain texture, unstable color chemistry",
+        motionTip: "色彩不自然地偏移溢出，高光 blooming",
+        combo: "+ 快速变焦 / + 跳切"
+      },
+    ]
+  },
+  {
+    title: "40种转场衔接",
+    chClass: "ch2",
+    color: "var(--c2)",
+    items: [
+      {
+        name: "直切 Hard Cut",
+        cat: "基础硬切",
+        desc: "最基础的镜头切换，无过渡效果。信息直接传递，节奏干脆。",
+        prompt: "hard cut transition, abrupt scene change, no fade or dissolve, direct information transfer, sharp editorial rhythm, standard cut",
+        scene: "所有类型、基础剪辑、快节奏、对话切换",
+        mood: ["干脆","直接","基础"],
+        motion: "instantaneous frame switch, no visual bridge, action continuing without spatial connection",
+        motionTip: "瞬间切换，无视觉过渡",
+        combo: "+ 正反打 / + 反应镜头"
+      },
+      {
+        name: "跳切 Jump Cut",
+        cat: "基础硬切",
+        desc: "同一机位/主体的时间压缩，位置跳跃。戈达尔开创，短视频时代复兴。",
+        prompt: "jump cut transition, same angle time compression, subject position jumps, temporal ellipsis, Godard style editing, modern short form rhythm",
+        scene: "时间流逝、化妆、走路、等待、短视频",
+        mood: ["时间","压缩","现代"],
+        motion: "subject snaps to new position within same framing, time visibly missing, casual modern pacing",
+        motionTip: "同机位人物位置跳跃，时间被压缩",
+        combo: "+ 抽帧 / + 快速变焦"
+      },
+      {
+        name: "匹配剪辑 Match",
+        cat: "基础硬切",
+        desc: "利用形状/动作/颜色相似性连接两个镜头。时空跳跃但视觉流畅。",
+        prompt: "match cut transition, shape or action matching between scenes, visual similarity bridge, spatial temporal leap with graphic continuity, 2001 space odyssey style",
+        scene: "时空跳跃、象征、史诗、创意广告、开场",
+        mood: ["巧妙","流畅","象征"],
+        motion: "object motion completing across cut, circle to circle, action to action, visual rhyme maintained",
+        motionTip: "动作或形状跨镜头完成，视觉押韵",
+        combo: "+ 特写→大远景 / + 相似构图"
+      },
+      {
+        name: "声音先入 L-cut",
+        cat: "基础硬切",
+        desc: "下一场景的声音先出现，画面后切换。声音引导观众预期。",
+        prompt: "L-cut transition, audio leads video, next scene sound precedes picture change, audio bridge guiding expectation, editorial overlap",
+        scene: "对话、预告片、情绪铺垫、自然过渡",
+        mood: ["引导","预期","自然"],
+        motion: "audio from next scene fading in while current image holds, sound creating bridge before visual switch",
+        motionTip: "声音先进入，画面后切换",
+        combo: "+ 建立镜头 / + 空镜头"
+      },
+      {
+        name: "画面先入 J-cut",
+        cat: "基础硬切",
+        desc: "下一场景的画面先出现，声音后跟上。视觉先行，声音补充。",
+        prompt: "J-cut transition, video leads audio, next scene image appears before sound catches up, visual preview with delayed audio, editorial prelap",
+        scene: "环境揭示、悬念、空间转换、音乐视频",
+        mood: ["揭示","悬念","空间"],
+        motion: "new image visible while old audio continues, visual information arriving before sonic context",
+        motionTip: "新画面已出现，旧声音仍在延续",
+        combo: "+ 建立镜头 / + 拉镜头"
+      },
+      {
+        name: "声音桥接 Audio Bridge",
+        cat: "基础硬切",
+        desc: "同一段声音连续跨越多个画面变化。音乐/旁白/环境音作为叙事线索。",
+        prompt: "audio bridge transition, continuous sound across multiple visual changes, music or narration threading scenes, sonic narrative spine, consistent audio bed",
+        scene: "MV、纪录片、情感段落、时间蒙太奇",
+        mood: ["连贯","线索","统一"],
+        motion: "sound remaining constant while visuals change dramatically, audio as anchor through visual chaos",
+        motionTip: "声音不变，画面剧烈变化",
+        combo: "+ 蒙太奇 / + 长镜头"
+      },
+      {
+        name: "遮罩转场 Mask",
+        cat: "运动转场",
+        desc: "利用前景物体（柱子、人物、黑边）划过画面完成遮挡切换。",
+        prompt: "mask transition, foreground object wiping across frame, black edge or pillar crossing, hidden cut behind passing element, organic wipe transition",
+        scene: "走路、走廊、树林、人群、建筑",
+        mood: ["隐藏","流畅","自然"],
+        motion: "foreground element passing camera, briefly filling frame, new scene revealed as object exits",
+        motionTip: "前景物体经过画面瞬间完成切换",
+        combo: "+ 前跟镜头 / + 横移"
+      },
+      {
+        name: "甩镜转场 Whip Pan",
+        cat: "运动转场",
+        desc: "快速横摇造成的动态模糊中完成场景切换。速度感+方向连贯。",
+        prompt: "whip pan transition, fast horizontal pan blur, motion streaks hiding cut, speed lines connecting scenes, directional continuity through blur",
+        scene: "动作、追逐、时间跳跃、喜剧、快节奏",
+        mood: ["速度","动感","连接"],
+        motion: "camera whips horizontally, image blurring into streaks, new scene snapping into focus at pan end",
+        motionTip: "快速甩动模糊中完成切换，落幅清晰",
+        combo: "+ 甩镜头 / + 快速变焦"
+      },
+      {
+        name: "推镜转场 Push",
+        cat: "运动转场",
+        desc: "推镜头进入物体/门/眼，下一场景从相似形状拉出。穿越感。",
+        prompt: "push through transition, camera pushing into object or door or eye, next scene pulling out from similar shape, dimensional travel effect, portal transition",
+        scene: "梦境、回忆、穿越、科幻、门/眼/洞",
+        mood: ["穿越","进入","维度"],
+        motion: "camera pushing into black circle of eye, emerging from tunnel into new world, shape continuity maintained",
+        motionTip: "推入一个黑色形状，从相似形状拉出",
+        combo: "+ 推镜头 / + 特写→大远景"
+      },
+      {
+        name: "物体穿越 Object Pass",
+        cat: "运动转场",
+        desc: "物体从画左飞入/人物从画右走入，下一场景延续同一运动方向。",
+        prompt: "object pass transition, element entering from one side continuing motion into next scene, directional movement bridge, graphic motion continuity, kinetic cut",
+        scene: "抛球、走路、车辆、飞行、运动",
+        mood: ["运动","连贯","动能"],
+        motion: "object flying across frame, cut mid-flight, continuing trajectory in new environment, momentum preserved",
+        motionTip: "物体飞行中途切换，运动轨迹延续",
+        combo: "+ 侧跟 / + 横摇"
+      },
+      {
+        name: "门框穿越 Doorway",
+        cat: "运动转场",
+        desc: "人物穿过门框/窗户/拱门时切换，利用黑暗门框作为天然遮罩。",
+        prompt: "doorway transition, subject passing through door frame or arch, dark frame as natural mask, architectural portal cut, threshold crossing",
+        scene: "进入新空间、房间切换、回忆、恐怖",
+        mood: ["门槛","进入","空间"],
+        motion: "subject walking through dark doorway, briefly silhouetted, new room revealed as they emerge",
+        motionTip: "门框黑暗瞬间完成切换",
+        combo: "+ 框架式构图 / + 推镜头"
+      },
+      {
+        name: "相似体转场 Graphic Match",
+        cat: "运动转场",
+        desc: "两个场景中的相似形状/颜色/动作直接对切。视觉隐喻。",
+        prompt: "graphic match transition, similar shape or color or action directly cutting, visual metaphor bridge, associative editing, symbolic continuity",
+        scene: "象征、对比、时间、创意、艺术",
+        mood: ["隐喻","巧妙","视觉"],
+        motion: "spinning wheel cutting to spinning galaxy, same graphic motion different scale, visual rhyme",
+        motionTip: "相似动作或形状直接对切",
+        combo: "+ 匹配剪辑 / + 放射线构图"
+      },
+      {
+        name: "遮挡转场 Occlusion",
+        cat: "运动转场",
+        desc: "主体背部/物体占据整个画面形成黑场，切换后从相似黑场展开。",
+        prompt: "occlusion transition, subject back filling frame creating black field, cutting from black to similar black, expanding reveal, dark frame bridge",
+        scene: "跟踪、进入、神秘、黑暗、展开",
+        mood: ["神秘","展开","黑暗"],
+        motion: "camera following into dark back, frame goes black, cutting to black back of new subject moving away",
+        motionTip: "黑场作为切换点，前后都是遮挡",
+        combo: "+ 后跟镜头 / + 推镜头"
+      },
+      {
+        name: "速度模糊转场 Speed Blur",
+        cat: "运动转场",
+        desc: "主体快速运动造成的运动模糊中切换，强调速度而非内容。",
+        prompt: "speed blur transition, fast subject motion creating streak blur, cut hidden in motion blur, velocity based transition, kinetic energy bridge",
+        scene: "赛车、奔跑、动作、快速移动、体育",
+        mood: ["速度","模糊","动能"],
+        motion: "subject rushing past camera, extreme motion blur, new subject rushing in same direction from blur",
+        motionTip: "运动模糊中隐藏切换点",
+        combo: "+ 侧跟 / + 甩镜"
+      },
+      {
+        name: "溶解 Dissolve",
+        cat: "特效转场",
+        desc: "画面A渐隐同时画面B渐显。时间流逝、回忆、柔和过渡。",
+        prompt: "dissolve transition, cross fade between scenes, image A fading out while B fades in, time passage, soft gentle transition, memory effect",
+        scene: "时间流逝、回忆、梦境、柔和过渡、死亡",
+        mood: ["柔和","时间","回忆"],
+        motion: "two images briefly overlapping, transparency blending, ghostly coexistence before full transition",
+        motionTip: "两画面短暂重叠，幽灵般共存",
+        combo: "+ 空镜头 / + 慢门拖影"
+      },
+      {
+        name: "闪白 Flash White",
+        cat: "特效转场",
+        desc: "画面瞬间暴白后切入新场景。爆炸、冲击、强烈情绪、闪回。",
+        prompt: "flash white transition, frame exploding to pure white, intense impact cut, flashbang effect, sudden memory or trauma, blinding brightness",
+        scene: "爆炸、枪声、惊吓、闪回、强烈情绪",
+        mood: ["冲击","暴力","创伤"],
+        motion: "frame suddenly overexposing to white, new scene emerging from whiteout, sensory overload transition",
+        motionTip: "瞬间纯白暴光后新场景浮现",
+        combo: "+ 定格 / + 特写"
+      },
+      {
+        name: "闪黑 Flash Black",
+        cat: "特效转场",
+        desc: "画面瞬间切黑再亮起。呼吸感、段落分隔、戏剧停顿。",
+        prompt: "flash black transition, frame cutting to pure black, dramatic pause, breath between scenes, theatrical blackout, section separator",
+        scene: "段落分隔、戏剧、呼吸、时间跳跃、停顿",
+        mood: ["停顿","戏剧","呼吸"],
+        motion: "image snapping to black, brief darkness, new scene snapping in from black, theatrical timing",
+        motionTip: "切黑短暂停顿后新场景亮起",
+        combo: "+ 长镜头 / + 反应镜头"
+      },
+      {
+        name: "划像 Wipe",
+        cat: "特效转场",
+        desc: "画面B以某种形状/方向划过取代画面A。老式电影、喜剧、风格化。",
+        prompt: "wipe transition, new scene sliding in to replace old, directional wipe, shape based transition, vintage film effect, comedic or stylized",
+        scene: "复古、喜剧、风格化、老式电影、星球大战",
+        mood: ["复古","风格","喜剧"],
+        motion: "edge of new image sweeping across frame, pushing old image out, geometric replacement",
+        motionTip: "新画面边缘扫过推走旧画面",
+        combo: "+ 分屏 / + 匹配剪辑"
+      },
+      {
+        name: "翻页 Page Turn",
+        cat: "特效转场",
+        desc: "画面像书页一样翻起，露出下一场景。回忆、故事、童话。",
+        prompt: "page turn transition, image folding like book page, corner curling up, revealing next scene underneath, storybook effect, narrative chapter change",
+        scene: "童话、回忆、故事、书籍、章节切换",
+        mood: ["童话","故事","翻阅"],
+        motion: "corner of frame curling and folding, page turning in 3D space, new page lying flat",
+        motionTip: "画面一角卷起翻页",
+        combo: "+ 建立镜头 / + 空镜头"
+      },
+      {
+        name: "故障转场 Glitch",
+        cat: "特效转场",
+        desc: "数字故障、RGB分离、像素错位中完成切换。科幻、黑客、数字世界。",
+        prompt: "glitch transition, digital corruption, RGB channel separation, pixel displacement, scan line distortion, cyberpunk digital break, data corruption effect",
+        scene: "科幻、黑客、数字世界、故障艺术、穿越",
+        mood: ["数字","故障","科幻"],
+        motion: "image breaking into RGB channels, pixels scrambling, digital noise consuming frame, reforming as new scene",
+        motionTip: "RGB分离+像素错乱中重组为新画面",
+        combo: "+ 赛博霓虹 / + 偷拍视角"
+      },
+      {
+        name: "像素化 Pixelate",
+        cat: "特效转场",
+        desc: "画面逐渐像素化变模糊，再从像素中清晰化为新场景。游戏、数字、抽象。",
+        prompt: "pixelate transition, image degrading into large pixels, blocky abstraction, then resolving into new scene from pixels, digital game aesthetic",
+        scene: "游戏、数字世界、抽象、复古游戏、转换",
+        mood: ["像素","数字","游戏"],
+        motion: "resolution dropping to large visible pixels, abstract blocks, then pixels sharpening into new image",
+        motionTip: "分辨率下降为像素块，再重组清晰",
+        combo: "+ 分屏 / + 故障"
+      },
+      {
+        name: "水墨转场 Ink",
+        cat: "特效转场",
+        desc: "水墨/颜料在水中扩散，画面从墨中浮现。东方美学、文艺、诗意。",
+        prompt: "ink transition, black ink spreading in water, organic fluid reveal, oriental aesthetic, calligraphic dissolve, poetic emergence from darkness",
+        scene: "东方、文艺、历史、诗意、武侠",
+        mood: ["诗意","东方","流动"],
+        motion: "ink blob expanding across white, swallowing old image, new image emerging from ink wash, fluid organic",
+        motionTip: "墨滴扩散吞噬旧画面，新画面从水墨中浮现",
+        combo: "+ 留白构图 / + 空镜头"
+      },
+      {
+        name: "粒子消散 Particle",
+        cat: "特效转场",
+        desc: "画面分解成无数粒子飞散，新场景从粒子中重组。科幻、魔法、消散。",
+        prompt: "particle dissolve transition, image breaking into millions of particles, dust motes scattering, new scene reforming from particle cloud, magical disintegration",
+        scene: "科幻、魔法、消散、死亡、变身、消失",
+        mood: ["消散","魔法","粒子"],
+        motion: "subject dissolving into floating particles, wind carrying them away, particles gathering to form new subject",
+        motionTip: "主体分解为粒子飘散，新主体粒子重组",
+        combo: "+ 逆光轮廓 / + 定格"
+      },
+      {
+        name: "玻璃碎裂 Shatter",
+        cat: "特效转场",
+        desc: "画面像玻璃一样碎裂，碎片飞散后露出新场景。冲击、破碎、觉醒。",
+        prompt: "glass shatter transition, image cracking like broken glass, shards flying toward camera, new scene visible through破碎的 fragments, impact awakening",
+        scene: "冲击、觉醒、车祸、破碎、动作",
+        mood: ["破碎","冲击","觉醒"],
+        motion: "cracks spreading across image, glass exploding outward, fragments flying past lens, new world behind",
+        motionTip: "裂纹蔓延后玻璃炸开，碎片飞过镜头",
+        combo: "+ 特写 / + 闪白"
+      },
+      {
+        name: "同景别跳切 Match Cut",
+        cat: "叙事转场",
+        desc: "相同景别/构图直接切换不同时空，强调平行或对比。",
+        prompt: "same shot size jump cut, identical framing different time space, parallel action emphasis, comparative editing, temporal rhyme",
+        scene: "平行叙事、对比、时间、历史对照",
+        mood: ["平行","对比","韵律"],
+        motion: "same camera position, same lens, same framing, only content changes dramatically across cut",
+        motionTip: "机位/景别/构图完全相同，只换内容",
+        combo: "+ 匹配剪辑 / + 分屏"
+      },
+      {
+        name: "轴线反转 Axis Flip",
+        cat: "叙事转场",
+        desc: "故意跳到轴线另一侧，空间错乱，暗示心理/梦境/错乱状态。",
+        prompt: "axis reversal transition, jumping to wrong side of 180 line, spatial confusion, psychological disorientation, dream logic editing, intentional confusion",
+        scene: "梦境、错乱、心理、恐怖、迷失",
+        mood: ["错乱","迷失","心理"],
+        motion: "characters appearing to swap screen positions, audience spatial sense disrupted, wrong side of axis",
+        motionTip: "人物在画面中互换位置，空间错乱",
+        combo: "+ 越轴镜头 / + 荷兰角"
+      },
+      {
+        name: "时间压缩 Montage",
+        cat: "叙事转场",
+        desc: "快速连续剪辑压缩长时间过程。成长、建造、旅程、变化。",
+        prompt: "time compression montage, rapid sequence of moments, long process condensed, growth or journey acceleration, rhythmic quick cuts, passage of time",
+        scene: "成长、建造、训练、旅行、季节变化",
+        mood: ["时间","成长","节奏"],
+        motion: "quick cuts accelerating, each frame a milestone, time visibly compressing, rhythm building to conclusion",
+        motionTip: "快速剪辑加速，每帧一个里程碑",
+        combo: "+ 跳切 / +  dissolve"
+      },
+      {
+        name: "空间跳跃 Space Jump",
+        cat: "叙事转场",
+        desc: "不同地点的相似动作直接对切，全球/宇宙尺度的空间跳跃。",
+        prompt: "space jump transition, same action different location, global or cosmic scale cutting, simultaneous parallel spaces, world spanning edit",
+        scene: "全球同步、宇宙、电话、平行、多线",
+        mood: ["全球","同步","宏大"],
+        motion: "same gesture in Tokyo cutting to same gesture in New York, action synchronized across space",
+        motionTip: "相同动作不同地点直接对切",
+        combo: "+ 分屏 / + 匹配剪辑"
+      },
+      {
+        name: "梦境过渡 Dream",
+        cat: "叙事转场",
+        desc: "从现实到梦境的柔和/诡异过渡。溶解+色彩偏移+失焦。",
+        prompt: "dream transition, reality dissolving into dream, soft focus shift, color palette changing, surreal emergence, subconscious gateway",
+        scene: "入睡、梦境、回忆、潜意识、幻觉",
+        mood: ["梦境","柔和","诡异"],
+        motion: "image softening and color shifting, reality melting, dream logic visuals emerging from familiar scene",
+        motionTip: "画面柔化+色偏，现实融化为梦境",
+        combo: "+ dissolve / + 赛博霓虹"
+      },
+      {
+        name: "回忆闪回 Flashback",
+        cat: "叙事转场",
+        desc: "进入回忆的经典手法。闪白/柔焦/去饱和/叠化。",
+        prompt: "flashback transition, memory intrusion, desaturation or sepia, soft diffusion, ripple or wave effect, nostalgic visual treatment, temporal regression",
+        scene: "回忆、童年、创伤、前史、情感",
+        mood: ["怀旧","创伤","回忆"],
+        motion: "image rippling like water, color fading to sepia, softening as we travel back in time, memory haze",
+        motionTip: "水波纹+褪色+柔焦，时间倒退感",
+        combo: "+ 去饱和 / +  dissolve"
+      },
+      {
+        name: "平行剪辑 Parallel",
+        cat: "叙事转场",
+        desc: "两条或多条线交替剪辑，悬念和对比逐步升级。",
+        prompt: "parallel editing transition, cross cutting between multiple storylines, suspense building through alternation, converging narratives, interwoven timelines",
+        scene: "追逐+准备、多线叙事、悬念、最后一分钟",
+        mood: ["悬念","紧张","交织"],
+        motion: "cutting between two escalating actions, rhythm accelerating, lines approaching collision point",
+        motionTip: "多条线交替加速，节奏逐步升级",
+        combo: "+ 跳切 / + 反应镜头"
+      },
+      {
+        name: "节奏加速 Acceleration",
+        cat: "叙事转场",
+        desc: "剪辑速度逐渐加快，从长镜头到跳切，情绪推向高潮。",
+        prompt: "acceleration editing, shot duration progressively shortening, rhythm building, from long takes to rapid cuts, emotional crescendo, climax pacing",
+        scene: "高潮前、追逐升级、情绪爆发、战斗准备",
+        mood: ["加速","高潮","爆发"],
+        motion: "cuts getting faster and faster, shot lengths halving each time, breathless rhythm toward explosion",
+        motionTip: "镜头时长逐次减半，节奏指数级加速",
+        combo: "+ 甩镜 / + 快速变焦"
+      },
+      {
+        name: "提示词渐变 Prompt Morph",
+        cat: "AI专属",
+        desc: "AI视频通过提示词权重渐变实现风格/内容过渡。Latent空间插值。",
+        prompt: "prompt morph transition, latent space interpolation, style gradually shifting, prompt weight crossfade, AI generated visual morphing, seamless transformation",
+        scene: "风格转换、季节变化、变身、概念转换",
+        mood: ["渐变","转换","AI"],
+        motion: "image content smoothly transforming, not cutting but morphing, latent space journey from concept A to B",
+        motionTip: "不是切换而是变形，latent空间旅行",
+        combo: "+ 溶解 / + 相似体"
+      },
+      {
+        name: "首尾帧衔接 First Last",
+        cat: "AI专属",
+        desc: "图生视频以图A为首帧、图B为尾帧，AI自动生成中间过渡。",
+        prompt: "first frame to last frame transition, image A as start image B as end, AI generating middle sequence, img2img video bridge, automatic interpolation",
+        scene: "概念展示、产品变形、建筑生长、人物变化",
+        mood: ["生长","变化","AI"],
+        motion: "static image A organically becoming image B, AI inventing plausible motion between two fixed points",
+        motionTip: "图A自然生长/变形为图B",
+        combo: "+ 推镜 / + 拉镜"
+      },
+      {
+        name: "风格迁移 Style Transfer",
+        cat: "AI专属",
+        desc: "同一构图下，写实→油画→水彩→像素，风格逐帧变化。",
+        prompt: "style transfer transition, same composition changing art style, realistic to oil painting to watercolor to pixel art, aesthetic metamorphosis, neural style journey",
+        scene: "艺术展示、创意广告、MV、形式实验",
+        mood: ["艺术","实验","AI"],
+        motion: "brush strokes appearing on realistic image, paint texture growing, then dissolving into watercolor wash, then pixelating",
+        motionTip: "笔触在写实画面上生长，逐层风格化",
+        combo: "+ 单色调 / + 故障"
+      },
+      {
+        name: "深度图转场 Depth",
+        cat: "AI专属",
+        desc: "利用深度图信息，前景物体先变、背景后变，或反之。空间感转场。",
+        prompt: "depth map transition, foreground changing before background, z-layer based cut, spatial depth determining edit timing, dimensional transition",
+        scene: "3D空间、前景遮挡、门/窗、分层叙事",
+        mood: ["空间","层次","AI"],
+        motion: "foreground elements morphing first, background holding longer, depth layers transitioning sequentially",
+        motionTip: "前景先变背景后变，按深度分层过渡",
+        combo: "+ 前景遮挡 / + 层次构图"
+      },
+      {
+        name: "语义分割转场 Segmentation",
+        cat: "AI专属",
+        desc: "AI识别画面中的天空/建筑/人物分别替换，元素级转场。",
+        prompt: "semantic segmentation transition, sky replacing separately from buildings, element wise scene change, AI object aware editing, component based transition",
+        scene: "换天、季节、建筑改造、人物替换",
+        mood: ["元素","替换","AI"],
+        motion: "sky dissolving from day to night while building remains, then building changes, semantic parts transitioning independently",
+        motionTip: "天空先变建筑后变，元素独立过渡",
+        combo: "+ 建立镜头 / + 溶解"
+      },
+      {
+        name: "Latent漫游 Latent Walk",
+        cat: "AI专属",
+        desc: "在Stable Diffusion的Latent空间中随机漫步，画面连续变化但无逻辑。迷幻、实验。",
+        prompt: "latent space walk, random wandering in AI latent space, continuous but illogical image transformation, psychedelic AI journey, generative art transition",
+        scene: "实验影像、MV、迷幻、艺术展、意识流",
+        mood: ["迷幻","实验","AI"],
+        motion: "image continuously morphing through surreal states, no narrative logic, pure visual AI hallucination",
+        motionTip: "画面持续变形，无叙事逻辑的纯视觉",
+        combo: "+ 故障 / + 赛博霓虹"
+      },
+      {
+        name: "Inpainting擦除 Wipe",
+        cat: "AI专属",
+        desc: "AI逐步擦除画面部分内容，露出下层新场景。数字擦板效果。",
+        prompt: "AI inpainting wipe, content aware fill revealing new scene, digital eraser transition, generative fill replacing image, smart object removal transition",
+        scene: "擦除重写、修正、数字白板、创意",
+        mood: ["擦除","重写","AI"],
+        motion: "brush stroke erasing part of image, AI filling erased area with new content, progressive replacement",
+        motionTip: "笔触擦除部分画面，AI生成新内容填充",
+        combo: "+ 水墨 / + 溶解"
+      },
+      {
+        name: "ControlNet形变 Morph",
+        cat: "AI专属",
+        desc: "保持OpenPose/Depth/Canny不变，只改变风格/内容。人物动作连续但场景/服装变。",
+        prompt: "ControlNet morph transition, same pose and depth maintained, only style and content changing, consistent skeleton varying skin, structural continuity",
+        scene: "换装、变身、场景切换、人物一致性",
+        mood: ["形变","一致","AI"],
+        motion: "same pose held, background and costume morphing around stable figure, structural consistency maintained",
+        motionTip: "人物姿态不变，环境和服装围绕其变形",
+        combo: "+ 首尾帧 / + 提示词渐变"
+      },
+    ]
+  },
+  {
+    title: "35种场景美术",
+    chClass: "ch3",
+    color: "var(--c3)",
+    items: [
+      {
+        name: "现代办公室 Office",
+        cat: "现实主义",
+        desc: "玻璃幕墙、工位、会议室、冷白灯光。现代职场的秩序与压抑。",
+        prompt: "modern office interior, glass partitions, cubicles, conference room, cold white LED lighting, corporate order, contemporary workplace, clean lines",
+        scene: "职场、商战、面试、加班、阴谋",
+        mood: ["秩序","压抑","现代"],
+        motion: "camera gliding through glass corridors, reflections multiplying, sterile environment stretching into distance",
+        motionTip: "穿过玻璃走廊，反射倍增",
+        combo: "+ 三点布光 / + 横移"
+      },
+      {
+        name: "医院走廊 Hospital",
+        cat: "现实主义",
+        desc: "惨白灯光、消毒水味、长走廊、急诊红绿指示灯。生死交界。",
+        prompt: "hospital corridor, sterile white lighting, disinfectant atmosphere, long hallway perspective, emergency red green indicators, life death boundary",
+        scene: "急救、分娩、死亡、悬疑、科幻医疗",
+        mood: ["生死","紧张","消毒"],
+        motion: "steady push down endless corridor, fluorescent lights flickering, doors with red/green status passing by",
+        motionTip: "沿无尽走廊前推，指示灯掠过",
+        combo: "+ 汇聚线 / + 顶光压迫"
+      },
+      {
+        name: "法庭 Courtroom",
+        cat: "现实主义",
+        desc: "深色木材、高背椅、国徽/天平、庄严顶光。正义与权力的空间。",
+        prompt: "courtroom interior, dark mahogany wood, high back chairs, national emblem or scales, solemn top lighting, justice and power space, institutional gravity",
+        scene: "审判、辩论、正义、权力、悬疑",
+        mood: ["庄严","权力","正义"],
+        motion: "low angle rising to judge's bench, towering wood paneling, authority looming overhead, gravity of law",
+        motionTip: "低角度升至法官席，权威压顶",
+        combo: "+ 低角度仰拍 / + 分割光"
+      },
+      {
+        name: "学校教室 Classroom",
+        cat: "现实主义",
+        desc: "课桌椅、黑板、窗光、粉笔灰。青春、压抑或怀旧。",
+        prompt: "school classroom, desks and chairs, blackboard, window light streaming in, chalk dust in air, youth nostalgia or oppression, institutional education",
+        scene: "青春、考试、暗恋、恐怖、回忆",
+        mood: ["青春","压抑","怀旧"],
+        motion: "dust particles dancing in window light, empty chairs swaying slightly, blackboard with fading chalk marks",
+        motionTip: "窗光中粉笔灰飞舞，空椅微晃",
+        combo: "+ 窗光 / + 浅景深"
+      },
+      {
+        name: "家庭客厅 Living Room",
+        cat: "现实主义",
+        desc: "沙发、电视、暖光、生活痕迹。最安全或最压抑的私人空间。",
+        prompt: "family living room, sofa, television, warm ambient light, traces of life, private safe space or oppressive domesticity, cozy or tense atmosphere",
+        scene: "家庭、争吵、温馨、悬疑、日常",
+        mood: ["私密","日常","张力"],
+        motion: "TV light flickering on faces, curtains breathing in breeze, family photos watching from walls, domestic stillness",
+        motionTip: "电视光在面部闪烁，窗帘呼吸",
+        combo: "+ 窗光 / + 中全景"
+      },
+      {
+        name: "餐厅 Restaurant",
+        cat: "现实主义",
+        desc: "圆桌、吊灯、蒸汽、人声嘈杂。中国式人情社会的舞台。",
+        prompt: "Chinese restaurant interior, round tables, hanging lamps, steam rising from dishes, noisy human voices, social stage, warm cluttered atmosphere",
+        scene: "饭局、谈判、家庭聚会、悬疑、喜剧",
+        mood: ["烟火","社会","热闹"],
+        motion: "steam swirling under warm lamps, chopsticks clinking, faces appearing and disappearing through haze, rotating lazy susan",
+        motionTip: "蒸汽在暖灯下旋转，人脸在雾气中隐现",
+        combo: "+ 环形光 / + 手持晃动"
+      },
+      {
+        name: "城市街道 Street",
+        cat: "现实主义",
+        desc: "人流、车流、霓虹、雨水、广告牌。现代都市的脉搏。",
+        prompt: "urban city street, pedestrian flow, traffic stream, neon signs, rain wet pavement, billboards, modern urban pulse, night or day metropolitan",
+        scene: "追逐、邂逅、孤独、犯罪、都市",
+        mood: ["都市","流动","孤独"],
+        motion: "crowd streaming past static camera, traffic light trails at night, rain drops on lens, urban rhythm",
+        motionTip: "人群流过固定机位，车灯拖影",
+        combo: "+ 赛博霓虹 / + 慢门拖影"
+      },
+      {
+        name: "火车站台 Station",
+        cat: "现实主义",
+        desc: "长椅、时钟、铁轨、离别、重逢。时间的具象化空间。",
+        prompt: "train station platform, long benches, large clock, railway tracks, departure and reunion, time materialized space, steam or modern electric",
+        scene: "离别、重逢、逃亡、等待、时间",
+        mood: ["时间","离别","重逢"],
+        motion: "train arriving with wind and sound, clock hands moving, people embracing or separating, steam rising",
+        motionTip: "列车进站带风，时钟走动，拥抱与分离",
+        combo: "+ 汇聚线 / + 反应镜头"
+      },
+      {
+        name: "赛博朋克街道 Cyber Street",
+        cat: "奇幻科幻",
+        desc: "霓虹、雨水、全息广告、义体、贫民窟与摩天楼。高科技低生活。",
+        prompt: "cyberpunk street, neon rain, holographic advertisements, cybernetic implants, slums beneath skyscrapers, high tech low life, dystopian urban night",
+        scene: "黑客、追踪、交易、战斗、未来",
+        mood: ["颓废","科技","霓虹"],
+        motion: "holograms flickering in rain, neon reflecting on wet chrome, drones passing overhead, steam from street vents",
+        motionTip: "全息图在雨中闪烁，霓虹反射湿铬",
+        combo: "+ 赛博霓虹 / + 低角度仰拍"
+      },
+      {
+        name: "废土末世 Wasteland",
+        cat: "奇幻科幻",
+        desc: "黄沙、残骸、辐射云、改装车、生存者。文明崩溃后的荒凉。",
+        prompt: "post apocalyptic wasteland, yellow sand, ruins and wreckage, radiation clouds, modified vehicles, survivors, civilization collapse desolation, mad max aesthetic",
+        scene: "求生、掠夺、希望、废墟、战斗",
+        mood: ["荒凉","求生","残酷"],
+        motion: "dust devils swirling, wreckage creaking in wind, distant modified convoy kicking up sand, heat shimmer",
+        motionTip: "尘卷风旋转，残骸在风中吱嘎",
+        combo: "+ 大远景 / + 顶光"
+      },
+      {
+        name: "太空舱 Interior",
+        cat: "奇幻科幻",
+        desc: "圆形舱门、仪表盘、零重力、冷白LED、舷窗地球。封闭与无限。",
+        prompt: "space station interior, circular airlocks, control panels, zero gravity, cold white LED, earth visible through porthole, claustrophobic infinity",
+        scene: "科幻、孤独、维修、灾难、探索",
+        mood: ["封闭","无限","孤独"],
+        motion: "floating objects drifting in zero G, earth slowly rotating outside window, warning lights pulsing, mechanical hum",
+        motionTip: "零重力漂浮物，舷窗外地球缓转",
+        combo: "+ 环形光 / + 窗光"
+      },
+      {
+        name: "魔法森林 Magic Forest",
+        cat: "奇幻科幻",
+        desc: "发光植物、巨大蘑菇、萤火虫、雾气、古老树木。童话与危险并存。",
+        prompt: "magical forest, bioluminescent plants, giant mushrooms, fireflies, mist between ancient trees, fairy tale and danger, enchanted woodland",
+        scene: "奇幻、冒险、迷路、精灵、黑暗童话",
+        mood: ["魔幻","危险","童话"],
+        motion: "fireflies swirling in mist, giant petals opening with light, roots moving subtly, spores glowing",
+        motionTip: "萤火虫在雾中旋舞，巨大花瓣发光",
+        combo: "+ 圣光 / + 浅景深"
+      },
+      {
+        name: "水下城市 Underwater",
+        cat: "奇幻科幻",
+        desc: "玻璃穹顶、鱼群、珊瑚建筑、折射光、水压感。沉没的文明。",
+        prompt: "underwater city, glass domes, schools of fish, coral architecture, refracted light, water pressure atmosphere, submerged civilization, aquatic metropolis",
+        scene: "科幻、探索、沉没、爱情、神秘",
+        mood: ["沉没","折射","神秘"],
+        motion: "fish swimming past glass, light caustics dancing on surfaces, bubbles rising, submerged structures swaying",
+        motionTip: "鱼群游过玻璃，焦散光在表面舞动",
+        combo: "+ 蓝调时刻 / + 窗光"
+      },
+      {
+        name: "蒸汽朋克工厂 Steam Factory",
+        cat: "奇幻科幻",
+        desc: "黄铜齿轮、蒸汽管道、巨型活塞、煤油灯、维多利亚工业。机械美学。",
+        prompt: "steampunk factory, brass gears, steam pipes, giant pistons, kerosene lamps, victorian industrial, mechanical aesthetic, clockwork machinery",
+        scene: "制造、发明、劳工、革命、冒险",
+        mood: ["机械","蒸汽","工业"],
+        motion: "pistons pumping rhythmically, steam jets releasing pressure, gears meshing and turning, chains clanking",
+        motionTip: "活塞节律 pumping，蒸汽喷射，齿轮啮合",
+        combo: "+ 蒸汽朋克光 / + 侧逆光"
+      },
+      {
+        name: "异星地表 Alien Planet",
+        cat: "奇幻科幻",
+        desc: "双太阳、紫色植被、水晶山脉、奇异生物、不同重力。陌生世界。",
+        prompt: "alien planet surface, binary suns, purple vegetation, crystal mountains, strange creatures, different gravity, unfamiliar world, extraterrestrial landscape",
+        scene: "探索、殖民、接触、求生、史诗",
+        mood: ["陌生","史诗","异域"],
+        motion: "twin shadows moving as binary suns shift, crystal formations resonating, alien spores floating in odd gravity",
+        motionTip: "双太阳移动产生双重阴影，水晶共振",
+        combo: "+ 大远景 / + 逆光剪影"
+      },
+      {
+        name: "梦境空间 Dreamscape",
+        cat: "奇幻科幻",
+        desc: "物理规则失效、重力反转、无限回廊、记忆碎片、超现实拼接。",
+        prompt: "dreamscape space, physics defying, gravity reversal, infinite corridors, memory fragments, surreal collage, subconscious architecture, impossible geometry",
+        scene: "梦境、潜意识、幻觉、心理治疗、死亡",
+        mood: ["超现实","失重","潜意识"],
+        motion: "corridors stretching infinitely, gravity shifting, familiar objects floating, space folding like paper",
+        motionTip: "走廊无限延伸，重力偏移，空间如纸折叠",
+        combo: "+ 荷兰角 / + 溶解"
+      },
+      {
+        name: "时间裂缝 Time Rift",
+        cat: "奇幻科幻",
+        desc: "多个时代在同一空间重叠，古代与现代并存，时间可视化。",
+        prompt: "time rift, multiple eras overlapping in same space, ancient and modern coexisting, time made visible, temporal layers, anachronistic collision",
+        scene: "科幻、历史、穿越、灾难、奇观",
+        mood: ["时间","重叠","奇观"],
+        motion: "ancient warriors walking through modern traffic, dinosaurs and cars sharing street, time layers bleeding into each other",
+        motionTip: "古代战士走过现代街道，时间层相互渗透",
+        combo: "+ 分屏 / + 匹配剪辑"
+      },
+      {
+        name: "微观世界 Micro World",
+        cat: "奇幻科幻",
+        desc: "细胞尺度、DNA螺旋、血管通道、分子结构。人体内部的宇宙。",
+        prompt: "microscopic world, cellular scale, DNA helix, blood vessel channels, molecular structures, universe inside human body, biological inner space",
+        scene: "科幻、医疗、 trip、教育、惊悚",
+        mood: ["微观","宇宙","生命"],
+        motion: "traveling through blood vessel like canyon, cells pulsing with life, viruses approaching like spaceships, molecular dance",
+        motionTip: "在血管中穿行如峡谷，细胞如建筑脉动",
+        combo: "+ 环绕 / + 推镜头"
+      },
+      {
+        name: "克苏鲁异空间 Cosmic Horror",
+        cat: "奇幻科幻",
+        desc: "非欧几何、血肉建筑、不可名状、理智崩坏。洛夫克拉夫特式恐怖。",
+        prompt: "cosmic horror space, non-euclidean geometry, flesh architecture, indescribable forms, sanity breaking, lovecraftian horror, impossible angles, biological abomination",
+        scene: "恐怖、疯狂、召唤、深渊、未知",
+        mood: ["疯狂","不可名状","恐怖"],
+        motion: "architecture breathing like organs, angles that hurt to look at, tentacles emerging from walls, reality unraveling",
+        motionTip: "建筑如器官呼吸，角度令人不适",
+        combo: "+ 荷兰角 / + 底光"
+      },
+      {
+        name: "中式古建 Ancient China",
+        cat: "历史文化",
+        desc: "飞檐、斗拱、红墙、庭院、灯笼、假山。东方建筑美学。",
+        prompt: "ancient Chinese architecture, upturned eaves, dougong brackets, red walls, courtyard, lanterns, rockery, oriental architectural aesthetics, traditional garden",
+        scene: "古装、武侠、宫廷、历史、文化",
+        mood: ["东方","古韵","庭院"],
+        motion: "lanterns swaying in breeze, incense smoke rising, red paper fluttering, water flowing in courtyard stream",
+        motionTip: "灯笼摇曳，香烟袅袅，红纸翻飞",
+        combo: "+ 框架式构图 / + 窗光"
+      },
+      {
+        name: "欧式宫殿 European Palace",
+        cat: "历史文化",
+        desc: "大理石柱、水晶吊灯、油画、镀金、长廊。权力与奢华。",
+        prompt: "European palace interior, marble columns, crystal chandelier, oil paintings, gold gilding, long gallery, power and luxury, baroque or neoclassical",
+        scene: "宫廷、舞会、阴谋、历史、奢华",
+        mood: ["奢华","权力","古典"],
+        motion: "chandelier crystals casting rainbow patterns, curtains flowing, portraits watching, marble reflecting light",
+        motionTip: "水晶吊灯投彩虹光斑，大理石反射",
+        combo: "+ 对称构图 / + 斯坦尼康"
+      },
+      {
+        name: "日式庭院 Japanese Garden",
+        cat: "历史文化",
+        desc: "枯山水、石灯笼、竹林、榻榻米、障子门、侘寂美学。",
+        prompt: "Japanese garden, dry landscape, stone lantern, bamboo grove, tatami, shoji screen, wabi sabi aesthetics, zen tranquility",
+        scene: "武士、茶道、禅修、悬疑、文艺",
+        mood: ["侘寂","禅意","静谧"],
+        motion: "bamboo swaying, raked gravel patterns, shoji shadow patterns shifting, water basin reflecting sky",
+        motionTip: "竹影摇曳，枯山水纹路，障子光影",
+        combo: "+ 留白构图 / + 阴天柔光"
+      },
+      {
+        name: "埃及神庙 Egyptian Temple",
+        cat: "历史文化",
+        desc: "方尖碑、象形文字、沙漠、黄金、诅咒氛围。古老神秘。",
+        prompt: "Egyptian temple, obelisk, hieroglyphics, desert, gold, curse atmosphere, ancient mystery, sandstone columns, torch lit interior",
+        scene: "探险、诅咒、历史、盗墓、神秘",
+        mood: ["古老","神秘","诅咒"],
+        motion: "torch flames flickering on hieroglyphs, sand falling from ceiling, shadows of gods moving on walls, dust motes in light beams",
+        motionTip: "火把在象形文字上跳动，沙从天花板落下",
+        combo: "+ 圣光 / + 侧逆光"
+      },
+      {
+        name: "西部小镇 Western Town",
+        cat: "历史文化",
+        desc: "木板房、沙龙、马厩、尘土、仙人掌、黄昏。荒野法则。",
+        prompt: "western town, wooden buildings, saloon, stable, dust, cactus, golden hour, wilderness law, frontier architecture, tumbleweed",
+        scene: "决斗、牛仔、淘金、逃亡、怀旧",
+        mood: ["荒野","法则","黄昏"],
+        motion: "tumbleweed rolling across street, saloon doors swinging, dust devils, horse trotting through frame",
+        motionTip: "风滚草滚过街道，沙龙门摆动",
+        combo: "+ 黄金时刻 / + 长镜头"
+      },
+      {
+        name: "民国街景 Republic Era",
+        cat: "历史文化",
+        desc: "黄包车、旗袍、霓虹招牌、石板路、中西合璧。旧上海风情。",
+        prompt: "Republic of China street scene, rickshaw, cheongsam, neon signs in Chinese, stone pavement, east west fusion, old Shanghai charm, 1930s atmosphere",
+        scene: "谍战、爱情、歌舞、历史、怀旧",
+        mood: ["风情","怀旧","谍影"],
+        motion: "rickshaw passing under neon, cheongsam hem swaying, tram bell ringing, steam from street kitchen",
+        motionTip: "黄包车穿过霓虹，旗袍下摆摇曳",
+        combo: "+ 青橙对比 / + 窗光"
+      },
+      {
+        name: "未来中式 Neo Chinese",
+        cat: "历史文化",
+        desc: "传统建筑+全息技术、旗袍+发光纤维、书法+AR。赛博东方。",
+        prompt: "neo Chinese future, traditional architecture with holograms, cheongsam with fiber optics, calligraphy AR, cyber oriental, ancient future fusion, technological tradition",
+        scene: "科幻、国潮、未来中国、概念、广告",
+        mood: ["国潮","未来","融合"],
+        motion: "holographic calligraphy floating in courtyard, LED lanterns ascending, traditional roof with solar panels, ancient tree with bioluminescent leaves",
+        motionTip: "全息书法在庭院漂浮，LED灯笼升空",
+        combo: "+ 赛博霓虹 / + 中式古建"
+      },
+      {
+        name: "太空歌剧 Space Opera",
+        cat: "历史文化",
+        desc: "巨型飞船、星云、帝国宫殿、光剑、星际战争。科幻史诗。",
+        prompt: "space opera, giant spaceship, nebula, imperial palace in space, energy blades, interstellar war, sci fi epic, cosmic scale drama",
+        scene: "战争、帝国、冒险、科幻、史诗",
+        mood: ["史诗","星际","战争"],
+        motion: "fleet emerging from hyperspace, palace orbiting star, nebula swirling in background, energy weapons clashing",
+        motionTip: "舰队跃出超空间，宫殿绕星运转",
+        combo: "+ 大远景 / + 放射线构图"
+      },
+      {
+        name: "意识流空间 Stream",
+        cat: "抽象概念",
+        desc: "记忆碎片、情感色彩、无逻辑拼接、时间非线性。内心世界外化。",
+        prompt: "stream of consciousness space, memory fragments, emotional colors, illogical collage, non linear time, inner world externalized, abstract psychological landscape",
+        scene: "心理、回忆、梦境、治疗、实验",
+        mood: ["意识","碎片","内心"],
+        motion: "images floating and colliding, colors shifting with emotion, memories bleeding into each other, no gravity or time",
+        motionTip: "画面漂浮碰撞，颜色随情绪变化",
+        combo: "+ 溶解 / + 故障"
+      },
+      {
+        name: "记忆宫殿 Memory Palace",
+        cat: "抽象概念",
+        desc: "古典建筑中每个房间存储一段记忆，空间化的时间。",
+        prompt: "memory palace, classical architecture rooms storing memories, spatialized time, each door a different era, organized subconscious, mnemonic architecture",
+        scene: "记忆、学习、侦探、心理、科幻",
+        mood: ["记忆","空间","秩序"],
+        motion: "walking through endless rooms, each containing frozen memory scene, doors opening to different time periods",
+        motionTip: "走过无尽房间，每扇门后是凝固的记忆",
+        combo: "+ 建立镜头 / + 匹配剪辑"
+      },
+      {
+        name: "数据可视化 Data Viz",
+        cat: "抽象概念",
+        desc: "信息图表三维化、数字流、服务器机房、矩阵代码。数字世界的具象。",
+        prompt: "data visualization space, infographics in 3D, digital streams, server room, matrix code, digital world made tangible, information architecture",
+        scene: "科幻、黑客、商业、教育、概念",
+        mood: ["数字","信息","流动"],
+        motion: "data streams flowing like rivers, bar charts growing like buildings, numbers raining down, server lights blinking",
+        motionTip: "数据流如河流，柱状图如建筑生长",
+        combo: "+ 赛博霓虹 / + 深景深"
+      },
+      {
+        name: "极简白模 White Void",
+        cat: "抽象概念",
+        desc: "纯白无限空间、无纹理、无阴影、无地平线。存在主义孤独。",
+        prompt: "white void, infinite white space, no texture, no shadow, no horizon, existential isolation, minimalist nothingness, pure white abyss",
+        scene: "哲学、孤独、测试、概念、心理",
+        mood: ["虚无","孤独","纯粹"],
+        motion: "figure floating in white, no reference points, only movement reveals space, disorienting purity",
+        motionTip: "人物在纯白中漂浮，无参照点",
+        combo: "+ 留白构图 / + 斯坦尼康"
+      },
+      {
+        name: "故障空间 Glitch Space",
+        cat: "抽象概念",
+        desc: "数字错误实体化、空间撕裂、RGB分离、像素块漂浮。数字世界的崩溃。",
+        prompt: "glitch space, digital errors materialized, space tearing, RGB separation, pixel blocks floating, digital world collapse, corrupted reality, data corruption",
+        scene: "科幻、恐怖、黑客、穿越、实验",
+        mood: ["故障","崩溃","数字"],
+        motion: "walls pixelating and reforming, objects duplicating with offset, space folding along digital seams, reality buffer overflow",
+        motionTip: "墙壁像素化重组，物体错位复制",
+        combo: "+ 故障转场 / + 荷兰角"
+      },
+      {
+        name: "水彩世界 Watercolor",
+        cat: "抽象概念",
+        desc: "所有物体由水彩颜料构成，颜色流动、晕染、滴落。艺术化现实。",
+        prompt: "watercolor world, everything made of paint pigment, colors flowing and bleeding, wet paper texture, artistic reality, pigment dripping, impressionist environment",
+        scene: "艺术、童话、梦境、教育、创意",
+        mood: ["艺术","流动","晕染"],
+        motion: "colors bleeding across sky, figures dissolving into washes, rain made of pigment drops, brush strokes visible",
+        motionTip: "颜色在天空中晕染，人物溶解为水痕",
+        combo: "+ 单色调 / + 慢门拖影"
+      },
+      {
+        name: "黏土世界 Claymation",
+        cat: "抽象概念",
+        desc: "所有物体由黏土/橡皮泥构成，指纹可见，笨拙可爱，定格动画质感。",
+        prompt: "claymation world, everything made of clay or plasticine, fingerprints visible, clumsy cute, stop motion texture, tactile materiality, handmade aesthetic",
+        scene: "儿童、喜剧、创意、温暖、手工",
+        mood: ["笨拙","可爱","手工"],
+        motion: "clay figures moving with slight stutter, thumbprints deforming surfaces, material stretching unnaturally, handmade charm",
+        motionTip: "黏土人物微顿运动，指纹变形表面",
+        combo: "+ 高饱和复古 / + 跳切"
+      },
+      {
+        name: "纸艺世界 Paper Craft",
+        cat: "抽象概念",
+        desc: "所有物体由纸张折叠/剪切而成，折痕清晰，立体书风格。脆弱而精致。",
+        prompt: "paper craft world, everything made of folded cut paper, creases visible, pop up book style, fragile and delicate, origami architecture, paper cut aesthetic",
+        scene: "童话、创意、教育、文艺、概念",
+        mood: ["脆弱","精致","折纸"],
+        motion: "paper buildings unfolding like pop-up book, paper figures bending at fold lines, wind threatening to tear everything",
+        motionTip: "纸建筑如立体书展开，折线处弯曲",
+        combo: "+ 侧光 / + 浅景深"
+      },
+      {
+        name: "无限镜屋 Mirror Room",
+        cat: "抽象概念",
+        desc: "四面镜子无限反射，主体复制成无数个，空间迷失。 narcissism 或自我解构。",
+        prompt: "infinite mirror room, mirrors on all sides, infinite reflection, subject multiplied endlessly, spatial disorientation, narcissism or self deconstruction, kaleidoscope space",
+        scene: "心理、舞蹈、时尚、恐怖、概念",
+        mood: ["无限","迷失","自我"],
+        motion: "subject moving with infinite copies following, reflections creating tunnel effect, camera lost in mirror maze",
+        motionTip: "人物移动伴随无限复制，反射成隧道",
+        combo: "+ 对称构图 / + 环绕"
+      },
+    ]
+  },
+  {
+    title: "20种表演指导",
+    chClass: "ch4",
+    color: "var(--c4)",
+    items: [
+      {
+        name: "喜 Joy",
+        cat: "基础情绪",
+        desc: "嘴角上扬、眼角皱纹（杜乡微笑）、眼神明亮、身体舒展。真实的快乐。",
+        prompt: "genuine joy expression, Duchenne smile with eye wrinkles, bright eyes, relaxed open body language, authentic happiness, spontaneous laughter",
+        scene: "喜剧、重逢、成功、日常、温馨",
+        mood: ["快乐","真实","舒展"],
+        motion: "laughing with head tilting back, eyes squinting with genuine creases, body language open and expansive",
+        motionTip: "仰头笑，眼角真皱纹，身体开放",
+        combo: "+ 蝴蝶光 / + 中近景"
+      },
+      {
+        name: "怒 Anger",
+        cat: "基础情绪",
+        desc: "眉头紧锁、鼻孔扩张、下颌紧绷、呼吸急促、眼神锐利。",
+        prompt: "anger expression, furrowed brow, flared nostrils, tight jaw, rapid breathing, sharp glaring eyes, controlled rage or explosive fury",
+        scene: "冲突、背叛、战斗、正义、爆发",
+        mood: ["愤怒","锐利","紧绷"],
+        motion: "jaw clenching visible, nostrils flaring with each breath, eyes narrowing to slits, controlled tremor",
+        motionTip: "咬肌紧绷，鼻翼扇动，眼神收窄",
+        combo: "+ 分割光 / + 特写"
+      },
+      {
+        name: "哀 Sadness",
+        cat: "基础情绪",
+        desc: "眉心上扬（八字眉）、嘴角下垂、眼神涣散、肩膀内收。失去活力的状态。",
+        prompt: "sadness expression, inner eyebrows raised creating eight shape, corners of mouth drooping, unfocused gaze, shoulders inward, vitality drained, grief",
+        scene: "离别、失败、死亡、回忆、失去",
+        mood: ["悲伤","涣散","内收"],
+        motion: "single tear rolling down, blinking slowly, chin trembling, body collapsing inward, breath shuddering",
+        motionTip: "单泪滑落，眨眼缓慢，下巴颤抖",
+        combo: "+ 阴天柔光 / + 特写"
+      },
+      {
+        name: "惧 Fear",
+        cat: "基础情绪",
+        desc: "眼睛睁大、瞳孔收缩、眉毛上扬拉平、嘴微张、身体僵硬或后退。",
+        prompt: "fear expression, wide eyes with contracted pupils, eyebrows raised and flattened, mouth slightly open, body freezing or recoiling, primal terror",
+        scene: "恐怖、惊吓、危险、未知、生存",
+        mood: ["恐惧","僵硬","本能"],
+        motion: "eyes widening suddenly, gasp inhale, body jerking backward, hands raising protectively, frozen in shock",
+        motionTip: "眼睛突然睁大，倒吸气，身体后仰",
+        combo: "+ 底光 / + 特写"
+      },
+      {
+        name: "惊 Surprise",
+        cat: "基础情绪",
+        desc: "眉毛高抬、眼睛圆睁、嘴张开、短暂僵硬后恢复。转瞬即逝。",
+        prompt: "surprise expression, eyebrows shooting up, eyes rounding, mouth opening in O shape, brief freeze then recovery, momentary shock",
+        scene: "反转、发现、喜剧、意外、转折",
+        mood: ["惊讶","短暂","反转"],
+        motion: "face snapping to surprise pose, holding for one second, then transitioning to follow-up emotion, quick reset",
+        motionTip: "惊讶表情定格1秒，然后转为后续情绪",
+        combo: "+ 闪白 / + 定格"
+      },
+      {
+        name: "厌 Disgust",
+        cat: "基础情绪",
+        desc: "鼻子皱起、上唇提起、眯眼、头部后仰。生理排斥反应。",
+        prompt: "disgust expression, nose wrinkling, upper lip curling, eyes squinting, head recoiling, physical revulsion, rejecting gesture",
+        scene: "背叛、虚伪、肮脏、食物、排斥",
+        mood: ["厌恶","排斥","生理"],
+        motion: "nose wrinkling progressively, upper lip rising to show teeth, head turning away, pushing gesture with hand",
+        motionTip: "鼻子渐皱，上唇后缩露齿，转头",
+        combo: "+ 顶光压迫 / + 近景"
+      },
+      {
+        name: " contempt 轻蔑",
+        cat: "基础情绪",
+        desc: "单侧嘴角上扬、眼神向下看、冷笑、不对称表情。社交性情绪。",
+        prompt: "contempt expression, one side of lip curling up, looking down at target, cold sneer, asymmetric facial expression, social superiority",
+        scene: "反派、阶级、对峙、讽刺、权力",
+        mood: ["轻蔑","冷笑","不对称"],
+        motion: "slow single sided smile, eyes looking down nose, slight head tilt, dismissive eye roll optional",
+        motionTip: "单侧嘴角慢速上扬，眼睛向下看",
+        combo: "+ 高角度俯拍 / + 分割光"
+      },
+      {
+        name: " neutral 中性",
+        cat: "基础情绪",
+        desc: "无表情、肌肉放松、眼神平静、呼吸均匀。暴风雨前的平静或麻木。",
+        prompt: "neutral expression, muscle relaxation, calm eyes, even breathing, blank face, stillness before storm or numbness, emotional void",
+        scene: "暴风雨前、麻木、禅修、机器人、压抑",
+        mood: ["平静","麻木","空白"],
+        motion: "face completely still, only subtle breathing visible, blinking at regular intervals, emotional zero point",
+        motionTip: "面部完全静止，仅可见呼吸",
+        combo: "+ 客观镜头 / + 深景深"
+      },
+      {
+        name: "强颜欢笑 Forced Smile",
+        cat: "复杂情绪",
+        desc: "嘴角上扬但眼角无皱纹、眼神悲伤。皮笑肉不笑的典型。",
+        prompt: "forced smile, mouth corners up but no eye wrinkles, sad eyes contradicting mouth, social mask, internal external conflict, fake happiness",
+        scene: "社交、隐忍、职场、家庭、悲伤",
+        mood: ["矛盾","伪装","悲伤"],
+        motion: "mouth smiling while eyes watering, slight tremor in lip corners, gaze drifting away from smile",
+        motionTip: "嘴笑眼不笑，眼神游离",
+        combo: "+ 窗光 / + 反应镜头"
+      },
+      {
+        name: "隐忍 anger Suppressed",
+        cat: "复杂情绪",
+        desc: "表面平静但下颌紧绷、眼神深处有火、呼吸控制。即将爆发的临界点。",
+        prompt: "suppressed rage, surface calm with tight jaw, fire deep in eyes, controlled breathing, critical point before explosion, volcano under ice",
+        scene: "对峙、谈判、职场、家庭、权力",
+        mood: ["隐忍","临界","火山"],
+        motion: "slow controlled exhale, jaw muscle pulsing, eyes holding intense gaze, body rigid but still",
+        motionTip: "缓慢控制呼气，咬肌跳动",
+        combo: "+ 特写 / + 浅景深"
+      },
+      {
+        name: "绝望中的希望 Hope in Despair",
+        cat: "复杂情绪",
+        desc: "眼泪中突然露出微笑、崩溃边缘的释然、黑暗中的一丝光。",
+        prompt: "hope in despair, smile breaking through tears, relief at breaking point, light in darkness, complex emotional layering, bittersweet hope",
+        scene: "救赎、绝症、离别、重逢、奇迹",
+        mood: ["复杂","希望","泪笑"],
+        motion: "crying then laughing simultaneously, tears and smile coexisting, emotional breakthrough moment",
+        motionTip: "哭笑同时，泪与微笑共存",
+        combo: "+ 逆光轮廓 / + 反应镜头"
+      },
+      {
+        name: "麻木 Numbness",
+        cat: "复杂情绪",
+        desc: "经历过太多后的空洞、对外界无反应、眼神失焦、身体沉重。",
+        prompt: "emotional numbness, emptiness after too much, no reaction to external stimuli, unfocused gaze, heavy body, PTSD stare, dissociation",
+        scene: "战争、创伤、丧亲、抑郁、末日",
+        mood: ["空洞","失焦","沉重"],
+        motion: "slow blinking, delayed reactions, body moving like underwater, thousand yard stare, disconnected from reality",
+        motionTip: "眨眼缓慢，反应延迟，如水下移动",
+        combo: "+ 去饱和 / + 空镜头"
+      },
+      {
+        name: "癫狂 Madness",
+        cat: "复杂情绪",
+        desc: "不受控的大笑、眼神散乱、头部不规则晃动、逻辑断裂。",
+        prompt: "madness expression, uncontrollable laughter, scattered gaze, irregular head movements, broken logic, manic energy, unhinged behavior",
+        scene: "崩溃、精神病、反派、药物、极端压力",
+        mood: ["癫狂","散乱","失控"],
+        motion: "laughing with tears, head twitching, eyes darting randomly, sudden stops and starts, unpredictable rhythm",
+        motionTip: "笑中带泪，头部抽搐，眼神乱扫",
+        combo: "+ 荷兰角 / + 手持晃动"
+      },
+      {
+        name: "释然 Relief",
+        cat: "复杂情绪",
+        desc: "肩膀下沉、长呼气、眼神柔和、肌肉全部放松。重担卸下。",
+        prompt: "relief expression, shoulders dropping, long exhale, softening eyes, all muscles relaxing, burden lifting, peace after storm",
+        scene: "解脱、真相、安全、完成、原谅",
+        mood: ["释然","卸下","柔和"],
+        motion: "shoulders visibly dropping, deep exhale with slight sound, face muscles melting, body sinking into chair",
+        motionTip: "肩膀明显下沉，深呼气，面部融化",
+        combo: "+ 阴天柔光 / + 拉镜头"
+      },
+      {
+        name: "摔倒 Fall",
+        cat: "动作表演",
+        desc: "失去平衡、身体在空中短暂停滞、撞击地面、灰尘扬起。",
+        prompt: "falling performance, losing balance, body suspended briefly in air, impact with ground, dust rising, physical comedy or tragedy, gravity taking over",
+        scene: "打斗、喜剧、意外、虚弱、死亡",
+        mood: ["失衡","撞击","重力"],
+        motion: "stumble, arms flailing, brief airborne moment, hard landing, dust puff, stillness after impact",
+        motionTip: "失衡→空中短暂停滞→撞击→扬尘",
+        combo: "+ 手持晃动 / + 甩镜"
+      },
+      {
+        name: "奔跑 Run",
+        cat: "动作表演",
+        desc: "身体前倾、手臂摆动、呼吸节奏、眼神坚定或恐惧。不同情绪不同跑法。",
+        prompt: "running performance, body leaning forward, arms pumping, breathing rhythm, determined or terrified eyes, different emotions different gaits, kinetic urgency",
+        scene: "追逐、逃生、运动、赶时间、孩子",
+        mood: ["紧迫","动能","前倾"],
+        motion: "full sprint with hair and clothes trailing, heavy breathing visible, muscles straining, ground rushing past",
+        motionTip: "头发衣物拖尾，呼吸可见，肌肉紧绷",
+        combo: "+ 侧跟 / + 手持晃动"
+      },
+      {
+        name: "拥抱 Embrace",
+        cat: "动作表演",
+        desc: "双臂张开、身体靠近、头部位置、收紧程度。重逢或告别。",
+        prompt: "embrace performance, arms opening wide, bodies drawing close, head placement, tightening degree, reunion or farewell, emotional closure",
+        scene: "重逢、告别、安慰、爱情、和解",
+        mood: ["亲密","闭合","情感"],
+        motion: "arms wrapping around, heads tilting to shoulders, squeeze intensity increasing, breath synchronizing",
+        motionTip: "手臂环绕，头靠肩，收紧程度递进",
+        combo: "+ 过肩镜头 / + 浅景深"
+      },
+      {
+        name: "打斗 Combat",
+        cat: "动作表演",
+        desc: "出拳轨迹、身体扭转、被击中反应、重心转移。真实与舞蹈的平衡。",
+        prompt: "combat performance, punch trajectory, body twisting, hit reaction, weight transfer, realism and dance balance, fight choreography, impact and recovery",
+        scene: "动作、武侠、战争、自卫、舞蹈",
+        mood: ["打击","扭转","重心"],
+        motion: "wind up, strike connecting, body recoiling from impact, stagger, recovery stance, breath control",
+        motionTip: "蓄力→击中→受击后退→恢复",
+        combo: "+ 侧逆光 / + 手持晃动"
+      },
+      {
+        name: "舞蹈 Dance",
+        cat: "动作表演",
+        desc: "身体线条、节奏感、情绪通过肢体、与空间的关系。",
+        prompt: "dance performance, body lines, sense of rhythm, emotion through limbs, relationship with space, choreographed movement, artistic expression",
+        scene: "艺术、庆祝、仪式、爱情、个人表达",
+        mood: ["线条","节奏","肢体"],
+        motion: "flowing continuous movement, body extension and contraction, rhythm visible in muscle tension, spatial occupation",
+        motionTip: "流动连续动作，肌肉张力可见节奏",
+        combo: "+ 全景 / + 环绕"
+      },
+      {
+        name: "静止张力 Stillness",
+        cat: "动作表演",
+        desc: "身体不动但内在紧绷，微表情变化，呼吸控制。暴风雨前的极致静止。",
+        prompt: "stillness with tension, body unmoving but internally coiled, micro expression changes, breath control, extreme calm before storm, restrained power",
+        scene: "对峙、狙击、禅修、爆发前、权力",
+        mood: ["静止","紧绷","内在"],
+        motion: "absolutely still body, only chest rising with controlled breath, eye movement minimal, coiled spring energy",
+        motionTip: "身体绝对静止，仅胸部控制呼吸",
+        combo: "+ 特写 / + 浅景深"
+      },
+    ]
+  },
+  {
+    title: "25种剪辑节奏",
+    chClass: "ch5",
+    color: "var(--c5)",
+    items: [
+      {
+        name: "慢-快-慢 Slow Fast Slow",
+        cat: "节奏模板",
+        desc: "开场舒缓建立情绪，中段加速推向高潮，结尾慢下来回味。经典三段节奏。",
+        prompt: "slow fast slow pacing, opening gentle establishing emotion, middle accelerating to climax, ending slowing for reflection, classic three act rhythm, breathing edit",
+        scene: "几乎所有类型、标准叙事、情感片、动作片",
+        mood: ["呼吸","经典","三段"],
+        motion: "cuts starting long and gentle, progressively shortening to rapid fire, then expanding again to lingering shots",
+        motionTip: "镜头时长：长→短→长",
+        combo: "+ 推镜头 / + 拉镜头"
+      },
+      {
+        name: "渐进加速 Acceleration",
+        cat: "节奏模板",
+        desc: "从长镜头开始，逐次减半，直到跳切。不可逆的失控感。",
+        prompt: "progressive acceleration, starting with long takes, progressively halving duration, building to jump cuts, irreversible失控感, runaway train rhythm",
+        scene: "追逐、失控、高潮、战斗、焦虑",
+        mood: ["失控","加速","不可逆"],
+        motion: "shot lengths: 8s, 4s, 2s, 1s, 0.5s, breathless crescendo",
+        motionTip: "镜头时长逐次减半至0.5秒",
+        combo: "+ 甩镜 / + 快速变焦"
+      },
+      {
+        name: "心跳节奏 Heartbeat",
+        cat: "节奏模板",
+        desc: "模仿心跳：快-快-停-快-快-停。紧张、恐怖、期待。",
+        prompt: "heartbeat rhythm editing, mimicking cardiac rhythm, fast fast stop, fast fast stop, tension horror anticipation, biological pulse edit",
+        scene: "恐怖、悬疑、爱情、紧张、期待",
+        mood: ["心跳","紧张","生物"],
+        motion: "two quick cuts then pause, two quick cuts then pause, syncopated like heart, silence between beats",
+        motionTip: "两快切→停顿→两快切→停顿",
+        combo: "+ 反应镜头 / + 特写"
+      },
+      {
+        name: "呼吸节奏 Breathing",
+        cat: "节奏模板",
+        desc: "模仿呼吸：吸气（快切积累）-屏息（长镜头静止）-呼气（舒缓释放）。",
+        prompt: "breathing rhythm editing, inhale with quick cuts accumulating, hold breath with long take stillness, exhale with gentle release, respiratory edit pattern",
+        scene: "潜水、紧张、情感、冥想、生死",
+        mood: ["呼吸","生命","冥想"],
+        motion: "rapid cuts building tension, then single long held shot, then slow gentle resolution, cyclical",
+        motionTip: "快切积累→长镜头屏息→慢切释放",
+        combo: "+ 长镜头 / + 空镜头"
+      },
+      {
+        name: "机械节拍 Mechanical",
+        cat: "节奏模板",
+        desc: "完全等距剪辑，如钟表/机器。冷酷、精确、工业化、恐怖。",
+        prompt: "mechanical rhythm editing, perfectly equal intervals, like clockwork machine, cold precise industrial,恐怖 monotony, metronome editing",
+        scene: "工厂、恐怖、机器人、制度、压迫",
+        mood: ["机械","精确","冷酷"],
+        motion: "every cut exactly same duration, no variation, relentless mechanical precision, inhuman rhythm",
+        motionTip: "每次切换完全等距，无变化",
+        combo: "+ 重复节奏 / + 深景深"
+      },
+      {
+        name: "自由爵士 Jazz",
+        cat: "节奏模板",
+        desc: "无规律的长短交替，即兴感。艺术、实验、意识流、创意广告。",
+        prompt: "free jazz rhythm editing, irregular long short alternation, improvisational feel, artistic experimental, stream of consciousness, creative advertising",
+        scene: "艺术、MV、实验、创意、情绪",
+        mood: ["即兴","自由","艺术"],
+        motion: "unpredictable shot lengths, sudden long pause after frantic sequence, no pattern, intuitive cutting",
+        motionTip: "无规律长短交替，直觉剪辑",
+        combo: "+ 跳切 / + 故障"
+      },
+      {
+        name: "静默爆发 Silent Explosion",
+        cat: "节奏模板",
+        desc: "极长镜头积累张力，突然爆发为极快剪辑。沉默中的惊雷。",
+        prompt: "silent explosion pacing, extremely long take building tension, sudden burst into rapid cutting, thunder in silence, pressure cooker release",
+        scene: "战争、恐怖、情感爆发、动作、戏剧",
+        mood: ["积累","爆发","惊雷"],
+        motion: "single 2-minute shot of stillness, then 20 cuts in 10 seconds, complete rhythm inversion",
+        motionTip: "2分钟单镜头→10秒内20次切换",
+        combo: "+ 定格 / + 甩镜"
+      },
+      {
+        name: "循环往复 Loop",
+        cat: "节奏模板",
+        desc: "结尾回到开头，形成闭环。宿命、循环、无尽、禅意。",
+        prompt: "loop rhythm, ending returning to beginning, closed circle, fate cycle, endless return, zen circularity, narrative ouroboros",
+        scene: "悬疑、科幻、宿命、文艺、恐怖",
+        mood: ["循环","宿命","闭环"],
+        motion: "final shot matching opening shot exactly, creating infinite loop, story eating its own tail",
+        motionTip: "结尾镜头与开场完全匹配",
+        combo: "+ 匹配剪辑 / + 建立镜头"
+      },
+      {
+        name: "三幕式 Three Act",
+        cat: "叙事结构",
+        desc: "建置-对抗-解决。最经典的叙事结构，适用于90%的商业片。",
+        prompt: "three act structure, setup confrontation resolution, classic narrative architecture, 90 percent commercial films, foundational storytelling",
+        scene: "几乎所有商业片、标准剧本、好莱坞",
+        mood: ["经典","商业","基础"],
+        motion: "first third establishing, middle third complicating, final third resolving, clear turning points at 25 and 75 percent",
+        motionTip: "25%和75%处明确转折点",
+        combo: "+ 建立镜头 / + 高潮加速"
+      },
+      {
+        name: "英雄之旅 Hero Journey",
+        cat: "叙事结构",
+        desc: "坎贝尔的17步英雄旅程。召唤-考验-归来。神话原型。",
+        prompt: "hero's journey structure, Campbell's 17 steps, call to adventure, trials, return with elixir, mythological archetype, monomyth",
+        scene: "奇幻、科幻、动作、个人成长、史诗",
+        mood: ["神话","成长","原型"],
+        motion: "ordinary world, crossing threshold, descent into special world, ordeal, resurrection, return",
+        motionTip: "普通世界→跨越门槛→考验→重生→归来",
+        combo: "+ 大远景 / + 环绕"
+      },
+      {
+        name: "循环叙事 Circular",
+        cat: "叙事结构",
+        desc: "时间线首尾相接，结局即开端。宿命感、谜题感、不可逃避。",
+        prompt: "circular narrative, timeline首尾相接, ending is beginning, sense of fate, puzzle structure, inescapable loop, temporal ouroboros",
+        scene: "悬疑、科幻、恐怖、文艺、宿命",
+        mood: ["宿命","谜题","不可逃"],
+        motion: "final scene revealing it was also first scene, protagonist trapped in loop, audience realization of circularity",
+        motionTip: "最终场景揭示也是开场",
+        combo: "+ 循环节奏 / + 跳切"
+      },
+      {
+        name: "多线并行 Parallel",
+        cat: "叙事结构",
+        desc: "多条故事线同时推进，最终交汇。复杂、丰富、悬念。",
+        prompt: "parallel narrative, multiple storylines advancing simultaneously, eventual convergence, complex rich suspense, interwoven timelines",
+        scene: "战争、灾难、悬疑、史诗、城市",
+        mood: ["复杂","交汇","丰富"],
+        motion: "cutting between three or more locations, each line escalating, final act bringing them together",
+        motionTip: "三条线交替升级，终章汇聚",
+        combo: "+ 分屏 / + 平行剪辑"
+      },
+      {
+        name: "倒叙 Reverse",
+        cat: "叙事结构",
+        desc: "从结局开始，逐步揭示原因。悬念驱动，悲剧宿命。",
+        prompt: "reverse chronology narrative, starting from ending, gradually revealing causes, suspense driven, tragic fate, backward storytelling, effect before cause",
+        scene: "悬疑、悲剧、复仇、记忆、文艺",
+        mood: ["悬念","宿命","倒行"],
+        motion: "opening with death or disaster, each subsequent scene going back in time, understanding deepening",
+        motionTip: "开场即死亡/灾难，逐层回溯",
+        combo: "+ 闪黑 / + 回忆闪回"
+      },
+      {
+        name: "插叙 Intercut",
+        cat: "叙事结构",
+        desc: "主线中插入过去/幻想/平行片段。丰富层次，解释动机。",
+        prompt: "intercut narrative, main line with inserted past fantasy parallel fragments, enriching layers, explaining motivation, memory intrusion structure",
+        scene: "心理、悬疑、爱情、历史、科幻",
+        mood: ["层次","侵入","丰富"],
+        motion: "present action interrupted by brief flashes of past, each flash revealing motivation, two timelines dancing",
+        motionTip: "现在进行时被过去闪断",
+        combo: "+ 插入镜头 / +  dissolve"
+      },
+      {
+        name: "纪录片结构 Doc",
+        cat: "叙事结构",
+        desc: "现实素材+访谈+资料+旁白。真实感、社会性、观察。",
+        prompt: "documentary structure, real footage plus interviews plus archive plus narration, sense of reality, social observation, factual storytelling",
+        scene: "纪录片、纪实、社会、历史、人物",
+        mood: ["真实","观察","社会"],
+        motion: "observational footage, talking head interviews, archival inserts, guiding narration, evidence building",
+        motionTip: "观察 footage→访谈→档案→旁白",
+        combo: "+ 客观镜头 / + 空镜头"
+      },
+      {
+        name: "广告结构 Ad",
+        cat: "叙事结构",
+        desc: "钩子-问题-解决方案-号召行动。15-60秒高效说服。",
+        prompt: "advertising structure, hook problem solution call to action, 15 to 60 seconds efficient persuasion, commercial storytelling, product revelation",
+        scene: "广告、短视频、产品、宣传片、带货",
+        mood: ["高效","说服","钩子"],
+        motion: "first 3 seconds hook, problem establishment, product as solution, final CTA, fast and memorable",
+        motionTip: "3秒钩子→问题→产品→行动号召",
+        combo: "+ 快速变焦 / + 产品特写"
+      },
+      {
+        name: "MV结构 Music Video",
+        cat: "叙事结构",
+        desc: "音乐主导，视觉服务于节奏。叙事碎片化，情绪最大化。",
+        prompt: "music video structure, music dominant, visuals serving rhythm, fragmented narrative, emotion maximization, beat driven editing, visual percussion",
+        scene: "MV、时尚、情绪、创意、品牌",
+        mood: ["节奏","碎片","情绪"],
+        motion: "every cut on beat or half beat, visual motifs repeating with variation, narrative secondary to emotional hit",
+        motionTip: "每个切点卡在节拍上",
+        combo: "+ 跳切 / + 故障"
+      },
+      {
+        name: "短视频钩子 Short Hook",
+        cat: "叙事结构",
+        desc: "前3秒钩子+中间价值+结尾互动。算法友好，完播率优先。",
+        prompt: "short video hook structure, first 3 seconds hook, middle value delivery, ending interaction prompt, algorithm friendly, completion rate priority, retention engineering",
+        scene: "抖音、快手、YouTube Shorts、Reels、带货",
+        mood: ["钩子","算法","完播"],
+        motion: "opening with strongest visual or question, immediate payoff, continuous micro rewards, ending with comment bait",
+        motionTip: "开场最强画面，持续微奖励，结尾评论诱饵",
+        combo: "+ 快速变焦 / + 定格"
+      },
+      {
+        name: "关键帧密度 Keyframe",
+        cat: "AI生成策略",
+        desc: "根据动作复杂度调整AI视频关键帧数量。复杂动作多帧，静态少帧。",
+        prompt: "keyframe density strategy, adjusting AI video keyframes based on motion complexity, complex action more frames, static fewer frames, efficient generation",
+        scene: "所有AI视频生成、成本控制、质量优化",
+        mood: ["效率","控制","优化"],
+        motion: "analyzing motion complexity per shot, assigning keyframe budget accordingly, smooth where needed simple where possible",
+        motionTip: "复杂动作多关键帧，静态画面少关键帧",
+        combo: "+ 长镜头 / + 静止张力"
+      },
+      {
+        name: "时长分配 Duration",
+        cat: "AI生成策略",
+        desc: "总时长有限时，高潮给最多时长，过渡给最少。AI积分/时间的ROI。",
+        prompt: "duration allocation strategy, limited total duration, climax gets most time, transitions get least, AI credit ROI, time investment return",
+        scene: "无限画布、ComfyUI、积分有限、批量生产",
+        mood: ["ROI","分配","积分"],
+        motion: "storyboard with time stamps, climax scene 10 seconds, transition scenes 2 seconds, mathematical distribution",
+        motionTip: "高潮10秒，过渡2秒，数学分配",
+        combo: "+ 高潮加速 / + 直切"
+      },
+      {
+        name: "高潮点预埋 Climax",
+        cat: "AI生成策略",
+        desc: "在分镜中提前埋设视觉高潮点，确保AI生成资源向高潮倾斜。",
+        prompt: "climax预埋 strategy, planting visual climax points in storyboard, ensuring AI generation resources倾斜 toward peaks, emotional investment payoff",
+        scene: "所有叙事、广告、短视频、宣传片",
+        mood: ["预埋","高潮","回报"],
+        motion: "marking climax shots in advance, reserving best models and longest durations for these moments, resource concentration",
+        motionTip: "提前标记高潮镜头，预留最好模型和最长时长",
+        combo: "+ 三幕式 / + 渐进加速"
+      },
+      {
+        name: "情绪曲线 Curve",
+        cat: "AI生成策略",
+        desc: "设计观众情绪起伏曲线，确保AI生成的每个镜头服务于情绪节点。",
+        prompt: "emotional curve design, audience emotion起伏 curve, every AI generated shot serving emotional node, sentiment engineering, narrative heart rate",
+        scene: "情感片、广告、MV、剧情、短视频",
+        mood: ["曲线","情绪","工程"],
+        motion: "plotting emotional highs and lows on graph, assigning shots to lift or drop curve, engineered emotional journey",
+        motionTip: "绘制情绪高低点图表，每镜服务情绪升降",
+        combo: "+ 呼吸节奏 / + 反应镜头"
+      },
+      {
+        name: "信息密度 Info Density",
+        cat: "AI生成策略",
+        desc: "控制每镜信息量和停留时间，避免AI视频信息过载或无聊。",
+        prompt: "information density control, controlling per shot information and dwell time, avoiding AI video overload or boredom, cognitive load management",
+        scene: "教程、科普、产品、叙事、教育",
+        mood: ["密度","认知","管理"],
+        motion: "complex shots longer duration, simple shots shorter, one idea per shot rule, audience processing time respected",
+        motionTip: "复杂镜头长停留，简单镜头短，一镜一idea",
+        combo: "+ 插入镜头 / + 中景"
+      },
+      {
+        name: "风格一致性 Style Consistency",
+        cat: "AI生成策略",
+        desc: "通过统一提示词前缀/LoRA/ControlNet确保多镜头风格统一。",
+        prompt: "style consistency strategy, unified prompt prefix, LoRA, ControlNet ensuring multi shot style统一, visual coherence across AI generated sequences",
+        scene: "系列视频、短片、广告、MV、电影",
+        mood: ["一致","连贯","统一"],
+        motion: "same seed range, same negative prompt, same model checkpoint, same lighting keywords across all shots",
+        motionTip: "统一种子范围、负提示、模型、光效关键词",
+        combo: "+ 单色调 / + 三点布光"
+      },
+      {
+        name: "失败冗余 Redundancy",
+        cat: "AI生成策略",
+        desc: "关键镜头AI生成3-4个版本选最优，普通镜头1版过。质量控制。",
+        prompt: "failure redundancy strategy, generating 3 to 4 versions of key shots selecting best, ordinary shots 1 pass, quality control through abundance",
+        scene: "商业项目、重要交付、高预算、精品",
+        mood: ["冗余","选优","品控"],
+        motion: "hero shots with multiple AI generations, pick best by eye, b roll single generation acceptable, resource differentiation",
+        motionTip: "关键镜头多生成选优，B-roll单版可接受",
+        combo: "+ 建立镜头 / + 特写"
+      },
+    ]
+  },
+];
+
+var currentModule = 0;
+var currentIndex = 0;
+
+function renderSidebar() {
+  var mod = modules[currentModule];
+  var html = '';
+  var cats = {};
+  for (var i = 0; i < mod.items.length; i++) {
+    var c = mod.items[i].cat;
+    if (!cats[c]) cats[c] = [];
+    cats[c].push(i);
+  }
+  var catIdx = 0;
+  for (var cat in cats) {
+    html += '<div class="chapter ch' + (catIdx + 1) + '">';
+    html += '<div class="chapter-title">' + cat + ' · ' + cats[cat].length + '种</div>';
+    html += '<ul class="shot-list">';
+    for (var j = 0; j < cats[cat].length; j++) {
+      var idx = cats[cat][j];
+      var num = String(idx + 1).padStart(2, '0');
+      var cls = (idx === currentIndex) ? 'active' : '';
+      html += '<li class="shot-item ' + cls + '" onclick="showDetail(' + idx + ')"><span>' + mod.items[idx].name + '</span><span class="shot-num">' + num + '</span></li>';
+    }
+    html += '</ul></div>';
+    catIdx++;
+  }
+  document.getElementById('sidebar').innerHTML = html;
+}
+
+function renderDetail(index) {
+  currentIndex = index;
+  var mod = modules[currentModule];
+  var c = mod.items[index];
+  var color = mod.color;
+  var num = String(index + 1).padStart(2, '0');
+  var moodTags = '';
+  for (var i = 0; i < c.mood.length; i++) {
+    moodTags += '<span class="tag-pill">' + c.mood[i] + '</span>';
+  }
+  var html = '';
+  html += '<div class="section-title">' + c.name + '<span class="tag" style="background:' + color + '22;color:' + color + ';">' + c.cat + '</span></div>';
+  html += '<div class="section-desc">' + c.desc + '</div>';
+  html += '<div class="storyboard-grid">';
+  html += '<div class="story-card"><div class="card-header"><span class="card-id">#' + num + '</span><span class="card-type">STILL / VIDEO</span></div>';
+  html += '<div class="card-body"><div class="prompt-block">' + c.prompt + '<button class="copy-btn" onclick="copyPrompt(this, this.parentNode.textContent.replace(\'复制\',\'\').trim())">复制</button></div>';
+  html += '<div class="info-row"><div class="info-item"><div class="info-label">适用场景</div><div class="info-value td-scene">' + c.scene + '</div></div>';
+  html += '<div class="info-item"><div class="info-label">情绪标签</div><div class="emotion-tags">' + moodTags + '</div></div></div></div></div>';
+  html += '<div class="story-card"><div class="card-header"><span class="card-id" style="color:' + color + '">变体</span><span class="card-type">动态分镜</span></div>';
+  html += '<div class="card-body"><div class="prompt-block">' + c.motion + '<button class="copy-btn" onclick="copyPrompt(this, this.parentNode.textContent.replace(\'复制\',\'\').trim())">复制</button></div>';
+  html += '<div class="info-row"><div class="info-item"><div class="info-label">视频要点</div><div class="info-value td-scene">' + c.motionTip + '</div></div>';
+  html += '<div class="info-item"><div class="info-label">组合建议</div><div class="info-value td-scene">' + c.combo + '</div></div></div></div></div>';
+  html += '</div>';
+  document.getElementById('detail-view').innerHTML = html;
+}
+
+function renderTable() {
+  var mod = modules[currentModule];
+  document.getElementById('table-title').innerHTML = '📋 ' + mod.title + ' · 分镜速查总表（可直接复制到无限画布/ComfyUI节点）';
+  var tbody = document.getElementById('table-body');
+  tbody.innerHTML = '';
+  for (var i = 0; i < mod.items.length; i++) {
+    var item = mod.items[i];
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td style="color:var(--accent);font-weight:800;">' + String(i+1).padStart(2,'0') + '</td>' +
+      '<td class="td-scene">' + item.name + '</td>' +
+      '<td><span style="color:var(--text-dark);font-size:12px;">' + item.cat + '</span></td>' +
+      '<td class="td-prompt" title="' + item.prompt + '">' + item.prompt + '</td>' +
+      '<td>' + item.scene + '</td>' +
+      '<td><span style="font-size:12px;color:var(--text-dim);">' + item.mood.join('·') + '</span></td>';
+    tbody.appendChild(tr);
+  }
+}
+
+function showDetail(index) {
+  var items = document.querySelectorAll('.shot-item');
+  for (var i = 0; i < items.length; i++) {
+    items[i].classList.toggle('active', i === index);
+  }
+  renderDetail(index);
+  document.querySelector('.workspace').scrollTo({ top: 0, behavior: 'smooth' });
+  updateHash(currentModule, index);
+  if (window.innerWidth < 1200) closeDrawer();
+}
+
+function switchModule(idx) {
+  currentModule = idx;
+  currentIndex = 0;
+  var tabs = document.querySelectorAll('.tab-btn');
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.toggle('active', i === idx);
+  }
+  renderSidebar();
+  renderDetail(0);
+  renderTable();
+  updateHash(idx, 0);
+  var stats = document.getElementById('search-stats');
+  if (stats) {
+    stats.textContent = '共 ' + modules[idx].items.length + ' 项';
+  }
+}
+
+function exportJSON() {
+  var mod = modules[currentModule];
+  var data = [];
+  for (var i = 0; i < mod.items.length; i++) {
+    var c = mod.items[i];
+    data.push({
+      shot_id: 'SHOT_' + String(i+1).padStart(2,'0'),
+      name: c.name,
+      category: c.cat,
+      prompt: c.prompt,
+      motion_prompt: c.motion,
+      scene: c.scene,
+      mood: c.mood,
+      combo: c.combo,
+      note: ""
+    });
+  }
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = mod.title.replace(/·/g, '_').replace(/ /g, '_') + '.json';
+  a.click();
+}
+
+// ===== v2 功能：搜索 =====
+function initSearch() {
+  const searchInput = document.getElementById('search-input');
+  if (!searchInput) return;
+  searchInput.addEventListener('input', function(e) {
+    const keyword = e.target.value.toLowerCase().trim();
+    filterItems(keyword);
+  });
+}
+function filterItems(keyword) {
+  const items = document.querySelectorAll('.shot-item');
+  const rows = document.querySelectorAll('#table-body tr');
+  let visibleCount = 0;
+  var currentItems = modules[currentModule].items;
+  items.forEach(function(item, idx) {
+    const text = item.textContent.toLowerCase();
+    const data = currentItems[idx];
+    const match = !keyword ||
+      text.includes(keyword) ||
+      data.name.toLowerCase().includes(keyword) ||
+      data.cat.toLowerCase().includes(keyword) ||
+      data.prompt.toLowerCase().includes(keyword) ||
+      data.scene.toLowerCase().includes(keyword) ||
+      data.mood.some(function(m) { return m.toLowerCase().includes(keyword); });
+    item.classList.toggle('hidden-item', !match);
+    if (match) visibleCount++;
+  });
+  rows.forEach(function(row) {
+    const text = row.textContent.toLowerCase();
+    row.classList.toggle('hidden-row', keyword && !text.includes(keyword));
+  });
+  const stats = document.getElementById('search-stats');
+  if (stats) {
+    stats.textContent = keyword ? '匹配 ' + visibleCount + ' 项' : '共 ' + currentItems.length + ' 项';
+  }
+}
+
+// ===== v2 功能：一键复制 =====
+function copyPrompt(btn, text) {
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = '已复制';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = '复制';
+      btn.classList.remove('copied');
+    }, 1500);
+  });
+}
+
+// ===== v2 功能：URL Hash 路由 =====
+function updateHash(moduleIdx, itemIdx) {
+  if (history.replaceState) {
+    history.replaceState(null, null, '#module=' + moduleIdx + '&item=' + itemIdx);
+  }
+}
+function readHash() {
+  var hash = window.location.hash;
+  var mMatch = hash.match(/module=(\d+)/);
+  var iMatch = hash.match(/item=(\d+)/);
+  return {
+    module: mMatch ? parseInt(mMatch[1]) : 0,
+    item: iMatch ? parseInt(iMatch[1]) : 0
+  };
+}
+
+// ===== v2 功能：移动端抽屉 =====
+function toggleDrawer() {
+  document.getElementById('sidebar-drawer').classList.toggle('open');
+  document.getElementById('drawer-overlay').classList.toggle('active');
+}
+function closeDrawer() {
+  document.getElementById('sidebar-drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('active');
+}
+
+// ===== v2 功能：随机灵感 =====
+function randomInspiration() {
+  var picks = [];
+  for (var m = 0; m < modules.length; m++) {
+    var items = modules[m].items;
+    var idx = Math.floor(Math.random() * items.length);
+    picks.push({
+      name: items[idx].name,
+      color: modules[m].color
+    });
+  }
+  var result = picks.map(function(p) {
+    return '<strong style="color:' + p.color + ';">' + p.name + '</strong>';
+  }).join(' <span style="color:var(--text-dark);">+</span> ');
+  document.getElementById('inspiration-result').innerHTML = result;
+}
+
+// 初始化
+var hashData = readHash();
+currentModule = (hashData.module >= 0 && hashData.module < modules.length) ? hashData.module : 0;
+currentIndex = (hashData.item >= 0 && hashData.item < modules[currentModule].items.length) ? hashData.item : 0;
+var tabs = document.querySelectorAll('.tab-btn');
+for (var i = 0; i < tabs.length; i++) {
+  tabs[i].classList.toggle('active', i === currentModule);
+}
+renderSidebar();
+renderDetail(currentIndex);
+renderTable();
+initSearch();
+updateHash(currentModule, currentIndex);
+var stats = document.getElementById('search-stats');
+if (stats) {
+  stats.textContent = '共 ' + modules[currentModule].items.length + ' 项';
+}
+</script>
+</body>
+</html>

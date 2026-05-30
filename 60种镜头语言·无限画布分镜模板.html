@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>60种镜头语言 · 无限画布分镜模板 | 老许Gary</title>
+    <meta name="description" content="AI影视创作60种镜头语言：从景别到运动镜头，从角度到叙事语法，中英双语提示词直接用于ComfyUI/无限画布/分镜脚本。B站老许爱吃肉丶整理">
+    <meta name="keywords" content="AI影视,分镜模板,提示词,镜头语言,景别,运动镜头,ComfyUI,无限画布,老许Gary,AI视频">
+    <meta name="author" content="B站老许爱吃肉丶">
+    <meta property="og:title" content="60种镜头语言 · 无限画布分镜模板 | 老许Gary">
+    <meta property="og:description" content="AI影视创作60种镜头语言，中英双语提示词直接用于ComfyUI/无限画布/分镜脚本">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <link rel="canonical" href="">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0f;
+            --card: #13131f;
+            --card-hover: #1a1a2e;
+            --border: #2a2a3a;
+            --accent: #00d4ff;
+            --accent-dim: rgba(0, 212, 255, 0.1);
+            --text: #e0e0e0;
+            --text-dim: #888;
+            --text-dark: #555;
+            --cat1: #ff6b6b;
+            --cat2: #4ecdc4;
+            --cat3: #ffe66d;
+            --cat4: #a8e6cf;
+            --cat5: #c084fc;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 40px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-left { flex: 1; min-width: 0; }
+
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+        }
+
+        .header .subtitle {
+            color: var(--text-dim);
+            font-size: 18px;
+            max-width: 700px;
+        }
+
+        .header .meta {
+            margin-top: 20px;
+            display: flex;
+            gap: 24px;
+            font-size: 14px;
+            color: var(--text-dark);
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-item::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .author-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 24px 28px;
+            min-width: 280px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .author-card-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .author-card-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .author-card-name::before {
+            content: '';
+            width: 4px;
+            height: 22px;
+            background: linear-gradient(180deg, var(--cat5), var(--accent));
+            border-radius: 2px;
+        }
+
+        .author-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .author-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: all 0.2s;
+            padding: 4px 0;
+        }
+
+        .author-link:hover { color: #fff; }
+
+        .author-link-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .icon-bilibili {
+            background: rgba(0, 161, 214, 0.15);
+            color: #00a1d6;
+            border: 1px solid rgba(0, 161, 214, 0.3);
+        }
+
+        .icon-wechat {
+            background: rgba(7, 193, 96, 0.15);
+            color: #07c160;
+            border: 1px solid rgba(7, 193, 96, 0.3);
+        }
+
+        .author-link-text {
+            font-family: "SF Mono", Monaco, monospace;
+            font-size: 13px;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 0;
+            min-height: calc(100vh - 180px);
+        }
+
+        .sidebar {
+            background: var(--card);
+            border-right: 1px solid var(--border);
+            padding: 30px 20px;
+            overflow-y: auto;
+            max-height: calc(100vh - 180px);
+            position: sticky;
+            top: 0;
+        }
+
+        .chapter { margin-bottom: 24px; }
+
+        .chapter-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            padding-left: 12px;
+            border-left: 3px solid;
+        }
+
+        .chapter:nth-child(1) .chapter-title { color: var(--cat1); border-color: var(--cat1); }
+        .chapter:nth-child(2) .chapter-title { color: var(--cat2); border-color: var(--cat2); }
+        .chapter:nth-child(3) .chapter-title { color: var(--cat3); border-color: var(--cat3); }
+        .chapter:nth-child(4) .chapter-title { color: var(--cat4); border-color: var(--cat4); }
+        .chapter:nth-child(5) .chapter-title { color: var(--cat5); border-color: var(--cat5); }
+
+        .shot-list { list-style: none; }
+
+        .shot-item {
+            padding: 10px 14px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-dim);
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .shot-item:hover {
+            background: var(--card-hover);
+            color: var(--text);
+            border-color: var(--border);
+        }
+
+        .shot-item.active {
+            background: var(--accent-dim);
+            color: var(--accent);
+            border-color: rgba(0,212,255,0.3);
+            font-weight: 600;
+        }
+
+        .shot-num {
+            font-size: 11px;
+            opacity: 0.5;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .workspace {
+            padding: 40px 50px;
+            overflow-y: auto;
+            max-height: calc(100vh - 180px);
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title .tag {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .section-desc {
+            color: var(--text-dim);
+            margin-bottom: 30px;
+            font-size: 15px;
+            line-height: 1.8;
+            max-width: 800px;
+        }
+
+        .storyboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .story-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .story-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-id {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .card-type {
+            font-size: 12px;
+            padding: 6px 14px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-dim);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .card-body { padding: 24px; }
+
+        .prompt-block {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px 16px 16px;
+            margin-bottom: 16px;
+            font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #a0a0b0;
+            position: relative;
+        }
+
+        .prompt-block::before {
+            content: 'PROMPT';
+            position: absolute;
+            top: -10px;
+            left: 16px;
+            background: var(--card);
+            padding: 0 8px;
+            font-size: 10px;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 20px;
+            margin-top: 16px;
+        }
+
+        .info-item { flex: 1; }
+
+        .info-label {
+            font-size: 11px;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .emotion-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag-pill {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+
+        .table-section {
+            margin-top: 50px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 24px 30px;
+            border-bottom: 1px solid var(--border);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            padding: 16px 20px;
+            color: var(--text-dark);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 700;
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-dim);
+            vertical-align: top;
+        }
+
+        tr:hover td {
+            background: rgba(255,255,255,0.02);
+            color: var(--text);
+        }
+
+        .td-prompt {
+            font-family: monospace;
+            font-size: 12px;
+            color: #7a7a9a;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .td-scene {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .export-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10,10,15,0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .export-info {
+            font-size: 14px;
+            color: var(--text-dim);
+        }
+
+        .export-btn {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .export-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0,212,255,0.3);
+        }
+
+        /* ===== v2 升级组件 ===== */
+        .search-bar { padding: 16px 60px; background: var(--card); border-bottom: 1px solid var(--border); display: flex; gap: 16px; align-items: center; }
+        .search-input { flex: 1; max-width: 500px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; padding: 12px 20px; color: var(--text); font-size: 14px; outline: none; }
+        .search-input:focus { border-color: var(--accent); }
+        .search-input::placeholder { color: var(--text-dark); }
+        .search-stats { font-size: 13px; color: var(--text-dim); }
+        .copy-btn { position: absolute; top: 8px; right: 8px; background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3); color: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; }
+        .copy-btn:hover { background: var(--accent); color: #000; }
+        .copy-btn.copied { background: #07c160; border-color: #07c160; color: #fff; }
+        .mobile-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 200; background: var(--card); border: 1px solid var(--border); color: var(--accent); width: 44px; height: 44px; border-radius: 10px; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; }
+        .sidebar-drawer { display: block; }
+        .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 90; }
+        .drawer-overlay.active { display: block; }
+        .inspiration-bar { padding: 24px 60px; background: linear-gradient(135deg, rgba(0,212,255,0.05) 0%, rgba(192,132,252,0.05) 100%); border-top: 1px solid var(--border); display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+        .inspiration-title { font-size: 14px; font-weight: 700; color: var(--accent); letter-spacing: 1px; }
+        .inspiration-result { flex: 1; min-width: 300px; font-size: 15px; color: var(--text); background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; }
+        .inspiration-result span { color: var(--text-dark); }
+        .dice-btn { background: linear-gradient(135deg, var(--accent), #c084fc); color: #000; border: none; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .dice-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0,212,255,0.3); }
+        .dice-btn:active { transform: scale(0.95); }
+        .hidden-item { display: none !important; }
+        .hidden-row { display: none !important; }
+
+        @media (max-width: 1200px) {
+            .mobile-toggle { display: flex; }
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar-drawer { position: fixed; top: 0; left: 0; width: 320px; height: 100vh; z-index: 100; transform: translateX(-100%); transition: transform 0.3s ease; max-height: 100vh; }
+            .sidebar-drawer.open { transform: translateX(0); }
+            .sidebar { max-height: none; position: relative; border-right: none; border-bottom: none; padding-top: 60px; }
+            .workspace { max-height: none; padding: 20px; }
+            .storyboard-grid { grid-template-columns: 1fr; }
+            .header { padding: 30px 20px; }
+            .header-inner { flex-direction: column; }
+            .author-card { width: 100%; min-width: auto; }
+            .header h1 { font-size: 28px; }
+            .export-bar { padding: 15px 20px; flex-direction: column; gap: 10px; }
+            .search-bar { padding: 12px 20px; }
+            .inspiration-bar { padding: 16px 20px; }
+            .inspiration-result { min-width: auto; width: 100%; }
+        /* 移动端表格适配 */
+        .table-section { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .table-section table { min-width: 680px; font-size: 13px; }
+        .table-section th, .table-section td { padding: 12px 14px; white-space: normal; }
+        .td-prompt { max-width: 220px; font-size: 11px; line-height: 1.5; word-break: break-all; }
+        .table-header { font-size: 16px; padding: 18px 20px; }
+    }
+        }
+    </style>
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?e459d7329e9da999a234c4dfcb681691";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<body>
+    <button class="mobile-toggle" onclick="toggleDrawer()" title="打开导航">☰</button>
+    <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+
+    <div class="header">
+        <div class="header-inner">
+            <div class="header-left">
+                <h1>60种镜头语言 · 无限画布分镜模板</h1>
+                <div class="subtitle">AI影视创作核心框架：从景别控制到运动镜头，从焦点光影到叙事语法，全部转化为可落地的提示词工程</div>
+                <div class="meta">
+                    <div class="meta-item">60种镜头语言</div>
+                    <div class="meta-item">5大功能模块</div>
+                    <div class="meta-item">中英双语提示词</div>
+                    <div class="meta-item">适用 ComfyUI / 无限画布 / 分镜脚本</div>
+                </div>
+            </div>
+
+            <div class="author-card">
+                <div class="author-card-label">Author</div>
+                <div class="author-card-name">B站老许爱吃肉丶</div>
+                <div class="author-links">
+                    <a href="https://space.bilibili.com/669645699" target="_blank" class="author-link">
+                        <span class="author-link-icon icon-bilibili">B</span>
+                        <span>space.bilibili.com/669645699</span>
+                    </a>
+                    <div class="author-link">
+                        <span class="author-link-icon icon-wechat">V</span>
+                        <span class="author-link-text">VX: GaryAigo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="search-bar">
+        <input type="text" class="search-input" id="search-input" placeholder="搜索镜头名称 / 提示词 / 场景 / 情绪...">
+        <span class="search-stats" id="search-stats">共 60 项</span>
+    </div>
+
+    <div class="main-container">
+        <div class="sidebar-drawer" id="sidebar-drawer">
+        <div class="sidebar">
+            <div class="chapter">
+                <div class="chapter-title">景别语言 · 12种</div>
+                <ul class="shot-list">
+                    <li class="shot-item active" onclick="showDetail(0)"><span>大远景 ELS</span><span class="shot-num">01</span></li>
+                    <li class="shot-item" onclick="showDetail(1)"><span>远景 LS</span><span class="shot-num">02</span></li>
+                    <li class="shot-item" onclick="showDetail(2)"><span>全景 FS</span><span class="shot-num">03</span></li>
+                    <li class="shot-item" onclick="showDetail(3)"><span>中全景 MLS</span><span class="shot-num">04</span></li>
+                    <li class="shot-item" onclick="showDetail(4)"><span>中景 MS</span><span class="shot-num">05</span></li>
+                    <li class="shot-item" onclick="showDetail(5)"><span>中近景 MCU</span><span class="shot-num">06</span></li>
+                    <li class="shot-item" onclick="showDetail(6)"><span>近景 CU</span><span class="shot-num">07</span></li>
+                    <li class="shot-item" onclick="showDetail(7)"><span>特写 ECU</span><span class="shot-num">08</span></li>
+                    <li class="shot-item" onclick="showDetail(8)"><span>大特写 BCU</span><span class="shot-num">09</span></li>
+                    <li class="shot-item" onclick="showDetail(9)"><span>细节特写</span><span class="shot-num">10</span></li>
+                    <li class="shot-item" onclick="showDetail(10)"><span>双人景 Two Shot</span><span class="shot-num">11</span></li>
+                    <li class="shot-item" onclick="showDetail(11)"><span>多人景 Group</span><span class="shot-num">12</span></li>
+                </ul>
+            </div>
+            <div class="chapter">
+                <div class="chapter-title">角度与视角 · 12种</div>
+                <ul class="shot-list">
+                    <li class="shot-item" onclick="showDetail(12)"><span>平视 Eye Level</span><span class="shot-num">13</span></li>
+                    <li class="shot-item" onclick="showDetail(13)"><span>低角度仰拍 Low</span><span class="shot-num">14</span></li>
+                    <li class="shot-item" onclick="showDetail(14)"><span>高角度俯拍 High</span><span class="shot-num">15</span></li>
+                    <li class="shot-item" onclick="showDetail(15)"><span>鸟瞰 Bird Eye</span><span class="shot-num">16</span></li>
+                    <li class="shot-item" onclick="showDetail(16)"><span>虫视 Worm Eye</span><span class="shot-num">17</span></li>
+                    <li class="shot-item" onclick="showDetail(17)"><span>荷兰角 Dutch</span><span class="shot-num">18</span></li>
+                    <li class="shot-item" onclick="showDetail(18)"><span>过肩镜头 OTS</span><span class="shot-num">19</span></li>
+                    <li class="shot-item" onclick="showDetail(19)"><span>主观镜头 POV</span><span class="shot-num">20</span></li>
+                    <li class="shot-item" onclick="showDetail(20)"><span>客观镜头 Objective</span><span class="shot-num">21</span></li>
+                    <li class="shot-item" onclick="showDetail(21)"><span>反射视角 Reflection</span><span class="shot-num">22</span></li>
+                    <li class="shot-item" onclick="showDetail(22)"><span>窥视视角 Peeping</span><span class="shot-num">23</span></li>
+                    <li class="shot-item" onclick="showDetail(23)"><span>偷拍视角 Hidden</span><span class="shot-num">24</span></li>
+                </ul>
+            </div>
+            <div class="chapter">
+                <div class="chapter-title">运动镜头 · 16种</div>
+                <ul class="shot-list">
+                    <li class="shot-item" onclick="showDetail(24)"><span>推镜头 Dolly In</span><span class="shot-num">25</span></li>
+                    <li class="shot-item" onclick="showDetail(25)"><span>拉镜头 Dolly Out</span><span class="shot-num">26</span></li>
+                    <li class="shot-item" onclick="showDetail(26)"><span>横摇左 Pan Left</span><span class="shot-num">27</span></li>
+                    <li class="shot-item" onclick="showDetail(27)"><span>横摇右 Pan Right</span><span class="shot-num">28</span></li>
+                    <li class="shot-item" onclick="showDetail(28)"><span>横移左 Truck Left</span><span class="shot-num">29</span></li>
+                    <li class="shot-item" onclick="showDetail(29)"><span>横移右 Truck Right</span><span class="shot-num">30</span></li>
+                    <li class="shot-item" onclick="showDetail(30)"><span>升镜头 Crane Up</span><span class="shot-num">31</span></li>
+                    <li class="shot-item" onclick="showDetail(31)"><span>降镜头 Crane Down</span><span class="shot-num">32</span></li>
+                    <li class="shot-item" onclick="showDetail(32)"><span>前跟镜头 Front</span><span class="shot-num">33</span></li>
+                    <li class="shot-item" onclick="showDetail(33)"><span>后跟镜头 Back</span><span class="shot-num">34</span></li>
+                    <li class="shot-item" onclick="showDetail(34)"><span>侧跟镜头 Side</span><span class="shot-num">35</span></li>
+                    <li class="shot-item" onclick="showDetail(35)"><span>环绕镜头 Arc</span><span class="shot-num">36</span></li>
+                    <li class="shot-item" onclick="showDetail(36)"><span>甩镜头 Whip Pan</span><span class="shot-num">37</span></li>
+                    <li class="shot-item" onclick="showDetail(37)"><span>手持晃动 Handheld</span><span class="shot-num">38</span></li>
+                    <li class="shot-item" onclick="showDetail(38)"><span>斯坦尼康 Steadicam</span><span class="shot-num">39</span></li>
+                    <li class="shot-item" onclick="showDetail(39)"><span>航拍推进 Aerial</span><span class="shot-num">40</span></li>
+                </ul>
+            </div>
+            <div class="chapter">
+                <div class="chapter-title">变焦与特效 · 10种</div>
+                <ul class="shot-list">
+                    <li class="shot-item" onclick="showDetail(40)"><span>变焦推 Zoom In</span><span class="shot-num">41</span></li>
+                    <li class="shot-item" onclick="showDetail(41)"><span>变焦拉 Zoom Out</span><span class="shot-num">42</span></li>
+                    <li class="shot-item" onclick="showDetail(42)"><span>快速变焦 Snap</span><span class="shot-num">43</span></li>
+                    <li class="shot-item" onclick="showDetail(43)"><span>希区柯克变焦 Dolly</span><span class="shot-num">44</span></li>
+                    <li class="shot-item" onclick="showDetail(44)"><span>移焦 Rack Focus</span><span class="shot-num">45</span></li>
+                    <li class="shot-item" onclick="showDetail(45)"><span>浅景深 Shallow</span><span class="shot-num">46</span></li>
+                    <li class="shot-item" onclick="showDetail(46)"><span>深景深 Deep</span><span class="shot-num">47</span></li>
+                    <li class="shot-item" onclick="showDetail(47)"><span>焦点跟随 Follow</span><span class="shot-num">48</span></li>
+                    <li class="shot-item" onclick="showDetail(48)"><span>慢门拖影 Drag</span><span class="shot-num">49</span></li>
+                    <li class="shot-item" onclick="showDetail(49)"><span>抽帧 Strobe</span><span class="shot-num">50</span></li>
+                </ul>
+            </div>
+            <div class="chapter">
+                <div class="chapter-title">叙事与特殊 · 10种</div>
+                <ul class="shot-list">
+                    <li class="shot-item" onclick="showDetail(50)"><span>建立镜头 Establish</span><span class="shot-num">51</span></li>
+                    <li class="shot-item" onclick="showDetail(51)"><span>空镜头 Empty</span><span class="shot-num">52</span></li>
+                    <li class="shot-item" onclick="showDetail(52)"><span>长镜头 Long Take</span><span class="shot-num">53</span></li>
+                    <li class="shot-item" onclick="showDetail(53)"><span>反应镜头 Reaction</span><span class="shot-num">54</span></li>
+                    <li class="shot-item" onclick="showDetail(54)"><span>插入镜头 Insert</span><span class="shot-num">55</span></li>
+                    <li class="shot-item" onclick="showDetail(55)"><span>反打镜头 Reverse</span><span class="shot-num">56</span></li>
+                    <li class="shot-item" onclick="showDetail(56)"><span>越轴镜头 Crossing</span><span class="shot-num">57</span></li>
+                    <li class="shot-item" onclick="showDetail(57)"><span>跳切 Jump Cut</span><span class="shot-num">58</span></li>
+                    <li class="shot-item" onclick="showDetail(58)"><span>定格 Freeze</span><span class="shot-num">59</span></li>
+                    <li class="shot-item" onclick="showDetail(59)"><span>分屏 Split Screen</span><span class="shot-num">60</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+        <div class="workspace">
+            <div id="detail-view"></div>
+
+            <div class="table-section">
+                <div class="table-header">📋 60种镜头语言 · 分镜速查总表（可直接复制到无限画布/ComfyUI节点）</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:50px">#</th>
+                            <th style="width:140px">镜头名称</th>
+                            <th style="width:120px">分类</th>
+                            <th>核心提示词（英文，可直接用于SD/Flux/视频模型）</th>
+                            <th style="width:160px">适用场景</th>
+                            <th style="width:120px">情绪关键词</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="inspiration-bar">
+        <span class="inspiration-title">🎲 随机灵感组合</span>
+        <div class="inspiration-result" id="inspiration-result">
+            <span>点击骰子按钮，从60种镜头语言中随机组合一套分镜方案...</span>
+        </div>
+        <button class="dice-btn" onclick="randomInspiration()">🎲 随机组合</button>
+    </div>
+
+    <div class="export-bar">
+        <div class="export-info">💡 点击左侧列表切换详情；表格支持直接复制提示词到ComfyUI提示词节点或无限画布分镜描述框 | v2 支持搜索/路由/复制/移动端</div>
+        <button class="export-btn" onclick="exportJSON()">导出 JSON 分镜模板</button>
+    </div>
+
+    <script>
+        const chapterColors = {
+            "景别语言": "var(--cat1)",
+            "角度与视角": "var(--cat2)",
+            "运动镜头": "var(--cat3)",
+            "变焦与特效": "var(--cat4)",
+            "叙事与特殊": "var(--cat5)"
+        };
+
+        const shots = [
+            { name: "大远景 ELS", cat: "景别语言", desc: "人物在画面中极小，环境占据绝对主导。用于展示宏大场景、建立地理空间关系。", prompt: "extreme long shot, tiny human figure in vast landscape, epic scale environment dominating frame, atmospheric perspective, cinematic wide shot", scene: "史诗开场、战争场面、自然奇观、城市全景", mood: ["宏大", "孤独", "敬畏"], motion: "slow aerial drift over vast terrain, subject barely visible, emphasizing scale and isolation, majestic camera sweep", motionTip: "缓慢航拍漂移，人物作为环境中的标点", combo: "+ 航拍推进 / + 留白构图" },
+            { name: "远景 LS", cat: "景别语言", desc: "人物全身可见，但环境仍占画面大部分。交代人物与环境的关系。", prompt: "long shot, full body subject visible, environment still dominant, figure in landscape, wide cinematic framing", scene: "人物入场、环境交代、行走镜头、远景对话", mood: ["渺小", "融入", "叙事"], motion: "subject walks through landscape, camera maintains distance, tracking from afar, spatial relationship preserved", motionTip: "保持人物全身在景，跟随移动不靠近", combo: "+ 汇聚线 / + 对称构图" },
+            { name: "全景 FS", cat: "景别语言", desc: "人物从头到脚填满画面高度，环境边缘化。完整展示人物动作和服装。", prompt: "full shot, subject from head to toe filling vertical frame, complete body visible, minimal background, full figure framing", scene: "时装展示、舞蹈动作、武术套路、全身表演", mood: ["完整", "动作", "形体"], motion: "subject performs full body movement, camera holds steady framing entire figure, capturing complete gesture", motionTip: "固定机位，人物动作不超出画框上下", combo: "+ 中心对称 / + 填充构图" },
+            { name: "中全景 MLS", cat: "景别语言", desc: "人物膝盖以上入画。兼顾动作与表情，是最常用的叙事景别之一。", prompt: "medium long shot, knees up framing, subject from lower legs to head, conversational distance, standard cinematic framing", scene: "对话场景、走路交谈、中等动作、日常叙事", mood: ["自然", "平衡", "日常"], motion: "two subjects walking and talking, camera tracks sideways maintaining MLS framing, natural conversational movement", motionTip: "双人对话最常用的景别，兼顾环境与人物", combo: "+ 过肩镜头 / + 三分法" },
+            { name: "中景 MS", cat: "景别语言", desc: "腰部以上入画。聚焦人物上半身动作和表情，忽略下肢。", prompt: "medium shot, waist up framing, subject upper body dominant, gesture and expression visible, standard interview framing", scene: "采访、演讲、手势丰富的对话、上半身动作", mood: ["专注", "交流", "亲切"], motion: "subject gestures while speaking, camera holds steady MS, slight push-in on emotional beats", motionTip: "人物腰部以上，手部动作清晰可见", combo: "+ 平视 / + 浅景深" },
+            { name: "中近景 MCU", cat: "景别语言", desc: "胸部以上入画。强调面部表情，同时保留部分身体语言。", prompt: "medium close up, chest up framing, subject face and shoulders dominant, intimate but not intrusive, portrait distance", scene: "情感对话、采访特写、表情戏、内心戏", mood: ["亲密", "情感", "专注"], motion: "subtle camera push into MCU as dialogue intensifies, maintaining chest-up framing, emotional escalation", motionTip: "从MS缓慢推入MCU，情绪升级的经典手法", combo: "+ 浅景深 / + 侧光" },
+            { name: "近景 CU", cat: "景别语言", desc: "头部和肩部填满画面。完全聚焦面部表情，排除环境干扰。", prompt: "close up shot, head and shoulders filling frame, facial expression dominant, background blurred, intimate portrait framing", scene: "情绪爆发、关键台词、面部细节、眼神戏", mood: ["紧张", "私密", "强烈"], motion: "subject's face fills frame, micro-expressions visible, slight handheld tremor for realism, locked on eyes", motionTip: "锁定眼睛对焦，微表情是叙事核心", combo: "+ 填充构图 / + 浅景深" },
+            { name: "特写 ECU", cat: "景别语言", desc: "面部占据绝大部分画面，额头到下巴贴边。极致的情绪放大。", prompt: "extreme close up, face filling entire frame, forehead to chin touching edges, maximum emotional magnification, claustrophobic framing", scene: "恐惧、震惊、极致情绪、面部纹理展示", mood: ["压迫", "窒息", "极致"], motion: "face completely fills frame, subject barely moves, every pore and twitch visible, suffocating intimacy", motionTip: "面部贴边，任何微小动作都被放大", combo: "+ 手持晃动 / + 伦勃朗光" },
+            { name: "大特写 BCU", cat: "景别语言", desc: "只拍单一器官：眼睛、嘴唇、手指等。抽象化、符号化表达。", prompt: "big close up, single feature filling frame, extreme detail of eye or lips, abstract symbolic shot, magnified texture", scene: "眼泪滑落、手指颤抖、嘴唇微动、瞳孔收缩", mood: ["抽象", "符号", "极致细节"], motion: "extreme macro on single feature, slow motion capture of minute movement, texture and detail paramount", motionTip: "单一器官充满画面，动作被抽象为符号", combo: "+ 慢门拖影 / + 浅景深" },
+            { name: "细节特写 Detail", cat: "景别语言", desc: "非人物对象的大特写：钥匙、手表、血迹等。承担叙事功能。", prompt: "detail shot, object filling frame, extreme close up of significant prop, texture and material dominant, narrative detail", scene: "关键道具、线索展示、质感广告、产品细节", mood: ["线索", "质感", "暗示"], motion: "object slowly rotates or reveals detail, dramatic lighting on texture, narrative significance emphasized", motionTip: "道具缓慢旋转或揭示，光线强调材质", combo: "+ 侧光 / + 浅景深" },
+            { name: "双人景 Two Shot", cat: "景别语言", desc: "两人同框且比例相当。展示人物关系、空间位置、互动状态。", prompt: "two shot, two subjects framed equally in shot, balanced composition, relationship visible through spacing, dual portrait", scene: "情侣对话、对手戏、双人舞蹈、关系展示", mood: ["关系", "平衡", "互动"], motion: "two subjects interact within frame, camera holds steady two-shot, slight adjustment as they move, maintaining balance", motionTip: "两人比例相当，间距暗示关系亲疏", combo: "+ 三分法 / + 三角形构图" },
+            { name: "多人景 Group Shot", cat: "景别语言", desc: "三人及以上同框。群像关系、站位、权力结构一目了然。", prompt: "group shot, three or more subjects in frame, arranged by hierarchy or relationship, ensemble composition, social geometry", scene: "家庭合影、团队登场、群像戏、权力结构", mood: ["群体", "结构", "社会关系"], motion: "group arranged in formation, camera slowly reveals each member, establishing social dynamics through positioning", motionTip: "通过站位高低和间距暗示权力关系", combo: "+ 圆形构图 / + 层次构图" },
+            { name: "平视 Eye Level", cat: "角度与视角", desc: "摄影机与主体眼睛同高。最中立、最自然的视角，观众代入感最强。", prompt: "eye level shot, camera at subject's height, neutral perspective, equal power dynamic, natural human viewpoint", scene: "日常对话、平等交流、中性叙事、纪录片", mood: ["平等", "自然", "代入"], motion: "camera at eye height moves with subject, maintaining neutral perspective, invisible observer feeling", motionTip: "与人物眼睛同高移动，最不易察觉的视角", combo: "+ 中景 / + 斯坦尼康" },
+            { name: "低角度仰拍 Low Angle", cat: "角度与视角", desc: "摄影机低于主体向上拍摄。主体显得高大、威严、有压迫感。", prompt: "low angle shot, camera below subject looking up, subject appears towering and powerful, dramatic upward perspective, heroic framing", scene: "英雄登场、反派威慑、建筑宏伟、权力展示", mood: ["威严", "压迫", "英雄"], motion: "camera rises from ground to low angle, subject grows in frame, ascending reveal creating awe", motionTip: "从地面升起，主体逐渐高大化", combo: "+ 推镜头 / + 放射线构图" },
+            { name: "高角度俯拍 High Angle", cat: "角度与视角", desc: "摄影机高于主体向下拍摄。主体显得渺小、脆弱、无助。", prompt: "high angle shot, camera above subject looking down, subject appears small and vulnerable, dominant viewpoint, looking down perspective", scene: "表现无助、死亡场景、棋局、审视/审判", mood: ["渺小", "脆弱", "宿命"], motion: "camera descends from above, subject shrinks in frame, god-like perspective imposing vulnerability", motionTip: "从高处下降，人物在画面中缩小", combo: "+ 留白构图 / + 鸟瞰" },
+            { name: "鸟瞰 Bird Eye", cat: "角度与视角", desc: "垂直正上方90度俯拍。抽象化为几何图形，去人格化。", prompt: "bird's eye view, directly overhead 90 degrees, top-down vertical perspective, subject as geometric shape, abstract aerial", scene: "城市规划、睡眠、死亡、仪式、抽象构图", mood: ["抽象", "宿命", "几何"], motion: "drone hovers directly above, slow rotation around vertical axis, subject becomes abstract pattern on ground", motionTip: "垂直上方悬停旋转，人物变成地面图案", combo: "+ 圆形构图 / + 重复节奏" },
+            { name: "虫视 Worm Eye", cat: "角度与视角", desc: "贴地垂直向上拍摄。天空/天花板占据画面，世界变得陌生巨大。", prompt: "worm's eye view, ground level looking straight up, sky or ceiling dominant, world appears alien and massive, extreme low vertical", scene: "仰望高楼、昆虫视角、科幻异世界、压抑感", mood: ["陌生", "压抑", "渺小"], motion: "camera on ground looking up, subject passes overhead, sky dominates frame, disorienting vertical movement", motionTip: "贴地固定，人物从头顶经过", combo: "+ 放射线构图 / + 打破构图" },
+            { name: "荷兰角 Dutch Angle", cat: "角度与视角", desc: "摄影机倾斜，地平线不水平。制造不安、眩晕、超现实感。", prompt: "dutch angle shot, tilted horizon, canted frame, disorienting perspective, unstable composition, diagonal horizon line", scene: "恐怖、梦境、醉酒、精神病、动作戏", mood: ["不安", "眩晕", "超现实"], motion: "camera maintains tilt while tracking subject, world feels off-balance, psychological disorientation sustained", motionTip: "全程保持倾斜运镜，不安感持续累积", combo: "+ 手持晃动 / + 打破构图" },
+            { name: "过肩镜头 OTS", cat: "角度与视角", desc: "从一人肩膀后方拍摄另一人。建立对话关系，是最经典的对话镜头。", prompt: "over the shoulder shot, camera behind one subject looking at another, conversational framing, shallow depth on foreground shoulder", scene: "对话戏、面试、对峙、亲密关系", mood: ["关系", "私密", "对话"], motion: "camera slightly adjusts as speakers move, maintaining OTS relationship, rack focus between foreground and background", motionTip: "前景肩膀虚化占1/4画面，后景人物清晰", combo: "+ 浅景深 / + 中全景" },
+            { name: "主观镜头 POV", cat: "角度与视角", desc: "模拟角色眼睛看到的画面。观众成为角色，极强的代入感。", prompt: "point of view shot, through character's eyes, first person perspective, hands visible at bottom of frame, subjective vision", scene: "惊吓、搜寻、驾驶、射击、沉浸式体验", mood: ["代入", "紧张", "主观"], motion: "camera moves exactly as character's head moves, breathing motion, slight bob with footsteps, pure subjectivity", motionTip: "加入呼吸感和步伐颠簸，模拟真实人眼", combo: "+ 手持晃动 / + 浅景深" },
+            { name: "客观镜头 Objective", cat: "角度与视角", desc: "摄影机作为隐形旁观者，不介入、不评判。纪录片和现实主义常用。", prompt: "objective camera shot, invisible observer, neutral detached perspective, fly on the wall documentary style, non-judgmental framing", scene: "纪录片、现实主义、观察式拍摄、监控感", mood: ["中立", "观察", "真实"], motion: "static or smooth movement maintaining distance, no emotional camera movement, invisible presence observing", motionTip: "不介入的旁观者视角，摄影机存在感为零", combo: "+ 长镜头 / + 深景深" },
+            { name: "反射视角 Reflection", cat: "角度与视角", desc: "通过镜子、水面、玻璃等反射拍摄主体。双重空间、虚实交错。", prompt: "reflection shot, subject visible in mirror or water surface, dual space composition, real and reflected world, glass refraction", scene: "自我审视、虚实交错、梦境、内心独白", mood: ["虚幻", "自省", "双重"], motion: "camera focuses on reflection surface, subject moves in reflected space, rack focus between real and reflection", motionTip: "对焦在反射面，真实空间虚化", combo: "+ 浅景深 / + 框架式构图" },
+            { name: "窥视视角 Peeping", cat: "角度与视角", desc: "通过门缝、钥匙孔、百叶窗等狭窄缝隙偷看。强烈的窥探感和禁忌感。", prompt: "peeping perspective, shot through narrow gap or keyhole, obscured partial view, voyeuristic framing, restricted sight line", scene: "悬疑、跟踪、秘密、禁忌、惊悚", mood: ["窥探", "禁忌", "紧张"], motion: "camera peeks through opening, slight movement to find better angle, limited field of view creating frustration", motionTip: "画面边缘被遮挡，制造受限视野的焦虑", combo: "+ 偷拍视角 / + 前景遮挡" },
+            { name: "偷拍视角 Hidden", cat: "角度与视角", desc: "模拟监控摄像头、行车记录仪等隐藏机位。粗糙、真实、去电影化。", prompt: "hidden camera perspective, surveillance footage style, low quality aesthetic, timestamp overlay possible, uncomposed framing", scene: "悬疑、犯罪、纪实、伪纪录片、真实感", mood: ["真实", "粗糙", "不安"], motion: "static or slightly jittery fixed position, unexpected events entering frame, unplanned composition, raw reality", motionTip: "固定机位，事件闯入画面，无构图意识", combo: "+ 客观镜头 / + 深景深" },
+            { name: "推镜头 Dolly In", cat: "运动镜头", desc: "摄影机向主体物理移动靠近。空间压缩，强调主体重要性。", prompt: "dolly in movement, camera physically moves closer to subject, spatial compression, emphasis on approaching importance, smooth push", scene: "情绪升级、揭示细节、进入内心世界、强调", mood: ["逼近", "强调", "侵入"], motion: "steady smooth push toward subject, background compresses, subject grows in frame without perspective distortion", motionTip: "物理移动靠近，背景压缩但不变形", combo: "+ 中景→特写 / + 浅景深" },
+            { name: "拉镜头 Dolly Out", cat: "运动镜头", desc: "摄影机远离主体。环境展开，揭示更大空间关系，制造疏离感。", prompt: "dolly out movement, camera pulls away from subject, environment expanding, spatial relationship revealed, retreating perspective", scene: "环境揭示、人物渺小化、结束感、抽离情绪", mood: ["疏离", "揭示", "结束"], motion: "smooth retreat revealing surrounding space, subject shrinks in frame, context and environment becoming clear", motionTip: "后退展开环境，人物在空间中重新定位", combo: "+ 远景 / + 留白构图" },
+            { name: "横摇左 Pan Left", cat: "运动镜头", desc: "摄影机水平向左转动。展示左侧空间，跟随向左移动的主体。", prompt: "pan left, camera swivels horizontally to the left, revealing space on left side, smooth horizontal rotation, leftward sweep", scene: "跟随左移主体、展示左侧环境、搜索、追逐", mood: ["探索", "跟随", "流动"], motion: "camera pivots left from fixed position, smooth horizontal sweep, new information entering from left edge", motionTip: "机位固定，水平向左旋转", combo: "+ 横移左 / + 全景" },
+            { name: "横摇右 Pan Right", cat: "运动镜头", desc: "摄影机水平向右转动。展示右侧空间，跟随向右移动的主体。", prompt: "pan right, camera swivels horizontally to the right, revealing space on right side, smooth horizontal rotation, rightward sweep", scene: "跟随右移主体、展示右侧环境、对话切换、追逐", mood: ["探索", "跟随", "流动"], motion: "camera pivots right from fixed position, smooth horizontal sweep, new information entering from right edge", motionTip: "机位固定，水平向右旋转", combo: "+ 横移右 / + 全景" },
+            { name: "横移左 Truck Left", cat: "运动镜头", desc: "摄影机整体向左平行移动。主体保持画面位置，背景横向流动。", prompt: "truck left, camera moves left parallel to scene, subject maintains frame position, background flows rightward, lateral tracking", scene: "侧面展示、平行跟随、横向环境揭示、走场", mood: ["平行", "流动", "侧面"], motion: "entire camera rig moves left, subject stays centered, background elements parallax past, smooth lateral glide", motionTip: "整体左移，主体居中，背景横向流过", combo: "+ 侧跟 / + 中全景" },
+            { name: "横移右 Truck Right", cat: "运动镜头", desc: "摄影机整体向右平行移动。主体保持画面位置，背景横向流动。", prompt: "truck right, camera moves right parallel to scene, subject maintains frame position, background flows leftward, lateral tracking", scene: "侧面展示、平行跟随、横向环境揭示、走场", mood: ["平行", "流动", "侧面"], motion: "entire camera rig moves right, subject stays centered, background elements parallax past, smooth lateral glide", motionTip: "整体右移，主体居中，背景横向流过", combo: "+ 侧跟 / + 中全景" },
+            { name: "升镜头 Crane Up", cat: "运动镜头", desc: "摄影机垂直上升。从细节到全局，上帝视角逐渐建立。", prompt: "crane up, camera rises vertically, ascending perspective, from detail to wide view, god's eye establishing", scene: "场景揭示、情绪升华、死亡、结束、全局展示", mood: ["升华", "揭示", "超然"], motion: "camera ascends smoothly, subject shrinks below, world expanding upward, transcendence and overview", motionTip: "垂直上升，人物缩小，世界展开", combo: "+ 高角度俯拍 / + 留白构图" },
+            { name: "降镜头 Crane Down", cat: "运动镜头", desc: "摄影机垂直下降。从全局到细节，聚焦具体对象或人物。", prompt: "crane down, camera descends vertically, descending perspective, from wide to detail, focusing on specific subject below", scene: "聚焦人物、进入场景、发现细节、开场降落", mood: ["聚焦", "进入", "发现"], motion: "camera descends from above, world narrowing down, specific subject growing in frame, landing and arrival", motionTip: "垂直下降，从全局收缩到具体", combo: "+ 推镜头 / + 特写" },
+            { name: "前跟镜头 Front Follow", cat: "运动镜头", desc: "从正面跟随主体后退移动。观众看到主体面部和前方环境同时后退。", prompt: "front follow shot, camera backs up as subject approaches, face visible moving forward, background receding, approaching energy", scene: "迎面走来、追击、逼近、正面冲击", mood: ["逼近", "冲击", "紧张"], motion: "camera walks backward matching subject's forward speed, face filling frame, background streaming past shoulders", motionTip: "倒走跟随，人物面部迎面而来", combo: "+ 中近景 / + 推镜头" },
+            { name: "后跟镜头 Back Follow", cat: "运动镜头", desc: "从后方跟随主体前进。观众成为跟随者，前方环境逐渐展开。", prompt: "back follow shot, camera follows subject from behind, over shoulder view, world unfolding ahead, following energy", scene: "追踪、探险、未知前方、代入行走", mood: ["跟随", "未知", "探索"], motion: "camera follows directly behind, subject's back in frame, path ahead revealing, steady pursuit rhythm", motionTip: "紧跟后背，前方环境逐步展开", combo: "+ 中全景 / + 斯坦尼康" },
+            { name: "侧跟镜头 Side Follow", cat: "运动镜头", desc: "从侧面平行跟随主体。展示侧面轮廓和横向环境变化。", prompt: "side follow shot, camera tracks parallel to subject from side, profile view, lateral environment passing, running alongside", scene: "奔跑、追逐、侧面展示、横向环境", mood: ["并行", "速度", "侧面"], motion: "camera runs parallel maintaining side view, subject profile dominant, background rushing horizontally, speed sensation", motionTip: "侧面平行奔跑，强调速度和轮廓", combo: "+ 横移 / + 荷兰角" },
+            { name: "环绕镜头 Arc", cat: "运动镜头", desc: "摄影机围绕主体做圆周运动。360度展示主体，空间关系全面呈现。", prompt: "arc shot, camera circles around subject in circular path, 360 degree reveal, orbital movement, spatial relationship unfolding", scene: "人物揭示、环境展示、舞蹈、决斗、审视", mood: ["环绕", "揭示", "审视"], motion: "smooth circular orbit around subject, background rotating behind, subject turning to face camera, complete revelation", motionTip: "匀速圆周运动，主体始终面向镜头", combo: "+ 圆形构图 / + 低角度仰拍" },
+            { name: "甩镜头 Whip Pan", cat: "运动镜头", desc: "极快速的横摇，画面模糊成动态线条。用于转场或连接两个时空。", prompt: "whip pan, extremely fast horizontal pan, motion blur streaks, speed lines, transition energy, blurred horizontal sweep", scene: "快速转场、时间跳跃、动作连接、喜剧节奏", mood: ["速度", "跳跃", "动感"], motion: "camera snaps horizontally at high speed, image blurs into streaks, landing on new subject with sharp focus", motionTip: "快速横甩，画面模糊成线，落幅清晰", combo: "+ 跳切 / + 快速变焦" },
+            { name: "手持晃动 Handheld", cat: "运动镜头", desc: "摄影机拿在手中自然晃动。纪录片质感，真实、紧张、临场感强。", prompt: "handheld camera, organic unstable movement, documentary realism, slight breathing shake, imperfect framing, raw energy", scene: "战争、追逐、纪录片、恐怖、现实主义", mood: ["真实", "紧张", "临场"], motion: "natural handheld tremor with breathing, slight up-down with footsteps, imperfect but intentional movement", motionTip: "自然呼吸感，步伐颠簸，不稳定的真实", combo: "+ 主观镜头 / + 近景" },
+            { name: "斯坦尼康 Steadicam", cat: "运动镜头", desc: "稳定器实现的平滑漂浮感运动。梦幻、优雅、超现实的流畅。", prompt: "steadicam shot, smooth floating movement, gliding camera, dreamlike fluid motion, weightless tracking, elegant flow", scene: "走廊长镜头、梦境、优雅行走、超现实空间", mood: ["梦幻", "优雅", "漂浮"], motion: "impossibly smooth gliding movement, no footsteps visible, floating through space, supernatural grace and flow", motionTip: "消除一切颠簸，像幽灵般漂浮移动", combo: "+ 长镜头 / + 环绕" },
+            { name: "航拍推进 Aerial Push", cat: "运动镜头", desc: "无人机向前推进飞行。宏大场景中的前进感，上帝视角的逼近。", prompt: "aerial push in, drone flying forward overhead, majestic forward movement, landscape approaching, god's eye advancing", scene: "自然奇观、城市航拍、开场、追击、发现", mood: ["宏大", "逼近", "发现"], motion: "drone glides forward maintaining altitude, world approaching below, scale and forward momentum combined", motionTip: "高空匀速前推，地面景观迎面而来", combo: "+ 大远景 / + 推镜头" },
+            { name: "变焦推 Zoom In", cat: "变焦与特效", desc: "镜头焦距变长，主体放大但透视不变。与推镜头的空间压缩不同。", prompt: "zoom in, lens focal length increasing, subject magnified without spatial change, flat compression, telephoto effect", scene: "强调、发现、惊悚、突然关注、复古风格", mood: ["强调", "发现", "突兀"], motion: "lens zooms in rapidly or slowly, subject grows in frame but background stays flat, 2D magnification", motionTip: "主体放大但背景不压缩，与dolly in区别明显", combo: "+ 特写 / + 快速变焦" },
+            { name: "变焦拉 Zoom Out", cat: "变焦与特效", desc: "镜头焦距变短，主体缩小但透视不变。环境不展开，只是缩小。", prompt: "zoom out, lens focal length decreasing, subject shrinks without spatial expansion, wide angle effect, contextual reveal", scene: "环境交代、结束、抽离、复古、喜剧", mood: ["抽离", "结束", "喜剧"], motion: "lens zooms out, subject shrinks in frame, more context visible but perspective unchanged, flat decompression", motionTip: "主体缩小，但不像dolly out那样展开空间", combo: "+ 远景 / + 建立镜头" },
+            { name: "快速变焦 Snap", cat: "变焦与特效", desc: "极速变焦，画面瞬间从广角跳到长焦。冲击力强，常用于恐怖和喜剧。", prompt: "snap zoom, rapid sudden zoom movement, whiplash focal change, comedic or horror impact, abrupt magnification", scene: "惊吓、笑点、发现、冲击、复古B级片", mood: ["冲击", "突兀", "戏谑"], motion: "instantaneous zoom with motion blur, subject snaps into close-up, disorienting and impactful", motionTip: "瞬间变焦带模糊，冲击感极强", combo: "+ 跳切 / + 荷兰角" },
+            { name: "希区柯克变焦 Dolly", cat: "变焦与特效", desc: "同时dolly out和zoom in（或相反）。背景压缩/膨胀，主体大小不变。眩晕效果。", prompt: "dolly zoom, vertigo effect, camera moves while zooming opposite, background shifts dramatically, subject size constant, disorienting perspective", scene: "震惊、眩晕、恐惧、发现、心理冲击", mood: ["眩晕", "恐惧", "超现实"], motion: "camera dollies in while zooming out, background compresses weirdly, subject stays same size, world distorts", motionTip: "前进同时变焦拉，背景变形但主体不变", combo: "+ 特写 / + 荷兰角" },
+            { name: "移焦 Rack Focus", cat: "变焦与特效", desc: "焦点从一个平面转移到另一个平面。引导观众注意力，连接两个叙事元素。", prompt: "rack focus, focus shifts from foreground to background, sharp to soft transition, attention redirection, focal plane migration", scene: "揭示线索、连接人物、发现细节、对话切换", mood: ["转移", "揭示", "连接"], motion: "focus pulls smoothly from near to far or vice versa, one subject blurs as another sharpens, narrative handoff", motionTip: "焦点平滑迁移，叙事注意力转移", combo: "+ 前景遮挡 / + 过肩镜头" },
+            { name: "浅景深 Shallow DOF", cat: "变焦与特效", desc: "只有极窄范围清晰，前后景全部虚化。隔离主体，营造私密和梦幻。", prompt: "shallow depth of field, extremely narrow focus plane, creamy bokeh background, subject isolated, f1.4 aesthetic, dreamy separation", scene: "人像、情感戏、产品、梦幻、隔离感", mood: ["私密", "梦幻", "隔离"], motion: "subject moves within thin focus plane, background remains creamy blur, rack focus when subject changes", motionTip: "主体在薄焦平面内移动，背景始终奶油般虚化", combo: "+ 特写 / + 逆光轮廓" },
+            { name: "深景深 Deep DOF", cat: "变焦与特效", desc: "从前景到背景全部清晰。信息量大，现实主义，所有元素同等重要。", prompt: "deep depth of field, everything sharp from foreground to background, f16 aesthetic, maximum information, hyperfocal distance", scene: "风景、大场面、纪录片、群戏、现实主义", mood: ["清晰", "真实", "丰富"], motion: "all planes remain sharp, subject can move freely through space without losing focus, documentary clarity", motionTip: "所有平面都清晰，人物自由移动不脱焦", combo: "+ 层次构图 / + 客观镜头" },
+            { name: "焦点跟随 Follow", cat: "变焦与特效", desc: "焦点实时跟随移动主体保持清晰。运动镜头中主体始终实焦。", prompt: "focus pull follow, focus tracks moving subject in real time, maintaining sharpness during motion, active focus pulling", scene: "运动跟拍、奔跑、车辆、动物、动态主体", mood: ["追踪", "清晰", "动态"], motion: "focus ring adjusts continuously matching subject distance, sharpness maintained despite speed, professional follow focus", motionTip: "焦点实时追踪移动主体，始终保持清晰", combo: "+ 侧跟 / + 前跟" },
+            { name: "慢门拖影 Drag", cat: "变焦与特效", desc: "降低快门速度，运动物体留下拖影。时间感、速度感、梦幻感。", prompt: "slow shutter drag, motion blur trails, long exposure effect, ghostly movement trails, time smearing, speed streaks", scene: "车流、舞蹈、打斗、时间流逝、赛博朋克", mood: ["时间", "速度", "梦幻"], motion: "moving subjects leave light trails, static elements sharp, time becomes visible, kinetic energy painted across frame", motionTip: "静态清晰+动态拖影，时间可视化", combo: "+ 放射线构图 / + 夜景" },
+            { name: "抽帧 Strobe", cat: "变焦与特效", desc: "降低帧率或间隔拍摄，动作呈现跳跃感。紧张、机械、超现实。", prompt: "strobe effect, stop motion stutter, reduced frame rate aesthetic, choppy movement, mechanical motion, time skipping", scene: "打斗、恐怖、机械、超现实、紧张节奏", mood: ["机械", "紧张", "跳跃"], motion: "movement appears in discrete jumps rather than smooth flow, each frame a frozen moment, staccato rhythm", motionTip: "动作呈跳跃式，每帧都是凝固瞬间", combo: "+ 定格 / + 跳切" },
+            { name: "建立镜头 Establish", cat: "叙事与特殊", desc: "展示场景全貌，告诉观众我们在哪里。每场戏的第一个镜头。", prompt: "establishing shot, wide view of location, setting the scene, geographical context, where are we, master location shot", scene: "每场戏开场、转场、环境交代、空间定位", mood: ["定位", "交代", "空间"], motion: "static wide shot or slow pan across location, no characters or tiny figures, pure geography and architecture", motionTip: "无人物或人物极小，纯粹交代空间", combo: "+ 大远景 / + 航拍" },
+            { name: "空镜头 Empty", cat: "叙事与特殊", desc: "没有人物的景物镜头。抒情、过渡、暗示、留白。情绪缓冲。", prompt: "empty shot, no human subjects, pure landscape or architecture, emotional punctuation, transitional scenery, atmospheric pause", scene: "情绪过渡、时间流逝、暗示、抒情、间隔", mood: ["留白", "抒情", "过渡"], motion: "static or slow drift over empty space, wind moving elements, time passing without human presence, poetic pause", motionTip: "纯景物，无人出现，情绪标点符号", combo: "+ 留白构图 / + 慢门拖影" },
+            { name: "长镜头 Long Take", cat: "叙事与特殊", desc: "不剪辑的连续长镜头。真实时间流逝，考验导演调度能力。", prompt: "long take, continuous uncut shot, real time duration, no editing, sustained sequence, one shot scene, temporal honesty", scene: "战争片开场、对话戏、动作长镜头、现实主义", mood: ["真实", "沉浸", "时间"], motion: "complex camera choreography without cuts, actors and camera moving together, sustained tension without escape", motionTip: "不剪辑的连续运动，真实时间不可逃避", combo: "+ 斯坦尼康 / + 深景深" },
+            { name: "反应镜头 Reaction", cat: "叙事与特殊", desc: "拍摄某人对事件的反应，而非事件本身。情绪传递的核心。", prompt: "reaction shot, close up of listener responding, emotional response to off-screen event, facial feedback, silent acting", scene: "对话戏、惊吓、笑点、情感冲击、内心戏", mood: ["反应", "情绪", "内心"], motion: "face transforms with emotion, micro-expressions telling the story, what is felt rather than what is seen", motionTip: "面部情绪变化是叙事核心，事件在画外", combo: "+ 近景 / + 浅景深" },
+            { name: "插入镜头 Insert", cat: "叙事与特殊", desc: "插入一个与主线相关的细节镜头。补充信息，打破节奏。", prompt: "insert shot, cutaway to relevant detail, supplementary information shot, narrative punctuation, contextual insert", scene: "看时间、拿道具、按按钮、看照片、线索展示", mood: ["补充", "细节", "线索"], motion: "brief shot of object or detail, quick and informative, then cut back to main action, narrative glue", motionTip: "短暂切入细节，快速补充信息", combo: "+ 细节特写 / + 移焦" },
+            { name: "反打镜头 Reverse", cat: "叙事与特殊", desc: "轴线另一侧拍摄对话另一方。经典对话剪辑的基础。", prompt: "reverse angle shot, camera on opposite side of axis, looking at other speaker, 180 degree flip, conversational counter shot", scene: "对话戏、面试、对峙、正反打剪辑", mood: ["对话", "回应", "关系"], motion: "cut to opposite angle, maintaining eyeline match, spatial continuity preserved, back and forth rhythm", motionTip: "轴线另一侧，保持视线匹配", combo: "+ 过肩镜头 / + 中全景" },
+            { name: "越轴镜头 Crossing", cat: "叙事与特殊", desc: "故意越过180度轴线拍摄。空间错乱、心理失衡、超现实。", prompt: "crossing the line, intentionally breaking 180 degree rule, spatial disorientation, wrong side of axis, psychological confusion", scene: "精神错乱、梦境、冲突、超现实、迷失", mood: ["错乱", "迷失", "超现实"], motion: "camera jumps to wrong side of axis, characters appear to swap positions, audience spatial sense disrupted", motionTip: "故意违反轴线，人物位置互换制造错乱", combo: "+ 荷兰角 / + 跳切" },
+            { name: "跳切 Jump Cut", cat: "叙事与特殊", desc: "同一机位连续剪辑，时间被压缩。戈达尔开创，现代短视频常用。", prompt: "jump cut, same angle time compression, temporal ellipsis, continuous action with gaps, Godard style, time skipping edit", scene: "时间流逝、化妆过程、走路、等待、短视频", mood: ["时间", "压缩", "现代"], motion: "subject jumps position within same framing, time visibly compressed, casual modern editing rhythm", motionTip: "同机位剪辑，人物位置跳跃，时间被吃掉", combo: "+ 抽帧 / + 快速变焦" },
+            { name: "定格 Freeze", cat: "叙事与特殊", desc: "画面突然静止，像照片一样凝固。强调、死亡、记忆、喜剧。", prompt: "freeze frame, image suddenly stops moving, photograph-like stillness, suspended animation, memory moment, comic punctuation", scene: "死亡瞬间、喜剧定格、记忆闪回、强调、结尾", mood: ["凝固", "记忆", "强调"], motion: "action halts abruptly, single frame held, world stops while narrative continues, suspended in time", motionTip: "动态突然凝固，时间暂停的标点", combo: "+ 特写 / + 打破构图" },
+            { name: "分屏 Split Screen", cat: "叙事与特殊", desc: "同一画面分割显示多个时空。对比、并置、多线叙事。", prompt: "split screen, multiple frames within one image, simultaneous spaces, parallel action comparison, divided composition", scene: "电话两端、对比、多线叙事、同时异地、创意", mood: ["并置", "对比", "多线"], motion: "two or more scenes play simultaneously in divided frame, actions echoing or contrasting across the divide", motionTip: "多画面同时播放，动作呼应或对比", combo: "+ 双人景 / + 反射视角" }
+        ];
+
+        function renderDetail(index) {
+            const c = shots[index];
+            const color = chapterColors[c.cat];
+            const num = String(index + 1).padStart(2, '0');
+            const moodTags = c.mood.map(function(m) { return '<span class="tag-pill">' + m + '</span>'; }).join('');
+
+            document.getElementById('detail-view').innerHTML = 
+                '<div class="section-title">' +
+                    c.name +
+                    '<span class="tag" style="background: ' + color + '22; color: ' + color + ';">' + c.cat + '</span>' +
+                '</div>' +
+                '<div class="section-desc">' + c.desc + '</div>' +
+                '<div class="storyboard-grid">' +
+                    '<div class="story-card">' +
+                        '<div class="card-header">' +
+                            '<span class="card-id">#' + num + '</span>' +
+                            '<span class="card-type">STILL / VIDEO</span>' +
+                        '</div>' +
+                        '<div class="card-body">' +
+                            '<div class="prompt-block">' + c.prompt + '\
+                                <button class="copy-btn" onclick="copyPrompt(this, this.parentNode.textContent.replace(\"复制\",\"").trim())">复制</button></div>' +
+                            '<div class="info-row">' +
+                                '<div class="info-item">' +
+                                    '<div class="info-label">适用场景</div>' +
+                                    '<div class="info-value td-scene">' + c.scene + '</div>' +
+                                '</div>' +
+                                '<div class="info-item">' +
+                                    '<div class="info-label">情绪标签</div>' +
+                                    '<div class="emotion-tags">' + moodTags + '</div>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="story-card">' +
+                        '<div class="card-header">' +
+                            '<span class="card-id" style="color:' + color + '">变体</span>' +
+                            '<span class="card-type">动态分镜</span>' +
+                        '</div>' +
+                        '<div class="card-body">' +
+                            '<div class="prompt-block">' + c.motion + '\
+                                <button class="copy-btn" onclick="copyPrompt(this, this.parentNode.textContent.replace(\"复制\",\"").trim())">复制</button></div>' +
+                            '<div class="info-row">' +
+                                '<div class="info-item">' +
+                                    '<div class="info-label">视频要点</div>' +
+                                    '<div class="info-value td-scene">' + c.motionTip + '</div>' +
+                                '</div>' +
+                                '<div class="info-item">' +
+                                    '<div class="info-label">组合建议</div>' +
+                                    '<div class="info-value td-scene">' + c.combo + '</div>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+        }
+
+        function showDetail(index) {
+            var items = document.querySelectorAll('.shot-item');
+            for (var i = 0; i < items.length; i++) {
+                items[i].classList.toggle('active', i === index);
+            }
+            renderDetail(index);
+            document.querySelector('.workspace').scrollTo({ top: 0, behavior: 'smooth' });
+            updateHash(index);
+            if (window.innerWidth < 1200) closeDrawer();
+        }
+
+        function initTable() {
+            var tbody = document.getElementById('table-body');
+            for (var i = 0; i < shots.length; i++) {
+                var item = shots[i];
+                var tr = document.createElement('tr');
+                tr.innerHTML = 
+                    '<td style="color:var(--accent);font-weight:800;">' + String(i+1).padStart(2,'0') + '</td>' +
+                    '<td class="td-scene">' + item.name + '</td>' +
+                    '<td><span style="color:var(--text-dark);font-size:12px;">' + item.cat + '</span></td>' +
+                    '<td class="td-prompt" title="' + item.prompt + '">' + item.prompt + '</td>' +
+                    '<td>' + item.scene + '</td>' +
+                    '<td><span style="font-size:12px;color:var(--text-dim);">' + item.mood.join('·') + '</span></td>';
+                tbody.appendChild(tr);
+            }
+        }
+
+        // ===== v2 功能：搜索 =====
+        function initSearch() {
+            const searchInput = document.getElementById('search-input');
+            if (!searchInput) return;
+            searchInput.addEventListener('input', function(e) {
+                const keyword = e.target.value.toLowerCase().trim();
+                filterItems(keyword);
+            });
+        }
+        function filterItems(keyword) {
+            const items = document.querySelectorAll('.shot-item');
+            const rows = document.querySelectorAll('#table-body tr');
+            let visibleCount = 0;
+            items.forEach(function(item, idx) {
+                const text = item.textContent.toLowerCase();
+                const data = shots[idx];
+                const match = !keyword ||
+                    text.includes(keyword) ||
+                    data.name.toLowerCase().includes(keyword) ||
+                    data.cat.toLowerCase().includes(keyword) ||
+                    data.prompt.toLowerCase().includes(keyword) ||
+                    data.scene.toLowerCase().includes(keyword) ||
+                    data.mood.some(function(m) { return m.toLowerCase().includes(keyword); });
+                item.classList.toggle('hidden-item', !match);
+                if (match) visibleCount++;
+            });
+            rows.forEach(function(row) {
+                const text = row.textContent.toLowerCase();
+                row.classList.toggle('hidden-row', keyword && !text.includes(keyword));
+            });
+            const stats = document.getElementById('search-stats');
+            if (stats) {
+                stats.textContent = keyword ? '匹配 ' + visibleCount + ' 项' : '共 60 项';
+            }
+        }
+
+        // ===== v2 功能：一键复制 =====
+        function copyPrompt(btn, text) {
+            navigator.clipboard.writeText(text).then(function() {
+                btn.textContent = '已复制';
+                btn.classList.add('copied');
+                setTimeout(function() {
+                    btn.textContent = '复制';
+                    btn.classList.remove('copied');
+                }, 1500);
+            });
+        }
+
+        // ===== v2 功能：URL Hash 路由 =====
+        function updateHash(index) {
+            if (history.replaceState) {
+                history.replaceState(null, null, '#item=' + index);
+            }
+        }
+        function readHash() {
+            var hash = window.location.hash;
+            var match = hash.match(/item=(\d+)/);
+            return match ? parseInt(match[1]) : 0;
+        }
+
+        // ===== v2 功能：移动端抽屉 =====
+        function toggleDrawer() {
+            document.getElementById('sidebar-drawer').classList.toggle('open');
+            document.getElementById('drawer-overlay').classList.toggle('active');
+        }
+        function closeDrawer() {
+            document.getElementById('sidebar-drawer').classList.remove('open');
+            document.getElementById('drawer-overlay').classList.remove('active');
+        }
+
+        // ===== v2 功能：随机灵感 =====
+        function randomInspiration() {
+            var items = [];
+            for (var i = 0; i < 3; i++) {
+                var idx = Math.floor(Math.random() * shots.length);
+                items.push(shots[idx]);
+            }
+            var result = items.map(function(c) {
+                return '<strong style="color:' + (chapterColors[c.cat] || 'var(--accent)') + ';">' + c.name + '</strong>';
+            }).join(' <span style="color:var(--text-dark);">+</span> ');
+            document.getElementById('inspiration-result').innerHTML = result;
+        }
+
+        function exportJSON() {
+            var data = [];
+            for (var i = 0; i < shots.length; i++) {
+                var c = shots[i];
+                data.push({
+                    shot_id: 'SHOT_' + String(i+1).padStart(2,'0'),
+                    shot_name: c.name,
+                    category: c.cat,
+                    prompt: c.prompt,
+                    motion_prompt: c.motion,
+                    scene: c.scene,
+                    mood: c.mood,
+                    combo: c.combo,
+                    note: ""
+                });
+            }
+            var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = '60_shot_types_storyboard.json';
+            a.click();
+        }
+
+        // v2 初始化
+        renderDetail(0);
+        initTable();
+        initSearch();
+        var hashIdx = readHash();
+        if (hashIdx >= 0 && hashIdx < shots.length) {
+            showDetail(hashIdx);
+        }
+    </script>
+</body>
+</html>

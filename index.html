@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GaryAIGC | 用AI编织你的梦想</title>
+    <meta name="description" content="GaryAIGC个人站 - AI影视创作、ComfyUI教程、网盘资源分享、平台福利与私域入口。">
+    <link rel="icon" href="favicon.ico">
+    <style>
+        :root {
+            --bg: #050508;
+            --bg-elevated: #0f0f16;
+            --surface: #13131f;
+            --surface-hover: #1a1a2e;
+            --border: rgba(255,255,255,0.06);
+            --border-hover: rgba(255,255,255,0.15);
+            --accent-cyan: #00d4ff;
+            --accent-purple: #c084fc;
+            --accent-pink: #ff6b9d;
+            --accent-green: #07c160;
+            --accent-red: #ff4444;
+            --accent-orange: #ffaa00;
+            --text: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #5a5a6e;
+            --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #c084fc 100%);
+            --gradient-bg: linear-gradient(180deg, #050508 0%, #0a0a14 100%);
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+            --radius: 16px;
+            --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #2a2a3e; border-radius: 3px; }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(5,5,8,0.8);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-size: 22px;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover { color: var(--text); }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: var(--gradient-primary);
+            transition: var(--transition);
+            border-radius: 1px;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+
+        .lang-switch {
+            display: flex;
+            gap: 4px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3px;
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            padding: 5px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-sans);
+        }
+
+        .lang-btn.active {
+            background: rgba(255,255,255,0.1);
+            color: var(--text);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 24px 100px;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0,212,255,0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(192,132,252,0.08) 0%, transparent 40%);
+        }
+
+        .hero-content { position: relative; z-index: 2; max-width: 800px; }
+
+        .hero h1 {
+            font-size: clamp(48px, 10vw, 96px);
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1.05;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-slogan {
+            font-size: clamp(20px, 4vw, 32px);
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+        }
+
+        .hero-sub {
+            font-size: clamp(14px, 2vw, 18px);
+            color: var(--text-secondary);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 48px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            font-family: var(--font-sans);
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: #000;
+            box-shadow: 0 4px 24px rgba(0,212,255,0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0,212,255,0.4);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-bili { background: #FB7299; color: #fff; }
+        .btn-bili:hover { background: #ff85a7; transform: translateY(-2px); }
+
+        /* ===== SECTIONS COMMON ===== */
+        section {
+            padding: 100px 24px;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .section-line {
+            width: 4px;
+            height: 48px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(24px, 4vw, 32px);
+            font-weight: 700;
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+
+        .section-header .en {
+            font-size: 13px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        .card:hover::before { opacity: 1; }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .card-grid-2 { grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
+        .card-grid-3 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+
+        /* ===== PLATFORM CARDS ===== */
+        .platform-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 40px 24px;
+            color: var(--text);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .platform-card.bili { background: linear-gradient(135deg, rgba(251,114,153,0.15), rgba(251,114,153,0.05)); border: 1px solid rgba(251,114,153,0.2); }
+        .platform-card.wx { background: linear-gradient(135deg, rgba(7,193,96,0.15), rgba(7,193,96,0.05)); border: 1px solid rgba(7,193,96,0.2); }
+        .platform-card.yt { background: linear-gradient(135deg, rgba(255,68,68,0.15), rgba(255,68,68,0.05)); border: 1px solid rgba(255,68,68,0.2); }
+
+        .platform-card:hover { transform: translateY(-6px); filter: brightness(1.1); }
+
+        .platform-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .platform-card h3 { font-size: 28px; margin-bottom: 4px; }
+        .platform-card span { font-size: 14px; opacity: 0.8; margin-bottom: 24px; }
+
+        .platform-btn {
+            display: inline-block;
+            padding: 10px 24px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .platform-card:hover .platform-btn { background: rgba(0,0,0,0.5); border-color: rgba(255,255,255,0.3); }
+
+        /* ===== RUNNINGHUB ===== */
+        .rh-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rh-card::after {
+            content: '';
+            position: absolute;
+            top: -50%; right: -50%;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .rh-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 32px;
+        }
+
+        .rh-benefits h4 {
+            font-size: 16px;
+            color: var(--accent-orange);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rh-benefits ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .rh-benefits li {
+            font-size: 15px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .rh-benefits li strong { color: var(--accent-orange); font-weight: 600; }
+        .rh-benefits li .tag-small {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-left: 4px;
+        }
+
+        .rh-code-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .rh-code-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .rh-code {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            letter-spacing: 2px;
+            background: rgba(0,212,255,0.05);
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(0,212,255,0.2);
+        }
+
+        .btn-copy {
+            padding: 10px 20px;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+            font-family: var(--font-sans);
+        }
+
+        .btn-copy:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+        .btn-copy.copied { background: var(--accent-green); color: #fff; border-color: var(--accent-green); }
+
+        .rh-actions {
+            display: flex;
+            gap: 12px;
+            margin-left: auto;
+        }
+
+        .btn-rh-cn {
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            color: #000;
+            padding: 12px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-rh-global {
+            background: linear-gradient(135deg, #c084fc, #ff6b9d);
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-rh-cn:hover, .btn-rh-global:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        /* ===== DOCS ===== */
+        .doc-card {
+            display: block;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .doc-card:hover {
+            border-color: var(--accent-purple);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+        }
+
+        .doc-tag {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(192,132,252,0.1);
+            color: var(--accent-purple);
+            border: 1px solid rgba(192,132,252,0.2);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        .doc-card h3 { font-size: 22px; margin-bottom: 10px; color: var(--text); }
+        .doc-card p { color: var(--text-secondary); font-size: 15px; line-height: 1.7; }
+
+        /* ===== RESOURCES ===== */
+        .resource-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            transition: var(--transition);
+        }
+
+        .resource-card:hover { border-color: var(--border-hover); transform: translateY(-4px); }
+
+        .resource-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .resource-icon { font-size: 36px; }
+
+        .resource-header h3 { font-size: 22px; font-weight: 700; }
+        .resource-header .en {
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .resource-card > p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .resource-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-feishu {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: linear-gradient(135deg, #3370ff, #00d6b9);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .btn-notion {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: linear-gradient(135deg, #c084fc, #ff6b9d);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .btn-feishu:hover, .btn-notion:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        /* ===== TOPICS ===== */
+        .topic-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .topic-card:hover { border-color: var(--accent-cyan); transform: translateY(-4px); }
+
+        .topic-card h3 {
+            font-size: 22px;
+            color: var(--accent-cyan);
+            margin-bottom: 4px;
+        }
+
+        .topic-card .en {
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .topic-card .divider {
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 16px;
+        }
+
+        .topic-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.7;
+            flex: 1;
+            margin-bottom: 24px;
+        }
+
+        .topic-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-cn {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            color: #000;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .btn-global {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: linear-gradient(135deg, #c084fc, #ff6b9d);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .btn-cn:hover, .btn-global:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        /* ===== WORKBENCH ===== */
+        .wb-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wb-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .wb-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0,212,255,0.3);
+            box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+        }
+
+        .wb-card:hover::before { opacity: 1; }
+
+        .wb-icon {
+            width: 56px; height: 56px;
+            border-radius: 14px;
+            background: rgba(0,212,255,0.08);
+            border: 1px solid rgba(0,212,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .wb-card h3 { font-size: 20px; margin-bottom: 10px; }
+        .wb-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 16px; }
+        .wb-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'SF Mono', monospace;
+        }
+
+        /* ===== CONTACT ===== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .contact-info h2 { font-size: 32px; margin-bottom: 16px; }
+        .contact-info > p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        .contact-item strong { color: var(--text); min-width: 60px; }
+        .contact-item a { color: var(--accent-cyan); text-decoration: none; }
+        .contact-item a:hover { text-decoration: underline; }
+
+        .qr-wrap {
+            display: flex;
+            gap: 24px;
+            justify-content: flex-end;
+        }
+
+        .qr-box {
+            text-align: center;
+        }
+
+        .qr-box img {
+            width: 160px; height: 160px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: #fff;
+            padding: 4px;
+            object-fit: cover;
+        }
+
+        .qr-label {
+            margin-top: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* ===== WECHAT MODAL ===== */
+        #wechatModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(5,5,8,0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: var(--surface);
+            width: 95%;
+            max-width: 520px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 40px 30px 30px;
+            border-radius: 20px;
+            border: 1px solid var(--border-hover);
+            position: relative;
+            text-align: center;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px; right: 20px;
+            font-size: 32px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 40px; height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover { color: var(--text); }
+
+        .modal-content h2 { font-size: 24px; margin-bottom: 8px; }
+        .modal-content .sub { color: var(--text-muted); font-size: 14px; margin-bottom: 28px; }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .modal-qr-item {
+            background: var(--bg-elevated);
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+
+        .modal-qr-item .qr-name {
+            color: var(--accent-cyan);
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .modal-qr-item img {
+            width: 100%;
+            max-width: 200px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            background: #fff;
+            padding: 3px;
+        }
+
+        .btn-copy-wx {
+            width: 100%;
+            padding: 10px;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-sans);
+        }
+
+        .btn-copy-wx:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+
+        .modal-back {
+            margin-top: 24px;
+            color: var(--text-muted);
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .modal-back:hover { color: var(--text); }
+
+        /* ===== FOOTER ===== */
+        .site-footer {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border);
+            padding: 60px 24px 40px;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-disclaimer {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 2;
+            margin-bottom: 40px;
+            text-align: justify;
+        }
+
+        .footer-disclaimer strong { color: var(--text-secondary); }
+
+        .footer-beian {
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-beian a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin: 0 8px;
+            transition: var(--transition);
+        }
+
+        .footer-beian a:hover { color: var(--accent-cyan); }
+
+        .copyright {
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ===== TOAST ===== */
+        #customToast {
+            visibility: hidden;
+            min-width: 280px;
+            background: var(--surface);
+            color: var(--text);
+            text-align: center;
+            border-radius: 50px;
+            padding: 16px 24px;
+            position: fixed;
+            z-index: 3000;
+            left: 50%;
+            bottom: 10%;
+            transform: translateX(-50%);
+            border: 1px solid var(--accent-cyan);
+            font-size: 14px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        #customToast.show { visibility: visible; animation: fadein 0.3s; }
+
+        @keyframes fadein {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 1024px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .card-grid-2, .card-grid-3 { grid-template-columns: 1fr; }
+            .rh-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+            .qr-wrap { justify-content: center; }
+            .rh-actions { width: 100%; margin-top: 16px; margin-left: 0; }
+            .rh-code-area { flex-direction: column; align-items: flex-start; }
+            .modal-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            section { padding: 60px 20px; }
+            .hero { min-height: auto; padding-top: 100px; padding-bottom: 60px; }
+            .hero-actions { flex-direction: column; width: 100%; }
+            .hero-actions .btn { width: 100%; justify-content: center; }
+            .platform-card { padding: 32px 20px; }
+            .resource-actions, .topic-actions { flex-direction: column; }
+            .rh-actions { flex-direction: column; }
+            .btn-rh-cn, .btn-rh-global { width: 100%; text-align: center; }
+            .qr-wrap { flex-direction: column; align-items: center; }
+            .footer-disclaimer { text-align: left; }
+        }
+
+        /* Mobile menu */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(5,5,8,0.98);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .mobile-nav.active { display: flex; }
+
+        .mobile-nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .mobile-nav .close-btn {
+            position: absolute;
+            top: 20px; right: 24px;
+            background: none; border: none;
+            color: var(--text); font-size: 32px;
+            cursor: pointer;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+<base target="_blank">
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?e459d7329e9da999a234c4dfcb681691";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?e459d7329e9da999a234c4dfcb681691";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">GaryAIGC</a>
+            <div class="nav-links">
+                <a href="#platforms" data-i18n="nav_platform">创作平台</a>
+                <a href="#runninghub" data-i18n="nav_rh">RunningHub</a>
+                <a href="#workbench" data-i18n="nav_wb">影视工作台</a>
+                <a href="#aicoding" data-i18n="nav_aicoding">AI Coding</a>
+                <a href="#docs" data-i18n="nav_docs">文档库</a>
+                <a href="#resources" data-i18n="nav_res">资源</a>
+                <a href="#topics" data-i18n="nav_topics">专题</a>
+                <a href="#contact" data-i18n="nav_contact">联系</a>
+                <div class="lang-switch">
+                    <button class="lang-btn active" onclick="setLang('zh')">中</button>
+                    <button class="lang-btn" onclick="setLang('en')">EN</button>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobile()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-nav" id="mobileNav">
+        <button class="close-btn" onclick="toggleMobile()">×</button>
+        <a href="#platforms" onclick="toggleMobile()">创作平台</a>
+        <a href="#runninghub" onclick="toggleMobile()">RunningHub</a>
+        <a href="#workbench" onclick="toggleMobile()">影视工作台</a>
+        <a href="#aicoding" onclick="toggleMobile()">AI Coding</a>
+        <a href="#docs" onclick="toggleMobile()">文档库</a>
+        <a href="#resources" onclick="toggleMobile()">资源</a>
+        <a href="#topics" onclick="toggleMobile()">专题</a>
+        <a href="#contact" onclick="toggleMobile()">联系</a>
+    </div>
+
+    <!-- Hero -->
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1>Gary<span class="gradient-text">AIGC</span></h1>
+            <div class="hero-slogan" data-i18n="hero_slogan">用 AI 编织你的梦想</div>
+            <div class="hero-sub" data-i18n="hero_sub">Weaving your dreams with AI</div>
+            <div class="hero-actions">
+                <a href="https://space.bilibili.com/669645699" target="_blank" class="btn btn-bili" data-i18n="btn_bili">🎬 访问 B 站主页</a>
+                <a href="#resources" class="btn btn-secondary" data-i18n="btn_res">📦 往期资源下载</a>
+                <a href="#runninghub" class="btn btn-secondary" data-i18n="btn_rh">🚀 RunningHub 福利</a>
+                <button class="btn btn-secondary" onclick="openWxModal()" data-i18n="btn_contact">💬 联系微信</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section: 我的创作平台 -->
+    <section id="platforms">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-line"></div>
+                <div>
+                    <h2 data-i18n="sec_platform_title">我的创作平台</h2>
+                    <div class="en" data-i18n="sec_platform_en">CREATIVE PLATFORMS</div>
+                </div>
+            </div>
+            <div class="card-grid card-grid-3">
+                <a href="https://space.bilibili.com/669645699" target="_blank" class="platform-card bili">
+                    <div class="platform-icon">📺</div>
+                    <h3>B站</h3>
+                    <span>Bilibili</span>
+                    <div class="platform-btn" data-i18n="btn_visit_channel">Visit Channel →</div>
+                </a>
+                <div class="platform-card wx" onclick="openWxModal()">
+                    <div class="platform-icon">💬</div>
+                    <h3 data-i18n="platform_wx">微信联系</h3>
+                    <span>Community</span>
+                    <div class="platform-btn" data-i18n="btn_contact_me">Contact Me →</div>
+                </div>
+                <a href="https://www.youtube.com/@GaryAIGC" target="_blank" class="platform-card yt">
+                    <div class="platform-icon">▶️</div>
+                    <h3>YouTube</h3>
+                    <span>Global</span>
+                    <div class="platform-btn" data-i18n="btn_subscribe">Subscribe →</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: RunningHub -->
+    <section id="runninghub" style="background: linear-gradient(180deg, var(--bg) 0%, rgba(0,212,255,0.02) 50%, var(--bg) 100%);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-line"></div>
+                <div>
+                    <h2 data-i18n="sec_rh_title">RunningHub × GaryAIGC 粉丝专属福利</h2>
+                    <div class="en" data-i18n="sec_rh_en">EXCLUSIVE CREATOR REWARDS</div>
+                </div>
+            </div>
+            <div class="rh-card">
+                <div class="rh-grid">
+                    <div class="rh-benefits">
+                        <h4>🎁 <span data-i18n="rh_gift">算力大礼包</span>:</h4>
+                        <ul>
+                            <li>✨ <span data-i18n="rh_reg">注册领</span> <strong>1000 RH币</strong> <span class="tag-small" data-i18n="rh_reg_note">(自行注册仅 500点)</span></li>
+                            <li>💰 <span data-i18n="rh_daily">每日登录补赠</span> <strong>100币</strong>，<span data-i18n="rh_valid">老许粉丝长期有效</span></li>
+                            <li>🔥 <span data-i18n="rh_both">两站独立：</span><strong data-i18n="rh_both_val">两边都注册 = 领 2000币</strong></li>
+                            <li>💡 <span data-i18n="rh_old">老账号点击头像即可补填</span></li>
+                        </ul>
+                    </div>
+                    <div class="rh-benefits">
+                        <h4>🌍 Global Benefits:</h4>
+                        <ul>
+                            <li>✨ <strong>1000 RH Coins</strong> <span class="tag-small">on signup (vs 500 self-reg)</span></li>
+                            <li>💰 <strong>Daily +100 Coins</strong> bonus reward</li>
+                            <li>🚀 <strong>2000 Coins</strong> if you register both sites</li>
+                            <li>💡 Apply code in settings for old accounts</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="rh-code-area">
+                    <span class="rh-code-label" data-i18n="rh_code_label">专属邀请码 / Invite Code:</span>
+                    <div class="rh-code" id="rhCode">rh-v1394</div>
+                    <button class="btn-copy" onclick="copyCode()" data-i18n="btn_copy">点击复制 / COPY</button>
+                    <div class="rh-actions">
+                        <a href="https://www.runninghub.cn/user-center/1904389812667756546/?inviteCode=rh-v1394" target="_blank" class="btn-rh-cn" data-i18n="btn_rh_cn">国内站 (.cn)</a>
+                        <a href="https://www.runninghub.ai/user-center/1904389812667756546/?inviteCode=rh-v1394" target="_blank" class="btn-rh-global" data-i18n="btn_rh_global">Global Site (.ai)</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: AI影视创作超级工作台 -->
+    <section id="workbench">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-line"></div>
+                <div>
+                    <h2 data-i18n="sec_wb_title">AI 影视创作超级工作台</h2>
+                    <div class="en" data-i18n="sec_wb_en">AI FILMMAKING SUPER WORKBENCH</div>
+                </div>
+            </div>
+            <div class="card-grid card-grid-3">
+                <a href="./25种构图 · 无限画布分镜模板.html" target="_blank" class="wb-card">
+                    <div class="wb-icon">🎨</div>
+                    <h3 data-i18n="wb1_title">25种构图 · 分镜模板</h3>
+                    <p data-i18n="wb1_desc">从三分法到打破构图，5大功能模块全覆盖。中英双语提示词，可直接用于 ComfyUI / 无限画布。</p>
+                    <div class="wb-meta">
+                        <span>25 Items</span>
+                        <span>Composition</span>
+                    </div>
+                </a>
+                <a href="./60种镜头语言 · 无限画布分镜模板.html" target="_blank" class="wb-card">
+                    <div class="wb-icon" style="background: rgba(192,132,252,0.08); border-color: rgba(192,132,252,0.15);">🎬</div>
+                    <h3 data-i18n="wb2_title">60种镜头语言 · 分镜模板</h3>
+                    <p data-i18n="wb2_desc">景别、角度、运动、变焦、叙事五大类。从 ELS 大远景到分屏，完整影视语法库。</p>
+                    <div class="wb-meta">
+                        <span>60 Items</span>
+                        <span>Shot Language</span>
+                    </div>
+                </a>
+                <a href="./AI影视创作超级工作台 · 151种进阶语法.html" target="_blank" class="wb-card">
+                    <div class="wb-icon" style="background: rgba(255,107,157,0.08); border-color: rgba(255,107,157,0.15);">⚡</div>
+                    <h3 data-i18n="wb3_title">151种进阶语法 · 超级工作台</h3>
+                    <p data-i18n="wb3_desc">光影×转场×场景×表演×剪辑，五大模块全覆盖。从单帧到成片的完整 AI 影视系统。</p>
+                    <div class="wb-meta">
+                        <span>151 Items</span>
+                        <span>5 Modules</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: AI Coding -->
+    <section id="aicoding" style="background: linear-gradient(180deg, var(--bg) 0%, rgba(16,163,127,0.02) 50%, var(--bg) 100%);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-line"></div>
+                <div>
+                    <h2 data-i18n="sec_aicoding_title">AI Coding 编程指南</h2>
+                    <div class="en" data-i18n="sec_aicoding_en">AI CODING & DEVELOPMENT</div>
+                </div>
+            </div>
+            <div class="card-grid card-grid-2">
+                <a href="./claude-code-guide.html" target="_blank" class="doc-card">
+                    <div class="doc-tag" style="background: rgba(16,163,127,0.1); color: var(--accent-green); border-color: rgba(16,163,127,0.2);">CLUADE CODE</div>
+                    <h3 data-i18n="aicoding1_title">Claude Code 完全指南</h3>
+                    <p data-i18n="aicoding1_desc">从入门到精通的 AI 终端代理教程。涵盖安装配置、权限管理、上下文控制、CLAUDE.md 记忆系统、Skills / MCP / Sub-agent 高级拓展。</p>
+                </a>
+                <a href="./ai-coding-guide.html" target="_blank" class="doc-card">
+                    <div class="doc-tag" style="background: rgba(255,170,0,0.1); color: var(--accent-orange); border-color: rgba(255,170,0,0.2);">TOOLKIT</div>
+                    <h3 data-i18n="aicoding2_title">AI Coding 形态辨析与配置手册</h3>
+                    <p data-i18n="aicoding2_desc">Claude Code / Cursor / OpenAI Codex 三方对比，国内第三方 API 配置方案，MCP / SDK / Agent 核心概念词典，AI 视频剪辑实战流水线。</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: 硬核文档库 -->
+    <section id="docs" style="background: var(--bg-elevated);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-line"></div>
+                <div>
+                    <h2 data-i18n="sec_docs_title">GaryAIGC 硬核文档库</h2>
+                    <div class="en" data-i18n="sec_docs_en">TECHNICAL WHITE PAPERS & DOCS</div>
+                </div>
+            </div>
+            <div class="card-grid">
+                <a href="./upscale/" target="_blank" class="doc-card">
+                    <div class="doc-tag">2026 UPDATE</div>
+                    <h3 data-i18n="doc1_title">ComfyUI 图像放大技术白皮书</h3>
+                    <p data-i18n="doc1_desc">从像素插值到语义重构，揭秘 SeedVR、SUPIR 等前沿放大技术的底层逻辑与参数实战。</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: 主要项目与资源 -->
+    <section id="resources">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-line"></div>
+                <div>
+                    <h2 data-i18n="sec_res_title">主要项目与资源</h2>
+                    <div class="en" data-i18n="sec_res_en">MAIN PROJECTS & RESOURCES</div>
+                </div>
+            </div>
+            <div class="card-grid card-grid-2">
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <div class="resource-icon">📁</div>
+                        <div>
+                            <h3 data-i18n="res1_title">往期公开文件获取</h3>
+                            <div class="en">PUBLIC ARCHIVE</div>
+                        </div>
+                    </div>
+                    <p data-i18n="res1_desc">整合包、资源合集、历史实战下载。含网盘直链与分类索引。</p>
+                    <div class="resource-actions">
+                        <a href="https://laoxu666.feishu.cn/wiki/NOMkwBRxpiwQ5tkSidqcVcVWn0b" target="_blank" class="btn-feishu">🚀 国内加速 (飞书)</a>
+                        <a href="https://www.notion.so/2e1079fdbc3880c3975fc6ec818789e7?source=copy_link" target="_blank" class="btn-notion">🌍 Global (Notion)</a>
+                    </div>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <div class="resource-icon">🎁</div>
+                        <div>
+                            <h3 data-i18n="res2_title">各类AI平台专属福利</h3>
+                            <div class="en">SPECIAL OFFERS</div>
+                        </div>
+                    </div>
+                    <p data-i18n="res2_desc">粉丝专属注册奖励、折扣与云端资源。持续更新各平台拉新福利。</p>
+                    <div class="resource-actions">
+                        <a href="https://laoxu666.feishu.cn/wiki/Tzesw1KBRiyhdCk5dPzcZ0ubnkb" target="_blank" class="btn-feishu">🚀 国内加速 (飞书)</a>
+                        <a href="https://www.notion.so/AI-2e1079fdbc3880539a44e930ed397db5?source=copy_link" target="_blank" class="btn-notion">🌍 Global (Notion)</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: 专题内容 -->
+    <section id="topics" style="background: var(--bg-elevated);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-line"></div>
+                <div>
+                    <h2 data-i18n="sec_topics_title">专题内容</h2>
+                    <div class="en" data-i18n="sec_topics_en">SPECIAL TOPICS</div>
+                </div>
+            </div>
+            <div class="card-grid card-grid-3">
+                <div class="topic-card">
+                    <h3>ComfyUI教程</h3>
+                    <div class="en">COMFYUI</div>
+                    <div class="divider"></div>
+                    <p data-i18n="topic1_desc">ComfyUI 满血整合包配置与实战教学指南。从节点逻辑到工作流搭建。</p>
+                    <div class="topic-actions">
+                        <a href="https://laoxu666.feishu.cn/wiki/G9yXwV7UsiWsxGkFGMjchs30n2d" target="_blank" class="btn-cn">国内访问</a>
+                        <a href="#" class="btn-global" onclick="alert('海外版本整理中 / Global version coming soon')">Global</a>
+                    </div>
+                </div>
+                <div class="topic-card">
+                    <h3 data-i18n="topic2_title">好用的AI工具</h3>
+                    <div class="en">AI TOOLS</div>
+                    <div class="divider"></div>
+                    <p data-i18n="topic2_desc">追踪全球最新 AI 插件与工具神器。视频、图像、音频生产力工具评测。</p>
+                    <div class="topic-actions">
+                        <a href="https://laoxu666.feishu.cn/wiki/NOMkwBRxpiwQ5tkSidqcVcVWn0b" target="_blank" class="btn-cn">国内访问</a>
+                        <a href="#" class="btn-global" onclick="alert('海外版本整理中 / Global version coming soon')">Global</a>
+                    </div>
+                </div>
+                <div class="topic-card">
+                    <h3 data-i18n="topic3_title">AIPC配置指南</h3>
+                    <div class="en">AIPC GUIDE</div>
+                    <div class="divider"></div>
+                    <p data-i18n="topic3_desc">针对 AI 创作的硬件选购与部署方案。显卡、内存、模型存储全攻略。</p>
+                    <div class="topic-actions">
+                        <a href="#" class="btn-cn" onclick="alert('内容整理中 / Coming soon')">国内访问</a>
+                        <a href="#" class="btn-global" onclick="alert('海外版本整理中 / Global version coming soon')">Global</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Contact -->
+    <section id="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2 data-i18n="contact_title">联系 <span class="gradient-text">合作</span></h2>
+                    <p data-i18n="contact_desc">商务合作、工具评测、教程定制、技术交流，欢迎通过以下方式找到我。添加微信时请备注来意，加入私域获取最新资源与一对一答疑。</p>
+                    
+                    <div class="contact-item">
+                        <strong data-i18n="label_wx">微信</strong>
+                        <span>GaryAigo</span>
+                    </div>
+                    <div class="contact-item">
+                        <strong>B站</strong>
+                        <a href="https://space.bilibili.com/669645699" target="_blank">space.bilibili.com/669645699</a>
+                    </div>
+                    <div class="contact-item">
+                        <strong data-i18n="label_site">站点</strong>
+                        <span>dream3d.vip</span>
+                    </div>
+
+                    <div style="margin-top: 32px;">
+                        <a href="https://space.bilibili.com/669645699" target="_blank" class="btn btn-primary" data-i18n="btn_follow">关注 B 站</a>
+                    </div>
+                </div>
+                <div class="qr-wrap">
+                    <div class="qr-box">
+                        <img src="wx1.jpg" alt="WeChat QR 1" onerror="this.style.display='none'">
+                        <div class="qr-label" data-i18n="qr1">微信二维码 1</div>
+                    </div>
+                    <div class="qr-box">
+                        <img src="wx2.jpg" alt="WeChat QR 2" onerror="this.style.display='none'">
+                        <div class="qr-label" data-i18n="qr2">微信二维码 2</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-disclaimer">
+                <strong>免责声明 / Disclaimer：</strong><br>
+                本站（dream3d.vip）所分享的资源（包括但不限于整合包、模型、文档等）均收集于互联网或由作者原创，仅供个人学习与技术研究使用。如若本站分享的内容侵犯了您的合法权益，请联系我们（xg080305@Gmail.com）核实删除。用户使用本站资源所产生的一切后果由用户自行承担，本站不承担任何直接或间接的法律责任。
+            </div>
+            <div class="footer-beian">
+                鲁ICP备2025177865号-1 | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=37098202000857" target="_blank">鲁公网安备37098202000857号</a>
+                <div class="copyright">© 2026 GaryAIGC | Powered by Gary's Love for AI</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WeChat Modal -->
+    <div id="wechatModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeWxModal()">×</button>
+            <h2>联系老许</h2>
+            <div class="sub">CONTACT / 添加微信请备注来意</div>
+            <div class="modal-grid">
+                <div class="modal-qr-item">
+                    <div class="qr-name">GaryAIGC (主号)</div>
+                    <img src="wx1.jpg" alt="微信主号" onerror="this.style.display='none'">
+                    <button class="btn-copy-wx" onclick="copyId('GaryAIGC', 'WECHAT')">复制微信号</button>
+                </div>
+                <div class="modal-qr-item">
+                    <div class="qr-name">GaryAiGo (备用)</div>
+                    <img src="wx2.jpg" alt="微信备用" onerror="this.style.display='none'">
+                    <button class="btn-copy-wx" onclick="copyId('GaryAiGo', 'WECHAT')">复制微信号</button>
+                </div>
+            </div>
+            <div class="modal-back" onclick="closeWxModal()">← 返回首页 / Back to Home</div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="customToast">已复制到剪贴板！</div>
+
+    <script>
+        // ===== I18n =====
+        const i18n = {
+            zh: {
+                nav_platform: "创作平台", nav_rh: "RunningHub", nav_wb: "影视工作台",
+                nav_aicoding: "AI Coding", nav_docs: "文档库", nav_res: "资源", nav_topics: "专题", nav_contact: "联系",
+                hero_slogan: "用 AI 编织你的梦想", hero_sub: "Weaving your dreams with AI",
+                btn_bili: "🎬 访问 B 站主页", btn_res: "📦 往期资源下载",
+                btn_rh: "🚀 RunningHub 福利", btn_contact: "💬 联系微信",
+                sec_platform_title: "我的创作平台", sec_platform_en: "CREATIVE PLATFORMS",
+                platform_wx: "微信联系", btn_visit_channel: "Visit Channel →",
+                btn_contact_me: "Contact Me →", btn_subscribe: "Subscribe →",
+                sec_rh_title: "RunningHub × GaryAIGC 粉丝专属福利", sec_rh_en: "EXCLUSIVE CREATOR REWARDS",
+                rh_gift: "算力大礼包", rh_reg: "注册领", rh_reg_note: "(自行注册仅 500点)",
+                rh_daily: "每日登录补赠", rh_valid: "老许粉丝长期有效",
+                rh_both: "两站独立：", rh_both_val: "两边都注册 = 领 2000币", rh_old: "老账号点击头像即可补填",
+                rh_code_label: "专属邀请码 / Invite Code:", btn_copy: "点击复制 / COPY",
+                btn_rh_cn: "国内站 (.cn)", btn_rh_global: "Global Site (.ai)",
+                sec_wb_title: "AI 影视创作超级工作台", sec_wb_en: "AI FILMMAKING SUPER WORKBENCH",
+                wb1_title: "25种构图 · 分镜模板", wb1_desc: "从三分法到打破构图，5大功能模块全覆盖。中英双语提示词，可直接用于 ComfyUI / 无限画布。",
+                wb2_title: "60种镜头语言 · 分镜模板", wb2_desc: "景别、角度、运动、变焦、叙事五大类。从 ELS 大远景到分屏，完整影视语法库。",
+                wb3_title: "151种进阶语法 · 超级工作台", wb3_desc: "光影×转场×场景×表演×剪辑，五大模块全覆盖。从单帧到成片的完整 AI 影视系统。",
+                sec_aicoding_title: "AI Coding 编程指南", sec_aicoding_en: "AI CODING & DEVELOPMENT",
+                aicoding1_title: "Claude Code 完全指南", aicoding1_desc: "从入门到精通的 AI 终端代理教程。涵盖安装配置、权限管理、上下文控制、CLAUDE.md 记忆系统、Skills / MCP / Sub-agent 高级拓展。",
+                aicoding2_title: "AI Coding 形态辨析与配置手册", aicoding2_desc: "Claude Code / Cursor / OpenAI Codex 三方对比，国内第三方 API 配置方案，MCP / SDK / Agent 核心概念词典，AI 视频剪辑实战流水线。",
+                sec_docs_title: "GaryAIGC 硬核文档库", sec_docs_en: "TECHNICAL WHITE PAPERS & DOCS",
+                doc1_title: "ComfyUI 图像放大技术白皮书",
+                doc1_desc: "从像素插值到语义重构，揭秘 SeedVR、SUPIR 等前沿放大技术的底层逻辑与参数实战。",
+                sec_res_title: "主要项目与资源", sec_res_en: "MAIN PROJECTS & RESOURCES",
+                res1_title: "往期公开文件获取", res1_desc: "整合包、资源合集、历史实战下载。含网盘直链与分类索引。",
+                res2_title: "各类AI平台专属福利", res2_desc: "粉丝专属注册奖励、折扣与云端资源。持续更新各平台拉新福利。",
+                sec_topics_title: "专题内容", sec_topics_en: "SPECIAL TOPICS",
+                topic1_desc: "ComfyUI 满血整合包配置与实战教学指南。从节点逻辑到工作流搭建。",
+                topic2_title: "好用的AI工具", topic2_desc: "追踪全球最新 AI 插件与工具神器。视频、图像、音频生产力工具评测。",
+                topic3_title: "AIPC配置指南", topic3_desc: "针对 AI 创作的硬件选购与部署方案。显卡、内存、模型存储全攻略。",
+                contact_title: "联系 合作", contact_desc: "商务合作、工具评测、教程定制、技术交流，欢迎通过以下方式找到我。添加微信时请备注来意，加入私域获取最新资源与一对一答疑。",
+                label_wx: "微信", label_site: "站点", btn_follow: "关注 B 站",
+                qr1: "微信二维码 1", qr2: "微信二维码 2",
+                footer: "用AI编织你的梦想 / Weaving your dreams with AI"
+            },
+            en: {
+                nav_platform: "Platforms", nav_rh: "RunningHub", nav_wb: "Workbench",
+                nav_aicoding: "AI Coding", nav_docs: "Docs", nav_res: "Resources", nav_topics: "Topics", nav_contact: "Contact",
+                hero_slogan: "Weaving your dreams with AI", hero_sub: "GaryAIGC Official Site",
+                btn_bili: "🎬 Bilibili Channel", btn_res: "📦 Resources",
+                btn_rh: "🚀 RunningHub Perks", btn_contact: "💬 WeChat",
+                sec_platform_title: "My Creative Platforms", sec_platform_en: "CREATIVE PLATFORMS",
+                platform_wx: "WeChat", btn_visit_channel: "Visit Channel →",
+                btn_contact_me: "Contact Me →", btn_subscribe: "Subscribe →",
+                sec_rh_title: "RunningHub × GaryAIGC Exclusive Rewards", sec_rh_en: "EXCLUSIVE CREATOR REWARDS",
+                rh_gift: "Computing Power Pack", rh_reg: "Get", rh_reg_note: "(vs 500 self-reg)",
+                rh_daily: "Daily login bonus", rh_valid: "Valid long-term for fans",
+                rh_both: "Dual sites:", rh_both_val: "Register both = 2000 Coins", rh_old: "Apply code in settings for old accounts",
+                rh_code_label: "Invite Code:", btn_copy: "COPY",
+                btn_rh_cn: "China Site (.cn)", btn_rh_global: "Global Site (.ai)",
+                sec_wb_title: "AI Filmmaking Super Workbench", sec_wb_en: "AI FILMMAKING SUPER WORKBENCH",
+                wb1_title: "25 Compositions", wb1_desc: "From rule of thirds to broken framing. 5 modules with bilingual prompts for ComfyUI / Infinite Canvas.",
+                wb2_title: "60 Shot Types", wb2_desc: "Shot sizes, angles, movement, zoom & narrative. Complete cinematic language library.",
+                wb3_title: "151 Advanced Syntax", wb3_desc: "Lighting × Transitions × Scenes × Performance × Editing. Full AI filmmaking system.",
+                sec_aicoding_title: "AI Coding Guides", sec_aicoding_en: "AI CODING & DEVELOPMENT",
+                aicoding1_title: "Claude Code Complete Guide", aicoding1_desc: "From beginner to pro. Covers setup, permission modes, context management, CLAUDE.md memory, Skills / MCP / Sub-agent advanced features.",
+                aicoding2_title: "AI Coding Toolkit & Config", aicoding2_desc: "Claude Code vs Cursor vs OpenAI Codex comparison, domestic API setup, MCP / SDK / Agent glossary, AI video editing pipelines.",
+                sec_docs_title: "GaryAIGC Technical Docs", sec_docs_en: "TECHNICAL WHITE PAPERS & DOCS",
+                doc1_title: "ComfyUI Image Upscaling White Paper",
+                doc1_desc: "From pixel interpolation to semantic reconstruction. Deep dive into SeedVR, SUPIR and parameter tuning.",
+                sec_res_title: "Projects & Resources", sec_res_en: "MAIN PROJECTS & RESOURCES",
+                res1_title: "Public Archive", res1_desc: "Bundles, collections, historical downloads. With direct cloud drive links.",
+                res2_title: "AI Platform Perks", res2_desc: "Exclusive signup rewards, discounts and cloud resources. Continuously updated.",
+                sec_topics_title: "Special Topics", sec_topics_en: "SPECIAL TOPICS",
+                topic1_desc: "ComfyUI full-featured setup and practical tutorials. From node logic to workflow building.",
+                topic2_title: "AI Tools", topic2_desc: "Tracking the latest global AI plugins and productivity tools for video, image and audio.",
+                topic3_title: "AIPC Guide", topic3_desc: "Hardware selection and deployment for AI creation. GPU, RAM, model storage guide.",
+                contact_title: "Contact & Collab", contact_desc: "Business inquiries, tool reviews, custom tutorials. Add me on WeChat with a note to join the private community.",
+                label_wx: "WeChat", label_site: "Site", btn_follow: "Follow on Bilibili",
+                qr1: "WeChat QR 1", qr2: "WeChat QR 2",
+                footer: "Weaving your dreams with AI"
+            }
+        };
+
+        let currentLang = 'zh';
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase().includes(lang==='zh'?'中':'en'));
+            });
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
+            });
+        }
+
+        // ===== Copy Code =====
+        function copyCode() {
+            const code = document.getElementById('rhCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.querySelector('.btn-copy');
+                const orig = btn.textContent;
+                btn.textContent = '✓ 已复制 / Copied';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = orig;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function copyId(text, type) {
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById("customToast");
+                toast.innerHTML = type === 'CODE' 
+                    ? "✅ 邀请码已复制： " + text 
+                    : "✅ 微信号已复制： " + text + "<br><span style='font-size:0.75rem;opacity:0.6'>请前往微信搜索添加</span>";
+                toast.className = "show";
+                setTimeout(() => { toast.className = ""; }, 2500);
+            });
+        }
+
+        // ===== Mobile Menu =====
+        function toggleMobile() {
+            document.getElementById('mobileNav').classList.toggle('active');
+        }
+
+        // ===== WeChat Modal =====
+        function openWxModal() {
+            document.getElementById('wechatModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeWxModal() {
+            document.getElementById('wechatModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        window.onclick = function(e) {
+            if (e.target == document.getElementById('wechatModal')) closeWxModal();
+        }
+
+        // ===== Scroll Spy =====
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(sec => {
+                const top = sec.offsetTop;
+                if (scrollY >= top - 200) current = sec.getAttribute('id');
+            });
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === '#' + current) {
+                    link.style.color = 'var(--accent-cyan)';
+                } else {
+                    link.style.color = '';
+                }
+            });
+        });
+
+        // Init
+        setLang('zh');
+    </script>
+</body>
+</html>
