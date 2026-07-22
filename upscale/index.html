@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ComfyUI Image Upscaling White Paper (2026)</title>
+    <meta name="description" content="ComfyUI 图像放大技术白皮书：系统讲解潜空间放大、像素空间放大、分块放大、专项修复与 SeedVR/FlashVSR/SUPIR 等 2026 主流生成型放大路径。ComfyUI Image Upscaling White Paper by GaryAIGC.">
+    <link rel="icon" href="../favicon.ico">
+    <link rel="canonical" href="https://dream3d.vip/upscale/">
+    <meta property="og:title" content="ComfyUI 图像放大技术白皮书 (2026) | GaryAIGC">
+    <meta property="og:description" content="系统讲解潜空间放大、像素空间放大、分块放大、专项修复与 SeedVR/FlashVSR/SUPIR 等 2026 主流生成型放大路径。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://dream3d.vip/upscale/">
     <style>
         :root {
             --bg-color: #0f1115; /* 更深邃的背景 */
@@ -137,9 +144,44 @@
             background: linear-gradient(145deg, rgba(192, 132, 252, 0.05), rgba(0,0,0,0)); 
         }
 
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            body { padding: 20px; }
+            .grid-2 { grid-template-columns: 1fr; }
+            table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            thead, tbody { display: table; width: 100%; min-width: 520px; }
+            #lang-btn { position: static; float: right; margin: 12px 0; }
+            header { clear: both; }
+        }
+
     </style>
 </head>
 <body lang="zh">
+<!-- ===== 全站统一导航条 ===== -->
+<style>
+.g-site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:space-between;gap:16px;height:48px;padding:0 24px;background:rgba(10,10,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.08);box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+.g-site-nav a{text-decoration:none;white-space:nowrap}
+.g-site-nav .g-back{color:#d4a574;font-size:14px;font-weight:600}
+.g-site-nav .g-back:hover{color:#eac694}
+.g-site-nav .g-links{display:flex;gap:20px;overflow-x:auto;scrollbar-width:none}
+.g-site-nav .g-links::-webkit-scrollbar{display:none}
+.g-site-nav .g-links a{color:rgba(255,255,255,0.55);font-size:13px;transition:color .2s}
+.g-site-nav .g-links a:hover{color:#fff}
+@media (max-width:768px){.g-site-nav .g-links{display:none}}
+#lang-btn{top:60px !important}
+</style>
+<nav class="g-site-nav">
+<a class="g-back" href="../index.html">← 返回首页</a>
+<div class="g-links">
+<a href="../film-studio/">影视创作工作台</a>
+<a href="../25-compositions.html">25种构图</a>
+<a href="../60-shots.html">60种镜头语言</a>
+<a href="../151-grammar.html">151种语法</a>
+<a href="../ai-coding-guide.html">AI Coding 指南</a>
+<a href="../claude-code-guide.html">Claude Code 指南</a>
+<a href="../kimi-code-guide.html">Kimi Code</a>
+</div>
+</nav>
 
 <button id="lang-btn" onclick="toggleLang()">English / 中文</button>
 
@@ -389,6 +431,7 @@
         const currentLang = body.getAttribute('lang');
         const newLang = currentLang === 'zh' ? 'en' : 'zh';
         body.setAttribute('lang', newLang);
+        document.documentElement.setAttribute('lang', newLang === 'zh' ? 'zh-CN' : 'en');
     }
 </script>
 

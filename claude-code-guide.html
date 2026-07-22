@@ -6,6 +6,12 @@
     <title>Claude Code 完全指南：形态辨析、国内配置与核心概念词典 | Dream3D</title>
     <meta name="description" content="面向中文开发者的 Claude Code 终极参考手册。详解 CLI/Desktop/VSCode/Cursor 区别、国内第三方 API 配置、MCP/SDK/Agent 等核心概念，以及 AI 视频剪辑实战方案。">
     <meta name="keywords" content="Claude Code, CLI, MCP, Cursor, AI编程, 第三方API, 国内使用, Remotion, 视频剪辑">
+    <link rel="icon" href="favicon.ico">
+    <link rel="canonical" href="https://dream3d.vip/ai-coding-guide.html">
+    <meta property="og:title" content="Claude Code 完全指南：形态辨析、国内配置与核心概念词典 | Dream3D">
+    <meta property="og:description" content="面向中文开发者的 Claude Code 终极参考手册。详解 CLI/Desktop/VSCode/Cursor 区别、国内第三方 API 配置、MCP/SDK/Agent 等核心概念，以及 AI 视频剪辑实战方案。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://dream3d.vip/ai-coding-guide.html">
     <style>
         :root {
             --bg-primary: #0a0a0f;
@@ -14,7 +20,7 @@
             --bg-code: #0d1117;
             --text-primary: #e6e6f0;
             --text-secondary: #a0a0b8;
-            --text-muted: #6e6e8a;
+            --text-muted: #8a8aa3;
             --accent: #d4a574;
             --accent-hover: #e8b88a;
             --accent-glow: rgba(212, 165, 116, 0.15);
@@ -597,20 +603,38 @@ var _hmt = _hmt || [];
   s.parentNode.insertBefore(hm, s);
 })();
 </script>
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?e459d7329e9da999a234c4dfcb681691";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
 </head>
 <body>
+<!-- ===== 全站统一导航条 ===== -->
+<style>
+.g-site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:space-between;gap:16px;height:48px;padding:0 24px;background:rgba(10,10,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.08);box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+.g-site-nav a{text-decoration:none;white-space:nowrap}
+.g-site-nav .g-back{color:#d4a574;font-size:14px;font-weight:600}
+.g-site-nav .g-back:hover{color:#eac694}
+.g-site-nav .g-links{display:flex;gap:20px;overflow-x:auto;scrollbar-width:none}
+.g-site-nav .g-links::-webkit-scrollbar{display:none}
+.g-site-nav .g-links a{color:rgba(255,255,255,0.55);font-size:13px;transition:color .2s}
+.g-site-nav .g-links a:hover{color:#fff}
+@media (max-width:768px){.g-site-nav .g-links{display:none}}
+.site-header{top:48px !important}
+.site-header .container{justify-content:flex-end}
+.toc-sidebar{top:132px !important}
+html{scroll-padding-top:128px !important}
+</style>
+<nav class="g-site-nav">
+<a class="g-back" href="index.html">← 返回首页</a>
+<div class="g-links">
+<a href="film-studio/">影视创作工作台</a>
+<a href="25-compositions.html">25种构图</a>
+<a href="60-shots.html">60种镜头语言</a>
+<a href="151-grammar.html">151种语法</a>
+<a href="ai-coding-guide.html">AI Coding 指南</a>
+<a href="kimi-code-guide.html">Kimi Code</a>
+<a href="upscale/">ComfyUI 放大白皮书</a>
+</div>
+</nav>
     <header class="site-header">
         <div class="container">
-            <a href="https://dream3d.vip/" class="logo">← 返回 Dream3D 主页</a>
             <nav class="nav-links">
                 <a href="#overview">形态全景</a>
                 <a href="#comparison">Claude vs Cursor</a>

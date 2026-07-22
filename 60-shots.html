@@ -10,9 +10,7 @@
     <meta property="og:title" content="60种镜头语言 · 无限画布分镜模板 | 老许Gary">
     <meta property="og:description" content="AI影视创作60种镜头语言，中英双语提示词直接用于ComfyUI/无限画布/分镜脚本">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="">
-    <meta property="og:image" content="">
-    <link rel="canonical" href="">
+    <link rel="icon" href="favicon.ico">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -25,7 +23,7 @@
             --accent-dim: rgba(0, 212, 255, 0.1);
             --text: #e0e0e0;
             --text-dim: #888;
-            --text-dark: #555;
+            --text-dark: #777;
             --cat1: #ff6b6b;
             --cat2: #4ecdc4;
             --cat3: #ffe66d;
@@ -39,6 +37,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             line-height: 1.6;
             min-height: 100vh;
+            padding-bottom: 90px;
         }
 
         .header {
@@ -549,7 +548,6 @@
         .td-prompt { max-width: 220px; font-size: 11px; line-height: 1.5; word-break: break-all; }
         .table-header { font-size: 16px; padding: 18px 20px; }
     }
-        }
     </style>
     <script>
 var _hmt = _hmt || [];
@@ -562,7 +560,33 @@ var _hmt = _hmt || [];
 </script>
 </head>
 <body>
-    <button class="mobile-toggle" onclick="toggleDrawer()" title="打开导航">☰</button>
+<!-- ===== 全站统一导航条 ===== -->
+<style>
+.g-site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:space-between;gap:16px;height:48px;padding:0 24px;background:rgba(10,10,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.08);box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+.g-site-nav a{text-decoration:none;white-space:nowrap}
+.g-site-nav .g-back{color:#d4a574;font-size:14px;font-weight:600}
+.g-site-nav .g-back:hover{color:#eac694}
+.g-site-nav .g-links{display:flex;gap:20px;overflow-x:auto;scrollbar-width:none}
+.g-site-nav .g-links::-webkit-scrollbar{display:none}
+.g-site-nav .g-links a{color:rgba(255,255,255,0.55);font-size:13px;transition:color .2s}
+.g-site-nav .g-links a:hover{color:#fff}
+@media (max-width:768px){.g-site-nav .g-links{display:none}}
+.sidebar{top:48px !important}
+.mobile-toggle{top:64px !important}
+</style>
+<nav class="g-site-nav">
+<a class="g-back" href="index.html">← 返回首页</a>
+<div class="g-links">
+<a href="film-studio/">影视创作工作台</a>
+<a href="25-compositions.html">25种构图</a>
+<a href="151-grammar.html">151种语法</a>
+<a href="ai-coding-guide.html">AI Coding 指南</a>
+<a href="claude-code-guide.html">Claude Code 指南</a>
+<a href="kimi-code-guide.html">Kimi Code</a>
+<a href="upscale/">ComfyUI 放大白皮书</a>
+</div>
+</nav>
+    <button class="mobile-toggle" onclick="toggleDrawer()" title="打开导航" aria-label="打开导航" aria-expanded="false" aria-controls="sidebar-drawer">☰</button>
     <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 
     <div class="header">
@@ -596,7 +620,7 @@ var _hmt = _hmt || [];
     </div>
 
     <div class="search-bar">
-        <input type="text" class="search-input" id="search-input" placeholder="搜索镜头名称 / 提示词 / 场景 / 情绪...">
+        <input type="text" class="search-input" id="search-input" placeholder="搜索镜头名称 / 提示词 / 场景 / 情绪..." aria-label="搜索镜头名称、提示词、场景或情绪">
         <span class="search-stats" id="search-stats">共 60 项</span>
     </div>
 
@@ -664,7 +688,7 @@ var _hmt = _hmt || [];
                     <li class="shot-item" onclick="showDetail(40)"><span>变焦推 Zoom In</span><span class="shot-num">41</span></li>
                     <li class="shot-item" onclick="showDetail(41)"><span>变焦拉 Zoom Out</span><span class="shot-num">42</span></li>
                     <li class="shot-item" onclick="showDetail(42)"><span>快速变焦 Snap</span><span class="shot-num">43</span></li>
-                    <li class="shot-item" onclick="showDetail(43)"><span>希区柯克变焦 Dolly</span><span class="shot-num">44</span></li>
+                    <li class="shot-item" onclick="showDetail(43)"><span>希区柯克变焦 Dolly Zoom</span><span class="shot-num">44</span></li>
                     <li class="shot-item" onclick="showDetail(44)"><span>移焦 Rack Focus</span><span class="shot-num">45</span></li>
                     <li class="shot-item" onclick="showDetail(45)"><span>浅景深 Shallow</span><span class="shot-num">46</span></li>
                     <li class="shot-item" onclick="showDetail(46)"><span>深景深 Deep</span><span class="shot-num">47</span></li>
@@ -779,7 +803,7 @@ var _hmt = _hmt || [];
             { name: "变焦推 Zoom In", cat: "变焦与特效", desc: "镜头焦距变长，主体放大但透视不变。与推镜头的空间压缩不同。", prompt: "zoom in, lens focal length increasing, subject magnified without spatial change, flat compression, telephoto effect", scene: "强调、发现、惊悚、突然关注、复古风格", mood: ["强调", "发现", "突兀"], motion: "lens zooms in rapidly or slowly, subject grows in frame but background stays flat, 2D magnification", motionTip: "主体放大但背景不压缩，与dolly in区别明显", combo: "+ 特写 / + 快速变焦" },
             { name: "变焦拉 Zoom Out", cat: "变焦与特效", desc: "镜头焦距变短，主体缩小但透视不变。环境不展开，只是缩小。", prompt: "zoom out, lens focal length decreasing, subject shrinks without spatial expansion, wide angle effect, contextual reveal", scene: "环境交代、结束、抽离、复古、喜剧", mood: ["抽离", "结束", "喜剧"], motion: "lens zooms out, subject shrinks in frame, more context visible but perspective unchanged, flat decompression", motionTip: "主体缩小，但不像dolly out那样展开空间", combo: "+ 远景 / + 建立镜头" },
             { name: "快速变焦 Snap", cat: "变焦与特效", desc: "极速变焦，画面瞬间从广角跳到长焦。冲击力强，常用于恐怖和喜剧。", prompt: "snap zoom, rapid sudden zoom movement, whiplash focal change, comedic or horror impact, abrupt magnification", scene: "惊吓、笑点、发现、冲击、复古B级片", mood: ["冲击", "突兀", "戏谑"], motion: "instantaneous zoom with motion blur, subject snaps into close-up, disorienting and impactful", motionTip: "瞬间变焦带模糊，冲击感极强", combo: "+ 跳切 / + 荷兰角" },
-            { name: "希区柯克变焦 Dolly", cat: "变焦与特效", desc: "同时dolly out和zoom in（或相反）。背景压缩/膨胀，主体大小不变。眩晕效果。", prompt: "dolly zoom, vertigo effect, camera moves while zooming opposite, background shifts dramatically, subject size constant, disorienting perspective", scene: "震惊、眩晕、恐惧、发现、心理冲击", mood: ["眩晕", "恐惧", "超现实"], motion: "camera dollies in while zooming out, background compresses weirdly, subject stays same size, world distorts", motionTip: "前进同时变焦拉，背景变形但主体不变", combo: "+ 特写 / + 荷兰角" },
+            { name: "希区柯克变焦 Dolly Zoom", cat: "变焦与特效", desc: "同时dolly out和zoom in（或相反）。背景压缩/膨胀，主体大小不变。眩晕效果。", prompt: "dolly zoom, vertigo effect, camera moves while zooming opposite, background shifts dramatically, subject size constant, disorienting perspective", scene: "震惊、眩晕、恐惧、发现、心理冲击", mood: ["眩晕", "恐惧", "超现实"], motion: "camera dollies in while zooming out, background compresses weirdly, subject stays same size, world distorts", motionTip: "前进同时变焦拉，背景变形但主体不变", combo: "+ 特写 / + 荷兰角" },
             { name: "移焦 Rack Focus", cat: "变焦与特效", desc: "焦点从一个平面转移到另一个平面。引导观众注意力，连接两个叙事元素。", prompt: "rack focus, focus shifts from foreground to background, sharp to soft transition, attention redirection, focal plane migration", scene: "揭示线索、连接人物、发现细节、对话切换", mood: ["转移", "揭示", "连接"], motion: "focus pulls smoothly from near to far or vice versa, one subject blurs as another sharpens, narrative handoff", motionTip: "焦点平滑迁移，叙事注意力转移", combo: "+ 前景遮挡 / + 过肩镜头" },
             { name: "浅景深 Shallow DOF", cat: "变焦与特效", desc: "只有极窄范围清晰，前后景全部虚化。隔离主体，营造私密和梦幻。", prompt: "shallow depth of field, extremely narrow focus plane, creamy bokeh background, subject isolated, f1.4 aesthetic, dreamy separation", scene: "人像、情感戏、产品、梦幻、隔离感", mood: ["私密", "梦幻", "隔离"], motion: "subject moves within thin focus plane, background remains creamy blur, rack focus when subject changes", motionTip: "主体在薄焦平面内移动，背景始终奶油般虚化", combo: "+ 特写 / + 逆光轮廓" },
             { name: "深景深 Deep DOF", cat: "变焦与特效", desc: "从前景到背景全部清晰。信息量大，现实主义，所有元素同等重要。", prompt: "deep depth of field, everything sharp from foreground to background, f16 aesthetic, maximum information, hyperfocal distance", scene: "风景、大场面、纪录片、群戏、现实主义", mood: ["清晰", "真实", "丰富"], motion: "all planes remain sharp, subject can move freely through space without losing focus, documentary clarity", motionTip: "所有平面都清晰，人物自由移动不脱焦", combo: "+ 层次构图 / + 客观镜头" },
@@ -919,14 +943,35 @@ var _hmt = _hmt || [];
 
         // ===== v2 功能：一键复制 =====
         function copyPrompt(btn, text) {
-            navigator.clipboard.writeText(text).then(function() {
-                btn.textContent = '已复制';
-                btn.classList.add('copied');
+            function fallbackCopy() {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                var ok = false;
+                try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+                document.body.removeChild(ta);
+                return ok;
+            }
+            function showResult(ok) {
+                btn.textContent = ok ? '已复制' : '复制失败';
+                if (ok) btn.classList.add('copied');
                 setTimeout(function() {
                     btn.textContent = '复制';
                     btn.classList.remove('copied');
-                }, 1500);
-            });
+                }, ok ? 1500 : 2000);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function() {
+                    showResult(true);
+                }).catch(function() {
+                    showResult(fallbackCopy());
+                });
+            } else {
+                showResult(fallbackCopy());
+            }
         }
 
         // ===== v2 功能：URL Hash 路由 =====
@@ -943,12 +988,15 @@ var _hmt = _hmt || [];
 
         // ===== v2 功能：移动端抽屉 =====
         function toggleDrawer() {
-            document.getElementById('sidebar-drawer').classList.toggle('open');
+            var drawer = document.getElementById('sidebar-drawer');
+            drawer.classList.toggle('open');
             document.getElementById('drawer-overlay').classList.toggle('active');
+            document.querySelector('.mobile-toggle').setAttribute('aria-expanded', drawer.classList.contains('open'));
         }
         function closeDrawer() {
             document.getElementById('sidebar-drawer').classList.remove('open');
             document.getElementById('drawer-overlay').classList.remove('active');
+            document.querySelector('.mobile-toggle').setAttribute('aria-expanded', 'false');
         }
 
         // ===== v2 功能：随机灵感 =====
@@ -988,10 +1036,25 @@ var _hmt = _hmt || [];
             a.click();
         }
 
+        // ===== 可访问性：侧边栏键盘操作 =====
+        function initA11y() {
+            document.querySelectorAll('.shot-item').forEach(function(el) {
+                el.setAttribute('tabindex', '0');
+                el.setAttribute('role', 'button');
+                el.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        el.click();
+                    }
+                });
+            });
+        }
+
         // v2 初始化
         renderDetail(0);
         initTable();
         initSearch();
+        initA11y();
         var hashIdx = readHash();
         if (hashIdx >= 0 && hashIdx < shots.length) {
             showDetail(hashIdx);

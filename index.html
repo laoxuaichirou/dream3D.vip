@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GaryAIGC | 用AI编织你的梦想</title>
     <meta name="description" content="GaryAIGC个人站 - AI影视创作、ComfyUI教程、网盘资源分享、平台福利与私域入口。">
     <link rel="icon" href="favicon.ico">
@@ -11,8 +11,10 @@
             --bg: #050508;
             --bg-elevated: #0f0f16;
             --surface: #13131f;
+            --card-deep: #101018;
             --surface-hover: #1a1a2e;
             --border: rgba(255,255,255,0.06);
+            --border-card: rgba(255,255,255,0.08);
             --border-hover: rgba(255,255,255,0.15);
             --accent-cyan: #00d4ff;
             --accent-purple: #c084fc;
@@ -22,11 +24,13 @@
             --accent-orange: #ffaa00;
             --text: #ffffff;
             --text-secondary: #a0a0b0;
-            --text-muted: #5a5a6e;
+            --text-muted: #8a8aa3;
+            --kimi: #7c5cff;
             --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #c084fc 100%);
             --gradient-bg: linear-gradient(180deg, #050508 0%, #0a0a14 100%);
             --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
             --radius: 16px;
+            --radius-lg: 24px;
             --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -42,9 +46,21 @@
             overflow-x: hidden;
         }
 
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: #2a2a3e; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #33334d, #22223a); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3f3f5c; }
+
+        /* subtle film grain */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 1500;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
 
         /* ===== NAVBAR ===== */
         .navbar {
@@ -142,16 +158,16 @@
             cursor: pointer;
         }
 
-        /* ===== HERO ===== */
+        /* ===== HERO (Squarespace style) ===== */
         .hero {
             position: relative;
-            min-height: 100vh;
+            min-height: 92vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 120px 24px 100px;
+            padding: 160px 24px 120px;
             overflow: hidden;
         }
 
@@ -159,41 +175,76 @@
             position: absolute;
             inset: 0;
             z-index: 0;
-            background: 
+            background:
                 radial-gradient(circle at 20% 30%, rgba(0,212,255,0.08) 0%, transparent 40%),
                 radial-gradient(circle at 80% 70%, rgba(192,132,252,0.08) 0%, transparent 40%);
         }
 
-        .hero-content { position: relative; z-index: 2; max-width: 800px; }
+        .hero-content { position: relative; z-index: 2; max-width: 900px; }
 
-        .hero h1 {
-            font-size: clamp(48px, 10vw, 96px);
-            font-weight: 900;
-            letter-spacing: -2px;
-            line-height: 1.05;
-            margin-bottom: 20px;
+        .hero-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .hero h1 .gradient-text {
-            background: var(--gradient-primary);
+        .hero-glow.glow-purple {
+            width: 520px; height: 520px;
+            top: -140px; right: -120px;
+            background: rgba(124,92,255,0.16);
+            animation: glow-drift 14s ease-in-out infinite alternate;
+        }
+
+        .hero-glow.glow-gold {
+            width: 440px; height: 440px;
+            bottom: -160px; left: -100px;
+            background: rgba(255,170,0,0.09);
+            animation: glow-drift 18s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes glow-drift {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(48px, 28px) scale(1.08); }
+        }
+
+        .hero h1 {
+            font-size: clamp(64px, 12vw, 128px);
+            font-weight: 900;
+            letter-spacing: -3px;
+            line-height: 1.02;
+            margin-bottom: 28px;
+        }
+
+        .hero h1 .gradient-text,
+        .contact-info h2 .gradient-text {
+            background: linear-gradient(135deg, #00d4ff 0%, #c084fc 35%, #ff6b9d 70%, #00d4ff 100%);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: gradient-flow 9s ease-in-out infinite;
+        }
+
+        @keyframes gradient-flow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
         .hero-slogan {
-            font-size: clamp(20px, 4vw, 32px);
+            font-size: clamp(20px, 4vw, 34px);
             font-weight: 500;
             color: var(--text);
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             letter-spacing: 2px;
         }
 
         .hero-sub {
-            font-size: clamp(14px, 2vw, 18px);
+            font-size: clamp(13px, 2vw, 17px);
             color: var(--text-secondary);
             letter-spacing: 6px;
             text-transform: uppercase;
-            margin-bottom: 48px;
+            margin-bottom: 56px;
         }
 
         .hero-actions {
@@ -217,6 +268,8 @@
             border: none;
             font-family: var(--font-sans);
         }
+
+        .btn:active { transform: translateY(0) scale(0.97); }
 
         .btn-primary {
             background: var(--gradient-primary);
@@ -246,7 +299,7 @@
 
         /* ===== SECTIONS COMMON ===== */
         section {
-            padding: 100px 24px;
+            padding: 120px 24px;
             position: relative;
         }
 
@@ -273,7 +326,8 @@
 
         .section-header h2 {
             font-size: clamp(24px, 4vw, 32px);
-            font-weight: 700;
+            font-weight: 800;
+            letter-spacing: -0.02em;
             margin-bottom: 6px;
             line-height: 1.2;
         }
@@ -285,7 +339,7 @@
             text-transform: uppercase;
         }
 
-        /* ===== CARDS ===== */
+        /* ===== CARDS (static grids) ===== */
         .card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -307,9 +361,9 @@
         }
 
         .card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-5px);
             border-color: var(--border-hover);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 48px rgba(0,212,255,0.05);
         }
 
         .card:hover::before { opacity: 1; }
@@ -323,13 +377,52 @@
         .card-grid-2 { grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
         .card-grid-3 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
 
+        /* ===== PROMO BANNER (fixed, non-scrolling) ===== */
+        .promo-banner {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(160deg, #101018 0%, #0c0c16 60%, #101020 100%);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-lg);
+            padding: 56px 48px;
+        }
+
+        .promo-banner::before {
+            content: '';
+            position: absolute;
+            top: -200px; right: -120px;
+            width: 520px; height: 520px;
+            background: radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .promo-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -240px; left: -120px;
+            width: 520px; height: 520px;
+            background: radial-gradient(circle, rgba(192,132,252,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .promo-banner .section-header { position: relative; z-index: 2; }
+
         /* ===== PLATFORM CARDS ===== */
+        .promo-platforms {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 24px;
+        }
+
         .platform-card {
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            padding: 40px 24px;
+            padding: 32px 20px;
             color: var(--text);
             text-decoration: none;
             position: relative;
@@ -346,22 +439,22 @@
         .platform-card:hover { transform: translateY(-6px); filter: brightness(1.1); }
 
         .platform-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
+            font-size: 40px;
+            margin-bottom: 12px;
             font-weight: 700;
         }
 
-        .platform-card h3 { font-size: 28px; margin-bottom: 4px; }
-        .platform-card span { font-size: 14px; opacity: 0.8; margin-bottom: 24px; }
+        .platform-card h3 { font-size: 22px; margin-bottom: 4px; }
+        .platform-card span { font-size: 13px; opacity: 0.8; margin-bottom: 18px; }
 
         .platform-btn {
             display: inline-block;
-            padding: 10px 24px;
+            padding: 9px 22px;
             background: rgba(0,0,0,0.3);
             border-radius: 8px;
             color: var(--text);
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             transition: var(--transition);
             border: 1px solid rgba(255,255,255,0.1);
@@ -371,21 +464,13 @@
 
         /* ===== RUNNINGHUB ===== */
         .rh-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
+            position: relative;
+            z-index: 2;
+            background: rgba(5,5,10,0.55);
+            border: 1px solid var(--border-card);
             border-radius: var(--radius);
             padding: 40px;
-            position: relative;
             overflow: hidden;
-        }
-
-        .rh-card::after {
-            content: '';
-            position: absolute;
-            top: -50%; right: -50%;
-            width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
-            pointer-events: none;
         }
 
         .rh-grid {
@@ -503,11 +588,211 @@
 
         .btn-rh-cn:hover, .btn-rh-global:hover { transform: translateY(-2px); opacity: 0.9; }
 
+        /* ===== MARQUEE ROWS ===== */
+        .marquee-row {
+            position: relative;
+            overflow: hidden;
+            margin: 0 -24px;
+            padding: 8px 24px 16px;
+            touch-action: pan-y;
+            user-select: none;
+            -webkit-user-select: none;
+            cursor: grab;
+        }
+
+        .marquee-row.dragging { cursor: grabbing; }
+
+        .marquee-row::before,
+        .marquee-row::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 80px;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .marquee-row::before {
+            left: 0;
+            background: linear-gradient(90deg, var(--bg) 0%, transparent 100%);
+        }
+
+        .marquee-row::after {
+            right: 0;
+            background: linear-gradient(-90deg, var(--bg) 0%, transparent 100%);
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 24px;
+            width: max-content;
+            animation: marquee-scroll 36s linear infinite;
+        }
+
+        .marquee-track.rev { animation: marquee-scroll 30s linear infinite reverse; }
+
+        .marquee-row:hover .marquee-track { animation-play-state: paused; }
+
+        @keyframes marquee-scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* ===== FEATURE CARD (geometric cover) ===== */
+        .feature-card {
+            flex: 0 0 clamp(240px, 19vw, 280px);
+            width: clamp(240px, 19vw, 280px);
+            display: flex;
+            flex-direction: column;
+            background: var(--card-deep);
+            border: 1px solid var(--border-card);
+            border-radius: 18px;
+            overflow: hidden;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+            --acc: 0,212,255;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(var(--acc),0.45);
+            box-shadow: 0 24px 64px rgba(0,0,0,0.45), 0 0 40px rgba(var(--acc),0.15);
+        }
+
+        .fc-cover {
+            position: relative;
+            height: 168px;
+            overflow: hidden;
+            background: #0b0b13;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fc-cover::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 70% 20%, rgba(var(--acc),0.14) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .fc-num {
+            position: absolute;
+            right: 8px; bottom: -26px;
+            font-size: 128px;
+            font-weight: 900;
+            letter-spacing: -6px;
+            line-height: 1;
+            color: rgba(var(--acc),0.16);
+            -webkit-text-stroke: 1px rgba(var(--acc),0.25);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* geometric patterns (on ::before so hover can scale them) */
+        .fc-cover::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .feature-card:hover .fc-cover::before { transform: scale(1.05); }
+
+        .pat-grid::before {
+            background-image:
+                linear-gradient(rgba(var(--acc),0.10) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(var(--acc),0.10) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+
+        .pat-rings::before {
+            background-image: repeating-radial-gradient(circle at 30% 40%, rgba(var(--acc),0.12) 0 1px, transparent 1px 22px);
+        }
+
+        .pat-diag::before {
+            background-image: repeating-linear-gradient(45deg, rgba(var(--acc),0.10) 0 2px, transparent 2px 16px);
+        }
+
+        .pat-dots::before {
+            background-image: radial-gradient(rgba(var(--acc),0.20) 1.5px, transparent 1.5px);
+            background-size: 18px 18px;
+        }
+
+        .pat-blob::before {
+            background:
+                radial-gradient(circle at 25% 70%, rgba(var(--acc),0.22) 0%, transparent 45%),
+                radial-gradient(circle at 75% 25%, rgba(var(--acc),0.16) 0%, transparent 50%);
+        }
+
+        .fc-glyph {
+            position: absolute;
+            left: 20px; top: 18px;
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            background: rgba(var(--acc),0.10);
+            border: 1px solid rgba(var(--acc),0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .fc-badge {
+            position: absolute;
+            top: 14px; right: 14px;
+            z-index: 4;
+            padding: 5px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #000;
+            background: var(--gradient-primary);
+            border-radius: 20px;
+            box-shadow: 0 4px 16px rgba(0,212,255,0.35);
+        }
+
+        .fc-body {
+            padding: 22px 22px 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .fc-body h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.35;
+        }
+
+        .fc-body p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            flex: 1;
+            margin-bottom: 16px;
+        }
+
+        .fc-enter {
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(var(--acc), 1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .fc-enter .arrow { transition: var(--transition); }
+        .feature-card:hover .fc-enter .arrow { transform: translateX(4px); }
+
         /* ===== DOCS ===== */
         .doc-card {
             display: block;
-            background: var(--surface);
-            border: 1px solid var(--border);
+            background: var(--card-deep);
+            border: 1px solid var(--border-card);
             border-radius: var(--radius);
             padding: 32px;
             text-decoration: none;
@@ -518,8 +803,8 @@
 
         .doc-card:hover {
             border-color: var(--accent-purple);
-            transform: translateY(-4px);
-            box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.3), 0 0 40px rgba(192,132,252,0.08);
         }
 
         .doc-tag {
@@ -540,14 +825,18 @@
 
         /* ===== RESOURCES ===== */
         .resource-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
+            background: var(--card-deep);
+            border: 1px solid var(--border-card);
             border-radius: var(--radius);
             padding: 32px;
             transition: var(--transition);
         }
 
-        .resource-card:hover { border-color: var(--border-hover); transform: translateY(-4px); }
+        .resource-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 56px rgba(0,0,0,0.35), 0 0 40px rgba(0,212,255,0.05);
+        }
 
         .resource-header {
             display: flex;
@@ -571,7 +860,7 @@
             color: var(--text-secondary);
             font-size: 15px;
             margin-bottom: 24px;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         .resource-actions {
@@ -609,8 +898,8 @@
 
         /* ===== TOPICS ===== */
         .topic-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
+            background: var(--card-deep);
+            border: 1px solid var(--border-card);
             border-radius: var(--radius);
             padding: 32px;
             transition: var(--transition);
@@ -619,7 +908,11 @@
             height: 100%;
         }
 
-        .topic-card:hover { border-color: var(--accent-cyan); transform: translateY(-4px); }
+        .topic-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 56px rgba(0,0,0,0.35), 0 0 40px rgba(0,212,255,0.06);
+        }
 
         .topic-card h3 {
             font-size: 22px;
@@ -682,59 +975,6 @@
 
         .btn-cn:hover, .btn-global:hover { transform: translateY(-2px); opacity: 0.9; }
 
-        /* ===== WORKBENCH ===== */
-        .wb-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 32px;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .wb-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 3px;
-            background: var(--gradient-primary);
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .wb-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(0,212,255,0.3);
-            box-shadow: 0 24px 64px rgba(0,0,0,0.4);
-        }
-
-        .wb-card:hover::before { opacity: 1; }
-
-        .wb-icon {
-            width: 56px; height: 56px;
-            border-radius: 14px;
-            background: rgba(0,212,255,0.08);
-            border: 1px solid rgba(0,212,255,0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        .wb-card h3 { font-size: 20px; margin-bottom: 10px; }
-        .wb-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 16px; }
-        .wb-meta {
-            display: flex;
-            gap: 12px;
-            font-size: 12px;
-            color: var(--text-muted);
-            font-family: 'SF Mono', monospace;
-        }
-
         /* ===== CONTACT ===== */
         .contact-grid {
             display: grid;
@@ -743,7 +983,13 @@
             align-items: center;
         }
 
-        .contact-info h2 { font-size: 32px; margin-bottom: 16px; }
+        .contact-info h2 {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
         .contact-info > p {
             color: var(--text-secondary);
             font-size: 16px;
@@ -962,11 +1208,38 @@
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
+        /* ===== RIPPLE ===== */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 40%, transparent 70%);
+            transform: scale(0);
+            opacity: 0.9;
+            animation: ripple-anim 0.8s ease-out forwards;
+        }
+
+        @keyframes ripple-anim {
+            to { transform: scale(3); opacity: 0; }
+        }
+
+        /* ===== SCROLL REVEAL (classes added via JS only) ===== */
+        .reveal { opacity: 0; }
+        .reveal.in { animation: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: none; }
+        }
+
         /* ===== MOBILE ===== */
         @media (max-width: 1024px) {
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
             .card-grid-2, .card-grid-3 { grid-template-columns: 1fr; }
+            .promo-banner { padding: 40px 28px; }
+            .promo-platforms { grid-template-columns: 1fr; }
             .rh-grid { grid-template-columns: 1fr; }
             .contact-grid { grid-template-columns: 1fr; gap: 40px; }
             .qr-wrap { justify-content: center; }
@@ -977,15 +1250,19 @@
 
         @media (max-width: 768px) {
             section { padding: 60px 20px; }
-            .hero { min-height: auto; padding-top: 100px; padding-bottom: 60px; }
+            .hero { min-height: auto; padding-top: 120px; padding-bottom: 72px; }
             .hero-actions { flex-direction: column; width: 100%; }
             .hero-actions .btn { width: 100%; justify-content: center; }
-            .platform-card { padding: 32px 20px; }
+            .platform-card { padding: 28px 20px; }
+            .promo-banner { padding: 32px 20px; border-radius: 20px; }
+            .rh-card { padding: 24px 20px; }
             .resource-actions, .topic-actions { flex-direction: column; }
             .rh-actions { flex-direction: column; }
             .btn-rh-cn, .btn-rh-global { width: 100%; text-align: center; }
             .qr-wrap { flex-direction: column; align-items: center; }
             .footer-disclaimer { text-align: left; }
+            .feature-card { flex-basis: 260px; width: 260px; }
+            .marquee-row { margin: 0 -20px; padding: 8px 20px 16px; }
         }
 
         /* Mobile menu */
@@ -1023,22 +1300,12 @@
             html { scroll-behavior: auto; }
         }
     </style>
-<base target="_blank">
 <script>
 var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
   hm.src = "https://hm.baidu.com/hm.js?e459d7329e9da999a234c4dfcb681691";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?e459d7329e9da999a234c4dfcb681691";
-  var s = document.getElementsByTagName("script")[0]; 
+  var s = document.getElementsByTagName("script")[0];
   s.parentNode.insertBefore(hm, s);
 })();
 </script>
@@ -1059,8 +1326,8 @@ var _hmt = _hmt || [];
                 <a href="#topics" data-i18n="nav_topics">专题</a>
                 <a href="#contact" data-i18n="nav_contact">联系</a>
                 <div class="lang-switch">
-                    <button class="lang-btn active" onclick="setLang('zh')">中</button>
-                    <button class="lang-btn" onclick="setLang('en')">EN</button>
+                    <button class="lang-btn active" data-lang="zh" onclick="setLang('zh')">中</button>
+                    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
                 </div>
             </div>
             <button class="mobile-menu-btn" onclick="toggleMobile()">☰</button>
@@ -1070,19 +1337,21 @@ var _hmt = _hmt || [];
     <!-- Mobile Menu -->
     <div class="mobile-nav" id="mobileNav">
         <button class="close-btn" onclick="toggleMobile()">×</button>
-        <a href="#platforms" onclick="toggleMobile()">创作平台</a>
-        <a href="#runninghub" onclick="toggleMobile()">RunningHub</a>
-        <a href="#workbench" onclick="toggleMobile()">影视工作台</a>
-        <a href="#aicoding" onclick="toggleMobile()">AI Coding</a>
-        <a href="#docs" onclick="toggleMobile()">文档库</a>
-        <a href="#resources" onclick="toggleMobile()">资源</a>
-        <a href="#topics" onclick="toggleMobile()">专题</a>
-        <a href="#contact" onclick="toggleMobile()">联系</a>
+        <a href="#platforms" onclick="toggleMobile()" data-i18n="nav_platform">创作平台</a>
+        <a href="#runninghub" onclick="toggleMobile()" data-i18n="nav_rh">RunningHub</a>
+        <a href="#workbench" onclick="toggleMobile()" data-i18n="nav_wb">影视工作台</a>
+        <a href="#aicoding" onclick="toggleMobile()" data-i18n="nav_aicoding">AI Coding</a>
+        <a href="#docs" onclick="toggleMobile()" data-i18n="nav_docs">文档库</a>
+        <a href="#resources" onclick="toggleMobile()" data-i18n="nav_res">资源</a>
+        <a href="#topics" onclick="toggleMobile()" data-i18n="nav_topics">专题</a>
+        <a href="#contact" onclick="toggleMobile()" data-i18n="nav_contact">联系</a>
     </div>
 
     <!-- Hero -->
     <header class="hero">
         <div class="hero-bg"></div>
+        <div class="hero-glow glow-purple"></div>
+        <div class="hero-glow glow-gold"></div>
         <div class="hero-content">
             <h1>Gary<span class="gradient-text">AIGC</span></h1>
             <div class="hero-slogan" data-i18n="hero_slogan">用 AI 编织你的梦想</div>
@@ -1096,84 +1365,73 @@ var _hmt = _hmt || [];
         </div>
     </header>
 
-    <!-- Section: 我的创作平台 -->
-    <section id="platforms">
+    <!-- Section: 固定推广区（RunningHub 主推 + 平台入口） -->
+    <section id="promo">
         <div class="container">
-            <div class="section-header">
-                <div class="section-line"></div>
-                <div>
-                    <h2 data-i18n="sec_platform_title">我的创作平台</h2>
-                    <div class="en" data-i18n="sec_platform_en">CREATIVE PLATFORMS</div>
-                </div>
-            </div>
-            <div class="card-grid card-grid-3">
-                <a href="https://space.bilibili.com/669645699" target="_blank" class="platform-card bili">
-                    <div class="platform-icon">📺</div>
-                    <h3>B站</h3>
-                    <span>Bilibili</span>
-                    <div class="platform-btn" data-i18n="btn_visit_channel">Visit Channel →</div>
-                </a>
-                <div class="platform-card wx" onclick="openWxModal()">
-                    <div class="platform-icon">💬</div>
-                    <h3 data-i18n="platform_wx">微信联系</h3>
-                    <span>Community</span>
-                    <div class="platform-btn" data-i18n="btn_contact_me">Contact Me →</div>
-                </div>
-                <a href="https://www.youtube.com/@GaryAIGC" target="_blank" class="platform-card yt">
-                    <div class="platform-icon">▶️</div>
-                    <h3>YouTube</h3>
-                    <span>Global</span>
-                    <div class="platform-btn" data-i18n="btn_subscribe">Subscribe →</div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section: RunningHub -->
-    <section id="runninghub" style="background: linear-gradient(180deg, var(--bg) 0%, rgba(0,212,255,0.02) 50%, var(--bg) 100%);">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-line"></div>
-                <div>
-                    <h2 data-i18n="sec_rh_title">RunningHub × GaryAIGC 粉丝专属福利</h2>
-                    <div class="en" data-i18n="sec_rh_en">EXCLUSIVE CREATOR REWARDS</div>
-                </div>
-            </div>
-            <div class="rh-card">
-                <div class="rh-grid">
-                    <div class="rh-benefits">
-                        <h4>🎁 <span data-i18n="rh_gift">算力大礼包</span>:</h4>
-                        <ul>
-                            <li>✨ <span data-i18n="rh_reg">注册领</span> <strong>1000 RH币</strong> <span class="tag-small" data-i18n="rh_reg_note">(自行注册仅 500点)</span></li>
-                            <li>💰 <span data-i18n="rh_daily">每日登录补赠</span> <strong>100币</strong>，<span data-i18n="rh_valid">老许粉丝长期有效</span></li>
-                            <li>🔥 <span data-i18n="rh_both">两站独立：</span><strong data-i18n="rh_both_val">两边都注册 = 领 2000币</strong></li>
-                            <li>💡 <span data-i18n="rh_old">老账号点击头像即可补填</span></li>
-                        </ul>
-                    </div>
-                    <div class="rh-benefits">
-                        <h4>🌍 Global Benefits:</h4>
-                        <ul>
-                            <li>✨ <strong>1000 RH Coins</strong> <span class="tag-small">on signup (vs 500 self-reg)</span></li>
-                            <li>💰 <strong>Daily +100 Coins</strong> bonus reward</li>
-                            <li>🚀 <strong>2000 Coins</strong> if you register both sites</li>
-                            <li>💡 Apply code in settings for old accounts</li>
-                        </ul>
+            <div class="promo-banner" id="runninghub">
+                <div class="section-header">
+                    <div class="section-line"></div>
+                    <div>
+                        <h2 data-i18n="sec_rh_title">RunningHub × GaryAIGC 粉丝专属福利</h2>
+                        <div class="en" data-i18n="sec_rh_en">EXCLUSIVE CREATOR REWARDS</div>
                     </div>
                 </div>
-                <div class="rh-code-area">
-                    <span class="rh-code-label" data-i18n="rh_code_label">专属邀请码 / Invite Code:</span>
-                    <div class="rh-code" id="rhCode">rh-v1394</div>
-                    <button class="btn-copy" onclick="copyCode()" data-i18n="btn_copy">点击复制 / COPY</button>
-                    <div class="rh-actions">
-                        <a href="https://www.runninghub.cn/user-center/1904389812667756546/?inviteCode=rh-v1394" target="_blank" class="btn-rh-cn" data-i18n="btn_rh_cn">国内站 (.cn)</a>
-                        <a href="https://www.runninghub.ai/user-center/1904389812667756546/?inviteCode=rh-v1394" target="_blank" class="btn-rh-global" data-i18n="btn_rh_global">Global Site (.ai)</a>
+                <div class="rh-card">
+                    <div class="rh-grid">
+                        <div class="rh-benefits">
+                            <h4>🎁 <span data-i18n="rh_gift">算力大礼包</span>:</h4>
+                            <ul>
+                                <li>✨ <span data-i18n="rh_reg">注册领</span> <strong>1000 RH币</strong> <span class="tag-small" data-i18n="rh_reg_note">(自行注册仅 500点)</span></li>
+                                <li>💰 <span data-i18n="rh_daily">每日登录补赠</span> <strong>100币</strong>，<span data-i18n="rh_valid">老许粉丝长期有效</span></li>
+                                <li>🔥 <span data-i18n="rh_both">两站独立：</span><strong data-i18n="rh_both_val">两边都注册 = 领 2000币</strong></li>
+                                <li>💡 <span data-i18n="rh_old">老账号点击头像即可补填</span></li>
+                            </ul>
+                        </div>
+                        <div class="rh-benefits">
+                            <h4>🌍 Global Benefits:</h4>
+                            <ul>
+                                <li>✨ <strong>1000 RH Coins</strong> <span class="tag-small">on signup (vs 500 self-reg)</span></li>
+                                <li>💰 <strong>Daily +100 Coins</strong> bonus reward</li>
+                                <li>🚀 <strong>2000 Coins</strong> if you register both sites</li>
+                                <li>💡 Apply code in settings for old accounts</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="rh-code-area">
+                        <span class="rh-code-label" data-i18n="rh_code_label">专属邀请码 / Invite Code:</span>
+                        <div class="rh-code" id="rhCode">rh-v1394</div>
+                        <button class="btn-copy" onclick="copyCode()" data-i18n="btn_copy">点击复制 / COPY</button>
+                        <div class="rh-actions">
+                            <a href="https://www.runninghub.cn/user-center/1904389812667756546/?inviteCode=rh-v1394" target="_blank" class="btn-rh-cn" data-i18n="btn_rh_cn">国内站 (.cn)</a>
+                            <a href="https://www.runninghub.ai/user-center/1904389812667756546/?inviteCode=rh-v1394" target="_blank" class="btn-rh-global" data-i18n="btn_rh_global">Global Site (.ai)</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="promo-platforms" id="platforms">
+                    <a href="https://space.bilibili.com/669645699" target="_blank" class="platform-card bili">
+                        <div class="platform-icon">📺</div>
+                        <h3>B站</h3>
+                        <span>Bilibili</span>
+                        <div class="platform-btn" data-i18n="btn_visit_channel">Visit Channel →</div>
+                    </a>
+                    <a href="https://www.youtube.com/@GaryAIGC" target="_blank" class="platform-card yt">
+                        <div class="platform-icon">▶️</div>
+                        <h3>YouTube</h3>
+                        <span>Global</span>
+                        <div class="platform-btn" data-i18n="btn_subscribe">Subscribe →</div>
+                    </a>
+                    <div class="platform-card wx" onclick="openWxModal()">
+                        <div class="platform-icon">💬</div>
+                        <h3 data-i18n="platform_wx">微信联系</h3>
+                        <span>Community</span>
+                        <div class="platform-btn" data-i18n="btn_contact_me">Contact Me →</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Section: AI影视创作超级工作台 -->
+    <!-- Section: 滚动卡片栏 1 · AI 影视工作台 -->
     <section id="workbench">
         <div class="container">
             <div class="section-header">
@@ -1183,39 +1441,106 @@ var _hmt = _hmt || [];
                     <div class="en" data-i18n="sec_wb_en">AI FILMMAKING SUPER WORKBENCH</div>
                 </div>
             </div>
-            <div class="card-grid card-grid-3">
-                <a href="./25-compositions.html" target="_blank" class="wb-card">
-                    <div class="wb-icon">🎨</div>
-                    <h3 data-i18n="wb1_title">25种构图 · 分镜模板</h3>
-                    <p data-i18n="wb1_desc">从三分法到打破构图，5大功能模块全覆盖。中英双语提示词，可直接用于 ComfyUI / 无限画布。</p>
-                    <div class="wb-meta">
-                        <span>25 Items</span>
-                        <span>Composition</span>
-                    </div>
-                </a>
-                <a href="./60-shots.html" target="_blank" class="wb-card">
-                    <div class="wb-icon" style="background: rgba(192,132,252,0.08); border-color: rgba(192,132,252,0.15);">🎬</div>
-                    <h3 data-i18n="wb2_title">60种镜头语言 · 分镜模板</h3>
-                    <p data-i18n="wb2_desc">景别、角度、运动、变焦、叙事五大类。从 ELS 大远景到分屏，完整影视语法库。</p>
-                    <div class="wb-meta">
-                        <span>60 Items</span>
-                        <span>Shot Language</span>
-                    </div>
-                </a>
-                <a href="./151-grammar.html" target="_blank" class="wb-card">
-                    <div class="wb-icon" style="background: rgba(255,107,157,0.08); border-color: rgba(255,107,157,0.15);">⚡</div>
-                    <h3 data-i18n="wb3_title">151种进阶语法 · 超级工作台</h3>
-                    <p data-i18n="wb3_desc">光影×转场×场景×表演×剪辑，五大模块全覆盖。从单帧到成片的完整 AI 影视系统。</p>
-                    <div class="wb-meta">
-                        <span>151 Items</span>
-                        <span>5 Modules</span>
-                    </div>
-                </a>
+            <div class="marquee-row">
+                <div class="marquee-track">
+                    <!-- group A -->
+                    <a href="./film-studio/" target="_blank" class="feature-card" style="--acc: 255,107,157;">
+                        <div class="fc-cover pat-blob">
+                            <span class="fc-badge" data-i18n="badge_new">新上线</span>
+                            <div class="fc-glyph">🎬</div>
+                            <div class="fc-num" style="font-size:84px; letter-spacing:-3px;">FS</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="wb0_title">AI 影视创作工作台</h3>
+                            <p data-i18n="wb0_desc">全新上线：一站式 AI 影视创作工作台，画布分镜与进阶语法系统的集成入口。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./25-compositions.html" target="_blank" class="feature-card" style="--acc: 0,212,255;">
+                        <div class="fc-cover pat-grid">
+                            <div class="fc-glyph">🎨</div>
+                            <div class="fc-num">25</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="wb1_title">25种构图 · 分镜模板</h3>
+                            <p data-i18n="wb1_desc">从三分法到打破构图，5大功能模块全覆盖。中英双语提示词，可直接用于 ComfyUI / 无限画布。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./60-shots.html" target="_blank" class="feature-card" style="--acc: 192,132,252;">
+                        <div class="fc-cover pat-rings">
+                            <div class="fc-glyph">🎥</div>
+                            <div class="fc-num">60</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="wb2_title">60种镜头语言 · 分镜模板</h3>
+                            <p data-i18n="wb2_desc">景别、角度、运动、变焦、叙事五大类。从 ELS 大远景到分屏，完整影视语法库。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./151-grammar.html" target="_blank" class="feature-card" style="--acc: 255,170,0;">
+                        <div class="fc-cover pat-diag">
+                            <div class="fc-glyph">⚡</div>
+                            <div class="fc-num">151</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="wb3_title">151种进阶语法 · 超级工作台</h3>
+                            <p data-i18n="wb3_desc">光影×转场×场景×表演×剪辑，五大模块全覆盖。从单帧到成片的完整 AI 影视系统。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <!-- group B (duplicate for seamless loop) -->
+                    <a href="./film-studio/" target="_blank" class="feature-card" style="--acc: 255,107,157;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-blob">
+                            <span class="fc-badge" data-i18n="badge_new">新上线</span>
+                            <div class="fc-glyph">🎬</div>
+                            <div class="fc-num" style="font-size:84px; letter-spacing:-3px;">FS</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="wb0_title">AI 影视创作工作台</h3>
+                            <p data-i18n="wb0_desc">全新上线：一站式 AI 影视创作工作台，画布分镜与进阶语法系统的集成入口。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./25-compositions.html" target="_blank" class="feature-card" style="--acc: 0,212,255;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-grid">
+                            <div class="fc-glyph">🎨</div>
+                            <div class="fc-num">25</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="wb1_title">25种构图 · 分镜模板</h3>
+                            <p data-i18n="wb1_desc">从三分法到打破构图，5大功能模块全覆盖。中英双语提示词，可直接用于 ComfyUI / 无限画布。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./60-shots.html" target="_blank" class="feature-card" style="--acc: 192,132,252;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-rings">
+                            <div class="fc-glyph">🎥</div>
+                            <div class="fc-num">60</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="wb2_title">60种镜头语言 · 分镜模板</h3>
+                            <p data-i18n="wb2_desc">景别、角度、运动、变焦、叙事五大类。从 ELS 大远景到分屏，完整影视语法库。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./151-grammar.html" target="_blank" class="feature-card" style="--acc: 255,170,0;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-diag">
+                            <div class="fc-glyph">⚡</div>
+                            <div class="fc-num">151</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="wb3_title">151种进阶语法 · 超级工作台</h3>
+                            <p data-i18n="wb3_desc">光影×转场×场景×表演×剪辑，五大模块全覆盖。从单帧到成片的完整 AI 影视系统。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Section: AI Coding -->
+    <!-- Section: 滚动卡片栏 2 · AI Coding 编程指南 -->
     <section id="aicoding" style="background: linear-gradient(180deg, var(--bg) 0%, rgba(16,163,127,0.02) 50%, var(--bg) 100%);">
         <div class="container">
             <div class="section-header">
@@ -1225,17 +1550,213 @@ var _hmt = _hmt || [];
                     <div class="en" data-i18n="sec_aicoding_en">AI CODING & DEVELOPMENT</div>
                 </div>
             </div>
-            <div class="card-grid card-grid-2">
-                <a href="./claude-code-guide.html" target="_blank" class="doc-card">
-                    <div class="doc-tag" style="background: rgba(16,163,127,0.1); color: var(--accent-green); border-color: rgba(16,163,127,0.2);">CLUADE CODE</div>
-                    <h3 data-i18n="aicoding1_title">Claude Code 完全指南</h3>
-                    <p data-i18n="aicoding1_desc">从入门到精通的 AI 终端代理教程。涵盖安装配置、权限管理、上下文控制、CLAUDE.md 记忆系统、Skills / MCP / Sub-agent 高级拓展。</p>
-                </a>
-                <a href="./ai-coding-guide.html" target="_blank" class="doc-card">
-                    <div class="doc-tag" style="background: rgba(255,170,0,0.1); color: var(--accent-orange); border-color: rgba(255,170,0,0.2);">TOOLKIT</div>
-                    <h3 data-i18n="aicoding2_title">AI Coding 形态辨析与配置手册</h3>
-                    <p data-i18n="aicoding2_desc">Claude Code / Cursor / OpenAI Codex 三方对比，国内第三方 API 配置方案，MCP / SDK / Agent 核心概念词典，AI 视频剪辑实战流水线。</p>
-                </a>
+            <div class="marquee-row">
+                <div class="marquee-track rev">
+                    <!-- group A -->
+                    <a href="./claude-code-guide.html" target="_blank" class="feature-card" style="--acc: 7,193,96;">
+                        <div class="fc-cover pat-dots">
+                            <div class="fc-glyph">⌨️</div>
+                            <div class="fc-num" style="font-size:64px; letter-spacing:-2px; bottom:8px;">&gt;_</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding1_title">Claude Code 完全指南</h3>
+                            <p data-i18n="aicoding1_desc">从入门到精通的 AI 终端代理教程。涵盖安装配置、权限管理、上下文控制、CLAUDE.md 记忆系统、Skills / MCP / Sub-agent 高级拓展。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./ai-coding-guide.html" target="_blank" class="feature-card" style="--acc: 255,170,0;">
+                        <div class="fc-cover pat-diag">
+                            <div class="fc-glyph">🤖</div>
+                            <div class="fc-num" style="font-size:64px; letter-spacing:-2px; bottom:8px;">{ }</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding2_title">AI Coding 形态辨析与配置手册</h3>
+                            <p data-i18n="aicoding2_desc">Claude Code / Cursor / OpenAI Codex 三方对比，国内第三方 API 配置方案，MCP / SDK / Agent 核心概念词典，AI 视频剪辑实战流水线。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./kimi-code-guide.html" target="_blank" class="feature-card" style="--acc: 124,92,255;">
+                        <div class="fc-cover pat-rings">
+                            <div class="fc-glyph">🌙</div>
+                            <div class="fc-num" style="font-size:96px; letter-spacing:-4px; bottom:-8px;">/</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding3_title">Kimi Code 指令大全</h3>
+                            <p data-i18n="aicoding3_desc">Kimi Code CLI 指令与用法速查。交互式教程，涵盖斜杠命令、权限模式、Hooks、Skills 与 MCP 配置。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <!-- group B -->
+                    <a href="./claude-code-guide.html" target="_blank" class="feature-card" style="--acc: 7,193,96;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-dots">
+                            <div class="fc-glyph">⌨️</div>
+                            <div class="fc-num" style="font-size:64px; letter-spacing:-2px; bottom:8px;">&gt;_</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding1_title">Claude Code 完全指南</h3>
+                            <p data-i18n="aicoding1_desc">从入门到精通的 AI 终端代理教程。涵盖安装配置、权限管理、上下文控制、CLAUDE.md 记忆系统、Skills / MCP / Sub-agent 高级拓展。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./ai-coding-guide.html" target="_blank" class="feature-card" style="--acc: 255,170,0;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-diag">
+                            <div class="fc-glyph">🤖</div>
+                            <div class="fc-num" style="font-size:64px; letter-spacing:-2px; bottom:8px;">{ }</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding2_title">AI Coding 形态辨析与配置手册</h3>
+                            <p data-i18n="aicoding2_desc">Claude Code / Cursor / OpenAI Codex 三方对比，国内第三方 API 配置方案，MCP / SDK / Agent 核心概念词典，AI 视频剪辑实战流水线。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./kimi-code-guide.html" target="_blank" class="feature-card" style="--acc: 124,92,255;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-rings">
+                            <div class="fc-glyph">🌙</div>
+                            <div class="fc-num" style="font-size:96px; letter-spacing:-4px; bottom:-8px;">/</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding3_title">Kimi Code 指令大全</h3>
+                            <p data-i18n="aicoding3_desc">Kimi Code CLI 指令与用法速查。交互式教程，涵盖斜杠命令、权限模式、Hooks、Skills 与 MCP 配置。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <!-- group C -->
+                    <a href="./claude-code-guide.html" target="_blank" class="feature-card" style="--acc: 7,193,96;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-dots">
+                            <div class="fc-glyph">⌨️</div>
+                            <div class="fc-num" style="font-size:64px; letter-spacing:-2px; bottom:8px;">&gt;_</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding1_title">Claude Code 完全指南</h3>
+                            <p data-i18n="aicoding1_desc">从入门到精通的 AI 终端代理教程。涵盖安装配置、权限管理、上下文控制、CLAUDE.md 记忆系统、Skills / MCP / Sub-agent 高级拓展。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./ai-coding-guide.html" target="_blank" class="feature-card" style="--acc: 255,170,0;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-diag">
+                            <div class="fc-glyph">🤖</div>
+                            <div class="fc-num" style="font-size:64px; letter-spacing:-2px; bottom:8px;">{ }</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding2_title">AI Coding 形态辨析与配置手册</h3>
+                            <p data-i18n="aicoding2_desc">Claude Code / Cursor / OpenAI Codex 三方对比，国内第三方 API 配置方案，MCP / SDK / Agent 核心概念词典，AI 视频剪辑实战流水线。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./kimi-code-guide.html" target="_blank" class="feature-card" style="--acc: 124,92,255;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-rings">
+                            <div class="fc-glyph">🌙</div>
+                            <div class="fc-num" style="font-size:96px; letter-spacing:-4px; bottom:-8px;">/</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding3_title">Kimi Code 指令大全</h3>
+                            <p data-i18n="aicoding3_desc">Kimi Code CLI 指令与用法速查。交互式教程，涵盖斜杠命令、权限模式、Hooks、Skills 与 MCP 配置。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <!-- group D -->
+                    <a href="./claude-code-guide.html" target="_blank" class="feature-card" style="--acc: 7,193,96;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-dots">
+                            <div class="fc-glyph">⌨️</div>
+                            <div class="fc-num" style="font-size:64px; letter-spacing:-2px; bottom:8px;">&gt;_</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding1_title">Claude Code 完全指南</h3>
+                            <p data-i18n="aicoding1_desc">从入门到精通的 AI 终端代理教程。涵盖安装配置、权限管理、上下文控制、CLAUDE.md 记忆系统、Skills / MCP / Sub-agent 高级拓展。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./ai-coding-guide.html" target="_blank" class="feature-card" style="--acc: 255,170,0;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-diag">
+                            <div class="fc-glyph">🤖</div>
+                            <div class="fc-num" style="font-size:64px; letter-spacing:-2px; bottom:8px;">{ }</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding2_title">AI Coding 形态辨析与配置手册</h3>
+                            <p data-i18n="aicoding2_desc">Claude Code / Cursor / OpenAI Codex 三方对比，国内第三方 API 配置方案，MCP / SDK / Agent 核心概念词典，AI 视频剪辑实战流水线。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./kimi-code-guide.html" target="_blank" class="feature-card" style="--acc: 124,92,255;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-rings">
+                            <div class="fc-glyph">🌙</div>
+                            <div class="fc-num" style="font-size:96px; letter-spacing:-4px; bottom:-8px;">/</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding3_title">Kimi Code 指令大全</h3>
+                            <p data-i18n="aicoding3_desc">Kimi Code CLI 指令与用法速查。交互式教程，涵盖斜杠命令、权限模式、Hooks、Skills 与 MCP 配置。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <!-- group E -->
+                    <a href="./claude-code-guide.html" target="_blank" class="feature-card" style="--acc: 7,193,96;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-dots">
+                            <div class="fc-glyph">⌨️</div>
+                            <div class="fc-num" style="font-size:64px; letter-spacing:-2px; bottom:8px;">&gt;_</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding1_title">Claude Code 完全指南</h3>
+                            <p data-i18n="aicoding1_desc">从入门到精通的 AI 终端代理教程。涵盖安装配置、权限管理、上下文控制、CLAUDE.md 记忆系统、Skills / MCP / Sub-agent 高级拓展。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./ai-coding-guide.html" target="_blank" class="feature-card" style="--acc: 255,170,0;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-diag">
+                            <div class="fc-glyph">🤖</div>
+                            <div class="fc-num" style="font-size:64px; letter-spacing:-2px; bottom:8px;">{ }</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding2_title">AI Coding 形态辨析与配置手册</h3>
+                            <p data-i18n="aicoding2_desc">Claude Code / Cursor / OpenAI Codex 三方对比，国内第三方 API 配置方案，MCP / SDK / Agent 核心概念词典，AI 视频剪辑实战流水线。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./kimi-code-guide.html" target="_blank" class="feature-card" style="--acc: 124,92,255;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-rings">
+                            <div class="fc-glyph">🌙</div>
+                            <div class="fc-num" style="font-size:96px; letter-spacing:-4px; bottom:-8px;">/</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding3_title">Kimi Code 指令大全</h3>
+                            <p data-i18n="aicoding3_desc">Kimi Code CLI 指令与用法速查。交互式教程，涵盖斜杠命令、权限模式、Hooks、Skills 与 MCP 配置。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <!-- group F -->
+                    <a href="./claude-code-guide.html" target="_blank" class="feature-card" style="--acc: 7,193,96;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-dots">
+                            <div class="fc-glyph">⌨️</div>
+                            <div class="fc-num" style="font-size:64px; letter-spacing:-2px; bottom:8px;">&gt;_</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding1_title">Claude Code 完全指南</h3>
+                            <p data-i18n="aicoding1_desc">从入门到精通的 AI 终端代理教程。涵盖安装配置、权限管理、上下文控制、CLAUDE.md 记忆系统、Skills / MCP / Sub-agent 高级拓展。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./ai-coding-guide.html" target="_blank" class="feature-card" style="--acc: 255,170,0;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-diag">
+                            <div class="fc-glyph">🤖</div>
+                            <div class="fc-num" style="font-size:64px; letter-spacing:-2px; bottom:8px;">{ }</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding2_title">AI Coding 形态辨析与配置手册</h3>
+                            <p data-i18n="aicoding2_desc">Claude Code / Cursor / OpenAI Codex 三方对比，国内第三方 API 配置方案，MCP / SDK / Agent 核心概念词典，AI 视频剪辑实战流水线。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                    <a href="./kimi-code-guide.html" target="_blank" class="feature-card" style="--acc: 124,92,255;" aria-hidden="true" tabindex="-1">
+                        <div class="fc-cover pat-rings">
+                            <div class="fc-glyph">🌙</div>
+                            <div class="fc-num" style="font-size:96px; letter-spacing:-4px; bottom:-8px;">/</div>
+                        </div>
+                        <div class="fc-body">
+                            <h3 data-i18n="aicoding3_title">Kimi Code 指令大全</h3>
+                            <p data-i18n="aicoding3_desc">Kimi Code CLI 指令与用法速查。交互式教程，涵盖斜杠命令、权限模式、Hooks、Skills 与 MCP 配置。</p>
+                            <div class="fc-enter"><span data-i18n="fc_enter">进入</span><span class="arrow">→</span></div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -1281,7 +1802,7 @@ var _hmt = _hmt || [];
                     </div>
                     <p data-i18n="res1_desc">整合包、资源合集、历史实战下载。含网盘直链与分类索引。</p>
                     <div class="resource-actions">
-                        <a href="https://laoxu666.feishu.cn/wiki/NOMkwBRxpiwQ5tkSidqcVcVWn0b" target="_blank" class="btn-feishu">🚀 国内加速 (飞书)</a>
+                        <a href="https://laoxu666.feishu.cn/wiki/NOMkwBRxpiwQ5tkSidqcVcVn0b" target="_blank" class="btn-feishu">🚀 国内加速 (飞书)</a>
                         <a href="https://www.notion.so/2e1079fdbc3880c3975fc6ec818789e7?source=copy_link" target="_blank" class="btn-notion">🌍 Global (Notion)</a>
                     </div>
                 </div>
@@ -1330,7 +1851,7 @@ var _hmt = _hmt || [];
                     <div class="divider"></div>
                     <p data-i18n="topic2_desc">追踪全球最新 AI 插件与工具神器。视频、图像、音频生产力工具评测。</p>
                     <div class="topic-actions">
-                        <a href="https://laoxu666.feishu.cn/wiki/NOMkwBRxpiwQ5tkSidqcVcVWn0b" target="_blank" class="btn-cn">国内访问</a>
+                        <a href="https://laoxu666.feishu.cn/wiki/NOMkwBRxpiwQ5tkSidqcVcVn0b" target="_blank" class="btn-cn">国内访问</a>
                         <a href="#" class="btn-global" onclick="alert('海外版本整理中 / Global version coming soon')">Global</a>
                     </div>
                 </div>
@@ -1355,7 +1876,7 @@ var _hmt = _hmt || [];
                 <div class="contact-info">
                     <h2 data-i18n="contact_title">联系 <span class="gradient-text">合作</span></h2>
                     <p data-i18n="contact_desc">商务合作、工具评测、教程定制、技术交流，欢迎通过以下方式找到我。添加微信时请备注来意，加入私域获取最新资源与一对一答疑。</p>
-                    
+
                     <div class="contact-item">
                         <strong data-i18n="label_wx">微信</strong>
                         <span>GaryAigo</span>
@@ -1375,11 +1896,11 @@ var _hmt = _hmt || [];
                 </div>
                 <div class="qr-wrap">
                     <div class="qr-box">
-                        <img src="wx1.jpg" alt="WeChat QR 1" onerror="this.style.display='none'">
+                        <img src="wx1.jpg" alt="WeChat QR 1" width="160" height="218" loading="lazy" onerror="this.style.display='none'">
                         <div class="qr-label" data-i18n="qr1">微信二维码 1</div>
                     </div>
                     <div class="qr-box">
-                        <img src="wx2.jpg" alt="WeChat QR 2" onerror="this.style.display='none'">
+                        <img src="wx2.jpg" alt="WeChat QR 2" width="160" height="218" loading="lazy" onerror="this.style.display='none'">
                         <div class="qr-label" data-i18n="qr2">微信二维码 2</div>
                     </div>
                 </div>
@@ -1405,21 +1926,21 @@ var _hmt = _hmt || [];
     <div id="wechatModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeWxModal()">×</button>
-            <h2>联系老许</h2>
-            <div class="sub">CONTACT / 添加微信请备注来意</div>
+            <h2 data-i18n="wx_modal_title">联系老许</h2>
+            <div class="sub" data-i18n="wx_modal_sub">CONTACT / 添加微信请备注来意</div>
             <div class="modal-grid">
                 <div class="modal-qr-item">
-                    <div class="qr-name">GaryAIGC (主号)</div>
-                    <img src="wx1.jpg" alt="微信主号" onerror="this.style.display='none'">
-                    <button class="btn-copy-wx" onclick="copyId('GaryAIGC', 'WECHAT')">复制微信号</button>
+                    <div class="qr-name" data-i18n="wx_main">GaryAIGC (主号)</div>
+                    <img src="wx1.jpg" alt="微信主号" width="200" height="273" loading="lazy" onerror="this.style.display='none'">
+                    <button class="btn-copy-wx" onclick="copyId('GaryAIGC', 'WECHAT')" data-i18n="btn_copy_wx">复制微信号</button>
                 </div>
                 <div class="modal-qr-item">
-                    <div class="qr-name">GaryAiGo (备用)</div>
-                    <img src="wx2.jpg" alt="微信备用" onerror="this.style.display='none'">
-                    <button class="btn-copy-wx" onclick="copyId('GaryAiGo', 'WECHAT')">复制微信号</button>
+                    <div class="qr-name" data-i18n="wx_backup">GaryAiGo (备用)</div>
+                    <img src="wx2.jpg" alt="微信备用" width="200" height="273" loading="lazy" onerror="this.style.display='none'">
+                    <button class="btn-copy-wx" onclick="copyId('GaryAiGo', 'WECHAT')" data-i18n="btn_copy_wx">复制微信号</button>
                 </div>
             </div>
-            <div class="modal-back" onclick="closeWxModal()">← 返回首页 / Back to Home</div>
+            <div class="modal-back" onclick="closeWxModal()" data-i18n="wx_back">← 返回首页 / Back to Home</div>
         </div>
     </div>
 
@@ -1445,12 +1966,15 @@ var _hmt = _hmt || [];
                 rh_code_label: "专属邀请码 / Invite Code:", btn_copy: "点击复制 / COPY",
                 btn_rh_cn: "国内站 (.cn)", btn_rh_global: "Global Site (.ai)",
                 sec_wb_title: "AI 影视创作超级工作台", sec_wb_en: "AI FILMMAKING SUPER WORKBENCH",
+                badge_new: "新上线", fc_enter: "进入",
+                wb0_title: "AI 影视创作工作台", wb0_desc: "全新上线：一站式 AI 影视创作工作台，画布分镜与进阶语法系统的集成入口。",
                 wb1_title: "25种构图 · 分镜模板", wb1_desc: "从三分法到打破构图，5大功能模块全覆盖。中英双语提示词，可直接用于 ComfyUI / 无限画布。",
                 wb2_title: "60种镜头语言 · 分镜模板", wb2_desc: "景别、角度、运动、变焦、叙事五大类。从 ELS 大远景到分屏，完整影视语法库。",
                 wb3_title: "151种进阶语法 · 超级工作台", wb3_desc: "光影×转场×场景×表演×剪辑，五大模块全覆盖。从单帧到成片的完整 AI 影视系统。",
                 sec_aicoding_title: "AI Coding 编程指南", sec_aicoding_en: "AI CODING & DEVELOPMENT",
                 aicoding1_title: "Claude Code 完全指南", aicoding1_desc: "从入门到精通的 AI 终端代理教程。涵盖安装配置、权限管理、上下文控制、CLAUDE.md 记忆系统、Skills / MCP / Sub-agent 高级拓展。",
                 aicoding2_title: "AI Coding 形态辨析与配置手册", aicoding2_desc: "Claude Code / Cursor / OpenAI Codex 三方对比，国内第三方 API 配置方案，MCP / SDK / Agent 核心概念词典，AI 视频剪辑实战流水线。",
+                aicoding3_title: "Kimi Code 指令大全", aicoding3_desc: "Kimi Code CLI 指令与用法速查。交互式教程，涵盖斜杠命令、权限模式、Hooks、Skills 与 MCP 配置。",
                 sec_docs_title: "GaryAIGC 硬核文档库", sec_docs_en: "TECHNICAL WHITE PAPERS & DOCS",
                 doc1_title: "ComfyUI 图像放大技术白皮书",
                 doc1_desc: "从像素插值到语义重构，揭秘 SeedVR、SUPIR 等前沿放大技术的底层逻辑与参数实战。",
@@ -1464,7 +1988,12 @@ var _hmt = _hmt || [];
                 contact_title: "联系 合作", contact_desc: "商务合作、工具评测、教程定制、技术交流，欢迎通过以下方式找到我。添加微信时请备注来意，加入私域获取最新资源与一对一答疑。",
                 label_wx: "微信", label_site: "站点", btn_follow: "关注 B 站",
                 qr1: "微信二维码 1", qr2: "微信二维码 2",
-                footer: "用AI编织你的梦想 / Weaving your dreams with AI"
+                wx_modal_title: "联系老许", wx_modal_sub: "CONTACT / 添加微信请备注来意",
+                wx_main: "GaryAIGC (主号)", wx_backup: "GaryAiGo (备用)",
+                btn_copy_wx: "复制微信号", wx_back: "← 返回首页 / Back to Home",
+                btn_copied: "✓ 已复制 / Copied",
+                toast_code: "✅ 邀请码已复制： ", toast_wx: "✅ 微信号已复制： ",
+                toast_wx_note: "请前往微信搜索添加"
             },
             en: {
                 nav_platform: "Platforms", nav_rh: "RunningHub", nav_wb: "Workbench",
@@ -1482,12 +2011,15 @@ var _hmt = _hmt || [];
                 rh_code_label: "Invite Code:", btn_copy: "COPY",
                 btn_rh_cn: "China Site (.cn)", btn_rh_global: "Global Site (.ai)",
                 sec_wb_title: "AI Filmmaking Super Workbench", sec_wb_en: "AI FILMMAKING SUPER WORKBENCH",
+                badge_new: "NEW", fc_enter: "Enter",
+                wb0_title: "AI Film Studio", wb0_desc: "Just launched: an all-in-one AI filmmaking workbench integrating storyboard canvas and advanced syntax systems.",
                 wb1_title: "25 Compositions", wb1_desc: "From rule of thirds to broken framing. 5 modules with bilingual prompts for ComfyUI / Infinite Canvas.",
                 wb2_title: "60 Shot Types", wb2_desc: "Shot sizes, angles, movement, zoom & narrative. Complete cinematic language library.",
                 wb3_title: "151 Advanced Syntax", wb3_desc: "Lighting × Transitions × Scenes × Performance × Editing. Full AI filmmaking system.",
                 sec_aicoding_title: "AI Coding Guides", sec_aicoding_en: "AI CODING & DEVELOPMENT",
                 aicoding1_title: "Claude Code Complete Guide", aicoding1_desc: "From beginner to pro. Covers setup, permission modes, context management, CLAUDE.md memory, Skills / MCP / Sub-agent advanced features.",
                 aicoding2_title: "AI Coding Toolkit & Config", aicoding2_desc: "Claude Code vs Cursor vs OpenAI Codex comparison, domestic API setup, MCP / SDK / Agent glossary, AI video editing pipelines.",
+                aicoding3_title: "Kimi Code Command Guide", aicoding3_desc: "Kimi Code CLI command & usage quick reference. Interactive tutorial covering slash commands, permission modes, hooks, skills and MCP setup.",
                 sec_docs_title: "GaryAIGC Technical Docs", sec_docs_en: "TECHNICAL WHITE PAPERS & DOCS",
                 doc1_title: "ComfyUI Image Upscaling White Paper",
                 doc1_desc: "From pixel interpolation to semantic reconstruction. Deep dive into SeedVR, SUPIR and parameter tuning.",
@@ -1501,7 +2033,12 @@ var _hmt = _hmt || [];
                 contact_title: "Contact & Collab", contact_desc: "Business inquiries, tool reviews, custom tutorials. Add me on WeChat with a note to join the private community.",
                 label_wx: "WeChat", label_site: "Site", btn_follow: "Follow on Bilibili",
                 qr1: "WeChat QR 1", qr2: "WeChat QR 2",
-                footer: "Weaving your dreams with AI"
+                wx_modal_title: "Contact Gary", wx_modal_sub: "CONTACT / Leave a note when adding",
+                wx_main: "GaryAIGC (Main)", wx_backup: "GaryAiGo (Backup)",
+                btn_copy_wx: "Copy WeChat ID", wx_back: "← Back to Home",
+                btn_copied: "✓ Copied",
+                toast_code: "✅ Invite code copied: ", toast_wx: "✅ WeChat ID copied: ",
+                toast_wx_note: "Search and add in WeChat"
             }
         };
 
@@ -1510,7 +2047,7 @@ var _hmt = _hmt || [];
         function setLang(lang) {
             currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.textContent.toLowerCase().includes(lang==='zh'?'中':'en'));
+                btn.classList.toggle('active', btn.dataset.lang === lang);
             });
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.dataset.i18n;
@@ -1523,11 +2060,10 @@ var _hmt = _hmt || [];
             const code = document.getElementById('rhCode').textContent;
             navigator.clipboard.writeText(code).then(() => {
                 const btn = document.querySelector('.btn-copy');
-                const orig = btn.textContent;
-                btn.textContent = '✓ 已复制 / Copied';
+                btn.textContent = i18n[currentLang].btn_copied;
                 btn.classList.add('copied');
                 setTimeout(() => {
-                    btn.textContent = orig;
+                    btn.textContent = i18n[currentLang].btn_copy;
                     btn.classList.remove('copied');
                 }, 2000);
             });
@@ -1536,9 +2072,9 @@ var _hmt = _hmt || [];
         function copyId(text, type) {
             navigator.clipboard.writeText(text).then(() => {
                 const toast = document.getElementById("customToast");
-                toast.innerHTML = type === 'CODE' 
-                    ? "✅ 邀请码已复制： " + text 
-                    : "✅ 微信号已复制： " + text + "<br><span style='font-size:0.75rem;opacity:0.6'>请前往微信搜索添加</span>";
+                toast.innerHTML = type === 'CODE'
+                    ? i18n[currentLang].toast_code + text
+                    : i18n[currentLang].toast_wx + text + "<br><span style='font-size:0.75rem;opacity:0.6'>" + i18n[currentLang].toast_wx_note + "</span>";
                 toast.className = "show";
                 setTimeout(() => { toast.className = ""; }, 2500);
             });
@@ -1580,6 +2116,123 @@ var _hmt = _hmt || [];
                 }
             });
         });
+
+        // ===== Marquee: JS-driven auto-scroll + drag (mouse & touch) =====
+        (function () {
+            const SPEED = 0.045; // px per ms (~45px/s)
+            const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            document.querySelectorAll('.marquee-row').forEach(row => {
+                const track = row.querySelector('.marquee-track');
+                if (!track) return;
+                const rev = track.classList.contains('rev');
+                track.style.animation = 'none'; // JS takes over (CSS animation remains as no-JS fallback)
+                let offset = 0, half = 0, hovering = false, dragging = false;
+                let startX = 0, startOffset = 0, moved = false;
+                const measure = () => { half = track.scrollWidth / 2; };
+                const wrap = v => { if (!half) return 0; v %= half; return v < 0 ? v + half : v; };
+                const apply = () => { track.style.transform = 'translateX(' + (-offset) + 'px)'; };
+                measure();
+                window.addEventListener('resize', measure);
+                if (!reduced) {
+                    let last = performance.now();
+                    requestAnimationFrame(function tick(now) {
+                        const dt = Math.min(now - last, 50);
+                        last = now;
+                        if (!hovering && !dragging && half > 0) {
+                            offset = wrap(offset + (rev ? -1 : 1) * dt * SPEED);
+                            apply();
+                        }
+                        requestAnimationFrame(tick);
+                    });
+                }
+                row.addEventListener('pointerenter', () => { hovering = true; });
+                row.addEventListener('pointerleave', () => { hovering = false; });
+                row.addEventListener('pointerdown', e => {
+                    if (e.pointerType === 'mouse' && e.button !== 0) return;
+                    dragging = true; moved = false;
+                    startX = e.clientX; startOffset = offset;
+                    row.classList.add('dragging');
+                    row.setPointerCapture(e.pointerId);
+                });
+                row.addEventListener('pointermove', e => {
+                    if (!dragging) return;
+                    const dx = e.clientX - startX;
+                    if (Math.abs(dx) > 6) moved = true;
+                    offset = wrap(startOffset - dx);
+                    apply();
+                });
+                const endDrag = () => { dragging = false; row.classList.remove('dragging'); };
+                row.addEventListener('pointerup', endDrag);
+                row.addEventListener('pointercancel', endDrag);
+                // suppress accidental card clicks after a real drag
+                row.addEventListener('click', e => {
+                    if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+                }, true);
+            });
+        })();
+
+        // ===== Ripple (pointer-tracked, throttled) =====
+        (function () {
+            const THROTTLE = 120, SIZE = 140, LIFE = 850;
+            const lastMap = new WeakMap();
+            document.querySelectorAll('.feature-card, .promo-banner, .platform-card').forEach(host => {
+                host.addEventListener('pointermove', e => {
+                    const now = Date.now();
+                    if (now - (lastMap.get(host) || 0) < THROTTLE) return;
+                    lastMap.set(host, now);
+                    const rect = host.getBoundingClientRect();
+                    const s = document.createElement('span');
+                    s.className = 'ripple';
+                    s.style.width = s.style.height = SIZE + 'px';
+                    s.style.left = (e.clientX - rect.left - SIZE / 2) + 'px';
+                    s.style.top = (e.clientY - rect.top - SIZE / 2) + 'px';
+                    host.appendChild(s);
+                    setTimeout(() => s.remove(), LIFE);
+                });
+            });
+        })();
+
+        // ===== Scroll Reveal (IntersectionObserver fade-up) =====
+        (function () {
+            if (!('IntersectionObserver' in window)) return;
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            const SEL = [
+                '.hero-content > *',
+                'section:not(#promo) .section-header',
+                '.promo-banner',
+                '.marquee-row',
+                '.doc-card',
+                '.resource-card',
+                '.topic-card',
+                '.contact-info',
+                '.qr-wrap',
+                '.footer-disclaimer',
+                '.footer-beian'
+            ];
+            const els = document.querySelectorAll(SEL.join(','));
+            // stagger elements that share the same parent
+            const groups = new Map();
+            els.forEach(el => {
+                const p = el.parentElement;
+                const i = groups.get(p) || 0;
+                groups.set(p, i + 1);
+                el.classList.add('reveal');
+                el.style.animationDelay = Math.min(i * 90, 450) + 'ms';
+            });
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(en => {
+                    if (!en.isIntersecting) return;
+                    const el = en.target;
+                    el.classList.add('in');
+                    el.addEventListener('animationend', () => {
+                        el.classList.remove('reveal', 'in');
+                        el.style.animationDelay = '';
+                    }, { once: true });
+                    io.unobserve(el);
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+            els.forEach(el => io.observe(el));
+        })();
 
         // Init
         setLang('zh');

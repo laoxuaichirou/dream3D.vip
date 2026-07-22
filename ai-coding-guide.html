@@ -6,6 +6,12 @@
     <title>Claude Code 完全指南：形态辨析、国内配置与核心概念词典 | GaryAIGC</title>
     <meta name="description" content="面向中文开发者的 Claude Code 终极参考手册。详解 CLI/Desktop/VSCode/Cursor/Codex 区别、国内第三方 API 配置、MCP/SDK/Agent 等核心概念，以及 AI 视频剪辑实战方案。">
     <meta name="keywords" content="Claude Code, Codex, OpenAI, GPT-5.5, CLI, MCP, Cursor, AI编程, 第三方API, 国内使用, Remotion, 视频剪辑">
+    <link rel="icon" href="favicon.ico">
+    <link rel="canonical" href="https://dream3d.vip/ai-coding-guide.html">
+    <meta property="og:title" content="Claude Code 完全指南：形态辨析、国内配置与核心概念词典 | GaryAIGC">
+    <meta property="og:description" content="面向中文开发者的 Claude Code 终极参考手册。详解 CLI/Desktop/VSCode/Cursor/Codex 区别、国内第三方 API 配置、MCP/SDK/Agent 等核心概念，以及 AI 视频剪辑实战方案。">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://dream3d.vip/ai-coding-guide.html">
     <style>
         :root {
             --bg-primary: #0a0a0f;
@@ -14,7 +20,7 @@
             --bg-code: #0d1117;
             --text-primary: #e6e6f0;
             --text-secondary: #a0a0b8;
-            --text-muted: #6e6e8a;
+            --text-muted: #8a8aa3;
             --accent: #d4a574;
             --accent-hover: #e8b88a;
             --accent-glow: rgba(212, 165, 116, 0.15);
@@ -87,12 +93,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        .logo::before {
-            content: "←";
-            font-size: 14px;
-            opacity: 0.7;
         }
 
         .nav-links {
@@ -607,9 +607,36 @@ var _hmt = _hmt || [];
 </script>
 </head>
 <body>
+<!-- ===== 全站统一导航条 ===== -->
+<style>
+.g-site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:space-between;gap:16px;height:48px;padding:0 24px;background:rgba(10,10,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.08);box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+.g-site-nav a{text-decoration:none;white-space:nowrap}
+.g-site-nav .g-back{color:#d4a574;font-size:14px;font-weight:600}
+.g-site-nav .g-back:hover{color:#eac694}
+.g-site-nav .g-links{display:flex;gap:20px;overflow-x:auto;scrollbar-width:none}
+.g-site-nav .g-links::-webkit-scrollbar{display:none}
+.g-site-nav .g-links a{color:rgba(255,255,255,0.55);font-size:13px;transition:color .2s}
+.g-site-nav .g-links a:hover{color:#fff}
+@media (max-width:768px){.g-site-nav .g-links{display:none}}
+.site-header{top:48px !important}
+.site-header .container{justify-content:flex-end}
+.toc-sidebar{top:132px !important}
+html{scroll-padding-top:128px !important}
+</style>
+<nav class="g-site-nav">
+<a class="g-back" href="index.html">← 返回首页</a>
+<div class="g-links">
+<a href="film-studio/">影视创作工作台</a>
+<a href="25-compositions.html">25种构图</a>
+<a href="60-shots.html">60种镜头语言</a>
+<a href="151-grammar.html">151种语法</a>
+<a href="claude-code-guide.html">Claude Code 指南</a>
+<a href="kimi-code-guide.html">Kimi Code</a>
+<a href="upscale/">ComfyUI 放大白皮书</a>
+</div>
+</nav>
     <header class="site-header">
         <div class="container">
-            <a href="https://dream3d.vip/" class="logo">返回主页</a>
             <nav class="nav-links">
                 <a href="#overview">形态全景</a>
                 <a href="#comparison">三方对比</a>
@@ -831,7 +858,7 @@ var _hmt = _hmt || [];
 
                 <div class="callout callout-codex">
                     <div class="callout-title">🆕 Codex 关键背景（2026.04）</div>
-                    <p>OpenAI Codex 于 <strong>2026 年 4 月 23 日</strong>随 GPT-5.5 正式发布 [^51^]。它并非 2021 年那个 powering GitHub Copilot 的旧 Codex 模型（已废弃），而是一个全新的<strong>云端 Agentic 编程系统</strong>，基于 GPT-5.5 架构，支持异步任务、浏览器验证、自动审批审查和插件工作流 [^44^]。</p>
+                    <p>OpenAI Codex 于 <strong>2026 年 4 月 23 日</strong>随 GPT-5.5 正式发布。它并非 2021 年那个 powering GitHub Copilot 的旧 Codex 模型（已废弃），而是一个全新的<strong>云端 Agentic 编程系统</strong>，基于 GPT-5.5 架构，支持异步任务、浏览器验证、自动审批审查和插件工作流。</p>
                 </div>
 
                 <h3 id="spec-compare">2.2 规格对比矩阵（2026.05 数据）</h3>
@@ -999,7 +1026,7 @@ var _hmt = _hmt || [];
                         <li><strong>Cursor</strong> 担任"结对编程伙伴"——处理日常编辑、补全与前端微调</li>
                         <li><strong>Codex</strong> 担任"云端项目经理"——处理批量任务、PR 生成、异步代码审查</li>
                     </ul>
-                    <p>OpenAI 甚至推出了官方 Codex 插件，允许在 Claude Code 内部调用 Codex，侧面印证了"组合使用"才是真实工作流 [^38^]。</p>
+                    <p>OpenAI 甚至推出了官方 Codex 插件，允许在 Claude Code 内部调用 Codex，侧面印证了"组合使用"才是真实工作流。</p>
                 </div>
             </section>
 
@@ -1062,14 +1089,14 @@ claude</pre>
                 <h3 id="codex-domestic">3.3 Codex 国内使用现状</h3>
                 <div class="callout callout-danger">
                     <div class="callout-title">⚠️ 重要差异：Codex 无法像 Claude Code 那样绕过官方登录</div>
-                    <p>与 Claude Code 不同，<strong>OpenAI Codex 当前不支持第三方 API 接入</strong> [^46^]。它深度绑定 ChatGPT 订阅体系（Plus/Pro），且任务在 OpenAI 云端沙箱执行，无法通过环境变量指向国内中转商。</p>
+                    <p>与 Claude Code 不同，<strong>OpenAI Codex 当前不支持第三方 API 接入</strong>。它深度绑定 ChatGPT 订阅体系（Plus/Pro），且任务在 OpenAI 云端沙箱执行，无法通过环境变量指向国内中转商。</p>
                 </div>
 
                 <p>国内用户使用 Codex 的<strong>可行路径</strong>：</p>
                 <ul>
                     <li><strong>路径 A（官方）</strong>：拥有 ChatGPT Plus/Pro 账号，且网络环境可稳定访问 OpenAI 服务。Codex 直接集成在 ChatGPT 网页端和桌面端，无需额外安装。</li>
-                    <li><strong>路径 B（CLI 尝鲜）</strong>：OpenAI 已开源 Codex CLI 工具，但同样需要有效的 ChatGPT 订阅鉴权。国内开发者可通过具备海外访问能力的服务器运行 <code>codex --model gpt-5.5</code> [^51^]。</li>
-                    <li><strong>路径 C（API 等待）</strong>：GPT-5.5 API 已于 2026 年 4 月 24 日开放 [^42^]，但 Codex 的 Agentic 接口（如 <code>/backend-api/codex/responses</code>）目前仅限官方客户端和特定合作伙伴（如 OpenClaw）使用 [^52^]。</li>
+                    <li><strong>路径 B（CLI 尝鲜）</strong>：OpenAI 已开源 Codex CLI 工具，但同样需要有效的 ChatGPT 订阅鉴权。国内开发者可通过具备海外访问能力的服务器运行 <code>codex --model gpt-5.5</code>。</li>
+                    <li><strong>路径 C（API 等待）</strong>：GPT-5.5 API 已于 2026 年 4 月 24 日开放，但 Codex 的 Agentic 接口（如 <code>/backend-api/codex/responses</code>）目前仅限官方客户端和特定合作伙伴（如 OpenClaw）使用。</li>
                 </ul>
 
                 <div class="callout callout-warning">
@@ -1236,7 +1263,7 @@ claude</pre>
 
                 <div class="callout callout-codex">
                     <div class="callout-title">🆕 Codex 与 MCP 的关系</div>
-                    <p>截至 2026 年 4 月，Codex 已支持基于 stdio 的 MCP，但<strong>HTTP 端点支持尚未落地</strong> [^50^]。这意味着 Codex 可以连接本地命令行工具，但无法像 Claude Code 那样直接通过 HTTP 调用 Figma、ClickUp 等在线服务。对于重度依赖 MCP 生态的团队，这是选择 Claude Code 的关键结构性理由 [^50^]。</p>
+                    <p>截至 2026 年 4 月，Codex 已支持基于 stdio 的 MCP，但<strong>HTTP 端点支持尚未落地</strong>。这意味着 Codex 可以连接本地命令行工具，但无法像 Claude Code 那样直接通过 HTTP 调用 Figma、ClickUp 等在线服务。对于重度依赖 MCP 生态的团队，这是选择 Claude Code 的关键结构性理由。</p>
                 </div>
 
                 <h3 id="concept-agent">4.4 Agent / Plugin</h3>
@@ -1255,7 +1282,7 @@ claude</pre>
                         <div class="card-desc">
                             <p><strong>一句话</strong>：给主软件<strong>加装外挂</strong>的能力，不改变主程序，但能扩展功能。</p>
                             <p><strong>类比</strong>：汽车原厂没有行车记录仪，你自己装一个——<strong>即插即用</strong>，不影响发动机。</p>
-                            <p><strong>例子</strong>：ComfyUI 自定义节点、VS Code 扩展、Claude Code MCP Server、Codex Plugin Marketplace [^44^]</p>
+                            <p><strong>例子</strong>：ComfyUI 自定义节点、VS Code 扩展、Claude Code MCP Server、Codex Plugin Marketplace</p>
                         </div>
                     </div>
                 </div>
@@ -1415,7 +1442,7 @@ claude
                     <div class="card">
                         <div class="card-title">Q1：Claude Code、Cursor CLI 和 Codex CLI 有什么区别？</div>
                         <div class="card-desc">
-                            <p>Cursor 在 2026 年 1 月新增了 CLI，但它本质上是把 IDE 里的 Agent 能力暴露到终端，<strong>依然无法脱离 Cursor 生态独立运行</strong>，也不支持 headless 自动化。Codex CLI 是 OpenAI 官方推出的开源工具，采用云端沙箱异步执行，命令为 <code>codex --model gpt-5.5</code> [^51^]，但它需要 ChatGPT 订阅鉴权，不支持第三方 API。</p>
+                            <p>Cursor 在 2026 年 1 月新增了 CLI，但它本质上是把 IDE 里的 Agent 能力暴露到终端，<strong>依然无法脱离 Cursor 生态独立运行</strong>，也不支持 headless 自动化。Codex CLI 是 OpenAI 官方推出的开源工具，采用云端沙箱异步执行，命令为 <code>codex --model gpt-5.5</code>，但它需要 ChatGPT 订阅鉴权，不支持第三方 API。</p>
                             <p>Claude Code CLI 是唯一支持<strong>完整脚本化、CI/CD 集成、后台守护和第三方 API 接入</strong>的本地原生方案。</p>
                         </div>
                     </div>
@@ -1446,7 +1473,7 @@ claude
                     <div class="card">
                         <div class="card-title">Q6：Codex 的代码质量真的不如 Claude Code 吗？</div>
                         <div class="card-desc">
-                            <p>取决于场景。在 500+ 开发者的盲测中，Claude Code 的代码质量胜率为 67%，Codex 为 25% [^38^]。但在 Terminal-Bench 2.0（终端自动化任务）中，Codex 以 77.3% 大幅领先 Claude Code 的 65.4% [^38^]。此外，Codex 的 Token 效率约为 Claude Code 的 4 倍，意味着相同任务成本更低。总结：<strong>高质量架构选 Claude，批量自动化选 Codex</strong>。</p>
+                            <p>取决于场景。在 500+ 开发者的盲测中，Claude Code 的代码质量胜率为 67%，Codex 为 25%。但在 Terminal-Bench 2.0（终端自动化任务）中，Codex 以 77.3% 大幅领先 Claude Code 的 65.4%。此外，Codex 的 Token 效率约为 Claude Code 的 4 倍，意味着相同任务成本更低。总结：<strong>高质量架构选 Claude，批量自动化选 Codex</strong>。</p>
                         </div>
                     </div>
                     <div class="card">

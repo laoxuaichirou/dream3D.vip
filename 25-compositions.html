@@ -10,9 +10,7 @@
     <meta property="og:title" content="25种构图 · 无限画布分镜模板 | 老许Gary">
     <meta property="og:description" content="AI影视创作25种构图法则，中英双语提示词直接用于ComfyUI/无限画布/分镜脚本">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="">
-    <meta property="og:image" content="">
-    <link rel="canonical" href="">
+    <link rel="icon" href="favicon.ico">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -25,7 +23,7 @@
             --accent-dim: rgba(0, 212, 255, 0.1);
             --text: #e0e0e0;
             --text-dim: #888;
-            --text-dark: #555;
+            --text-dark: #777;
             --chapter1: #ff6b6b;
             --chapter2: #4ecdc4;
             --chapter3: #ffe66d;
@@ -39,6 +37,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             line-height: 1.6;
             min-height: 100vh;
+            padding-bottom: 90px;
         }
 
         /* ===== HEADER 重构 ===== */
@@ -531,7 +530,6 @@
         .dice-btn { background: linear-gradient(135deg, var(--accent), #c084fc); color: #000; border: none; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
         .dice-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0,212,255,0.3); }
         .dice-btn:active { transform: scale(0.95); }
-        tr.highlight td { background: rgba(0,212,255,0.08) !important; color: var(--text) !important; }
         .hidden-item { display: none !important; }
         .hidden-row { display: none !important; }
 
@@ -558,7 +556,6 @@
         .td-prompt { max-width: 220px; font-size: 11px; line-height: 1.5; word-break: break-all; }
         .table-header { font-size: 16px; padding: 18px 20px; }
     }
-        }
     </style>
     <script>
 var _hmt = _hmt || [];
@@ -571,7 +568,33 @@ var _hmt = _hmt || [];
 </script>
 </head>
 <body>
-    <button class="mobile-toggle" onclick="toggleDrawer()" title="打开导航">☰</button>
+<!-- ===== 全站统一导航条 ===== -->
+<style>
+.g-site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:space-between;gap:16px;height:48px;padding:0 24px;background:rgba(10,10,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.08);box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+.g-site-nav a{text-decoration:none;white-space:nowrap}
+.g-site-nav .g-back{color:#d4a574;font-size:14px;font-weight:600}
+.g-site-nav .g-back:hover{color:#eac694}
+.g-site-nav .g-links{display:flex;gap:20px;overflow-x:auto;scrollbar-width:none}
+.g-site-nav .g-links::-webkit-scrollbar{display:none}
+.g-site-nav .g-links a{color:rgba(255,255,255,0.55);font-size:13px;transition:color .2s}
+.g-site-nav .g-links a:hover{color:#fff}
+@media (max-width:768px){.g-site-nav .g-links{display:none}}
+.sidebar{top:48px !important}
+.mobile-toggle{top:64px !important}
+</style>
+<nav class="g-site-nav">
+<a class="g-back" href="index.html">← 返回首页</a>
+<div class="g-links">
+<a href="film-studio/">影视创作工作台</a>
+<a href="60-shots.html">60种镜头语言</a>
+<a href="151-grammar.html">151种语法</a>
+<a href="ai-coding-guide.html">AI Coding 指南</a>
+<a href="claude-code-guide.html">Claude Code 指南</a>
+<a href="kimi-code-guide.html">Kimi Code</a>
+<a href="upscale/">ComfyUI 放大白皮书</a>
+</div>
+</nav>
+    <button class="mobile-toggle" onclick="toggleDrawer()" title="打开导航" aria-label="打开导航" aria-expanded="false" aria-controls="sidebar-drawer">☰</button>
     <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 
     <div class="header">
@@ -605,7 +628,7 @@ var _hmt = _hmt || [];
     </div>
 
     <div class="search-bar">
-        <input type="text" class="search-input" id="search-input" placeholder="搜索构图名称 / 提示词 / 场景 / 情绪...">
+        <input type="text" class="search-input" id="search-input" placeholder="搜索构图名称 / 提示词 / 场景 / 情绪..." aria-label="搜索构图名称、提示词、场景或情绪">
         <span class="search-stats" id="search-stats">共 25 项</span>
     </div>
 
@@ -872,7 +895,7 @@ var _hmt = _hmt || [];
             },
             { 
                 name: "前景遮挡构图", cat: "空间呼吸", 
-                desc: "用虚化或半透明的近景元素遮挡部分主体，制造纵深。从2D变3D，画面 instantly 有电影感。",
+                desc: "用虚化或半透明的近景元素遮挡部分主体，制造纵深。从2D变3D，画面立刻有电影感。",
                 prompt: "shot through blurred leaves in foreground, foreground bokeh, depth layers, subject in mid-ground, out-of-focus obstruction",
                 scene: "偷拍视角、增加临场感、丰富层次",
                 mood: ["层次", "3D", "沉浸"],
@@ -983,7 +1006,7 @@ var _hmt = _hmt || [];
                             <span class="card-type">STILL / VIDEO</span>
                         </div>
                         <div class="card-body">
-                            <div class="prompt-block">${c.prompt}<button class="copy-btn" onclick="copyPrompt(this, '${c.prompt.replace(/'/g, "\'")}')">复制</button></div>
+                            <div class="prompt-block">${c.prompt}<button class="copy-btn" onclick="copyPrompt(this, this.parentNode.textContent.replace('复制','').trim())">复制</button></div>
                             <div class="info-row">
                                 <div class="info-item">
                                     <div class="info-label">适用场景</div>
@@ -1003,7 +1026,7 @@ var _hmt = _hmt || [];
                             <span class="card-type">动态分镜</span>
                         </div>
                         <div class="card-body">
-                            <div class="prompt-block">${c.motion}<button class="copy-btn" onclick="copyPrompt(this, '${c.motion.replace(/'/g, "\'")}')">复制</button></div>
+                            <div class="prompt-block">${c.motion}<button class="copy-btn" onclick="copyPrompt(this, this.parentNode.textContent.replace('复制','').trim())">复制</button></div>
                             <div class="info-row">
                                 <div class="info-item">
                                     <div class="info-label">视频要点</div>
@@ -1029,8 +1052,6 @@ var _hmt = _hmt || [];
             updateHash(index);
             if (window.innerWidth < 1200) closeDrawer();
         }
-
-        renderDetail(0);
 
         const tbody = document.getElementById('table-body');
         compositions.forEach((item, idx) => {
@@ -1084,14 +1105,35 @@ var _hmt = _hmt || [];
 
         // ===== v2 功能：一键复制 =====
         function copyPrompt(btn, text) {
-            navigator.clipboard.writeText(text).then(function() {
-                btn.textContent = '已复制';
-                btn.classList.add('copied');
+            function fallbackCopy() {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                var ok = false;
+                try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+                document.body.removeChild(ta);
+                return ok;
+            }
+            function showResult(ok) {
+                btn.textContent = ok ? '已复制' : '复制失败';
+                if (ok) btn.classList.add('copied');
                 setTimeout(function() {
                     btn.textContent = '复制';
                     btn.classList.remove('copied');
-                }, 1500);
-            });
+                }, ok ? 1500 : 2000);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function() {
+                    showResult(true);
+                }).catch(function() {
+                    showResult(fallbackCopy());
+                });
+            } else {
+                showResult(fallbackCopy());
+            }
         }
 
         // ===== v2 功能：URL Hash 路由 =====
@@ -1108,12 +1150,15 @@ var _hmt = _hmt || [];
 
         // ===== v2 功能：移动端抽屉 =====
         function toggleDrawer() {
-            document.getElementById('sidebar-drawer').classList.toggle('open');
+            var drawer = document.getElementById('sidebar-drawer');
+            drawer.classList.toggle('open');
             document.getElementById('drawer-overlay').classList.toggle('active');
+            document.querySelector('.mobile-toggle').setAttribute('aria-expanded', drawer.classList.contains('open'));
         }
         function closeDrawer() {
             document.getElementById('sidebar-drawer').classList.remove('open');
             document.getElementById('drawer-overlay').classList.remove('active');
+            document.querySelector('.mobile-toggle').setAttribute('aria-expanded', 'false');
         }
 
         // ===== v2 功能：随机灵感 =====
@@ -1149,11 +1194,28 @@ var _hmt = _hmt || [];
             a.click();
         }
 
+        // ===== 可访问性：侧边栏键盘操作 =====
+        function initA11y() {
+            document.querySelectorAll('.shot-item').forEach(function(el) {
+                el.setAttribute('tabindex', '0');
+                el.setAttribute('role', 'button');
+                el.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        el.click();
+                    }
+                });
+            });
+        }
+
         // v2 初始化
         initSearch();
+        initA11y();
         var hashIdx = readHash();
         if (hashIdx >= 0 && hashIdx < compositions.length) {
             showDetail(hashIdx);
+        } else {
+            renderDetail(0);
         }
     </script>
 </body>

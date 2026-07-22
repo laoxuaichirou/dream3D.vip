@@ -10,13 +10,11 @@
 <meta property="og:title" content="AI影视创作超级工作台 · 151种进阶语法 | 老许Gary">
 <meta property="og:description" content="AI影视创作五大模块全覆盖，从单帧到成片的完整AI影视创作系统">
 <meta property="og:type" content="website">
-<meta property="og:url" content="">
-<meta property="og:image" content="">
-<link rel="canonical" href="">
+<link rel="icon" href="favicon.ico">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0a0f;--card:#13131f;--card-hover:#1a1a2e;--border:#2a2a3a;--accent:#00d4ff;--accent-dim:rgba(0,212,255,0.1);--text:#e0e0e0;--text-dim:#888;--text-dark:#555;--c1:#ff6b6b;--c2:#4ecdc4;--c3:#ffe66d;--c4:#a8e6cf;--c5:#c084fc}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.6;min-height:100vh}
+:root{--bg:#0a0a0f;--card:#13131f;--card-hover:#1a1a2e;--border:#2a2a3a;--accent:#00d4ff;--accent-dim:rgba(0,212,255,0.1);--text:#e0e0e0;--text-dim:#888;--text-dark:#777;--c1:#ff6b6b;--c2:#4ecdc4;--c3:#ffe66d;--c4:#a8e6cf;--c5:#c084fc}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.6;min-height:100vh;padding-bottom:90px}
 .header{background:linear-gradient(135deg,#0f0f1e 0%,#1a1a2e 100%);border-bottom:1px solid var(--border);padding:40px 60px;position:relative;overflow:hidden}
 .header::before{content:'';position:absolute;top:-50%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,255,0.08) 0%,transparent 70%);pointer-events:none}
 .header-inner{display:flex;justify-content:space-between;align-items:flex-start;gap:40px;position:relative;z-index:1}
@@ -123,18 +121,35 @@ var _hmt = _hmt || [];
   s.parentNode.insertBefore(hm, s);
 })();
 </script>
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?e459d7329e9da999a234c4dfcb681691";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
 </head>
 <body>
-<button class="mobile-toggle" onclick="toggleDrawer()" title="打开导航">☰</button>
+<!-- ===== 全站统一导航条 ===== -->
+<style>
+.g-site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:space-between;gap:16px;height:48px;padding:0 24px;background:rgba(10,10,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.08);box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+.g-site-nav a{text-decoration:none;white-space:nowrap}
+.g-site-nav .g-back{color:#d4a574;font-size:14px;font-weight:600}
+.g-site-nav .g-back:hover{color:#eac694}
+.g-site-nav .g-links{display:flex;gap:20px;overflow-x:auto;scrollbar-width:none}
+.g-site-nav .g-links::-webkit-scrollbar{display:none}
+.g-site-nav .g-links a{color:rgba(255,255,255,0.55);font-size:13px;transition:color .2s}
+.g-site-nav .g-links a:hover{color:#fff}
+@media (max-width:768px){.g-site-nav .g-links{display:none}}
+.sidebar{top:48px !important}
+.mobile-toggle{top:64px !important}
+</style>
+<nav class="g-site-nav">
+<a class="g-back" href="index.html">← 返回首页</a>
+<div class="g-links">
+<a href="film-studio/">影视创作工作台</a>
+<a href="25-compositions.html">25种构图</a>
+<a href="60-shots.html">60种镜头语言</a>
+<a href="ai-coding-guide.html">AI Coding 指南</a>
+<a href="claude-code-guide.html">Claude Code 指南</a>
+<a href="kimi-code-guide.html">Kimi Code</a>
+<a href="upscale/">ComfyUI 放大白皮书</a>
+</div>
+</nav>
+<button class="mobile-toggle" onclick="toggleDrawer()" title="打开导航" aria-label="打开导航" aria-expanded="false" aria-controls="sidebar-drawer">☰</button>
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 <div class="header">
 <div class="header-inner">
@@ -160,14 +175,14 @@ var _hmt = _hmt || [];
 </div>
 
 <div class="search-bar">
-<input type="text" class="search-input" id="search-input" placeholder="搜索名称 / 提示词 / 场景 / 情绪...">
+<input type="text" class="search-input" id="search-input" placeholder="搜索名称 / 提示词 / 场景 / 情绪..." aria-label="搜索名称、提示词、场景或情绪">
 <span class="search-stats" id="search-stats">共 151 项</span>
 </div>
 
 <div class="tab-bar">
 <button class="tab-btn active" onclick="switchModule(0)">30种光影布光</button>
 <button class="tab-btn" onclick="switchModule(1)">40种转场衔接</button>
-<button class="tab-btn" onclick="switchModule(2)">35种场景美术</button>
+<button class="tab-btn" onclick="switchModule(2)">36种场景美术</button>
 <button class="tab-btn" onclick="switchModule(3)">20种表演指导</button>
 <button class="tab-btn" onclick="switchModule(4)">25种剪辑节奏</button>
 </div>
@@ -263,7 +278,7 @@ var modules = [
         combo: "+ 剪影构图 / + 定格"
       },
       {
-        name: "顶光 noon Sun",
+        name: "顶光 Noon Sun",
         cat: "自然光效",
         desc: "正午太阳直射，眼窝/鼻下浓重阴影，顶光压迫感。常用于表现疲惫、残酷、无遮蔽。",
         prompt: "harsh noon sun, top-down direct lighting, deep eye socket shadows, nose shadow on upper lip, unflattering overhead light, oppressive brightness",
@@ -323,7 +338,7 @@ var modules = [
         desc: "主光正前方高位，鼻下形成对称蝴蝶状阴影。好莱坞经典女性布光。",
         prompt: "butterfly lighting, key light directly above lens, symmetrical nose shadow under nostrils, glamour Hollywood portrait, even frontal beauty light",
         scene: "时尚、美妆、明星访谈、女性主角、 glamour",
-        mood: [" glamour","对称","完美"],
+        mood: ["魅力","对称","完美"],
         motion: "subject tilts chin slightly, butterfly shadow changing shape, symmetrical light maintaining beauty aesthetic",
         motionTip: "微收下巴，蝴蝶阴影形状变化",
         combo: "+ 中近景 / + 浅景深"
@@ -345,7 +360,7 @@ var modules = [
         desc: "主光稍侧，鼻影与脸颊阴影相连形成小环形。比蝴蝶光更自然，比伦勃朗更柔和。",
         prompt: "loop lighting, slight side key, nose shadow connecting to cheek shadow, small loop shape, natural flattering portrait, soft directional",
         scene: "商务肖像、新闻主播、自然人像、标准采访",
-        mood: ["自然"," flattering","标准"],
+        mood: ["自然","上镜","标准"],
         motion: "small head movement keeping loop shadow intact, subtle and professional, corporate video aesthetic",
         motionTip: "小幅头部运动保持环形阴影完整",
         combo: "+ 中景 / + 平视"
@@ -411,7 +426,7 @@ var modules = [
         desc: "高对比黑白，硬光+浓重阴影，百叶窗投影， cynical世界观视觉化。",
         prompt: "film noir lighting, high contrast black and white, venetian blind shadows, hard light sharp edges, cynical atmosphere, 1940s detective aesthetic",
         scene: "侦探、悬疑、复古、道德模糊、 rain scene",
-        mood: [" cynical","悬疑","复古"],
+        mood: ["愤世嫉俗","悬疑","复古"],
         motion: "blind shadows stripe across face, smoke drifting through light beams, hard light cutting through darkness",
         motionTip: "百叶窗阴影在面部条纹化，烟雾穿过光束",
         combo: "+ 侧逆光 / + 吸烟"
@@ -801,7 +816,7 @@ var modules = [
         name: "玻璃碎裂 Shatter",
         cat: "特效转场",
         desc: "画面像玻璃一样碎裂，碎片飞散后露出新场景。冲击、破碎、觉醒。",
-        prompt: "glass shatter transition, image cracking like broken glass, shards flying toward camera, new scene visible through破碎的 fragments, impact awakening",
+        prompt: "glass shatter transition, image cracking like broken glass, shards flying toward camera, new scene visible through shattered fragments, impact awakening",
         scene: "冲击、觉醒、车祸、破碎、动作",
         mood: ["破碎","冲击","觉醒"],
         motion: "cracks spreading across image, glass exploding outward, fragments flying past lens, new world behind",
@@ -987,7 +1002,7 @@ var modules = [
     ]
   },
   {
-    title: "35种场景美术",
+    title: "36种场景美术",
     chClass: "ch3",
     color: "var(--c3)",
     items: [
@@ -1636,7 +1651,7 @@ var modules = [
         name: "渐进加速 Acceleration",
         cat: "节奏模板",
         desc: "从长镜头开始，逐次减半，直到跳切。不可逆的失控感。",
-        prompt: "progressive acceleration, starting with long takes, progressively halving duration, building to jump cuts, irreversible失控感, runaway train rhythm",
+        prompt: "progressive acceleration, starting with long takes, progressively halving duration, building to jump cuts, irreversible loss of control, runaway train rhythm",
         scene: "追逐、失控、高潮、战斗、焦虑",
         mood: ["失控","加速","不可逆"],
         motion: "shot lengths: 8s, 4s, 2s, 1s, 0.5s, breathless crescendo",
@@ -1669,7 +1684,7 @@ var modules = [
         name: "机械节拍 Mechanical",
         cat: "节奏模板",
         desc: "完全等距剪辑，如钟表/机器。冷酷、精确、工业化、恐怖。",
-        prompt: "mechanical rhythm editing, perfectly equal intervals, like clockwork machine, cold precise industrial,恐怖 monotony, metronome editing",
+        prompt: "mechanical rhythm editing, perfectly equal intervals, like clockwork machine, cold precise industrial, terrifying monotony, metronome editing",
         scene: "工厂、恐怖、机器人、制度、压迫",
         mood: ["机械","精确","冷酷"],
         motion: "every cut exactly same duration, no variation, relentless mechanical precision, inhuman rhythm",
@@ -1735,7 +1750,7 @@ var modules = [
         name: "循环叙事 Circular",
         cat: "叙事结构",
         desc: "时间线首尾相接，结局即开端。宿命感、谜题感、不可逃避。",
-        prompt: "circular narrative, timeline首尾相接, ending is beginning, sense of fate, puzzle structure, inescapable loop, temporal ouroboros",
+        prompt: "circular narrative, timeline connected end to end, ending is beginning, sense of fate, puzzle structure, inescapable loop, temporal ouroboros",
         scene: "悬疑、科幻、恐怖、文艺、宿命",
         mood: ["宿命","谜题","不可逃"],
         motion: "final scene revealing it was also first scene, protagonist trapped in loop, audience realization of circularity",
@@ -1845,7 +1860,7 @@ var modules = [
         name: "高潮点预埋 Climax",
         cat: "AI生成策略",
         desc: "在分镜中提前埋设视觉高潮点，确保AI生成资源向高潮倾斜。",
-        prompt: "climax预埋 strategy, planting visual climax points in storyboard, ensuring AI generation resources倾斜 toward peaks, emotional investment payoff",
+        prompt: "climax pre-planting strategy, planting visual climax points in storyboard, ensuring AI generation resources tilt toward peaks, emotional investment payoff",
         scene: "所有叙事、广告、短视频、宣传片",
         mood: ["预埋","高潮","回报"],
         motion: "marking climax shots in advance, reserving best models and longest durations for these moments, resource concentration",
@@ -1856,7 +1871,7 @@ var modules = [
         name: "情绪曲线 Curve",
         cat: "AI生成策略",
         desc: "设计观众情绪起伏曲线，确保AI生成的每个镜头服务于情绪节点。",
-        prompt: "emotional curve design, audience emotion起伏 curve, every AI generated shot serving emotional node, sentiment engineering, narrative heart rate",
+        prompt: "emotional curve design, audience emotion rise and fall curve, every AI generated shot serving emotional node, sentiment engineering, narrative heart rate",
         scene: "情感片、广告、MV、剧情、短视频",
         mood: ["曲线","情绪","工程"],
         motion: "plotting emotional highs and lows on graph, assigning shots to lift or drop curve, engineered emotional journey",
@@ -1878,7 +1893,7 @@ var modules = [
         name: "风格一致性 Style Consistency",
         cat: "AI生成策略",
         desc: "通过统一提示词前缀/LoRA/ControlNet确保多镜头风格统一。",
-        prompt: "style consistency strategy, unified prompt prefix, LoRA, ControlNet ensuring multi shot style统一, visual coherence across AI generated sequences",
+        prompt: "style consistency strategy, unified prompt prefix, LoRA, ControlNet ensuring multi shot style consistency, visual coherence across AI generated sequences",
         scene: "系列视频、短片、广告、MV、电影",
         mood: ["一致","连贯","统一"],
         motion: "same seed range, same negative prompt, same model checkpoint, same lighting keywords across all shots",
@@ -1921,7 +1936,7 @@ function renderSidebar() {
       var idx = cats[cat][j];
       var num = String(idx + 1).padStart(2, '0');
       var cls = (idx === currentIndex) ? 'active' : '';
-      html += '<li class="shot-item ' + cls + '" onclick="showDetail(' + idx + ')"><span>' + mod.items[idx].name + '</span><span class="shot-num">' + num + '</span></li>';
+      html += '<li class="shot-item ' + cls + '" data-idx="' + idx + '" tabindex="0" role="button" onclick="showDetail(' + idx + ')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();showDetail(' + idx + ');}"><span>' + mod.items[idx].name + '</span><span class="shot-num">' + num + '</span></li>';
     }
     html += '</ul></div>';
     catIdx++;
@@ -1995,9 +2010,14 @@ function switchModule(idx) {
   renderDetail(0);
   renderTable();
   updateHash(idx, 0);
-  var stats = document.getElementById('search-stats');
-  if (stats) {
-    stats.textContent = '共 ' + modules[idx].items.length + ' 项';
+  var searchInput = document.getElementById('search-input');
+  if (searchInput && searchInput.value.trim()) {
+    filterItems(searchInput.value.toLowerCase().trim());
+  } else {
+    var stats = document.getElementById('search-stats');
+    if (stats) {
+      stats.textContent = '共 ' + modules[idx].items.length + ' 项';
+    }
   }
 }
 
@@ -2040,9 +2060,9 @@ function filterItems(keyword) {
   const rows = document.querySelectorAll('#table-body tr');
   let visibleCount = 0;
   var currentItems = modules[currentModule].items;
-  items.forEach(function(item, idx) {
+  items.forEach(function(item) {
     const text = item.textContent.toLowerCase();
-    const data = currentItems[idx];
+    const data = currentItems[parseInt(item.getAttribute('data-idx'), 10)];
     const match = !keyword ||
       text.includes(keyword) ||
       data.name.toLowerCase().includes(keyword) ||
@@ -2065,14 +2085,35 @@ function filterItems(keyword) {
 
 // ===== v2 功能：一键复制 =====
 function copyPrompt(btn, text) {
-  navigator.clipboard.writeText(text).then(function() {
-    btn.textContent = '已复制';
-    btn.classList.add('copied');
+  function fallbackCopy() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+  function showResult(ok) {
+    btn.textContent = ok ? '已复制' : '复制失败';
+    if (ok) btn.classList.add('copied');
     setTimeout(function() {
       btn.textContent = '复制';
       btn.classList.remove('copied');
-    }, 1500);
-  });
+    }, ok ? 1500 : 2000);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      showResult(true);
+    }).catch(function() {
+      showResult(fallbackCopy());
+    });
+  } else {
+    showResult(fallbackCopy());
+  }
 }
 
 // ===== v2 功能：URL Hash 路由 =====
@@ -2093,12 +2134,15 @@ function readHash() {
 
 // ===== v2 功能：移动端抽屉 =====
 function toggleDrawer() {
-  document.getElementById('sidebar-drawer').classList.toggle('open');
+  var drawer = document.getElementById('sidebar-drawer');
+  drawer.classList.toggle('open');
   document.getElementById('drawer-overlay').classList.toggle('active');
+  document.querySelector('.mobile-toggle').setAttribute('aria-expanded', drawer.classList.contains('open'));
 }
 function closeDrawer() {
   document.getElementById('sidebar-drawer').classList.remove('open');
   document.getElementById('drawer-overlay').classList.remove('active');
+  document.querySelector('.mobile-toggle').setAttribute('aria-expanded', 'false');
 }
 
 // ===== v2 功能：随机灵感 =====
