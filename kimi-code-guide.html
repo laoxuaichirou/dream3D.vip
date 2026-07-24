@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kimi Code 指令大全 · 交互式教程</title>
+<style>
+  :root{
+    --bg:#0d1117; --bg2:#161b22; --bg3:#1c2333; --border:#2d333f;
+    --text:#e6edf3; --muted:#8b949e; --accent:#4c8dff; --accent2:#7ee787;
+    --warn:#f0b429; --code-bg:#0a0e14; --kimi:#7c5cff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;line-height:1.7}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* ===== 布局 ===== */
+  .layout{display:flex;min-height:100vh}
+  .sidebar{width:260px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;padding:20px 0}
+  .sidebar .brand{padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px}
+  .sidebar .brand h1{font-size:18px;background:linear-gradient(90deg,var(--kimi),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sidebar .brand p{font-size:12px;color:var(--muted);margin-top:4px}
+  .sidebar nav a{display:block;padding:8px 20px;font-size:14px;color:var(--muted);border-left:3px solid transparent}
+  .sidebar nav a:hover{color:var(--text);text-decoration:none;background:var(--bg3)}
+  .sidebar nav a.active{color:var(--accent);border-left-color:var(--accent);background:var(--bg3)}
+  .main{flex:1;max-width:960px;padding:32px 40px 120px}
+  .menu-btn{display:none;position:fixed;top:12px;left:12px;z-index:99;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;font-size:16px;cursor:pointer}
+
+  /* ===== 搜索 ===== */
+  .search-wrap{position:sticky;top:0;z-index:50;background:var(--bg);padding:8px 0 16px}
+  .search-wrap input{width:100%;padding:12px 16px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:15px;outline:none}
+  .search-wrap input:focus{border-color:var(--accent)}
+  .search-wrap input::placeholder{color:var(--muted)}
+
+  /* ===== 区块 ===== */
+  section{margin-bottom:56px;scroll-margin-top:80px}
+  section>h2{font-size:26px;margin-bottom:8px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+  section>h2 .num{color:var(--kimi);margin-right:10px;font-size:20px}
+  section .lead{color:var(--muted);margin-bottom:20px;font-size:15px}
+  h3{font-size:19px;margin:28px 0 12px;color:var(--accent2)}
+  h4{font-size:16px;margin:20px 0 8px}
+  p{margin-bottom:12px;font-size:15px}
+  ul,ol{margin:0 0 14px 22px;font-size:15px}
+  li{margin-bottom:6px}
+  .tip{background:rgba(76,141,255,.08);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:12px 16px;margin:14px 0;font-size:14px}
+  .warn{background:rgba(240,180,41,.08);border-left:3px solid var(--warn);border-radius:0 8px 8px 0;padding:12px 16px;margin:14px 0;font-size:14px}
+
+  /* ===== 代码块 ===== */
+  .code-block{position:relative;background:var(--code-bg);border:1px solid var(--border);border-radius:10px;margin:12px 0;overflow:hidden}
+  .code-block .cb-head{display:flex;justify-content:space-between;align-items:center;padding:6px 14px;background:var(--bg3);font-size:12px;color:var(--muted);border-bottom:1px solid var(--border)}
+  .copy-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:2px 10px;font-size:12px;cursor:pointer;transition:all .15s}
+  .copy-btn:hover{color:var(--text);border-color:var(--accent)}
+  .copy-btn.ok{color:var(--accent2);border-color:var(--accent2)}
+  .code-block pre{padding:14px 16px;overflow-x:auto;font-family:"JetBrains Mono","Cascadia Code",Consolas,monospace;font-size:13.5px;line-height:1.6}
+  .code-block .cmt{color:#6e7681}
+  code.inline{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:1px 7px;font-family:Consolas,monospace;font-size:13px;color:var(--accent2)}
+
+  /* ===== 表格 ===== */
+  .table-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--border);border-radius:10px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{background:var(--bg3);text-align:left;padding:10px 14px;font-weight:600;white-space:nowrap}
+  td{padding:10px 14px;border-top:1px solid var(--border);vertical-align:top}
+  tr:hover td{background:rgba(76,141,255,.04)}
+  td code{background:var(--bg3);border-radius:5px;padding:1px 7px;font-family:Consolas,monospace;font-size:12.5px;color:var(--accent2);white-space:nowrap}
+  kbd{background:var(--bg3);border:1px solid var(--border);border-bottom-width:2px;border-radius:6px;padding:1px 8px;font-family:Consolas,monospace;font-size:12.5px;white-space:nowrap}
+
+  /* ===== 卡片 ===== */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:14px 0}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+  .card h4{margin:0 0 8px;color:var(--accent)}
+  .card p{font-size:13.5px;color:var(--muted);margin:0}
+
+  .hidden-by-search{display:none!important}
+  footer{color:var(--muted);font-size:13px;border-top:1px solid var(--border);padding-top:20px;margin-top:40px}
+
+  @media(max-width:900px){
+    .sidebar{position:fixed;left:-280px;transition:left .25s;z-index:90}
+    .sidebar.open{left:0}
+    .menu-btn{display:block}
+    .main{padding:60px 20px 100px}
+  }
+</style>
+</head>
+<body>
+<!-- ===== 全站统一导航条 ===== -->
+<style>
+.g-site-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:space-between;gap:16px;height:48px;padding:0 24px;background:rgba(10,10,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.08);box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+.g-site-nav a{text-decoration:none;white-space:nowrap}
+.g-site-nav .g-back{color:#d4a574;font-size:14px;font-weight:600}
+.g-site-nav .g-back:hover{color:#eac694}
+.g-site-nav .g-links{display:flex;gap:20px;overflow-x:auto;scrollbar-width:none}
+.g-site-nav .g-links::-webkit-scrollbar{display:none}
+.g-site-nav .g-links a{color:rgba(255,255,255,0.55);font-size:13px;transition:color .2s}
+.g-site-nav .g-links a:hover{color:#fff}
+@media (max-width:768px){.g-site-nav .g-links{display:none}}
+.sidebar{top:48px;height:calc(100vh - 48px)}
+.search-wrap{top:48px}
+.menu-btn{top:60px}
+section{scroll-margin-top:110px}
+</style>
+<nav class="g-site-nav">
+<a class="g-back" href="index.html">← 返回首页</a>
+<div class="g-links">
+<a href="film-studio/">影视创作工作台</a>
+<a href="25-compositions.html">25种构图</a>
+<a href="60-shots.html">60种镜头语言</a>
+<a href="151-grammar.html">151种语法</a>
+<a href="ai-coding-guide.html">AI Coding 指南</a>
+<a href="claude-code-guide.html">Claude Code 指南</a>
+<a href="upscale/">ComfyUI 放大白皮书</a>
+</div>
+</nav>
+<button class="menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰ 目录</button>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <h1>⌘ Kimi Code 指令大全</h1>
+      <p>终端 AI 编程 Agent · 交互式教程</p>
+    </div>
+    <nav id="nav">
+      <a href="#intro">01 · Kimi Code 是什么</a>
+      <a href="#install">02 · 安装 · 升级 · 卸载</a>
+      <a href="#start">03 · 启动与首次登录</a>
+      <a href="#slash">04 · 斜杠命令大全</a>
+      <a href="#shortcuts">05 · 快捷键大全</a>
+      <a href="#session">06 · 会话与上下文管理</a>
+      <a href="#interact">07 · 交互与输入技巧</a>
+      <a href="#cli-args">08 · 命令行启动参数</a>
+      <a href="#config">09 · 配置与环境变量</a>
+      <a href="#ide">10 · IDE 与工具集成</a>
+      <a href="#cases">11 · 常见使用案例</a>
+      <a href="#faq">12 · 常见问题 FAQ</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="search-wrap">
+      <input id="search" type="text" placeholder="🔍 搜索指令 / 关键词，例如：/compact、登录、快捷键……">
+    </div>
+
+    <!-- ========== 01 简介 ========== -->
+    <section id="intro" data-search="简介 kimi code 是什么 cli 终端 ai agent 编程 场景">
+      <h2><span class="num">01</span>Kimi Code 是什么</h2>
+      <p class="lead">Kimi Code CLI 是一个运行在终端中的 AI Agent：读写代码、执行 Shell 命令、搜索抓取网页，并在执行中自主规划和调整方案。整套 CLI 以 TypeScript 编写，通过 npm 分发，运行在 Node.js 之上。</p>
+      <div class="cards">
+        <div class="card"><h4>✍️ 编写和修改代码</h4><p>实现新功能、修复 Bug、完成重构，AI 自动读代码、写代码并验证。</p></div>
+        <div class="card"><h4>🔍 理解项目</h4><p>探索陌生代码库，解答架构和实现层面的问题，快速上手新项目。</p></div>
+        <div class="card"><h4>⚙️ 自动化任务</h4><p>批量处理文件、运行构建与测试、串联多个脚本，也能做调研和数据分析。</p></div>
+      </div>
+      <div class="tip">💡 开始前准备：<b>macOS / Linux / Windows（PowerShell）</b> + <b>Kimi 会员订阅</b>（或可用的 API Key）。推荐在支持真彩色的现代终端（如 Kitty、Ghostty、Windows Terminal）中运行。</div>
+    </section>
+
+    <!-- ========== 02 安装 ========== -->
+    <section id="install" data-search="安装 install 升级 upgrade 卸载 uninstall npm brew node windows powershell 脚本 验证 version">
+      <h2><span class="num">02</span>安装 · 升级 · 卸载</h2>
+      <p class="lead">两种安装方式：官方脚本（推荐，无需预装 Node.js）或 npm 全局安装（需要 Node.js ≥ 22.19.0）。</p>
+
+      <h3>方式一：脚本安装（推荐）</h3>
+      <p>macOS / Linux：</p>
+      <div class="code-block"><div class="cb-head"><span>Bash</span><button class="copy-btn">复制</button></div><pre>curl -fsSL https://code.kimi.com/kimi-code/install.sh | bash</pre></div>
+      <p>Windows（PowerShell）：</p>
+      <div class="code-block"><div class="cb-head"><span>PowerShell</span><button class="copy-btn">复制</button></div><pre>irm https://code.kimi.com/kimi-code/install.ps1 | iex</pre></div>
+      <p>macOS / Linux 也可以用 Homebrew：</p>
+      <div class="code-block"><div class="cb-head"><span>Bash</span><button class="copy-btn">复制</button></div><pre>brew install kimi-code</pre></div>
+      <div class="warn">⚠️ Windows 用户首次启动前需安装 <b>Git for Windows</b>（CLI 使用其 Git Bash 作为 Shell 环境）。若 Git Bash 装在非标准路径，把环境变量 <code class="inline">KIMI_SHELL_PATH</code> 设为 <code class="inline">bash.exe</code> 的绝对路径。</div>
+
+      <h3>方式二：npm 安装</h3>
+      <p>已安装 Node.js 22.19.0+ 时：</p>
+      <div class="code-block"><div class="cb-head"><span>Bash</span><button class="copy-btn">复制</button></div><pre>npm install -g @moonshot-ai/kimi-code</pre></div>
+      <div class="code-block"><div class="cb-head"><span>Bash (pnpm)</span><button class="copy-btn">复制</button></div><pre>pnpm add -g @moonshot-ai/kimi-code</pre></div>
+
+      <h3>验证 / 升级 / 卸载</h3>
+      <div class="code-block"><div class="cb-head"><span>Bash</span><button class="copy-btn">复制</button></div><pre><span class="cmt"># 验证安装</span>
+kimi --version
+
+<span class="cmt"># 升级（交互式检查并安装最新版）</span>
+kimi upgrade
+
+<span class="cmt"># 或直接用包管理器升级</span>
+npm install -g @moonshot-ai/kimi-code@latest
+
+<span class="cmt"># npm 安装的卸载方式（脚本安装的删掉 kimi 可执行文件即可）</span>
+npm uninstall -g @moonshot-ai/kimi-code</pre></div>
+      <div class="tip">💡 安装后找不到 <code class="inline">kimi</code> 命令？重启终端，或执行 <code class="inline">source ~/.bashrc</code>（zsh 用户 <code class="inline">source ~/.zshrc</code>），并确认 <code class="inline">~/.local/bin</code> 在 PATH 中。macOS 首次运行较慢是 Gatekeeper 安全检查，属正常现象。</div>
+    </section>
+
+    <!-- ========== 03 启动 ========== -->
+    <section id="start" data-search="启动 登录 login logout init agents.md 第一次 对话 -p 单条指令 继续会话">
+      <h2><span class="num">03</span>启动与首次登录</h2>
+      <div class="code-block"><div class="cb-head"><span>Bash</span><button class="copy-btn">复制</button></div><pre><span class="cmt"># 进入项目目录，启动交互界面</span>
+cd your-project
+kimi
+
+<span class="cmt"># 不进入交互界面，只执行一条指令</span>
+kimi -p "帮我总结一下这个项目的结构"
+
+<span class="cmt"># 继续上一次会话</span>
+kimi -c</pre></div>
+
+      <h3>首次登录 <code class="inline">/login</code></h3>
+      <p>首次启动需要配置 API 来源，在交互界面输入 <code class="inline">/login</code>，两种方式任选：</p>
+      <ul>
+        <li><b>Kimi Code（OAuth）</b>—— 验证码流程：在任意设备打开链接、登录、输入验证码即完成授权（走会员订阅额度）。</li>
+        <li><b>Kimi Platform API 密钥</b>—— 输入来自 platform.kimi.com 或 platform.kimi.ai 的 API Key。</li>
+      </ul>
+      <div class="code-block"><div class="cb-head"><span>交互界面内输入</span><button class="copy-btn">复制</button></div><pre>/login</pre></div>
+      <p>退出登录用 <code class="inline">/logout</code> 清除当前凭证。想接入 Anthropic / OpenAI / Google 等其他供应商，直接编辑 <code class="inline">~/.kimi-code/config.toml</code> 配置密钥。</p>
+
+      <h3>生成项目说明书 <code class="inline">/init</code></h3>
+      <div class="code-block"><div class="cb-head"><span>交互界面内输入</span><button class="copy-btn">复制</button></div><pre>/init</pre></div>
+      <p>自动扫描项目结构并生成 <code class="inline">AGENTS.md</code>，为 AI 提供项目背景、构建步骤、代码规范等上下文，让后续回答更懂你的项目。</p>
+
+      <h3>第一个对话</h3>
+      <p>登录完成后直接用自然语言描述任务：</p>
+      <div class="code-block"><div class="cb-head"><span>示例 prompt</span><button class="copy-btn">复制</button></div><pre>帮我看一下这个项目的目录结构，简单介绍一下每个目录是做什么的</pre></div>
+      <p>只读操作默认自动执行；涉及改文件、执行 Shell 命令时，会先征求你的确认。输入 <code class="inline">/help</code> 可随时打开内置命令与快捷键面板，输入 <code class="inline">/exit</code>（或连按两次 <kbd>Ctrl-C</kbd>）退出。</p>
+    </section>
+
+    <!-- ========== 04 斜杠命令 ========== -->
+    <section id="slash" data-search="斜杠命令 slash /help /login /logout /model /new /sessions /resume /clear /reset /compact /init /exit /fork /undo /title /export /import /add-dir /config">
+      <h2><span class="num">04</span>斜杠命令大全</h2>
+      <p class="lead">在交互界面输入 <code class="inline">/</code> 会自动弹出可用命令列表。以下按用途分组整理：</p>
+
+      <h3>🔐 账户与配置</h3>
+      <div class="table-wrap"><table>
+        <tr><th>命令</th><th>说明</th></tr>
+        <tr><td><code>/login</code></td><td>登录授权（OAuth 验证码 或 API Key 两种方式）</td></tr>
+        <tr><td><code>/logout</code></td><td>退出登录，清除当前凭证</td></tr>
+        <tr><td><code>/model</code></td><td>切换当前使用的模型与 Thinking 模式</td></tr>
+        <tr><td><code>/config</code></td><td>快速打开配置文件进行编辑</td></tr>
+        <tr><td><code>/help</code></td><td>打开内置帮助面板（命令 + 快捷键，↑/↓ 翻看，Esc 关闭）</td></tr>
+      </table></div>
+
+      <h3>💬 会话管理</h3>
+      <div class="table-wrap"><table>
+        <tr><th>命令</th><th>说明</th></tr>
+        <tr><td><code>/new</code></td><td>开启新会话，清空当前上下文（无需退出程序）</td></tr>
+        <tr><td><code>/sessions</code></td><td>浏览历史会话列表并选择恢复（别名 <code>/resume</code>；列表中按 Ctrl-A 切换「当前目录 / 所有目录」）</td></tr>
+        <tr><td><code>/title &lt;text&gt;</code></td><td>为当前会话设置自定义标题，方便后续查找</td></tr>
+        <tr><td><code>/fork</code></td><td>派生当前会话：保留历史记录，独立分支继续</td></tr>
+        <tr><td><code>/undo</code></td><td>回退一步（退出时会自动生成续接命令）</td></tr>
+        <tr><td><code>/add-dir</code></td><td>把额外目录加入工作区（效果同启动参数 <code>--add-dir</code>）</td></tr>
+      </table></div>
+
+      <h3>🧠 上下文管理</h3>
+      <div class="table-wrap"><table>
+        <tr><th>命令</th><th>说明</th></tr>
+        <tr><td><code>/clear</code></td><td>清空当前会话所有上下文，重新开始（别名 <code>/reset</code>）</td></tr>
+        <tr><td><code>/compact</code></td><td>手动压缩上下文，释放 token；可附带说明，如 <code>/compact 重点保留数据库设计部分</code></td></tr>
+        <tr><td><code>/export</code></td><td>把当前会话完整对话导出为 Markdown 文件，可指定输出路径</td></tr>
+        <tr><td><code>/import</code></td><td>从文件（Markdown / 代码 / 配置等）或指定会话 ID 导入上下文</td></tr>
+      </table></div>
+
+      <h3>🛠 项目与退出</h3>
+      <div class="table-wrap"><table>
+        <tr><th>命令</th><th>说明</th></tr>
+        <tr><td><code>/init</code></td><td>扫描项目并生成 AGENTS.md 项目上下文文件</td></tr>
+        <tr><td><code>/exit</code></td><td>退出 CLI（也可连按两次 Ctrl-C，或输入框为空时按 Ctrl-D）</td></tr>
+      </table></div>
+      <div class="tip">💡 不知道能做什么时，先输入 <code class="inline">/help</code>——它是最全的内置速查表。</div>
+    </section>
+
+    <!-- ========== 05 快捷键 ========== -->
+    <section id="shortcuts" data-search="快捷键 esc ctrl-c shift-tab plan ctrl-s ctrl-o ctrl-j ctrl-v 多行输入 粘贴 图片 中断">
+      <h2><span class="num">05</span>快捷键大全</h2>
+      <div class="table-wrap"><table>
+        <tr><th>快捷键</th><th>作用</th></tr>
+        <tr><td><kbd>Esc</kbd></td><td>中断流式输出 / 关闭弹窗</td></tr>
+        <tr><td><kbd>Ctrl-C</kbd></td><td>中断当前输出；空闲时连按两次退出 CLI</td></tr>
+        <tr><td><kbd>Ctrl-D</kbd></td><td>输入框为空时退出 CLI</td></tr>
+        <tr><td><kbd>Shift-Tab</kbd></td><td>切换 Plan 模式（先出计划再执行，适合复杂任务）</td></tr>
+        <tr><td><kbd>Ctrl-S</kbd></td><td>在 AI 输出中途插入消息，无需等待回复结束</td></tr>
+        <tr><td><kbd>Ctrl-O</kbd></td><td>折叠 / 展开工具输出，保持界面清爽</td></tr>
+        <tr><td><kbd>Ctrl-J</kbd></td><td>插入换行，进行多行输入（适合长 prompt、多行代码）</td></tr>
+        <tr><td><kbd>Ctrl-V</kbd></td><td>从剪贴板粘贴文本或图片（截图、设计稿、报错图可直接理解）</td></tr>
+        <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>翻阅历史输入 / 帮助面板选项</td></tr>
+        <tr><td><kbd>Enter</kbd></td><td>发送消息 / 确认结构化选项</td></tr>
+        <tr><td><kbd>Ctrl-A</kbd></td><td>在 /sessions 列表中切换「仅当前目录 ↔ 所有目录」范围</td></tr>
+      </table></div>
+    </section>
+
+    <!-- ========== 06 会话与上下文 ========== -->
+    <section id="session" data-search="会话 上下文 续接 continue session 回放 导出 导入 压缩 清空 状态栏 token">
+      <h2><span class="num">06</span>会话与上下文管理</h2>
+      <p class="lead">CLI 自动保存对话历史与运行状态，随时可以继续之前的工作。</p>
+
+      <h3>续接会话的 4 种方式</h3>
+      <div class="code-block"><div class="cb-head"><span>Bash</span><button class="copy-btn">复制</button></div><pre><span class="cmt"># 1. 继续最近一次会话</span>
+kimi -c          <span class="cmt"># 或 kimi --continue</span>
+
+<span class="cmt"># 2. 恢复指定会话 ID</span>
+kimi --session &lt;session-id&gt;</pre></div>
+      <ol>
+        <li><b>命令行续接</b>：如上，<code class="inline">-c</code> 或 <code class="inline">--session &lt;id&gt;</code>；</li>
+        <li><b>列表切换</b>：交互界面输入 <code class="inline">/sessions</code>，显示标题和最后更新时间，选中即恢复；</li>
+        <li><b>退出时复制提示</b>：会话退出（正常退出、Ctrl-C、/undo、/fork、切换会话）时会自动打印一条 <code class="inline">kimi --session ...</code> 续接命令，复制保存即可。</li>
+      </ol>
+      <p>恢复会话时会<b>回放历史对话</b>，并自动还原：YOLO 开关、「本会话允许」的审批、Plan 模式状态、子 Agent 实例、<code class="inline">--add-dir</code> 添加的目录——无需重新配置。</p>
+
+      <h3>上下文清理与压缩</h3>
+      <div class="code-block"><div class="cb-head"><span>交互界面内输入</span><button class="copy-btn">复制</button></div><pre><span class="cmt"># 彻底清空，重新开始</span>
+/clear
+
+<span class="cmt"># 压缩上下文，保留关键信息</span>
+/compact
+
+<span class="cmt"># 压缩时告诉 AI 重点保留什么</span>
+/compact 请重点保留登录模块的设计决策和待办事项</pre></div>
+      <div class="tip">💡 底部状态栏实时显示 <b>context 使用率</b>。占用偏高时及时 <code class="inline">/compact</code>，避免重要信息被自动压缩时丢失。</div>
+
+      <h3>导出与导入</h3>
+      <div class="code-block"><div class="cb-head"><span>交互界面内输入</span><button class="copy-btn">复制</button></div><pre><span class="cmt"># 导出当前会话为 Markdown</span>
+/export
+/export ./notes/session-backup.md
+
+<span class="cmt"># 从文件导入上下文（Markdown / 代码 / 配置文件等）</span>
+/import ./docs/design.md
+
+<span class="cmt"># 从另一个会话导入完整历史</span>
+/import &lt;session-id&gt;</pre></div>
+      <div class="warn">⚠️ 导出的文件可能包含代码片段、文件路径等敏感信息，分享前记得检查。</div>
+    </section>
+
+    <!-- ========== 07 交互技巧 ========== -->
+    <section id="interact" data-search="交互 输入 技巧 @ 路径补全 引用文件 thinking plan 模式 yolo 审批 确认 允许 拒绝 结构化问答 粘贴图片">
+      <h2><span class="num">07</span>交互与输入技巧</h2>
+
+      <h3>@ 引用文件 / 目录</h3>
+      <p>输入 <code class="inline">@</code> 会自动补全文件和目录路径，AI 会读取被引用内容作为上下文：</p>
+      <div class="code-block"><div class="cb-head"><span>示例 prompt</span><button class="copy-btn">复制</button></div><pre>解释一下 @src/utils/auth.ts 里 token 刷新的逻辑，并参考 @docs/api.md 检查是否一致</pre></div>
+
+      <h3>Thinking 模式</h3>
+      <p>用 <code class="inline">/model</code> 切换模型与 Thinking 模式，或启动时加 <code class="inline">--thinking</code> 直接开启。复杂问题（架构设计、疑难 Bug）建议开启。</p>
+
+      <h3>Plan 模式</h3>
+      <p>按 <kbd>Shift-Tab</kbd> 切换。开启后 AI 先输出执行计划供你审阅，确认后再动手——适合影响面大的重构、迁移类任务。</p>
+
+      <h3>审批确认</h3>
+      <p>AI 要修改文件或执行 Shell 命令时，会弹出三个选项：</p>
+      <div class="table-wrap"><table>
+        <tr><th>选项</th><th>含义</th></tr>
+        <tr><td><b>允许</b></td><td>仅允许本次操作</td></tr>
+        <tr><td><b>本会话允许</b></td><td>同类操作在当前会话内不再询问（恢复会话后仍有效）</td></tr>
+        <tr><td><b>拒绝</b></td><td>拒绝本次操作</td></tr>
+      </table></div>
+
+      <h3>YOLO 模式（高风险）</h3>
+      <div class="code-block"><div class="cb-head"><span>Bash</span><button class="copy-btn">复制</button></div><pre>kimi --yolo</pre></div>
+      <div class="warn">⚠️ YOLO 模式下 AI 自动执行<b>所有</b>操作、跳过全部确认。仅在可控的开发环境 / 沙箱 / Docker 中使用，生产环境勿开。</div>
+
+      <h3>其他实用细节</h3>
+      <ul>
+        <li><b>多行输入</b>：<kbd>Ctrl-J</kbd> 换行，长 prompt 不分段发送；</li>
+        <li><b>贴图提问</b>：<kbd>Ctrl-V</kbd> 直接粘贴截图 / 设计稿 / 报错图，AI 能看懂图片；</li>
+        <li><b>结构化问答</b>：AI 给出选项时，方向键选择 + Enter 确认；</li>
+        <li><b>中途插话</b>：<kbd>Ctrl-S</kbd> 在输出过程中插入补充消息。</li>
+      </ul>
+    </section>
+
+    <!-- ========== 08 启动参数 ========== -->
+    <section id="cli-args" data-search="启动参数 命令行 参数 -p -c --continue --session --thinking --add-dir --system-prompt --yolo --help --version upgrade acp">
+      <h2><span class="num">08</span>命令行启动参数</h2>
+      <p class="lead">在终端里直接跟在 <code class="inline">kimi</code> 后面的参数，完整列表可随时运行 <code class="inline">kimi --help</code> 查看。</p>
+      <div class="table-wrap"><table>
+        <tr><th>参数 / 子命令</th><th>说明</th></tr>
+        <tr><td><code>kimi</code></td><td>启动交互式界面</td></tr>
+        <tr><td><code>kimi -p "指令"</code></td><td>单条指令模式：不进入交互界面，执行完即退出（适合脚本调用）</td></tr>
+        <tr><td><code>kimi -c / --continue</code></td><td>继续最近一次会话</td></tr>
+        <tr><td><code>kimi --session &lt;id&gt;</code></td><td>恢复指定 ID 的会话</td></tr>
+        <tr><td><code>kimi --thinking</code></td><td>启动时直接开启 Thinking 深度思考模式</td></tr>
+        <tr><td><code>kimi --add-dir &lt;路径&gt;</code></td><td>把额外目录加入工作区（会话内对应 /add-dir）</td></tr>
+        <tr><td><code>kimi --system-prompt "..."</code></td><td>启动时指定自定义 system prompt（优先级最高）</td></tr>
+        <tr><td><code>kimi --yolo</code></td><td>YOLO 模式：跳过所有审批确认（谨慎使用）</td></tr>
+        <tr><td><code>kimi upgrade</code></td><td>检查并升级到最新版本</td></tr>
+        <tr><td><code>kimi acp</code></td><td>启动 ACP 适配层，供 IDE（Zed / JetBrains 等）接入</td></tr>
+        <tr><td><code>kimi --version</code></td><td>查看当前版本号</td></tr>
+        <tr><td><code>kimi --help</code></td><td>查看全部启动参数说明</td></tr>
+      </table></div>
+    </section>
+
+    <!-- ========== 09 配置 ========== -->
+    <section id="config" data-search="配置 config.toml agents.md 环境变量 KIMI_API_KEY KIMI_BASE_URL KIMI_MODEL KIMI_MAX_TOKENS KIMI_CODE_HOME KIMI_SHELL_PATH mcp system prompt 数据目录">
+      <h2><span class="num">09</span>配置与环境变量</h2>
+
+      <h3>配置文件与数据目录</h3>
+      <ul>
+        <li><b>配置文件</b>：<code class="inline">~/.kimi-code/config.toml</code>（支持 TOML / JSON），可配置模型供应商、API 地址、密钥、默认模型、超时与并发等；会话内输入 <code class="inline">/config</code> 快速打开。</li>
+        <li><b>数据目录</b>：<code class="inline">~/.kimi-code/</code>，存放配置、会话记录、日志和更新缓存；用 <code class="inline">KIMI_CODE_HOME</code> 环境变量可迁移到别的路径。</li>
+      </ul>
+
+      <h3>AGENTS.md：项目级上下文</h3>
+      <p>在项目根目录放置 <code class="inline">AGENTS.md</code>，写入项目背景、构建步骤、代码规范、注意事项，AI 会自动加载。三层自定义 system prompt 的优先级：</p>
+      <ol>
+        <li><code class="inline">--system-prompt</code> 启动参数（最高）</li>
+        <li>项目根目录 <code class="inline">AGENTS.md</code>（仅当前项目）</li>
+        <li>全局 <code class="inline">~/.kimi/AGENTS.md</code>（对所有项目生效）</li>
+      </ol>
+
+      <h3>环境变量</h3>
+      <div class="table-wrap"><table>
+        <tr><th>变量</th><th>说明</th></tr>
+        <tr><td><code>KIMI_API_KEY</code></td><td>API 密钥</td></tr>
+        <tr><td><code>KIMI_BASE_URL</code></td><td>自定义 API 地址</td></tr>
+        <tr><td><code>KIMI_MODEL</code></td><td>默认模型名称</td></tr>
+        <tr><td><code>KIMI_MAX_TOKENS</code></td><td>最大输出 token 数</td></tr>
+        <tr><td><code>KIMI_CODE_HOME</code></td><td>自定义数据目录（替代 ~/.kimi-code/）</td></tr>
+        <tr><td><code>KIMI_SHELL_PATH</code></td><td>Windows 下指定 Git Bash 的 bash.exe 绝对路径</td></tr>
+      </table></div>
+      <p>环境变量优先级高于配置文件，适合 CI/CD 或脚本场景。</p>
+
+      <h3>MCP 扩展</h3>
+      <p>支持 Model Context Protocol，可在 <code class="inline">~/.kimi-code/config.toml</code> 或项目级配置中添加 MCP 服务器，让 AI 调用外部工具与数据源；部分常用 MCP 工具已内置。</p>
+
+      <h3>两套 API 体系，别混用！</h3>
+      <div class="table-wrap"><table>
+        <tr><th>平台</th><th>Base URL</th><th>计费</th><th>Key 入口</th></tr>
+        <tr><td><b>Kimi Code</b></td><td>OpenAI 兼容 <code>https://api.kimi.com/coding/v1</code><br>Anthropic 兼容 <code>https://api.kimi.com/coding/</code></td><td>会员订阅含额度</td><td>Kimi Code 控制台</td></tr>
+        <tr><td><b>Kimi 开放平台</b></td><td><code>https://api.moonshot.cn/v1</code></td><td>按量付费</td><td>开放平台官网</td></tr>
+      </table></div>
+    </section>
+
+    <!-- ========== 10 IDE ========== -->
+    <section id="ide" data-search="ide 集成 zed jetbrains vscode vs code paseo acp zsh 插件 agent client protocol">
+      <h2><span class="num">10</span>IDE 与工具集成</h2>
+      <p class="lead">通过 ACP（Agent Client Protocol）把 Kimi Code 接进编辑器，复用终端的登录状态，无需重复授权。</p>
+
+      <h3>Zed 编辑器</h3>
+      <p>在 <code class="inline">~/.config/zed/settings.json</code> 添加：</p>
+      <div class="code-block"><div class="cb-head"><span>JSON</span><button class="copy-btn">复制</button></div><pre>{
+  "agent_servers": {
+    "Kimi Code CLI": {
+      "type": "custom",
+      "command": "kimi",
+      "args": ["acp"],
+      "env": {}
+    }
+  }
+}</pre></div>
+
+      <h3>JetBrains 系列（IDEA / PyCharm / WebStorm…）</h3>
+      <p>AI 聊天面板菜单 → <b>Configure ACP agents</b>，添加同上配置；<code class="inline">command</code> 必须填<b>绝对路径</b>（终端运行 <code class="inline">which kimi</code> 获取）。无 JetBrains AI 订阅时，可在注册表（连按两次 Shift 搜 Registry）启用 <code class="inline">llm.enable.mock.response</code> 打开 AI 聊天面板。</p>
+
+      <h3>VS Code 与 Paseo</h3>
+      <ul>
+        <li><b>VS Code</b>：扩展市场搜索安装官方 <b>Kimi Code</b> 扩展，登录即用；</li>
+        <li><b>Paseo</b>：在 ACP provider 目录选择 Kimi Code CLI，或写入 <code class="inline">~/.paseo/config.json</code>；注意先在终端完成 <code class="inline">/login</code>，否则报 <code class="inline">Authentication required</code>。</li>
+      </ul>
+
+      <h3>Zsh 快速唤起插件</h3>
+      <div class="code-block"><div class="cb-head"><span>Bash (Oh My Zsh)</span><button class="copy-btn">复制</button></div><pre>git clone https://github.com/MoonshotAI/zsh-kimi-cli.git \
+  ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/kimi-cli
+<span class="cmt"># 然后在 ~/.zshrc 的 plugins 列表加入 kimi-cli，重载配置：</span>
+source ~/.zshrc</pre></div>
+      <p>装好后在终端按 <kbd>Ctrl-X</kbd> 即可快速切入 Kimi Code CLI。</p>
+
+      <div class="tip">💡 <b>排障</b>：IDE 提示 "agent exited" 多为路径错误或未登录——先在终端跑一次 <code class="inline">kimi acp</code> 验证；提示 "auth required" 则回终端完成 <code class="inline">/login</code>。macOS 下 GUI 启动的子进程不继承终端 PATH，务必用绝对路径。</div>
+    </section>
+
+    <!-- ========== 11 案例 ========== -->
+    <section id="cases" data-search="案例 使用场景 prompt 新功能 bug 修复 理解项目 自动化 测试 文档 数据分析">
+      <h2><span class="num">11</span>常见使用案例（Prompt 模板）</h2>
+
+      <h3>✨ 实现新功能</h3>
+      <div class="code-block"><div class="cb-head"><span>prompt</span><button class="copy-btn">复制</button></div><pre>给用户模块加一个「导出 CSV」功能：在设置页加入口，导出当前用户的全部订单数据，带上loading状态和错误提示</pre></div>
+
+      <h3>🐛 修复 Bug</h3>
+      <div class="code-block"><div class="cb-head"><span>prompt</span><button class="copy-btn">复制</button></div><pre>线上报这个错（粘贴堆栈）：TypeError: Cannot read properties of undefined...
+帮我定位根因并修复，修完跑一下相关测试确认没引入新问题</pre></div>
+
+      <h3>📖 理解陌生项目</h3>
+      <div class="code-block"><div class="cb-head"><span>prompt</span><button class="copy-btn">复制</button></div><pre>我刚接手这个项目，帮我梳理：1) 整体架构和模块划分 2) 核心数据流怎么走 3) 登录鉴权是怎么实现的</pre></div>
+
+      <h3>🤖 自动化小任务</h3>
+      <div class="code-block"><div class="cb-head"><span>prompt</span><button class="copy-btn">复制</button></div><pre>把 src 下所有 .js 文件里的 var 批量替换成 let/const，替换后跑一遍 lint 确认没有报错</pre></div>
+      <div class="code-block"><div class="cb-head"><span>prompt</span><button class="copy-btn">复制</button></div><pre>给 @src/api/user.ts 里的所有公开函数补充 JSDoc 注释，并为 generateToken 写单元测试</pre></div>
+
+      <h3>📊 不限于编程的通用任务</h3>
+      <div class="code-block"><div class="cb-head"><span>prompt</span><button class="copy-btn">复制</button></div><pre>把这个目录下的 200 张图片按 EXIF 拍摄日期整理到「年-月」子文件夹里，重名文件自动加序号</pre></div>
+      <div class="tip">💡 用好 Kimi Code 的心法：<b>说清目标 + 给出约束 + 让它自验证</b>（跑测试 / lint）。大任务先开 Plan 模式审计划，长会话勤用 <code class="inline">/compact</code>。</div>
+    </section>
+
+    <!-- ========== 12 FAQ ========== -->
+    <section id="faq" data-search="faq 常见问题 鉴权失败 api key 401 找不到命令 浏览器 登录 远程服务器 path">
+      <h2><span class="num">12</span>常见问题 FAQ</h2>
+      <h4>Q：填了 API Key 提示鉴权失败？</h4>
+      <p>A：Key 和 Base URL 必须属于同一平台。<code class="inline">api.kimi.com</code>（Kimi Code，会员额度）和 <code class="inline">api.moonshot.cn</code>（开放平台，按量付费）是两套独立账号体系，Key 互不通用——对照第 09 节的表检查。</p>
+      <h4>Q：安装后找不到 <code class="inline">kimi</code> 命令？</h4>
+      <p>A：重启终端或 <code class="inline">source ~/.bashrc</code> / <code class="inline">source ~/.zshrc</code>；仍不行就检查 <code class="inline">~/.local/bin</code> 是否在 PATH 里。</p>
+      <h4>Q：<code class="inline">/login</code> 后浏览器没弹出来？</h4>
+      <p>A：远程服务器 / 无图形界面环境下，终端会直接显示一个 URL，手动复制到浏览器打开完成授权即可。</p>
+      <h4>Q：macOS 首次启动特别慢？</h4>
+      <p>A：是 Gatekeeper 安全检查。在「系统设置 → 隐私与安全性 → 开发者工具」中添加你的终端应用，后续启动会快很多。</p>
+      <h4>Q：上下文快满了怎么办？</h4>
+      <p>A：看底部状态栏的 context 使用率，先 <code class="inline">/compact 保留关键决策</code> 压缩；开新任务就直接 <code class="inline">/new</code> 或 <code class="inline">/clear</code>。</p>
+
+      <footer>
+        📚 内容整理自 Kimi 官方帮助中心（kimi.com/zh-cn/help/kimi-code）与 Kimi Code 官方文档（kimi.com/code/docs）。命令可能随版本更新，最新说明请以 <code class="inline">/help</code> 和 <code class="inline">kimi --help</code> 为准。
+      </footer>
+    </section>
+  </main>
+</div>
+
+<script>
+  // 复制按钮
+  document.querySelectorAll('.copy-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const pre=btn.closest('.code-block').querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(()=>{
+        btn.textContent='✓ 已复制';btn.classList.add('ok');
+        setTimeout(()=>{btn.textContent='复制';btn.classList.remove('ok')},1500);
+      });
+    });
+  });
+
+  // 搜索过滤
+  const searchInput=document.getElementById('search');
+  searchInput.addEventListener('input',()=>{
+    const q=searchInput.value.trim().toLowerCase();
+    document.querySelectorAll('section').forEach(sec=>{
+      if(!q){sec.classList.remove('hidden-by-search');return;}
+      const hay=(sec.dataset.search||'')+' '+sec.innerText.toLowerCase();
+      sec.classList.toggle('hidden-by-search',!hay.includes(q));
+    });
+  });
+
+  // 侧边栏高亮
+  const links=document.querySelectorAll('#nav a');
+  const secs=[...document.querySelectorAll('section')];
+  window.addEventListener('scroll',()=>{
+    let cur=secs[0];
+    secs.forEach(s=>{if(s.getBoundingClientRect().top<=120)cur=s});
+    links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+cur.id));
+  },{passive:true});
+
+  // 移动端点击导航后收起
+  links.forEach(l=>l.addEventListener('click',()=>document.querySelector('.sidebar').classList.remove('open')));
+</script>
+</body>
+</html>
