@@ -1,260 +1,210 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GPT Image 2 提示词库 | GaryAIGC</title>
-<style>
-:root {
-  --bg: #0a0a14;
-  --card: #13131f;
-  --card-hover: #1a1a2e;
-  --border: rgba(255,255,255,0.08);
-  --text: #e0e0e0;
-  --text-dim: #888;
-  --accent: #00d4ff;
-  --accent2: #c084fc;
-  --radius: 12px;
-  --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:var(--font); background:var(--bg); color:var(--text); min-height:100vh; }
-::-webkit-scrollbar { width:6px; }
-::-webkit-scrollbar-thumb { background:#333; border-radius:3px; }
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GPT Image 2 提示词库 | GaryAIGC</title>
+<style>:root{--bg:#080812;--card:#10101c;--card-hover:#18182a;--border:rgba(255,255,255,0.06);--border-hover:rgba(255,255,255,0.12);--text:#e8e8ee;--text-dim:#82829a;--accent:#00d4ff;--purple:#c084fc;--green:#07c160;--radius:14px;--font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;--header-bg:rgba(8,8,18,0.92);--toast-bg:#18182a;--toast-border:rgba(0,212,255,0.3);--search-bg:#10101c;--sort-active-bg:rgba(0,212,255,0.12)}body.light{--bg:#f5f0e8;--card:#faf7f2;--card-hover:#f0ebe2;--border:rgba(0,0,0,0.08);--border-hover:rgba(0,0,0,0.15);--text:#2d2d3a;--text-dim:#7a7a8a;--header-bg:rgba(245,240,232,0.95);--toast-bg:#ede8df;--toast-border:rgba(0,180,220,0.35);--search-bg:#faf7f2;--sort-active-bg:rgba(0,180,220,0.15);--accent:#0099cc}*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s}body.light .card-img{background:#e8e3da}body.light .modal-img{background:#e8e3da}body.light .modal-prompt{background:#ede8df;color:#444}body.light .btn-copy{color:#555}body.light .btn-copy:hover{background:#e0dbd0;color:#333}body.light .btn-copy-lg{color:#555}body.light .btn-copy-lg:hover{background:#e0dbd0;color:#333}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}body.light ::-webkit-scrollbar-thumb{background:#ccc}
 
 /* Header */
-.header {
-  position:sticky; top:0; z-index:100;
-  background:rgba(10,10,20,0.92); backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-  padding:16px 24px;
-}
-.header-inner { max-width:1400px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
-.logo { font-size:20px; font-weight:800; background:linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-.header-stats { font-size:13px; color:var(--text-dim); }
+.header{position:sticky;top:0;z-index:100;background:var(--header-bg);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.logo{font-size:18px;font-weight:800;background:linear-gradient(135deg,#00d4ff,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+.header-right{display:flex;align-items:center;gap:10px}
+.header-stats{font-size:12px;color:var(--text-dim)}
+.theme-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--text-dim);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.theme-btn:hover{border-color:var(--border-hover);color:var(--text)}
+
+/* Language dropdown */
+.lang-btn{display:flex;align-items:center;gap:4px;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-dim);cursor:pointer;font-size:12px;transition:all .2s}
+.lang-btn:hover{border-color:var(--border-hover);color:#fff}
+.lang-dropdown{position:relative}
+.lang-menu{position:absolute;top:100%;right:0;margin-top:6px;background:var(--card);border:1px solid var(--border-hover);border-radius:10px;padding:4px;min-width:140px;display:none;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,0.5)}
+.lang-menu.open{display:block}
+.lang-item{padding:8px 12px;border-radius:6px;cursor:pointer;font-size:13px;color:var(--text-dim);transition:all .15s;display:flex;align-items:center;gap:8px}
+.lang-item:hover{background:var(--card-hover);color:#fff}
+.lang-item.active{color:#fff;background:rgba(0,212,255,0.08)}
+.lang-item .flag{font-size:16px}
 
 /* Filters */
-.filters { display:flex; gap:8px; flex-wrap:wrap; padding:16px 24px; max-width:1400px; margin:0 auto; }
-.filter-btn {
-  padding:6px 16px; border-radius:20px; border:1px solid var(--border);
-  background:transparent; color:var(--text-dim); cursor:pointer;
-  font-size:13px; transition:all .2s;
-}
-.filter-btn:hover { border-color:var(--accent); color:#fff; }
-.filter-btn.active { background:var(--accent); color:#000; border-color:var(--accent); font-weight:600; }
-.filter-count { font-size:11px; opacity:0.6; margin-left:4px; }
+.filters{display:flex;gap:8px;flex-wrap:wrap;padding:16px 24px;max-width:1400px;margin:0 auto}
+.filter-btn{padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text-dim);cursor:pointer;font-size:13px;transition:all .2s}
+.filter-btn:hover{border-color:var(--accent);color:#fff}
+.filter-btn.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
 
 /* Grid */
-.grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; padding:8px 24px 40px; max-width:1400px; margin:0 auto; }
-.card {
-  background:var(--card); border-radius:var(--radius);
-  border:1px solid var(--border); overflow:hidden;
-  cursor:pointer; transition:all .25s;
-}
-.card:hover { background:var(--card-hover); transform:translateY(-2px); border-color:rgba(255,255,255,0.15); }
-.card-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; background:#1a1a2e; }
-.card-body { padding:12px; }
-.card-title { font-size:14px; font-weight:600; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-.card-meta { display:flex; gap:12px; margin-top:6px; font-size:11px; color:var(--text-dim); }
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;padding:8px 24px 40px;max-width:1400px;margin:0 auto}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;transition:all .25s;display:flex;flex-direction:column}
+.card:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+.card-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#1a1a2e;cursor:pointer}
+.card-body{padding:14px 16px;flex:1;display:flex;flex-direction:column;gap:8px}
+.card-title{font-size:14px;font-weight:600;line-height:1.4;cursor:pointer}
+.card-title:hover{color:var(--accent)}
+.card-author{font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:6px}
+.card-author-avatar{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.card-tags{display:flex;flex-wrap:wrap;gap:4px}
+.card-tag{padding:2px 8px;border-radius:10px;background:rgba(0,212,255,0.06);color:var(--accent);font-size:11px;white-space:nowrap}
+.card-stats{display:flex;gap:14px;font-size:11px;color:var(--text-dim);margin-top:auto;padding-top:10px;border-top:1px solid var(--border)}
+.card-actions{display:flex;gap:8px;padding-top:8px}
+.btn-sm{padding:6px 14px;border-radius:6px;border:none;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s}
+.btn-gen{background:var(--green);color:#000;flex:1}
+.btn-gen:hover{filter:brightness(1.1)}
+.btn-copy{background:var(--card-hover);color:var(--text-dim);border:1px solid var(--border)}
+.btn-copy:hover{background:#222;color:#fff}
 
 /* Modal */
-.modal-overlay {
-  position:fixed; inset:0; z-index:200;
-  background:rgba(0,0,0,0.8); backdrop-filter:blur(8px);
-  display:flex; align-items:center; justify-content:center;
-  opacity:0; pointer-events:none; transition:opacity .25s;
-}
-.modal-overlay.open { opacity:1; pointer-events:auto; }
-.modal {
-  background:var(--card); border-radius:16px;
-  border:1px solid var(--border);
-  max-width:720px; width:90vw; max-height:85vh; overflow-y:auto;
-  padding:0;
-}
-.modal-img { width:100%; max-height:400px; object-fit:contain; background:#0a0a14; }
-.modal-body { padding:24px; }
-.modal-title { font-size:20px; font-weight:700; margin-bottom:12px; }
-.modal-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
-.modal-tag { padding:3px 10px; border-radius:12px; background:rgba(0,212,255,0.1); color:var(--accent); font-size:12px; }
-.modal-prompt { background:#0a0a14; border-radius:8px; padding:16px; margin-bottom:16px; font-size:13px; line-height:1.7; color:#ccc; white-space:pre-wrap; max-height:200px; overflow-y:auto; }
-.modal-stats { display:flex; gap:16px; font-size:12px; color:var(--text-dim); margin-bottom:20px; }
-.modal-actions { display:flex; gap:12px; }
-.btn {
-  padding:10px 24px; border-radius:8px; border:none; cursor:pointer;
-  font-size:14px; font-weight:600; transition:all .2s;
-}
-.btn-use { background:linear-gradient(135deg, var(--accent), var(--accent2)); color:#000; flex:1; }
-.btn-use:hover { opacity:0.9; transform:scale(1.02); }
-.btn-copy { background:var(--card-hover); color:#fff; border:1px solid var(--border); }
-.btn-copy:hover { background:#222; }
-.btn-close { position:absolute; top:16px; right:16px; width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,0.1); border:none; color:#fff; cursor:pointer; font-size:16px; }
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal{background:var(--card);border-radius:16px;border:1px solid var(--border);max-width:680px;width:92vw;max-height:88vh;overflow-y:auto;position:relative}
+.modal-img{width:100%;max-height:420px;object-fit:contain;background:#0a0a14}
+.modal-body{padding:24px}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:10px}
+.modal-author{font-size:13px;color:var(--text-dim);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.modal-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.modal-tag{padding:3px 10px;border-radius:12px;background:rgba(0,212,255,0.1);color:var(--accent);font-size:12px}
+.modal-prompt{background:#0a0a14;border-radius:10px;padding:16px;margin-bottom:16px;font-size:13px;line-height:1.7;color:#ccc;white-space:pre-wrap;max-height:240px;overflow-y:auto}
+.modal-stats{display:flex;gap:20px;font-size:12px;color:var(--text-dim);margin-bottom:20px;flex-wrap:wrap}
+.modal-actions{display:flex;gap:12px}
+.btn{padding:10px 24px;border-radius:8px;border:none;cursor:pointer;font-size:14px;font-weight:600;transition:all .2s}
+.btn-gen-lg{background:var(--green);color:#000;flex:1}
+.btn-gen-lg:hover{filter:brightness(1.1);transform:scale(1.01)}
+.btn-copy-lg{background:var(--card-hover);color:#fff;border:1px solid var(--border)}
+.btn-copy-lg:hover{background:#222}
+.btn-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.08);border:none;color:#aaa;cursor:pointer;font-size:16px;transition:all .2s}
+.btn-close:hover{background:rgba(255,255,255,0.15);color:#fff}
 
-/* Loading */
-.loading { text-align:center; padding:60px; color:var(--text-dim); }
-.spinner { width:32px; height:32px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 16px; }
-@keyframes spin { to { transform:rotate(360deg); } }
+/* Toolbar */
+.toolbar{max-width:1400px;margin:0 auto;padding:24px 24px 8px}
+.toolbar-top{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
+.toolbar-title{font-size:22px;font-weight:700}
+.toolbar-hint{font-size:12px;color:var(--text-dim)}
+.toolbar-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.search-box{position:relative;flex:1;max-width:360px}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-dim);pointer-events:none}
+.search-input{width:100%;padding:8px 12px 8px 36px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;font-family:var(--font);outline:none;transition:border-color .2s}
+.search-input:focus{border-color:var(--accent)}
+.search-input::placeholder{color:var(--text-dim)}
+.sort-group{display:flex;gap:4px}
+.sort-btn{padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-dim);cursor:pointer;font-size:12px;transition:all .2s;white-space:nowrap}
+.sort-btn:hover{border-color:var(--border-hover);color:#fff}
+.sort-btn.active{background:rgba(0,212,255,0.12);color:var(--accent);border-color:var(--accent);font-weight:600}
 
-/* Empty / Error */
-.empty { text-align:center; padding:60px; color:var(--text-dim); font-size:15px; }
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--card-hover);color:#fff;padding:12px 24px;border-radius:8px;border:1px solid rgba(0,212,255,0.3);z-index:9999;font-size:14px;animation:toastIn .3s}@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 
-@media (max-width:600px) {
-  .grid { grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:10px; padding:8px 12px 24px; }
-  .card-body { padding:8px; }
-  .card-title { font-size:12px; }
-  .modal { width:95vw; }
-}
-</style>
-</head>
-<body>
-
+.loading-text{text-align:center;padding:80px;color:var(--text-dim)}.loading-text .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:600px){.grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;padding:8px 12px}.card-body{padding:10px}.card-title{font-size:12px}.card-stats{font-size:10px}.modal{width:96vw}}</style></head><body>
 <div class="header">
-  <div class="header-inner">
-    <span class="logo">GPT Image 2 · 提示词库</span>
+  <span class="logo">GPT Image 2 · 提示词库</span>
+  <div class="header-right">
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="切换主题">☀️</button>
+      <div class="lang-dropdown">
+      <button class="lang-btn" onclick="document.querySelector('.lang-menu').classList.toggle('open')">
+        <span>🌐</span> <span id="langLabel">中文</span> ▼
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <div class="lang-item active" data-lang="cn" onclick="switchLang('cn')"><span class="flag">🇨🇳</span> 中文</div>
+        <div class="lang-item" data-lang="en" onclick="switchLang('en')"><span class="flag">🇺🇸</span> English</div>
+        <div class="lang-item" data-lang="ja" onclick="switchLang('ja')"><span class="flag">🇯🇵</span> 日本語</div>
+        <div class="lang-item" data-lang="ko" onclick="switchLang('ko')"><span class="flag">🇰🇷</span> 한국어</div>
+        <div class="lang-item" data-lang="ar" onclick="switchLang('ar')"><span class="flag">🇸🇦</span> العربية</div>
+      </div>
+    </div>
     <span class="header-stats" id="headerStats">加载中...</span>
   </div>
 </div>
-
-<div class="filters" id="filters">
-  <button class="filter-btn active" data-cat="all">全部</button>
+<!-- Toolbar -->
+<div class="toolbar">
+  <div class="toolbar-top">
+    <div class="toolbar-title">提示词</div>
+    <div class="toolbar-hint">向下滚动继续加载更多提示词</div>
+  </div>
+  <div class="toolbar-actions">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" placeholder="搜索提示词..." oninput="onSearch(this.value)">
+    </div>
+    <div class="sort-group">
+      <button class="sort-btn active" data-sort="default" onclick="setSort('default',this)">默认</button>
+      <button class="sort-btn" data-sort="views" onclick="setSort('views',this)">🔥 热门</button>
+      <button class="sort-btn" data-sort="title" onclick="setSort('title',this)">🔤 名称</button>
+    </div>
+  </div>
 </div>
 
+<div class="filters" id="filters"><button class="filter-btn active" data-cat="all">全部</button></div>
 <div class="grid" id="grid"></div>
-
 <script>
-// Category extraction from items
-const CATS = {};
+const CATS={},allItems=[];
+let displayItems=[],loadedPages=0,currentLang='cn',currentSort='default',currentCat='all',searchQuery='';
+const TOTAL_PAGES=100;
+const LANG_LABELS={cn:'中文',en:'English',ja:'日本語',ko:'한국어',ar:'العربية'};
 
-// Load all data
-let allItems = [];
-let displayItems = [];
-let loadedPages = 0;
-const TOTAL_PAGES = 100;
-
-async function loadPage(n) {
-  const pad = String(n).padStart(4, '0');
-  const resp = await fetch(`gpt2_data/page_${pad}.json`);
-  if (!resp.ok) return null;
-  const items = await resp.json();
-  // Categorize
-  for (const item of items) {
-    const cats = (item.categories || '').split(',');
-    for (const c of cats) {
-      const ct = c.trim();
-      if (ct) CATS[ct] = (CATS[ct] || 0) + 1;
-    }
-  }
+async function loadPage(n){
+  const pad=String(n).padStart(4,'0');const resp=await fetch(`gpt2_data/page_${pad}.json`);if(!resp.ok)return null;
+  const items=await resp.json();
+  for(const item of items){const cats=(item.categories||'').split(',');for(const c of cats){const ct=c.trim();if(ct)CATS[ct]=(CATS[ct]||0)+1}}
   return items;
 }
 
-async function loadAll() {
-  for (let i = 0; i < TOTAL_PAGES; i++) {
-    const items = await loadPage(i);
-    if (!items) break;
-    allItems.push(...items);
-    loadedPages++;
-    // Update header
-    document.getElementById('headerStats').textContent = `已加载 ${allItems.length} 条提示词`;
-  }
-  buildFilters();
-  filter('all');
+async function loadAll(){
+  for(let i=0;i<TOTAL_PAGES;i++){const items=await loadPage(i);if(!items)break;allItems.push(...items);loadedPages++}
+  document.getElementById('headerStats').textContent=`${allItems.length} 条提示词`;buildFilters();filter('all');
 }
 
-function buildFilters() {
-  const container = document.getElementById('filters');
-  const sorted = Object.entries(CATS).sort((a,b) => b[1] - a[1]).slice(0, 20);
-  for (const [cat, count] of sorted) {
-    const btn = document.createElement('button');
-    btn.className = 'filter-btn';
-    btn.dataset.cat = cat;
-    btn.innerHTML = `${cat}<span class="filter-count">${count}</span>`;
-    btn.onclick = () => filter(cat);
-    container.appendChild(btn);
-  }
+function buildFilters(){
+  const container=document.getElementById('filters');const sorted=Object.entries(CATS).sort((a,b)=>b[1]-a[1]).slice(0,20);
+  for(const[cat,count]of sorted){const btn=document.createElement('button');btn.className='filter-btn';btn.dataset.cat=cat;btn.innerHTML=`${cat} <span style="font-size:11px;opacity:.5">${count}</span>`;btn.onclick=()=>filter(cat);container.appendChild(btn)}
 }
 
-function filter(cat) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  if (cat === 'all') {
-    document.querySelector('[data-cat="all"]').classList.add('active');
-    displayItems = allItems;
-  } else {
-    document.querySelector(`[data-cat="${cat}"]`)?.classList.add('active');
-    displayItems = allItems.filter(item => (item.categories || '').includes(cat));
-  }
-  document.getElementById('headerStats').textContent = 
-    `显示 ${displayItems.length} / ${allItems.length} 条 · 已加载 ${loadedPages} 页`;
-  render();
+function filter(cat){currentCat=cat;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));document.querySelector(`[data-cat="${cat}"]`)?.classList.add('active');applyFilters()}
+
+function onSearch(q){searchQuery=q.toLowerCase().trim();applyFilters()}
+
+function setSort(sort,btn){
+  currentSort=sort;document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');applyFilters();
 }
 
-function render() {
-  const grid = document.getElementById('grid');
-  grid.innerHTML = displayItems.slice(0, 200).map((item, i) => {
-    const img = item.images?.[0] || '';
-    const prompt = item.prompt_en || item.prompt_cn || '';
-    return `
-    <div class="card" onclick="openDetail(${allItems.indexOf(item)})">
-      ${img ? `<img class="card-img" src="${img}" loading="lazy" onerror="this.style.display='none'">` : '<div class="card-img" style="display:flex;align-items:center;justify-content:center;color:#444;font-size:24px">🖼️</div>'}
-      <div class="card-body">
-        <div class="card-title">${esc(item.title)}</div>
-        <div class="card-meta">
-          ${item.author ? `<span>${esc(item.author)}</span>` : ''}
-          ${item.categories ? `<span>${item.categories.split(',')[0]}</span>` : ''}
-        </div>
-      </div>
-    </div>`;
+function applyFilters(){
+  let items=allItems;
+  if(currentCat!=='all')items=items.filter(i=>(i.categories||'').includes(currentCat));
+  if(searchQuery)items=items.filter(i=>{
+    const t=(i.title||'').toLowerCase();const p=(getPrompt(i)||'').toLowerCase();const c=(i.categories||'').toLowerCase();
+    return t.includes(searchQuery)||p.includes(searchQuery)||c.includes(searchQuery);
+  });
+  if(currentSort==='views')items.sort((a,b)=>(b.views||0)-(a.views||0));
+  else if(currentSort==='title')items.sort((a,b)=>(getTitle(a)||'').localeCompare(getTitle(b)||'','zh'));
+  displayItems=items;render();
+}
+
+function getPrompt(item){if(currentLang==='cn'&&item.prompt_cn)return item.prompt_cn;return item.prompt_en||'';}
+function getTitle(item){return item.title||`#${item.id}`}
+
+function render(){
+  const items=displayItems.slice(0,300);
+  document.getElementById('grid').innerHTML=items.map((item,i)=>{
+    const img=item.images?.[0]||'';const prompt=getPrompt(item);const tags=(item.categories||'').split(',').slice(0,3);const title=getTitle(item);
+    return`<div class="card">${img?`<img class="card-img" src="${img}" loading="lazy" onerror="this.style.background='#1a1a2e';this.style.display='flex';this.style.alignItems='center';this.style.justifyContent='center';this.style.color='#333';this.style.fontSize='32px';this.outerHTML='<div class=card-img style=display:flex;align-items:center;justify-content:center;background:#1a1a2e;color:#444;font-size:32px>🖼️</div>'">`:'<div class="card-img" style="display:flex;align-items:center;justify-content:center;background:#1a1a2e;color:#444;font-size:32px">🖼️</div>'}<div class="card-body"><div class="card-title" onclick="openDetail(${allItems.indexOf(item)})">${esc(title)}</div>${item.author?`<div class="card-author"><span class="card-author-avatar">${item.author[0]||'?'}</span>${esc(item.author.slice(0,20))}</div>`:''}<div class="card-tags">${tags.map(t=>t.trim()?`<span class="card-tag">${esc(t.trim()).substring(0,12)}</span>`:'').join('')}</div><div class="card-stats">${item.likes!=null?`<span>❤️ ${fmt(item.likes)}</span>`:''}${item.views!=null?`<span>👁 ${fmt(item.views)}</span>`:''}</div><div class="card-actions"><button class="btn-sm btn-gen" onclick="event.stopPropagation();useIt(${allItems.indexOf(item)})">⭐ 生成</button><button class="btn-sm btn-copy" onclick="event.stopPropagation();copyIt(${allItems.indexOf(item)})">📋 复制</button></div></div></div>`;
   }).join('');
 }
 
-function openDetail(idx) {
-  const item = displayItems[idx];
-  if (!item) return;
-  
-  const overlay = document.createElement('div');
-  overlay.className = 'modal-overlay';
-  overlay.innerHTML = `
-    <div class="modal" onclick="event.stopPropagation()">
-      <button class="btn-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
-      ${item.images?.[0] ? `<img class="modal-img" src="${item.images[0]}" onerror="this.style.display='none'">` : ''}
-      <div class="modal-body">
-        <div class="modal-title">${esc(item.title)}</div>
-        ${item.categories ? `
-        <div class="modal-tags">
-          ${item.categories.split(',').map(c => `<span class="modal-tag">${c.trim()}</span>`).join('')}
-        </div>` : ''}
-        ${(item.prompt_en || item.prompt_cn) ? `
-        <div class="modal-prompt">${esc(item.prompt_en || item.prompt_cn)}</div>` : ''}
-        <div class="modal-stats">
-          ${item.author ? `<span>👤 ${esc(item.author)}</span>` : ''}
-        </div>
-        <div class="modal-actions">
-          <button class="btn btn-use" onclick="usePrompt('${escAttr(item.prompt_en || item.prompt_cn)}')">🎨 使用此提示词</button>
-          <button class="btn btn-copy" onclick="copyPrompt('${escAttr(item.prompt_en || item.prompt_cn)}')">📋 复制</button>
-        </div>
-      </div>
-    </div>
-  `;
-  overlay.onclick = () => overlay.remove();
-  document.body.appendChild(overlay);
-  requestAnimationFrame(() => overlay.classList.add('open'));
+function fmt(n){if(n>999999)return(n/1e6).toFixed(1)+'M';if(n>999)return(n/1e3).toFixed(1)+'k';return String(n)}
+
+function openDetail(idx){
+  const item=allItems[idx];if(!item)return;
+  const prompt=getPrompt(item);const tags=(item.categories||'').split(',');
+  const overlay=document.createElement('div');overlay.className='modal-overlay';
+  overlay.innerHTML=`<div class="modal" onclick="event.stopPropagation()"><button class="btn-close" onclick="this.closest('.modal-overlay').remove()">✕</button>${item.images?.[0]?`<img class="modal-img" src="${item.images[0]}">`:''}<div class="modal-body"><div class="modal-title">${esc(getTitle(item))}</div>${item.author?`<div class="modal-author"><span class="card-author-avatar">${item.author[0]||'?'}</span>${esc(item.author)}</div>`:''}<div class="modal-tags">${tags.map(t=>t.trim()?`<span class="modal-tag">${esc(t.trim())}</span>`:'').join('')}</div>${prompt?`<div class="modal-prompt">${esc(prompt)}</div>`:''}<div class="modal-stats">${item.likes?`<span>❤️ ${fmt(item.likes)} 喜欢</span>`:''}${item.views?`<span>👁 ${fmt(item.views)} 浏览</span>`:''}</div><div class="modal-actions"><button class="btn btn-gen-lg" onclick="copyPrompt('${(prompt||'').replace(/'/g,'&#39;').replace(/\n/g,' ')}')">⭐ 生成图片</button><button class="btn btn-copy-lg" onclick="copyPrompt('${(prompt||'').replace(/'/g,'&#39;').replace(/\n/g,' ')}')">📋 复制提示词</button></div></div></div>`;
+  overlay.onclick=()=>overlay.remove();document.body.appendChild(overlay);requestAnimationFrame(()=>overlay.classList.add('open'));
 }
 
-function usePrompt(text) {
-  // TODO: replace with actual generation page URL when vibeX project is exported
-  alert('正在跳转到生图页面...\n\n提示词已复制到剪贴板');
-  navigator.clipboard.writeText(text);
+function useIt(idx){const item=allItems[idx];if(!item)return;const text=getPrompt(item);copyText(text);}
+function copyIt(idx){const item=allItems[idx];if(!item)return;const text=getPrompt(item);copyText(text);}
+function copyPrompt(text){copyText(text)}
+function copyText(text){navigator.clipboard.writeText(text).then(()=>toast('✅ 提示词已复制')).catch(()=>toast('❌ 复制失败，请手动复制'))}
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300)},2000)}
+function switchLang(lang){
+  currentLang=lang;document.getElementById('langLabel').textContent=LANG_LABELS[lang]||lang;
+  document.querySelectorAll('.lang-item').forEach(el=>el.classList.toggle('active',el.dataset.lang===lang));
+  document.querySelector('.lang-menu').classList.remove('open');
+  render();
 }
-
-function copyPrompt(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    alert('✅ 提示词已复制到剪贴板');
-  });
-}
-
-function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function escAttr(s) { return (s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/\n/g,'\\n'); }
-
-// Start loading
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function toggleTheme(){const b=document.body;b.classList.toggle('light');const isLight=b.classList.contains('light');document.getElementById('themeBtn').textContent=isLight?'🌙':'☀️';localStorage.setItem('gpt2-theme',isLight?'light':'dark')}
+if(localStorage.getItem('gpt2-theme')==='light'){document.body.classList.add('light');document.getElementById('themeBtn').textContent='🌙'}
 loadAll();
-</script>
-</body>
-</html>
+</script></body></html>
