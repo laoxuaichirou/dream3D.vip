@@ -340,7 +340,7 @@ python3 ~/.openclaw/workspace/skills/runninghub/scripts/runninghub_app.py \
 
 <footer class="footer">© 2025 GaryAIGC · 让 AI 创作更简单</footer>
 <script>
-function setTheme(t){document.documentElement.setAttribute("data-theme",t);localStorage.setItem("gary-theme",t)}
+function setTheme(t){if (["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(t) < 0) t = "dark-gold";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("gary-theme",t)}
 (function(){var t=localStorage.getItem("gary-theme");if(t)setTheme(t)})();
 document.querySelectorAll(".unav-item > button.unav-btn").forEach(function(btn){
   btn.addEventListener("click", function(e){

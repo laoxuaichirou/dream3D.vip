@@ -73,6 +73,8 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;
   -webkit-font-smoothing:antialiased;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+/* 桌面壳布局：html 也禁滚，锚点跳转只滚内部容器（修复子页带 #tools 到达时窗口错位卡住） */
+@media (min-width:1024px){ html{overflow:hidden} }
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--accent-glow)}
 ::-webkit-scrollbar{width:5px}
@@ -289,6 +291,7 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
         <a class="drop-link" href="benefits.html" data-i18n="sub_b3">云端算力</a>
         <a class="drop-link" href="benefits.html" data-i18n="sub_b4">AI 音乐</a>
         <a class="drop-link" href="benefits.html" data-i18n="sub_b5">海外镜像</a>
+        <a class="drop-link" href="benefits.html#sidejob" data-i18n="sub_b6">副业赚钱</a>
       </div>
     </div>
     <div class="nav-item">
@@ -361,6 +364,7 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
         <a class="sub-link" href="benefits.html" data-i18n="sub_b3">云端算力</a>
         <a class="sub-link" href="benefits.html" data-i18n="sub_b4">AI 音乐</a>
         <a class="sub-link" href="benefits.html" data-i18n="sub_b5">海外镜像</a>
+        <a class="sub-link" href="benefits.html#sidejob" data-i18n="sub_b6">副业赚钱</a>
       </div>
     </div>
 
@@ -536,7 +540,7 @@ status_cn_live:"国内可用",status_cn_soon:"国内筹备中",status_gl_soon:"�
 cat_bene_t:"AI 福利",cat_bene_d:"邀请码与免费额度",cat_know_t:"知识库",cat_know_d:"教程、实战、避坑指南",
 cat_create_t:"AI 创作",cat_create_d:"自研工具，免部署在线用",cat_res_t:"资源库",cat_res_d:"整合包、模型、资源合集",
 cat_com_t:"社区",cat_com_d:"交流群、作品与合作",
-sub_b1:"无限画布",sub_b2:"API 平台",sub_b3:"云端算力",sub_b4:"AI 音乐",sub_b5:"海外镜像",
+sub_b1:"无限画布",sub_b2:"API 平台",sub_b3:"云端算力",sub_b4:"AI 音乐",sub_b5:"海外镜像",sub_b6:"副业赚钱",
 sub_k1:"AI 绘画",sub_k2:"AI 视频",sub_k4:"AI Coding",
 sub_c1:"Skills",sub_c2:"绘画",sub_c3:"视频",sub_c4:"解析视频",
 sub_r1:"整合包",sub_r2:"模型",sub_r3:"资源合集",
@@ -554,7 +558,7 @@ status_cn_live:"CN · Live",status_cn_soon:"CN · Soon",status_gl_soon:"Global �
 cat_bene_t:"AI Deals",cat_bene_d:"Invite codes, free credits",cat_know_t:"Knowledge",cat_know_d:"Tutorials and pitfalls",
 cat_create_t:"AI Studio",cat_create_d:"Self-built tools, no setup",cat_res_t:"Resources",cat_res_d:"Bundles, models, packs",
 cat_com_t:"Community",cat_com_d:"Groups and collabs",
-sub_b1:"Canvas",sub_b2:"API",sub_b3:"Cloud GPU",sub_b4:"AI Music",sub_b5:"Mirrors",
+sub_b1:"Infinite Canvas",sub_b2:"API Platforms",sub_b3:"Cloud GPU",sub_b4:"AI Music",sub_b5:"Mirror Sites",sub_b6:"Side Hustles",
 sub_k1:"AI Image",sub_k2:"AI Video",sub_k4:"AI Coding",
 sub_c1:"Skills",sub_c2:"Image",sub_c3:"Video",sub_c4:"Video Insight",
 sub_r1:"Bundles",sub_r2:"Models",sub_r3:"Packs",
@@ -572,7 +576,7 @@ status_cn_live:"中国版公開中",status_cn_soon:"中国版準備中",status_g
 cat_bene_t:"AI 特典",cat_bene_d:"招待コードと無料枠",cat_know_t:"ナレッジ",cat_know_d:"チュートリアルと落とし穴",
 cat_create_t:"AI 創作",cat_create_d:"自研ツール、すぐ使える",cat_res_t:"リソース",cat_res_d:"パック・モデル・素材集",
 cat_com_t:"コミュニティ",cat_com_d:"グループとコラボ",
-sub_b1:"無限キャンバス",sub_b2:"API",sub_b3:"クラウド算力",sub_b4:"AI 音楽",sub_b5:"海外ミラー",
+sub_b1:"無限キャンバス",sub_b2:"API プラットフォーム",sub_b3:"クラウド算力",sub_b4:"AI 音楽",sub_b5:"海外ミラー",sub_b6:"副業で稼ぐ",
 sub_k1:"AI 画像",sub_k2:"AI 動画",sub_k4:"AI Coding",
 sub_c1:"Skills",sub_c2:"画像",sub_c3:"動画",sub_c4:"動画解析",
 sub_r1:"統合パック",sub_r2:"モデル",sub_r3:"素材集",
@@ -590,7 +594,7 @@ status_cn_live:"중국판 이용 가능",status_cn_soon:"중국판 준비 중",s
 cat_bene_t:"AI 혜택",cat_bene_d:"초대 코드와 물료 크레딧",cat_know_t:"지식 베이스",cat_know_d:"튜토리얼과 주의사항",
 cat_create_t:"AI 창작",cat_create_d:"자체 개발 도구, 설치 불필요",cat_res_t:"리소스",cat_res_d:"통합 팩, 모델, 모음",
 cat_com_t:"커뮤니티",cat_com_d:"그룹과 협업",
-sub_b1:"무한 캔버스",sub_b2:"API",sub_b3:"클우드 GPU",sub_b4:"AI 음악",sub_b5:"해외 미러",
+sub_b1:"무한 캔버스",sub_b2:"API 플랫폼",sub_b3:"클우드 연산",sub_b4:"AI 음악",sub_b5:"해외 미러",sub_b6:"부업 수익",
 sub_k1:"AI 이미지",sub_k2:"AI 영상",sub_k4:"AI Coding",
 sub_c1:"Skills",sub_c2:"이미지",sub_c3:"영상",sub_c4:"영상 분석",
 sub_r1:"통합 팩",sub_r2:"모델",sub_r3:"모음",
@@ -608,7 +612,7 @@ status_cn_live:"CN · доступно",status_cn_soon:"CN · скоро",status
 cat_bene_t:"AI-бонусы",cat_bene_d:"Инвайт-коды и кредиты",cat_know_t:"Знания",cat_know_d:"Уроки и подводные камни",
 cat_create_t:"AI-студия",cat_create_d:"Свои инструменты, без установки",cat_res_t:"Ресурсы",cat_res_d:"Сборки и модели",
 cat_com_t:"Сообщество",cat_com_d:"Группы и сотрудничество",
-sub_b1:"Холст",sub_b2:"API",sub_b3:"Облачные GPU",sub_b4:"ИИ-музыка",sub_b5:"Зеркала",
+sub_b1:"Бесконечный холст",sub_b2:"API-платформы",sub_b3:"Облачные мощности",sub_b4:"AI-музыка",sub_b5:"Зеркала",sub_b6:"Подработка",
 sub_k1:"ИИ-изображения",sub_k2:"ИИ-видео",sub_k4:"AI Coding",
 sub_c1:"Skills",sub_c2:"Изображения",sub_c3:"Видео",sub_c4:"Анализ видео",
 sub_r1:"Сборки",sub_r2:"Модели",sub_r3:"Пакеты",
@@ -635,7 +639,9 @@ function setLang(l){
   document.querySelectorAll("[data-i18n]").forEach(el => { el.innerHTML = T(el.dataset.i18n); });
   closeDrops();
 }
+var THEMES=["dark-gold","dark-blue","dark-purple","light-warm","light-cool"];
 function setTheme(t){
+  if(THEMES.indexOf(t)<0) t="dark-gold"; /* 无效主题值回退暗金，防旧缓存值导致无样式 */
   document.documentElement.setAttribute("data-theme", t);
   localStorage.setItem("gary-theme", t);
   closeDrops();
@@ -675,6 +681,19 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
       col.scrollTo({top: top, behavior: "smooth"});
     }
   });
+});
+
+/* 带锚点到达（如子页 AI创作 → index.html#tools）：桌面壳布局下窗口不滚动，改滚内部容器 */
+window.addEventListener("load", function(){
+  if (!window.matchMedia("(min-width:1024px)").matches) return;
+  var id = location.hash.slice(1);
+  var el = id && document.getElementById(id);
+  var col = document.querySelector(".main-col");
+  if (el && col) {
+    window.scrollTo(0,0);
+    var top = el.getBoundingClientRect().top - col.getBoundingClientRect().top + col.scrollTop - 16;
+    col.scrollTo({top: top});
+  }
 });
 
 (function(){

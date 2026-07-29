@@ -302,6 +302,7 @@ function copyRes(btn, text){
 
 /* Theme */
 function setTheme(t){
+  if (["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(t) < 0) t = "dark-gold";
   document.documentElement.setAttribute('data-theme',t);
   localStorage.setItem('gary-theme',t);
   closeUnavDrops();

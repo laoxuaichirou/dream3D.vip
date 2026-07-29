@@ -291,8 +291,10 @@ a{color:inherit;text-decoration:none}
       <div class="hero-card">
         <div class="hero-badge">🏆 全能创作平台</div>
         <h3>RunningHub</h3>
-        <div class="sub">模型接入速度、性价比、功能都是 Top！支持 ComfyUI 在线开发、热门模型一键运行、工作流分享。适配 GPT-Image-2、Nano Banana Pro、Seedance 等上百个模型。</div>
+        <div class="sub">模型接入速度、性价比、功能都是 Top！主推 <strong>RHTV 无限画布</strong>与 <strong>VibeX 云端 Coding</strong>（一句话生成项目，内置 Hermes），ComfyUI 在线工作流和 AI 应用同样强大。适配 GPT-Image-2、Nano Banana Pro、Seedance 等上百个模型。</div>
         <div class="highlights">
+          <span class="highlight">🎨 RHTV 无限画布</span>
+          <span class="highlight">🚀 VibeX 云端 Coding</span>
           <span class="highlight">⚡ 模型最多</span>
           <span class="highlight">💰 性价比之王</span>
           <span class="highlight">🔧 ComfyUI 在线</span>
@@ -345,7 +347,7 @@ a{color:inherit;text-decoration:none}
   </div>
 
   <!-- ==================== 副业赚钱 ==================== -->
-  <div class="section">
+  <div class="section" id="sidejob">
     <div class="section-title"><span class="icon">💰</span><h2>副业赚钱</h2></div>
     <div class="featured-bottom">
       <div class="featured-card">
@@ -534,6 +536,7 @@ function goHome() { location.href='index.html' }
 
 /* ===== 主题切换 ===== */
 function setTheme(t){
+  if (["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(t) < 0) t = "dark-gold";
   document.documentElement.setAttribute("data-theme", t);
   localStorage.setItem("gary-theme", t);
   closeUnavDrops();
@@ -613,7 +616,8 @@ document.querySelectorAll(".list-card a.btn[href^='http'], .featured-card a.btn[
 
 (function(){
   var theme = localStorage.getItem("gary-theme");
-  if (theme) document.documentElement.setAttribute("data-theme", theme);
+  if (["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(theme) < 0) theme = "dark-gold";
+  document.documentElement.setAttribute("data-theme", theme);
 })();
 </script>
 
