@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark-gold">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>视频教程 · Gary AIGC</title>
+<style>
+:root {
+  --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  --radius:14px; --radius-sm:10px; --nav-height:64px;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+  --transition:0.3s var(--ease);
+}
+[data-theme="dark-gold"]{
+  --bg:#0a0a0f;--bg-card:#111118;--bg-card-hover:#18182400;
+  --border:rgba(200,164,92,0.14);--border-hover:rgba(200,164,92,0.38);
+  --text:#ececf2;--text-dim:#9090a6;--text-muted:#5c5c74;
+  --accent:#c8a45c;--accent-strong:#e8c97a;
+  --accent-glow:rgba(200,164,92,0.10);
+  --gradient:linear-gradient(135deg,#c8a45c,#e8c97a);
+  --badge-bg:rgba(200,164,92,0.12);--badge-text:#d8b876;
+  --nav-bg:rgba(10,10,15,0.85);--nav-border:rgba(255,255,255,0.05);
+  --header-glow:radial-gradient(ellipse 70% 55% at 50% -5%,rgba(200,164,92,0.13) 0%,transparent 65%);
+  --facade-a:#1c1a14;--facade-b:#12121a;
+  --shadow-card:0 10px 32px rgba(0,0,0,0.42),0 0 0 1px rgba(200,164,92,0.06);
+}
+[data-theme="dark-blue"]{
+  --bg:#060b14;--bg-card:#0d1322;
+  --border:rgba(56,139,253,0.14);--border-hover:rgba(56,139,253,0.38);
+  --text:#e2e8f4;--text-dim:#7e90ac;--text-muted:#4c5c7a;
+  --accent:#388bfd;--accent-strong:#79c0ff;
+  --accent-glow:rgba(56,139,253,0.10);
+  --gradient:linear-gradient(135deg,#388bfd,#79c0ff);
+  --badge-bg:rgba(56,139,253,0.12);--badge-text:#6aa8ff;
+  --nav-bg:rgba(6,11,20,0.85);--nav-border:rgba(255,255,255,0.05);
+  --header-glow:radial-gradient(ellipse 70% 55% at 50% -5%,rgba(56,139,253,0.11) 0%,transparent 65%);
+  --facade-a:#101a2c;--facade-b:#0c1424;
+  --shadow-card:0 10px 32px rgba(0,0,0,0.42),0 0 0 1px rgba(56,139,253,0.06);
+}
+[data-theme="dark-purple"]{
+  --bg:#0e0a17;--bg-card:#151022;
+  --border:rgba(168,130,255,0.14);--border-hover:rgba(168,130,255,0.38);
+  --text:#ebe2fa;--text-dim:#9a8abc;--text-muted:#5e4c7c;
+  --accent:#a882ff;--accent-strong:#d4b8ff;
+  --accent-glow:rgba(168,130,255,0.10);
+  --gradient:linear-gradient(135deg,#a882ff,#d4b8ff);
+  --badge-bg:rgba(168,130,255,0.12);--badge-text:#bd9aff;
+  --nav-bg:rgba(14,10,23,0.85);--nav-border:rgba(255,255,255,0.05);
+  --header-glow:radial-gradient(ellipse 70% 55% at 50% -5%,rgba(168,130,255,0.11) 0%,transparent 65%);
+  --facade-a:#1c1530;--facade-b:#150f26;
+  --shadow-card:0 10px 32px rgba(0,0,0,0.42),0 0 0 1px rgba(168,130,255,0.06);
+}
+[data-theme="light-warm"]{
+  --bg:#faf7f2;--bg-card:#ffffff;
+  --border:rgba(150,110,55,0.16);--border-hover:rgba(150,110,55,0.4);
+  --text:#2b2822;--text-dim:#7c7263;--text-muted:#a2947f;
+  --accent:#a87c3e;--accent-strong:#8a6030;
+  --accent-glow:rgba(168,124,62,0.08);
+  --gradient:linear-gradient(135deg,#a87c3e,#c8a05e);
+  --badge-bg:rgba(168,124,62,0.1);--badge-text:#8a6030;
+  --nav-bg:rgba(250,247,242,0.88);--nav-border:rgba(0,0,0,0.07);
+  --header-glow:radial-gradient(ellipse 70% 55% at 50% -5%,rgba(168,124,62,0.07) 0%,transparent 65%);
+  --facade-a:#efe8db;--facade-b:#e7dfd0;
+  --shadow-card:0 10px 28px rgba(90,70,40,0.10),0 0 0 1px rgba(150,110,55,0.05);
+}
+[data-theme="light-cool"]{
+  --bg:#f5f7fa;--bg-card:#ffffff;
+  --border:rgba(50,105,180,0.14);--border-hover:rgba(50,105,180,0.36);
+  --text:#1b2536;--text-dim:#5c6c84;--text-muted:#8c9cb4;
+  --accent:#2f6cbd;--accent-strong:#255aa0;
+  --accent-glow:rgba(47,108,189,0.07);
+  --gradient:linear-gradient(135deg,#2f6cbd,#4f8ad8);
+  --badge-bg:rgba(47,108,189,0.08);--badge-text:#255aa0;
+  --nav-bg:rgba(245,247,250,0.88);--nav-border:rgba(0,0,0,0.07);
+  --header-glow:radial-gradient(ellipse 70% 55% at 50% -5%,rgba(47,108,189,0.06) 0%,transparent 65%);
+  --facade-a:#e4eaf2;--facade-b:#dbe3ee;
+  --shadow-card:0 10px 28px rgba(40,70,120,0.09),0 0 0 1px rgba(50,105,180,0.05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;
+  -webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-thumb{background:var(--text-muted);border-radius:3px}
+
+/* 细颗粒纹理（固定层，不耗滚动性能） */
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
+body>*{position:relative;z-index:1}
+
+/* Nav */
+/* ===== 统一胶囊导航 ===== */
+.unav-wrap{position:sticky;top:14px;z-index:200;display:flex;justify-content:center;padding:14px 16px 0}
+.unav{display:flex;align-items:center;gap:3px;background:var(--nav-bg);
+  backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);
+  border:1px solid var(--nav-border);border-radius:999px;padding:7px 12px;
+  box-shadow:0 10px 34px rgba(0,0,0,0.28);max-width:100%;flex-wrap:wrap;justify-content:center}
+.unav-logo{font-size:17px;font-weight:800;letter-spacing:-0.3px;background:var(--gradient);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  padding:6px 12px;cursor:pointer;white-space:nowrap}
+.unav-sep{width:1px;height:18px;background:var(--nav-border);margin:0 5px}
+.unav-item{position:relative}
+.unav-btn{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:999px;
+  font-size:13.5px;font-weight:500;color:var(--text-dim);cursor:pointer;border:none;
+  background:transparent;transition:all var(--transition);white-space:nowrap;font-family:var(--font);text-decoration:none}
+.unav-btn:hover,.unav-item.open .unav-btn,.unav-btn.active{color:var(--text);background:var(--accent-glow)}
+.unav-btn .caret{font-size:9px;opacity:0.6;transition:transform var(--transition)}
+.unav-item:hover .caret,.unav-item.open .caret{transform:rotate(180deg)}
+.unav-drop{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(6px);
+  min-width:160px;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+  padding:8px;opacity:0;visibility:hidden;transition:all 0.22s;z-index:300;
+  box-shadow:0 16px 44px rgba(0,0,0,0.4)}
+.unav-drop.right{left:auto;right:0;transform:translateY(6px)}
+.unav-item:hover .unav-drop,.unav-item.open .unav-drop{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.unav-item:hover .unav-drop.right,.unav-item.open .unav-drop.right{transform:translateY(0)}
+.unav-link{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:9px 12px;border-radius:9px;font-size:13px;color:var(--text-dim);cursor:pointer;transition:all var(--transition)}
+.unav-link:hover{background:var(--accent-glow);color:var(--text)}
+@media (max-width:640px){.unav{gap:2px;padding:6px 8px}.unav-btn{padding:6px 9px;font-size:12.5px}}
+
+.nav{position:sticky;top:0;z-index:100;height:var(--nav-height);
+  background:var(--nav-bg);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);
+  border-bottom:1px solid var(--nav-border);
+  display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.nav-logo{font-size:20px;font-weight:800;letter-spacing:-0.5px;background:var(--gradient);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer}
+.nav-links{display:flex;gap:28px}
+.nav-link{font-size:14px;color:var(--text-dim);font-weight:500;transition:color var(--transition)}
+.nav-link:hover,.nav-link.active{color:var(--accent)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.nav-hamburger{display:none;cursor:pointer;font-size:22px;color:var(--text-dim);background:none;border:none}
+
+/* Theme Switcher */
+.theme-switcher{position:relative}
+.theme-btn{background:transparent;border:1px solid var(--border);border-radius:8px;
+  padding:6px 10px;cursor:pointer;font-size:15px;color:var(--text-dim);transition:all var(--transition)}
+.theme-btn:hover{border-color:var(--border-hover);color:var(--text)}
+.theme-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px;
+  display:none;flex-direction:column;gap:4px;min-width:140px;box-shadow:0 12px 32px rgba(0,0,0,0.45);z-index:200}
+.theme-dropdown.open{display:flex}
+.theme-option{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:6px;
+  cursor:pointer;font-size:13px;color:var(--text-dim);transition:all var(--transition)}
+.theme-option:hover,.theme-option.active{background:var(--accent-glow);color:var(--text)}
+.theme-dot{width:16px;height:16px;border-radius:50%;border:1px solid var(--border)}
+
+/* Layout */
+.container{max-width:1120px;margin:0 auto;padding:0 24px}
+.page-header{padding:72px 0 40px;text-align:center;background:var(--header-glow)}
+.page-header h1{font-size:clamp(34px,6vw,58px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:14px}
+.page-header h1 span{background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.page-header p{font-size:16px;color:var(--text-dim);max-width:560px;margin:0 auto}
+.page-header .note{display:inline-block;margin-top:16px;font-size:12px;font-weight:600;letter-spacing:1px;
+  color:var(--badge-text);background:var(--badge-bg);border:1px solid var(--border);
+  padding:6px 14px;border-radius:20px}
+
+/* Chips + scrollspy */
+.chip-nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:26px 0 4px}
+.chip{padding:9px 18px;border-radius:22px;font-size:13px;font-weight:600;
+  background:var(--bg-card);border:1px solid var(--border);color:var(--text-dim);
+  cursor:pointer;transition:all var(--transition)}
+.chip:hover{border-color:var(--border-hover);color:var(--accent);transform:translateY(-1px)}
+.chip.active{background:var(--accent-glow);border-color:var(--border-hover);color:var(--accent-strong)}
+
+/* Section */
+.section{margin-bottom:64px;scroll-margin-top:84px}
+.section-title{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.section-title .icon{font-size:24px;transform:translateY(2px)}
+.section-title h2{font-size:24px;font-weight:800;letter-spacing:-0.5px}
+.section-title .count{margin-left:auto;font-size:13px;font-weight:700;color:var(--text-muted);
+  font-variant-numeric:tabular-nums}
+.section-desc{font-size:14px;color:var(--text-muted);margin-bottom:22px}
+
+/* Video grid */
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px}
+.video-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;transition:transform var(--transition),border-color var(--transition),box-shadow var(--transition);
+  opacity:0;transform:translateY(18px)}
+.video-item.in{opacity:1;transform:none}
+.video-item:hover{border-color:var(--border-hover);transform:translateY(-4px);box-shadow:var(--shadow-card)}
+.video-facade{position:relative;aspect-ratio:16/9;cursor:pointer;overflow:hidden;
+  background:
+    radial-gradient(ellipse 90% 80% at 20% 10%,var(--accent-glow),transparent 60%),
+    linear-gradient(135deg,var(--facade-a),var(--facade-b))}
+.video-facade .play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:60px;height:60px;border-radius:50%;background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;font-size:21px;color:#fff;text-indent:3px;
+  border:1.5px solid rgba(255,255,255,0.3);transition:all var(--transition);pointer-events:none}
+.video-facade:hover .play-btn{background:var(--accent);border-color:var(--accent);color:#0c0c12;
+  transform:translate(-50%,-50%) scale(1.1)}
+.platform-badge{position:absolute;top:12px;left:12px;padding:4px 11px;border-radius:8px;
+  font-size:11px;font-weight:700;letter-spacing:0.5px;background:rgba(0,161,214,0.92);color:#fff;z-index:2}
+.video-facade img.cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform 0.6s var(--ease)}
+.video-facade:hover img.cover{transform:scale(1.06)}
+.video-facade::after{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(0,0,0,0.12),transparent 35%,transparent 65%,rgba(0,0,0,0.45))}
+.dur-badge{position:absolute;bottom:10px;right:10px;z-index:2;padding:3px 9px;border-radius:7px;
+  font-size:11px;font-weight:700;background:rgba(0,0,0,0.62);color:#fff;backdrop-filter:blur(4px);
+  font-variant-numeric:tabular-nums}
+.video-facade .play-btn{z-index:2}
+.series-num{position:absolute;top:12px;right:12px;font-size:12px;font-weight:800;
+  color:var(--accent-strong);background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);
+  border:1px solid var(--border);padding:4px 10px;border-radius:8px;font-variant-numeric:tabular-nums}
+.video-item iframe{width:100%;aspect-ratio:16/9;display:block;border:0}
+.video-info{padding:16px 18px 18px}
+.video-info h3{font-size:15px;font-weight:700;line-height:1.5;letter-spacing:-0.2px}
+.video-info .ext{display:inline-block;margin-top:10px;font-size:12px;font-weight:600;
+  color:var(--text-muted);transition:color var(--transition)}
+.video-info .ext:hover{color:var(--accent)}
+
+/* More section */
+.more-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.more-card{display:flex;align-items:center;gap:16px;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;
+  transition:all var(--transition)}
+.more-card:hover{border-color:var(--border-hover);transform:translateY(-3px);box-shadow:var(--shadow-card)}
+.more-card .mc-icon{font-size:30px}
+.more-card h3{font-size:16px;font-weight:800;margin-bottom:2px}
+.more-card p{font-size:13px;color:var(--text-muted)}
+.more-card .mc-arrow{margin-left:auto;font-size:18px;color:var(--text-muted);transition:all var(--transition)}
+.more-card:hover .mc-arrow{color:var(--accent);transform:translateX(3px)}
+
+/* Footer */
+.footer{border-top:1px solid var(--border);padding:36px 24px;text-align:center;color:var(--text-muted);font-size:13px}
+.footer-links{display:flex;justify-content:center;gap:22px;margin-bottom:12px;flex-wrap:wrap}
+.footer-links a{transition:color var(--transition)}
+.footer-links a:hover{color:var(--accent)}
+
+/* Responsive */
+@media (max-width:767px){
+  .nav-links{display:none;position:absolute;top:var(--nav-height);left:0;right:0;
+    background:var(--nav-bg);flex-direction:column;padding:12px;gap:4px;
+    border-bottom:1px solid var(--nav-border);backdrop-filter:blur(18px)}
+  .nav-links.open{display:flex}
+  .nav-hamburger{display:block}
+  .video-grid{grid-template-columns:1fr}
+  .page-header{padding:44px 16px 28px}
+  .container{padding:0 16px}
+  .section{margin-bottom:48px}
+}
+@media (prefers-reduced-motion:reduce){
+  .video-item{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+</style>
+
+<!-- 打赏作者 -->
+<style>
+.donate-strip{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:90;
+  writing-mode:vertical-rl;padding:16px 8px;font-size:13px;letter-spacing:3px;cursor:pointer;
+  color:var(--accent);background:var(--bg-card);border:1px solid var(--border);border-right:none;
+  border-radius:12px 0 0 12px;transition:all .25s;font-family:var(--font)}
+.donate-strip:hover{border-color:var(--border-hover);padding-right:12px}
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);
+  z-index:500;display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:all .25s}
+.modal-mask.show{opacity:1;visibility:visible}
+.modal-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
+  padding:28px 32px;text-align:center;max-width:90vw;transform:translateY(10px);transition:transform .25s}
+.modal-mask.show .modal-card{transform:translateY(0)}
+.modal-title{font-size:18px;font-weight:800;margin-bottom:6px}
+.modal-desc{font-size:13.5px;color:var(--text-dim);margin-bottom:16px;max-width:300px}
+.modal-qr img{width:190px;aspect-ratio:3/4;height:auto;object-fit:contain;background:#fff;padding:8px;border-radius:12px}
+.modal-close{margin-top:16px;padding:8px 22px;border-radius:20px;border:1px solid var(--border);
+  background:transparent;color:var(--text-dim);font-size:13px;cursor:pointer;font-family:var(--font)}
+.modal-close:hover{border-color:var(--border-hover);color:var(--text)}
+@media (max-width:767px){.donate-strip{display:none}}
+</style>
+</head>
+<body>
+
+<!-- ===== 统一胶囊导航（全站一致） ===== -->
+<div class="unav-wrap">
+  <nav class="unav">
+    <span class="unav-logo" onclick="location.href='index.html'">GaryAIGC</span>
+    <span class="unav-sep"></span>
+    <div class="unav-item"><a class="unav-btn" href="index.html#tools">AI创作</a></div>
+    <div class="unav-item"><a class="unav-btn" href="benefits.html">AI福利</a></div>
+    <div class="unav-item"><a class="unav-btn" href="knowledge.html">知识库</a></div>
+    <div class="unav-item"><a class="unav-btn" href="resources.html">资源库</a></div>
+    <div class="unav-item"><a class="unav-btn active" href="videos.html">视频教程</a></div>
+    <div class="unav-item"><a class="unav-btn" href="community.html">社区</a></div>
+    <span class="unav-sep"></span>
+    <div class="unav-item">
+      <button class="unav-btn" type="button"><span>主题</span><span class="caret">▼</span></button>
+      <div class="unav-drop right">
+        <a class="unav-link" onclick="setTheme('dark-gold')">暗金 Dark Gold</a>
+        <a class="unav-link" onclick="setTheme('dark-blue')">暗蓝 Deep Blue</a>
+        <a class="unav-link" onclick="setTheme('dark-purple')">暗紫 Violet</a>
+        <a class="unav-link" onclick="setTheme('light-warm')">暖白 Warm</a>
+        <a class="unav-link" onclick="setTheme('light-cool')">冷白 Cool</a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<section class="page-header">
+  <div class="container">
+    <h1><span>视频教程</span></h1>
+    <p>精选 B 站教程，点击封面站内播放。国内外均可观看，视频流走 B 站官方 CDN。</p>
+    <span class="note">31 期精选 · 持续补充</span>
+  </div>
+  <div class="container chip-nav">
+    <a class="chip" href="#runninghub" data-spy="runninghub">🚀 RunningHub</a>
+    <a class="chip" href="#ai-video" data-spy="ai-video">🎬 AI 视频</a>
+    <a class="chip" href="#comfyui" data-spy="comfyui">🔧 ComfyUI</a>
+    <a class="chip" href="#aipc" data-spy="aipc">⚡ AIPC 装机</a>
+    <a class="chip" href="#network" data-spy="network">💻 网络自救</a>
+    <a class="chip" href="#more" data-spy="more">📺 更多</a>
+  </div>
+</section>
+
+<main class="container" style="padding-top:44px;padding-bottom:70px">
+
+<section class="section" id="runninghub">
+  <div class="section-title">
+    <span class="icon">🚀</span><h2>RunningHub</h2><span class="count">5 期</span>
+  </div>
+  <p class="section-desc">玩赚系列、RHTV 教程、新会员体系。入坑 RH 按这个顺序看。</p>
+  <div class="video-grid" data-section="runninghub"></div>
+</section>
+
+<section class="section" id="ai-video">
+  <div class="section-title">
+    <span class="icon">🎬</span><h2>AI 视频</h2><span class="count">2 期</span>
+  </div>
+  <p class="section-desc">先看横评选模型，再看实战学打法。</p>
+  <div class="video-grid" data-section="ai-video"></div>
+</section>
+
+<section class="section" id="comfyui">
+  <div class="section-title">
+    <span class="icon">🔧</span><h2>ComfyUI</h2><span class="count">11 期</span>
+  </div>
+  <p class="section-desc">按顺序观看：基础入门 → 进阶控图 → 工作流实战 → 维护排错。</p>
+  <div class="video-grid" data-section="comfyui"></div>
+</section>
+
+<section class="section" id="aipc">
+  <div class="section-title">
+    <span class="icon">⚡</span><h2>AIPC 装机指南</h2><span class="count">11 期</span>
+  </div>
+  <p class="section-desc">跑 AI 该买什么电脑？从显卡到电源逐个讲透，按编号顺序观看，最后看问题汇总。</p>
+  <div class="video-grid" data-section="aipc"></div>
+</section>
+
+<section class="section" id="network">
+  <div class="section-title">
+    <span class="icon">💻</span><h2>网络自救</h2><span class="count">2 期</span>
+  </div>
+  <p class="section-desc">断网不用求人，按流程排查，99% 的问题自己就能修。</p>
+  <div class="video-grid" data-section="network"></div>
+</section>
+
+<section class="section" id="more">
+  <div class="section-title">
+    <span class="icon">📺</span><h2>更多教程</h2>
+  </div>
+  <p class="section-desc">无限画布、Seedance 实战、AI 服装广告等更多内容，站内持续整理中。先到主页看全量。</p>
+  <div class="more-grid">
+    <a class="more-card" href="https://space.bilibili.com/669645699" target="_blank" rel="noopener">
+      <span class="mc-icon">📺</span>
+      <div><h3>B 站主页</h3><p>全部 145 期视频，国内海外都能看</p></div>
+      <span class="mc-arrow">→</span>
+    </a>
+    <a class="more-card" href="https://space.bilibili.com/669645699/search/video?keyword=%E6%97%A0%E9%99%90%E7%94%BB%E5%B8%83" target="_blank" rel="noopener">
+      <span class="mc-icon">🎨</span>
+      <div><h3>无限画布系列</h3><p>画布入门、价格对比、平台横评、发布应用</p></div>
+      <span class="mc-arrow">→</span>
+    </a>
+    <a class="more-card" href="https://space.bilibili.com/669645699/search/video?keyword=Seedance" target="_blank" rel="noopener">
+      <span class="mc-icon">🎬</span>
+      <div><h3>AI 视频实战</h3><p>Seedance 全系、Shotlab、服装广告全流程</p></div>
+      <span class="mc-arrow">→</span>
+    </a>
+    <a class="more-card" href="https://www.youtube.com/@GaryAIGC" target="_blank" rel="noopener">
+      <span class="mc-icon">🌐</span>
+      <div><h3>YouTube 频道</h3><p>海外镜像，46 期视频同步更新</p></div>
+      <span class="mc-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+</main>
+
+
+<div class="donate-strip" id="donateBtn">打赏作者</div>
+<div class="modal-mask" id="donateModal">
+  <div class="modal-card">
+    <div class="modal-title">请作者喝杯咖啡</div>
+    <div class="modal-desc">如果你觉得本站对你有帮助，微信扫码支持一下，任意金额都是鼓励</div>
+    <div class="modal-qr"><img src="wx-pay.jpg" alt="微信收款码"></div>
+    <button class="modal-close" id="donateClose" type="button">关闭</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="index.html">首页</a>
+    <a href="knowledge.html">知识库</a>
+    <a href="benefits.html">AI福利</a>
+    <a href="resources.html">资源库</a>
+    <a href="community.html">社区</a>
+    <a href="https://space.bilibili.com/669645699" target="_blank" rel="noopener">B站</a>
+    <a href="https://www.youtube.com/@GaryAIGC" target="_blank" rel="noopener">YouTube</a>
+  </div>
+  <p>© 2025 Gary AIGC · 视频托管于 B 站，点击封面加载播放</p>
+</footer>
+
+<script src="data/videos.js"></script>
+<script>
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
+function renderSection(cat){
+  const grid = document.querySelector(`[data-section="${cat.key}"]`);
+  if(!grid) return;
+  const list = VIDEO_DB.filter(v => v.cat === cat.key);
+  const countEl = document.querySelector(`#${cat.key} .count`);
+  if (countEl) countEl.textContent = list.length + " 期";
+  grid.innerHTML = list.map(v => `
+    <div class="video-item">
+      <div class="video-facade" data-id="${v.bv}" onclick="loadVideo(this)">
+        <img class="cover" src="${v.cover}" alt="${esc(v.t)}" loading="lazy">
+        <span class="platform-badge">B站</span>
+        ${v.dur ? `<span class="dur-badge">${v.dur}</span>` : ""}
+        <div class="play-btn">▶</div>
+      </div>
+      <div class="video-info">
+        <h3>${esc(v.t)}</h3>
+        <a class="ext" href="https://www.bilibili.com/video/${v.bv}" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ 在 B 站打开</a>
+      </div>
+    </div>`).join("");
+}
+VIDEO_CATS.forEach(renderSection);
+
+/* 点击加载 iframe（站内播放，流量走 B 站 CDN） */
+function loadVideo(el){
+  const iframe = document.createElement("iframe");
+  iframe.src = `https://player.bilibili.com/player.html?bvid=${el.dataset.id}&autoplay=1&high_quality=1&danmaku=0`;
+  iframe.allow = "autoplay; fullscreen; picture-in-picture";
+  iframe.allowFullscreen = true;
+  el.replaceWith(iframe);
+}
+
+/* 进场动效：交错淡入（一次性） */
+(function(){
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    });
+  }, {threshold: 0.12});
+  document.querySelectorAll(".video-item").forEach((el, i) => {
+    el.style.transitionDelay = (i % 3) * 0.06 + "s";
+    io.observe(el);
+  });
+})();
+
+/* Scrollspy：当前板块 chip 高亮 */
+(function(){
+  const chips = document.querySelectorAll(".chip[data-spy]");
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        chips.forEach(c => c.classList.toggle("active", c.dataset.spy === e.target.id));
+      }
+    });
+  }, {rootMargin: "-30% 0px -60% 0px"});
+  document.querySelectorAll(".section").forEach(s => io.observe(s));
+})();
+
+/* Theme */
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  localStorage.setItem('gary-theme',t);
+  closeUnavDrops();
+}
+(function(){
+  const saved=localStorage.getItem('gary-theme');
+  if(saved){setTheme(saved)}
+})();
+/* 统一导航下拉（触屏点击支持） */
+document.querySelectorAll(".unav-item > button.unav-btn").forEach(function(btn){
+  btn.addEventListener("click", function(e){
+    e.stopPropagation();
+    var item = btn.parentElement;
+    var was = item.classList.contains("open");
+    closeUnavDrops();
+    if (!was) item.classList.add("open");
+  });
+});
+document.addEventListener("click", function(e){
+  if (!e.target.closest(".unav-item")) closeUnavDrops();
+});
+function closeUnavDrops(){
+  document.querySelectorAll(".unav-item.open").forEach(function(el){ el.classList.remove("open"); });
+}
+
+/* Nav */
+function toggleNav(){document.getElementById('navLinks').classList.toggle('open')}
+</script>
+
+
+<script>
+(function(){
+  var btn=document.getElementById("donateBtn"),modal=document.getElementById("donateModal"),close=document.getElementById("donateClose");
+  if(!btn||!modal)return;
+  btn.addEventListener("click",function(){modal.classList.add("show")});
+  if(close)close.addEventListener("click",function(){modal.classList.remove("show")});
+  modal.addEventListener("click",function(e){if(e.target===modal)modal.classList.remove("show")});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")modal.classList.remove("show")});
+})();
+</script>
+</body>
+</html>

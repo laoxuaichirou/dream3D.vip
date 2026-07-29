@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark-gold">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI福利 · Gary AIGC</title>
+<style>
+:root {
+  --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  --radius:14px; --radius-sm:10px; --nav-height:64px;
+  --transition:0.25s cubic-bezier(0.16,1,0.3,1);
+}
+[data-theme="dark-gold"]{
+  --bg:#0a0a0f;--bg-card:#12121a;--bg-card-hover:#1a1a26;
+  --border:rgba(200,164,92,0.12);--border-hover:rgba(200,164,92,0.25);
+  --text:#e8e8ee;--text-dim:#8888a0;--text-muted:#5a5a72;
+  --accent:#c8a45c;--accent-glow:rgba(200,164,92,0.12);
+  --gradient:linear-gradient(135deg,#c8a45c,#e8c97a);
+  --badge-bg:rgba(200,164,92,0.1);--badge-text:#c8a45c;
+  --nav-bg:rgba(10,10,15,0.92);--nav-border:rgba(255,255,255,0.06);
+  --green:#2ea043;--green-bg:rgba(46,160,67,0.1);
+  --header-gradient:radial-gradient(ellipse at 50% 0%,rgba(200,164,92,0.1) 0%,transparent 60%);
+}
+[data-theme="dark-blue"]{
+  --bg:#060b14;--bg-card:#0d1322;--bg-card-hover:#141c30;
+  --border:rgba(56,139,253,0.14);--border-hover:rgba(56,139,253,0.3);
+  --text:#e2e8f4;--text-dim:#8298b4;--text-muted:#4e5f7d;
+  --accent:#388bfd;--accent-glow:rgba(56,139,253,0.12);
+  --gradient:linear-gradient(135deg,#388bfd,#79c0ff);
+  --badge-bg:rgba(56,139,253,0.1);--badge-text:#79c0ff;
+  --nav-bg:rgba(6,11,20,0.85);--nav-border:rgba(255,255,255,0.06);
+  --green:#2ea043;--green-bg:rgba(46,160,67,0.1);
+  --header-gradient:radial-gradient(ellipse at 50% 0%,rgba(56,139,253,0.1) 0%,transparent 60%);
+}
+[data-theme="dark-purple"]{
+  --bg:#0e0a17;--bg-card:#151022;--bg-card-hover:#1d1730;
+  --border:rgba(168,130,255,0.14);--border-hover:rgba(168,130,255,0.3);
+  --text:#ebe2fa;--text-dim:#a08ec2;--text-muted:#615080;
+  --accent:#a882ff;--accent-glow:rgba(168,130,255,0.12);
+  --gradient:linear-gradient(135deg,#a882ff,#d4b8ff);
+  --badge-bg:rgba(168,130,255,0.1);--badge-text:#d4b8ff;
+  --nav-bg:rgba(14,10,23,0.85);--nav-border:rgba(255,255,255,0.06);
+  --green:#2ea043;--green-bg:rgba(46,160,67,0.1);
+  --header-gradient:radial-gradient(ellipse at 50% 0%,rgba(168,130,255,0.1) 0%,transparent 60%);
+}
+[data-theme="light-warm"]{
+  --bg:#faf7f2;--bg-card:#ffffff;--bg-card-hover:#f4efe6;
+  --border:rgba(150,110,55,0.2);--border-hover:rgba(150,110,55,0.4);
+  --text:#2b2822;--text-dim:#7c7263;--text-muted:#a2947f;
+  --accent:#a87c3e;--accent-glow:rgba(168,124,62,0.1);
+  --gradient:linear-gradient(135deg,#a87c3e,#c8a05e);
+  --badge-bg:rgba(168,124,62,0.1);--badge-text:#a87c3e;
+  --nav-bg:rgba(250,247,242,0.88);--nav-border:rgba(0,0,0,0.08);
+  --green:#1e7a34;--green-bg:rgba(46,160,67,0.12);
+  --header-gradient:radial-gradient(ellipse at 50% 0%,rgba(168,124,62,0.08) 0%,transparent 60%);
+}
+[data-theme="light-cool"]{
+  --bg:#f5f7fa;--bg-card:#ffffff;--bg-card-hover:#eef2f8;
+  --border:rgba(50,105,180,0.18);--border-hover:rgba(50,105,180,0.36);
+  --text:#1b2536;--text-dim:#5c6c84;--text-muted:#8c9cb4;
+  --accent:#2f6cbd;--accent-glow:rgba(47,108,189,0.1);
+  --gradient:linear-gradient(135deg,#2f6cbd,#4f8ad8);
+  --badge-bg:rgba(47,108,189,0.08);--badge-text:#2f6cbd;
+  --nav-bg:rgba(245,247,250,0.88);--nav-border:rgba(0,0,0,0.08);
+  --green:#1e7a34;--green-bg:rgba(46,160,67,0.12);
+  --header-gradient:radial-gradient(ellipse at 50% 0%,rgba(47,108,189,0.08) 0%,transparent 60%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-thumb{background:var(--text-muted);border-radius:3px}
+
+/* Nav */
+.nav{position:sticky;top:0;z-index:100;height:var(--nav-height);
+  background:var(--nav-bg);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--nav-border);
+  display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.nav-logo{font-size:20px;font-weight:800;background:var(--gradient);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer}
+.nav-back{padding:8px 16px;border-radius:8px;font-size:14px;color:var(--text-dim);
+  border:1px solid var(--border);background:transparent;cursor:pointer;transition:all var(--transition)}
+.nav-back:hover{border-color:var(--border-hover);color:var(--text)}
+
+/* Layout */
+.container{max-width:1500px;margin:0 auto;padding:0 24px}
+.page-header{padding:56px 0 40px;text-align:center;background:var(--header-gradient)}
+.page-header h1{font-size:clamp(28px,5vw,48px);font-weight:900;letter-spacing:-1px;margin-bottom:8px}
+.page-header h1 span{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.page-header p{font-size:15px;color:var(--text-dim);max-width:500px;margin:0 auto}
+.page-header .note{font-size:12px;color:var(--text-muted);margin-top:10px}
+
+/* Section */
+.section{margin-bottom:72px}
+.section-title{display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.section-title .icon{font-size:26px}
+.section-title h2{font-size:19px;font-weight:700}
+
+/* ====== 重磅推荐 - 品字形 ====== */
+.featured-top{margin-bottom:16px}
+.featured-top .hero-card{
+  background:var(--bg-card);border:1px solid var(--accent);border-radius:var(--radius);
+  padding:32px;position:relative;overflow:hidden;
+  transition:all var(--transition);
+}
+.featured-top .hero-card:hover{border-color:var(--border-hover);box-shadow:0 0 32px var(--accent-glow)}
+.featured-top .hero-card::before{
+  content:"";position:absolute;top:-40px;right:-40px;width:120px;height:120px;
+  background:var(--gradient);border-radius:50%;opacity:0.06;pointer-events:none
+}
+.featured-top .hero-badge{
+  display:inline-block;padding:4px 12px;border-radius:10px;font-size:11px;font-weight:700;
+  background:var(--gradient);color:var(--bg);margin-bottom:16px;
+}
+.featured-top h3{font-size:24px;font-weight:800;margin-bottom:8px}
+.featured-top .sub{font-size:15px;color:var(--text-dim);margin-bottom:12px;line-height:1.6}
+.featured-top .highlights{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.featured-top .highlight{
+  padding:6px 14px;border-radius:14px;font-size:12px;font-weight:600;
+  background:var(--badge-bg);color:var(--badge-text);border:1px solid var(--border);
+}
+.featured-top .info-row{display:flex;flex-wrap:wrap;gap:8px 20px;margin-bottom:8px;font-size:13px;color:var(--text-dim)}
+.featured-top .info-row strong{color:var(--text)}
+.featured-top .actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.featured-top .btn{
+  display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:20px;
+  font-size:13px;font-weight:600;cursor:pointer;transition:all var(--transition);white-space:nowrap;
+  border:1px solid var(--accent);background:var(--accent-glow);color:var(--accent);
+}
+.featured-top .btn:hover{background:var(--accent);color:var(--bg)}
+.featured-top .btn.primary{background:var(--accent);color:var(--bg)}
+.featured-top .btn.primary:hover{opacity:0.85}
+
+.featured-bottom{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.featured-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:24px;transition:all var(--transition);position:relative;overflow:hidden;
+}
+.featured-card:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.3)}
+.featured-card .rank{
+  position:absolute;top:16px;right:16px;font-size:28px;font-weight:900;opacity:0.06;pointer-events:none
+}
+.featured-card h3{font-size:17px;font-weight:700;margin-bottom:6px}
+.featured-card .desc{font-size:13px;color:var(--text-dim);margin-bottom:8px;line-height:1.5}
+.featured-card .bonus{display:inline-block;padding:3px 10px;border-radius:12px;
+  font-size:11px;font-weight:600;background:var(--green-bg);color:var(--green);margin-bottom:12px}
+.featured-card .btn{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:20px;
+  font-size:12px;font-weight:600;cursor:pointer;transition:all var(--transition);
+  border:1px solid var(--accent);background:var(--accent-glow);color:var(--accent);
+}
+.featured-card .btn:hover{background:var(--accent);color:var(--bg)}
+
+/* ====== List Cards ====== */
+.list-grid{display:flex;flex-direction:column;gap:20px}
+.list-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px 30px;display:flex;align-items:center;gap:18px;
+  transition:all var(--transition);
+}
+.list-card:hover{border-color:var(--border-hover);transform:translateX(4px)}
+.list-card .rank{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;flex-shrink:0;background:var(--accent-glow);color:var(--accent)}
+.list-card .info{flex:1;min-width:0}
+.list-card .info h3{font-size:14px;font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.list-card .info .desc{font-size:12px;color:var(--text-dim)}
+.list-card .bonus{display:inline-block;padding:2px 8px;border-radius:10px;
+  font-size:10px;font-weight:600;background:var(--green-bg);color:var(--green);margin-left:8px;flex-shrink:0}
+.list-card .btn{
+  padding:7px 16px;border-radius:16px;font-size:12px;font-weight:600;cursor:pointer;
+  transition:all var(--transition);white-space:nowrap;flex-shrink:0;
+  border:1px solid var(--accent);background:var(--accent-glow);color:var(--accent);
+}
+.list-card .btn:hover{background:var(--accent);color:var(--bg)}
+.list-card .actions{display:flex;gap:10px}
+/* ===== 统一胶囊导航 ===== */
+.unav-wrap{position:sticky;top:14px;z-index:200;display:flex;justify-content:center;padding:14px 16px 0}
+.unav{display:flex;align-items:center;gap:3px;background:var(--nav-bg);
+  backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);
+  border:1px solid var(--nav-border);border-radius:999px;padding:7px 12px;
+  box-shadow:0 10px 34px rgba(0,0,0,0.28);max-width:100%;flex-wrap:wrap;justify-content:center}
+.unav-logo{font-size:17px;font-weight:800;letter-spacing:-0.3px;background:var(--gradient);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  padding:6px 12px;cursor:pointer;white-space:nowrap}
+.unav-sep{width:1px;height:18px;background:var(--nav-border);margin:0 5px}
+.unav-item{position:relative}
+.unav-btn{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:999px;
+  font-size:13.5px;font-weight:500;color:var(--text-dim);cursor:pointer;border:none;
+  background:transparent;transition:all var(--transition);white-space:nowrap;font-family:var(--font);text-decoration:none}
+.unav-btn:hover,.unav-item.open .unav-btn,.unav-btn.active{color:var(--text);background:var(--accent-glow)}
+.unav-btn .caret{font-size:9px;opacity:0.6;transition:transform var(--transition)}
+.unav-item:hover .caret,.unav-item.open .caret{transform:rotate(180deg)}
+.unav-drop{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(6px);
+  min-width:160px;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+  padding:8px;opacity:0;visibility:hidden;transition:all 0.22s;z-index:300;
+  box-shadow:0 16px 44px rgba(0,0,0,0.4)}
+.unav-drop.right{left:auto;right:0;transform:translateY(6px)}
+.unav-item:hover .unav-drop,.unav-item.open .unav-drop{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.unav-item:hover .unav-drop.right,.unav-item.open .unav-drop.right{transform:translateY(0)}
+.unav-link{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:9px 12px;border-radius:9px;font-size:13px;color:var(--text-dim);cursor:pointer;transition:all var(--transition)}
+.unav-link:hover{background:var(--accent-glow);color:var(--text)}
+@media (max-width:640px){.unav{gap:2px;padding:6px 8px}.unav-btn{padding:6px 9px;font-size:12.5px}}
+
+/* ===== 复制链接按钮 ===== */
+.btn-copy{padding:7px 14px;border-radius:16px;font-size:12px;font-weight:600;cursor:pointer;
+  border:1px solid var(--border);background:transparent;color:var(--text-dim);
+  transition:all var(--transition);white-space:nowrap;flex-shrink:0;font-family:var(--font)}
+.btn-copy:hover{border-color:var(--accent);color:var(--accent)}
+.btn-copy.copied{border-color:var(--green);color:var(--green)}
+
+/* Footer */
+.footer{text-align:center;padding:36px 20px;color:var(--text-muted);font-size:12px;border-top:1px solid var(--border)}
+
+@media(max-width:767px){
+  .featured-bottom{grid-template-columns:1fr 1fr}
+  .list-card{flex-wrap:wrap;gap:8px}
+  .list-card .btn{width:100%;text-align:center}
+  .container{padding:0 16px}
+  .featured-top .hero-card{padding:20px}
+}
+</style>
+
+<!-- 打赏作者 -->
+<style>
+.donate-strip{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:90;
+  writing-mode:vertical-rl;padding:16px 8px;font-size:13px;letter-spacing:3px;cursor:pointer;
+  color:var(--accent);background:var(--bg-card);border:1px solid var(--border);border-right:none;
+  border-radius:12px 0 0 12px;transition:all .25s;font-family:var(--font)}
+.donate-strip:hover{border-color:var(--border-hover);padding-right:12px}
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);
+  z-index:500;display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:all .25s}
+.modal-mask.show{opacity:1;visibility:visible}
+.modal-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
+  padding:28px 32px;text-align:center;max-width:90vw;transform:translateY(10px);transition:transform .25s}
+.modal-mask.show .modal-card{transform:translateY(0)}
+.modal-title{font-size:18px;font-weight:800;margin-bottom:6px}
+.modal-desc{font-size:13.5px;color:var(--text-dim);margin-bottom:16px;max-width:300px}
+.modal-qr img{width:190px;aspect-ratio:3/4;height:auto;object-fit:contain;background:#fff;padding:8px;border-radius:12px}
+.modal-close{margin-top:16px;padding:8px 22px;border-radius:20px;border:1px solid var(--border);
+  background:transparent;color:var(--text-dim);font-size:13px;cursor:pointer;font-family:var(--font)}
+.modal-close:hover{border-color:var(--border-hover);color:var(--text)}
+@media (max-width:767px){.donate-strip{display:none}}
+</style>
+</head>
+<body>
+
+<!-- ===== 统一胶囊导航（全站一致） ===== -->
+<div class="unav-wrap">
+  <nav class="unav">
+    <span class="unav-logo" onclick="location.href='index.html'">GaryAIGC</span>
+    <span class="unav-sep"></span>
+    <div class="unav-item"><a class="unav-btn" href="index.html#tools">AI创作</a></div>
+    <div class="unav-item"><a class="unav-btn active" href="benefits.html">AI福利</a></div>
+    <div class="unav-item"><a class="unav-btn" href="knowledge.html">知识库</a></div>
+    <div class="unav-item"><a class="unav-btn" href="resources.html">资源库</a></div>
+    <div class="unav-item"><a class="unav-btn" href="videos.html">视频教程</a></div>
+    <div class="unav-item"><a class="unav-btn" href="community.html">社区</a></div>
+    <span class="unav-sep"></span>
+    <div class="unav-item">
+      <button class="unav-btn" type="button"><span>主题</span><span class="caret">▼</span></button>
+      <div class="unav-drop right">
+        <a class="unav-link" onclick="setTheme('dark-gold')">暗金 Dark Gold</a>
+        <a class="unav-link" onclick="setTheme('dark-blue')">暗蓝 Deep Blue</a>
+        <a class="unav-link" onclick="setTheme('dark-purple')">暗紫 Violet</a>
+        <a class="unav-link" onclick="setTheme('light-warm')">暖白 Warm</a>
+        <a class="unav-link" onclick="setTheme('light-cool')">冷白 Cool</a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div class="container">
+
+  <div class="page-header">
+    <h1>🎁 <span>AI福利</span></h1>
+    <p>各平台专属注册福利 · 邀请码 · 优惠汇总</p>
+    <p class="note">⚠ 所有链接含个人邀请码，双方均可获得额外福利。资源仅供学习交流，不做商业宣传。</p>
+  </div>
+
+  <!-- ==================== 重磅推荐 (品字形) ==================== -->
+  <div class="section">
+    <div class="section-title">
+      <span class="icon">🌟</span><h2>重磅推荐</h2>
+    </div>
+
+    <!-- Top: RunningHub 大卡片 -->
+    <div class="featured-top">
+      <div class="hero-card">
+        <div class="hero-badge">🏆 全能创作平台</div>
+        <h3>RunningHub</h3>
+        <div class="sub">模型接入速度、性价比、功能都是 Top！支持 ComfyUI 在线开发、热门模型一键运行、工作流分享。适配 GPT-Image-2、Nano Banana Pro、Seedance 等上百个模型。</div>
+        <div class="highlights">
+          <span class="highlight">⚡ 模型最多</span>
+          <span class="highlight">💰 性价比之王</span>
+          <span class="highlight">🔧 ComfyUI 在线</span>
+          <span class="highlight">🔄 工作流社区</span>
+        </div>
+        <div class="info-row">
+          <span>🎁 <strong>专属福利：1000 RH币</strong> + 每日登录送 100 币（长期）</span>
+          <span>❌ 自己注册：仅 500 点</span>
+        </div>
+        <div class="info-row">
+          <span>📌 邀请码：<strong translate="no" class="notranslate">rh-v1394</strong> <button class="btn-copy" id="rhCodeCopy" type="button" translate="no">复制邀请码</button></span>
+          <span>📌 两站独立，均可注册领福利</span>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="https://www.runninghub.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener">🇨🇳 国内站</a>
+          <a class="btn" href="https://www.runninghub.ai/?inviteCode=rh-v1394" target="_blank" rel="noopener">🌍 海外站（审核宽松）</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom: 2 cards -->
+    <div class="featured-bottom">
+      <div class="featured-card">
+        <div class="rank">2</div>
+        <h3>AIX 无限画布</h3>
+        <div class="desc">不仅能创作，还能赚钱！功能更新快，AI 原生创作画布，无限图层自由排版。可以接单赚钱，具体咨询我。</div>
+        <div class="bonus">🎁 注册送 300 点</div>
+        <br>
+        <a class="btn" href="https://aix.studio?partnerCode=15121" target="_blank" rel="noopener">立即注册 →</a>
+      </div>
+
+      <div class="featured-card">
+        <div class="rank">3</div>
+        <h3>优云智算 CompShare</h3>
+        <div class="desc">老牌云平台，靠谱稳定。GPU 算力共享，支持 AI 训练、推理、渲染，按量计费。</div>
+        <div class="bonus">🎁 注册送 10 元算力</div>
+        <br>
+        <a class="btn" href="https://passport.compshare.cn/register?referral_code=Da50tAe48HxG8Eqq8R6yEz&ytag=GPU_YY_YX_bl_laoxuchirou1223" target="_blank" rel="noopener">立即注册 →</a>
+      </div>
+
+      <div class="featured-card">
+        <div class="rank">4</div>
+        <h3>硅基流动 SiliconFlow</h3>
+        <div class="desc">模型最全，价格划算！大模型 API 聚合平台，认证就送体验金，零门槛上手。</div>
+        <div class="bonus">🎁 实名送 16 元</div>
+        <br>
+        <a class="btn" href="https://cloud.siliconflow.cn/i/AXWHlns5" target="_blank" rel="noopener">立即注册 →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 无限画布 ==================== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🎨</span><h2>无限画布</h2></div>
+    <div class="list-grid">
+      <div class="list-card">
+        <div class="rank">1</div>
+        <div class="info"><h3>RunningHub</h3><div class="desc">ComfyUI 在线画布 · 工作流一键运行 · 模型最多</div></div>
+        <span class="bonus">1000 RH币</span>
+        <a class="btn" href="https://www.runninghub.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener">进入</a>
+      </div>
+      <div class="list-card">
+        <div class="rank">2</div>
+        <div class="info"><h3>AIX 无限画布</h3><div class="desc">AI 原生创作画布 · 自由排版 · 可接单赚钱</div></div>
+        <span class="bonus">送300点</span>
+        <a class="btn" href="https://aix.studio?partnerCode=15121" target="_blank" rel="noopener">进入</a>
+      </div>
+      <div class="list-card">
+        <div class="rank">3</div>
+        <div class="info"><h3>Shotlab</h3><div class="desc">新片场旗下 · 20年老牌影视工厂 · 优质模板多 · AI 图像生成与编辑</div></div>
+        <span class="bonus">1000积分</span>
+        <a class="btn" href="https://www.chengzijianzhan.com/tetris/page/7657442617353388082/" target="_blank" rel="noopener">进入</a>
+      </div>
+      <div class="list-card">
+        <div class="rank">4</div>
+        <div class="info"><h3>Tapnow</h3><div class="desc">AI 图像编辑 · 智能抠图 · AI 扩图 · 风格迁移</div></div>
+        <a class="btn" href="https://www.tapnow.ai/referral/b7fMCM9U" target="_blank" rel="noopener">进入</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== API 平台 ==================== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">📡</span><h2>API 平台</h2></div>
+    <div class="list-grid">
+      <div class="list-card">
+        <div class="rank">1</div>
+        <div class="info"><h3>硅基流动 SiliconFlow</h3><div class="desc">模型最全，价格划算，认证就送体验金。大模型 API 聚合平台。</div></div>
+        <span class="bonus">送16元</span>
+        <a class="btn" href="https://cloud.siliconflow.cn/i/AXWHlns5" target="_blank" rel="noopener">进入</a>
+      </div>
+      <div class="list-card">
+        <div class="rank">2</div>
+        <div class="info"><h3>Kimi</h3><div class="desc">K3 模型（截至26年8月国内最强）· 邀你助力，双方100%拿权益，抢1年会员</div></div>
+        <span class="bonus">双方权益</span>
+        <a class="btn" href="https://kimi-bot.com/activities/zh-cn/viral-referral/share?scenario=invite&from=share_poster&invitation_code=8S5E6M" target="_blank" rel="noopener">进入</a>
+      </div>
+      <div class="list-card">
+        <div class="rank">3</div>
+        <div class="info"><h3>MiniMax Token Plan</h3><div class="desc">语音 · 视频 · 音色克隆 · 多模态理解 · 9折订阅优惠</div></div>
+        <span class="bonus">9折</span>
+        <a class="btn" href="https://platform.minimaxi.com/subscribe/token-plan?code=GSx2ujPNLE&source=img" target="_blank" rel="noopener">进入</a>
+      </div>
+      <div class="list-card">
+        <div class="rank">4</div>
+        <div class="info"><h3>阿里 Token Plan</h3><div class="desc">通义千问官方 Token 计划 · 千问系列大模型 API</div></div>
+        <span class="bonus">1000万tokens</span>
+        <a class="btn" href="https://www.qianwenai.com/benefits/tokenplan?shareCode=subTask..12736104..10274..,subTask..12736104..10274.." target="_blank" rel="noopener">进入</a>
+      </div>
+      <div class="list-card">
+        <div class="rank">5</div>
+        <div class="info"><h3>智谱 GLM Coding</h3><div class="desc">GLM 系列模型 · AI 编程助手 · 专属链接最高7折</div></div>
+        <span class="bonus">最高7折</span>
+        <a class="btn" href="https://www.bigmodel.cn/glm-coding?ic=XDQMCFMIEY" target="_blank" rel="noopener">进入</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 云端平台 ==================== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">☁️</span><h2>云端平台</h2></div>
+    <div class="list-grid">
+      <div class="list-card">
+        <div class="rank">1</div>
+        <div class="info"><h3>优云智算 CompShare</h3><div class="desc">老牌云平台，GPU 算力共享，支持训练、推理、渲染</div></div>
+        <span class="bonus">送10元</span>
+        <a class="btn" href="https://passport.compshare.cn/register?referral_code=Da50tAe48HxG8Eqq8R6yEz&ytag=GPU_YY_YX_bl_laoxuchirou1223" target="_blank" rel="noopener">进入</a>
+      </div>
+      <div class="list-card">
+        <div class="rank">2</div>
+        <div class="info"><h3>OnethingAI</h3><div class="desc">一键部署 AI 绘画 · LLM · 支持 GPU 实例</div></div>
+        <span class="bonus">送7元</span>
+        <a class="btn" href="https://onethingai.com/invitation?code=WXCP_RWinaxXD" target="_blank" rel="noopener">进入</a>
+      </div>
+      <div class="list-card">
+        <div class="rank">3</div>
+        <div class="info"><h3>端脑云 Cephalon</h3><div class="desc">轻量 GPU 算力 · 老用户补填邀请码补赠 4000 脑力值</div></div>
+        <span class="bonus">5000脑力值</span>
+        <a class="btn" href="https://cephalon.cloud/share/register-landing?invite_id=6cWfJk" target="_blank" rel="noopener">进入</a>
+      </div>
+      <div class="list-card">
+        <div class="rank">4</div>
+        <div class="info"><h3>仙宫云</h3><div class="desc">AI 全流程部署体验 · 模型训练 · 微调 · 推理一站式</div></div>
+        <a class="btn" href="https://www.xiangongyun.com/register/QGJE8Y" target="_blank" rel="noopener">进入</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== AI 音乐 ==================== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🎵</span><h2>AI 音乐</h2></div>
+    <div class="list-grid">
+      <div class="list-card">
+        <div class="rank">1</div>
+        <div class="info"><h3>MiniMax Audio</h3><div class="desc">AI 音乐生成 · 语音克隆 · TTS · 每月送 10000 积分，限时免费！</div></div>
+        <a class="btn" href="https://www.minimaxi.com/audio" target="_blank" rel="noopener">进入</a>
+      </div>
+      <div class="list-card">
+        <div class="rank">2</div>
+        <div class="info"><h3>Suno AI</h3><div class="desc">顶级 AI 音乐生成工具 · 专属链接解锁 25 首免费创作</div></div>
+        <span class="bonus">25首免费</span>
+        <a class="btn" href="https://suno.com/invite/@darkguitarriffs307" target="_blank" rel="noopener">进入</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 海外会员及镜像 ==================== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🌍</span><h2>海外会员及镜像</h2></div>
+    <div class="list-grid">
+      <div class="list-card">
+        <div class="rank">1</div>
+        <div class="info"><h3>银河录像局</h3><div class="desc">ChatGPT · Midjourney · Claude 等 AI 会员镜像购买，官方通道偏贵，此渠道 95 折</div></div>
+        <span class="bonus">95折</span>
+        <a class="btn" href="https://nf.video/OlSkK" target="_blank" rel="noopener">进入</a>
+      </div>
+      <div class="list-card">
+        <div class="rank">2</div>
+        <div class="info"><h3>Fox API 中转</h3><div class="desc">海外 API 中转服务 · 稳定访问 ChatGPT / Claude 等接口</div></div>
+        <a class="btn" href="https://foxcode.rjj.cc/auth/register?aff=ZQ8SS" target="_blank" rel="noopener">进入</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="donate-strip" id="donateBtn">打赏作者</div>
+<div class="modal-mask" id="donateModal">
+  <div class="modal-card">
+    <div class="modal-title">请作者喝杯咖啡</div>
+    <div class="modal-desc">如果你觉得本站对你有帮助，微信扫码支持一下，任意金额都是鼓励</div>
+    <div class="modal-qr"><img src="wx-pay.jpg" alt="微信收款码"></div>
+    <button class="modal-close" id="donateClose" type="button">关闭</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>© 2025 GaryAIGC · 所有资源皆为个人推荐，仅供学习交流 · 建议根据自身需求选择合适平台</p>
+</footer>
+
+<script>
+function goHome() { location.href='index.html' }
+
+/* ===== 主题切换 ===== */
+function setTheme(t){
+  document.documentElement.setAttribute("data-theme", t);
+  localStorage.setItem("gary-theme", t);
+  closeUnavDrops();
+}
+/* ===== 导航下拉（触屏点击支持） ===== */
+document.querySelectorAll(".unav-item > button.unav-btn").forEach(function(btn){
+  btn.addEventListener("click", function(e){
+    e.stopPropagation();
+    var item = btn.parentElement;
+    var was = item.classList.contains("open");
+    closeUnavDrops();
+    if (!was) item.classList.add("open");
+  });
+});
+document.addEventListener("click", function(e){
+  if (!e.target.closest(".unav-item")) closeUnavDrops();
+});
+function closeUnavDrops(){
+  document.querySelectorAll(".unav-item.open").forEach(function(el){ el.classList.remove("open"); });
+}
+
+/* ===== 自动给每个「进入/注册」按钮注入「复制链接」 ===== */
+document.querySelectorAll(".list-card a.btn[href^='http'], .featured-card a.btn[href^='http'], .featured-top a.btn[href^='http']").forEach(function(a){
+  var b = document.createElement("button");
+  b.className = "btn-copy";
+  b.type = "button";
+  b.textContent = "复制链接";
+  b.addEventListener("click", function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    var url = a.href;
+    function done(){
+      b.textContent = "已复制 ✓";
+      b.classList.add("copied");
+      setTimeout(function(){ b.textContent = "复制链接"; b.classList.remove("copied"); }, 1600);
+    }
+    function fallback(){
+      var t = document.createElement("textarea");
+      t.value = url; t.style.position = "fixed"; t.style.opacity = "0";
+      document.body.appendChild(t); t.select();
+      try { document.execCommand("copy"); done(); }
+      catch(err){ prompt("手动复制：", url); }
+      document.body.removeChild(t);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done).catch(fallback);
+    } else fallback();
+  });
+  a.insertAdjacentElement("afterend", b);
+});
+
+/* ===== 一键复制 RunningHub 邀请码 ===== */
+(function(){
+  var btn = document.getElementById("rhCodeCopy");
+  if (!btn) return;
+  btn.addEventListener("click", function(e){
+    e.preventDefault(); e.stopPropagation();
+    var code = "rh-v1394";
+    function done(){
+      btn.textContent = "已复制 ✓";
+      btn.classList.add("copied");
+      setTimeout(function(){ btn.textContent = "复制邀请码"; btn.classList.remove("copied"); }, 1600);
+    }
+    function fallback(){
+      var t = document.createElement("textarea");
+      t.value = code; t.style.position = "fixed"; t.style.opacity = "0";
+      document.body.appendChild(t); t.select();
+      try { document.execCommand("copy"); done(); }
+      catch(err){ prompt("手动复制邀请码：", code); }
+      document.body.removeChild(t);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(done).catch(fallback);
+    } else fallback();
+  });
+})();
+
+(function(){
+  var theme = localStorage.getItem("gary-theme");
+  if (theme) document.documentElement.setAttribute("data-theme", theme);
+})();
+</script>
+
+
+<script>
+(function(){
+  var btn=document.getElementById("donateBtn"),modal=document.getElementById("donateModal"),close=document.getElementById("donateClose");
+  if(!btn||!modal)return;
+  btn.addEventListener("click",function(){modal.classList.add("show")});
+  if(close)close.addEventListener("click",function(){modal.classList.remove("show")});
+  modal.addEventListener("click",function(e){if(e.target===modal)modal.classList.remove("show")});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")modal.classList.remove("show")});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark-gold">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ComfyUI 主程序与自定义插件更新（严谨完整版） · 知识库 · GaryAIGC</title>
+<style>
+:root{--font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+--ease:cubic-bezier(0.16,1,0.3,1);--transition:0.3s var(--ease);--radius:14px}
+[data-theme="dark-gold"]{--bg:#0a0a0f;--bg-card:#101017;--border:rgba(200,164,92,0.15);--border-hover:rgba(200,164,92,0.4);
+--text:#ececf2;--text-dim:#9a9ab0;--text-muted:#5f5f78;--accent:#c8a45c;--accent-strong:#e8c97a;--accent-glow:rgba(200,164,92,0.1);
+--gradient:linear-gradient(135deg,#c8a45c,#e8c97a);--nav-bg:rgba(10,10,15,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="dark-blue"]{--bg:#060b14;--bg-card:#0c1220;--border:rgba(56,139,253,0.15);--border-hover:rgba(56,139,253,0.4);
+--text:#e2e8f4;--text-dim:#8298b4;--text-muted:#4e5f7d;--accent:#388bfd;--accent-strong:#79c0ff;--accent-glow:rgba(56,139,253,0.1);
+--gradient:linear-gradient(135deg,#388bfd,#79c0ff);--nav-bg:rgba(6,11,20,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="dark-purple"]{--bg:#0e0a17;--bg-card:#141021;--border:rgba(168,130,255,0.15);--border-hover:rgba(168,130,255,0.4);
+--text:#ebe2fa;--text-dim:#a08ec2;--text-muted:#615080;--accent:#a882ff;--accent-strong:#d4b8ff;--accent-glow:rgba(168,130,255,0.1);
+--gradient:linear-gradient(135deg,#a882ff,#d4b8ff);--nav-bg:rgba(14,10,23,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="light-warm"]{--bg:#faf7f2;--bg-card:#ffffff;--border:rgba(150,110,55,0.18);--border-hover:rgba(150,110,55,0.42);
+--text:#2b2822;--text-dim:#7c7263;--text-muted:#a2947f;--accent:#a87c3e;--accent-strong:#8a6030;--accent-glow:rgba(168,124,62,0.09);
+--gradient:linear-gradient(135deg,#a87c3e,#c8a05e);--nav-bg:rgba(250,247,242,0.88);--nav-border:rgba(0,0,0,0.08)}
+[data-theme="light-cool"]{--bg:#f5f7fa;--bg-card:#ffffff;--border:rgba(50,105,180,0.16);--border-hover:rgba(50,105,180,0.38);
+--text:#1b2536;--text-dim:#5c6c84;--text-muted:#8c9cb4;--accent:#2f6cbd;--accent-strong:#255aa0;--accent-glow:rgba(47,108,189,0.08);
+--gradient:linear-gradient(135deg,#2f6cbd,#4f8ad8);--nav-bg:rgba(245,247,250,0.88);--nav-border:rgba(0,0,0,0.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-strong)}
+::selection{background:var(--accent-glow)}
+/* 统一胶囊导航 */
+.unav-wrap{position:sticky;top:14px;z-index:200;display:flex;justify-content:center;padding:14px 16px 0}
+.unav{display:flex;align-items:center;gap:3px;background:var(--nav-bg);
+backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);
+border:1px solid var(--nav-border);border-radius:999px;padding:7px 12px;
+box-shadow:0 10px 34px rgba(0,0,0,0.28);max-width:100%;flex-wrap:wrap;justify-content:center}
+.unav-logo{font-size:17px;font-weight:800;letter-spacing:-0.3px;background:var(--gradient);
+-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding:6px 12px;cursor:pointer;white-space:nowrap}
+.unav-sep{width:1px;height:18px;background:var(--nav-border);margin:0 5px}
+.unav-item{position:relative}
+.unav-btn{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:999px;
+font-size:13.5px;font-weight:500;color:var(--text-dim);cursor:pointer;border:none;background:transparent;
+transition:all var(--transition);white-space:nowrap;font-family:var(--font);text-decoration:none}
+.unav-btn:hover,.unav-item.open .unav-btn,.unav-btn.active{color:var(--text);background:var(--accent-glow)}
+.unav-btn .caret{font-size:9px;opacity:0.6;transition:transform var(--transition)}
+.unav-item:hover .caret,.unav-item.open .caret{transform:rotate(180deg)}
+.unav-drop{position:absolute;top:calc(100% + 10px);right:0;min-width:160px;background:var(--bg-card);
+border:1px solid var(--border);border-radius:14px;padding:8px;opacity:0;visibility:hidden;
+transition:all 0.22s;z-index:300;box-shadow:0 16px 44px rgba(0,0,0,0.4)}
+.unav-item:hover .unav-drop,.unav-item.open .unav-drop{opacity:1;visibility:visible}
+.unav-link{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;
+font-size:13px;color:var(--text-dim);cursor:pointer;transition:all var(--transition)}
+.unav-link:hover{background:var(--accent-glow);color:var(--text)}
+/* 文章排版 */
+.article{max-width:820px;margin:0 auto;padding:48px 24px 80px}
+.article-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);
+margin-bottom:28px;transition:color var(--transition)}
+.article-back:hover{color:var(--accent)}
+.article h1{font-size:clamp(26px,4.5vw,38px);font-weight:900;letter-spacing:-0.5px;line-height:1.25;
+margin-bottom:14px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.article-meta{font-size:13px;color:var(--text-muted);padding-bottom:24px;margin-bottom:32px;border-bottom:1px solid var(--border)}
+.article-body h2{font-size:22px;font-weight:800;margin:40px 0 14px;padding-top:14px;border-top:1px solid var(--border)}
+.article-body h2:first-child{border-top:none;padding-top:0;margin-top:0}
+.article-body h3{font-size:17px;font-weight:700;margin:28px 0 10px;color:var(--accent-strong)}
+.article-body h4{font-size:15px;font-weight:700;margin:20px 0 8px}
+.article-body p{margin:12px 0;color:var(--text-dim);font-size:15px}
+.article-body p.li{padding-left:14px}
+.article-body strong{color:var(--text);font-weight:700}
+.article-body code{font-family:ui-monospace,Consolas,monospace;font-size:13px;background:var(--accent-glow);
+border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:var(--accent-strong)}
+.article-body pre{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;
+padding:16px;overflow-x:auto;margin:14px 0}
+.article-body pre code{background:none;border:none;padding:0;color:var(--text-dim)}
+.article-body blockquote{border-left:3px solid var(--accent);background:var(--accent-glow);
+border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;color:var(--text-dim);font-size:14px}
+.article-body table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+.article-body th,.article-body td{border:1px solid var(--border);padding:9px 12px;text-align:left}
+.article-body th{background:var(--accent-glow);color:var(--accent-strong);font-weight:700}
+.article-body td{color:var(--text-dim)}
+.article-body hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+.article-note{margin-top:36px;padding:14px 18px;border:1px dashed var(--border-hover);border-radius:12px;
+font-size:13px;color:var(--text-muted)}
+.footer{border-top:1px solid var(--border);padding:28px 24px;text-align:center;color:var(--text-muted);font-size:13px}
+</style>
+
+<!-- 打赏作者 -->
+<style>
+.donate-strip{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:90;
+  writing-mode:vertical-rl;padding:16px 8px;font-size:13px;letter-spacing:3px;cursor:pointer;
+  color:var(--accent);background:var(--bg-card);border:1px solid var(--border);border-right:none;
+  border-radius:12px 0 0 12px;transition:all .25s;font-family:var(--font)}
+.donate-strip:hover{border-color:var(--border-hover);padding-right:12px}
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);
+  z-index:500;display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:all .25s}
+.modal-mask.show{opacity:1;visibility:visible}
+.modal-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
+  padding:28px 32px;text-align:center;max-width:90vw;transform:translateY(10px);transition:transform .25s}
+.modal-mask.show .modal-card{transform:translateY(0)}
+.modal-title{font-size:18px;font-weight:800;margin-bottom:6px}
+.modal-desc{font-size:13.5px;color:var(--text-dim);margin-bottom:16px;max-width:300px}
+.modal-qr img{width:190px;aspect-ratio:3/4;height:auto;object-fit:contain;background:#fff;padding:8px;border-radius:12px}
+.modal-close{margin-top:16px;padding:8px 22px;border-radius:20px;border:1px solid var(--border);
+  background:transparent;color:var(--text-dim);font-size:13px;cursor:pointer;font-family:var(--font)}
+.modal-close:hover{border-color:var(--border-hover);color:var(--text)}
+@media (max-width:767px){.donate-strip{display:none}}
+</style>
+</head>
+<body>
+<div class="unav-wrap">
+  <nav class="unav">
+    <span class="unav-logo" onclick="location.href='../index.html'">GaryAIGC</span>
+    <span class="unav-sep"></span>
+    <div class="unav-item"><a class="unav-btn" href="../index.html#tools">AI创作</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../benefits.html">AI福利</a></div>
+    <div class="unav-item"><a class="unav-btn active" href="../knowledge.html">知识库</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../resources.html">资源库</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../videos.html">视频教程</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../community.html">社区</a></div>
+    <span class="unav-sep"></span>
+    <div class="unav-item">
+      <button class="unav-btn" type="button"><span>主题</span><span class="caret">▼</span></button>
+      <div class="unav-drop">
+        <a class="unav-link" onclick="setTheme('dark-gold')">暗金 Dark Gold</a>
+        <a class="unav-link" onclick="setTheme('dark-blue')">暗蓝 Deep Blue</a>
+        <a class="unav-link" onclick="setTheme('dark-purple')">暗紫 Violet</a>
+        <a class="unav-link" onclick="setTheme('light-warm')">暖白 Warm</a>
+        <a class="unav-link" onclick="setTheme('light-cool')">冷白 Cool</a>
+      </div>
+    </div>
+  </nav>
+</div>
+<main class="article">
+  <a class="article-back" href="../knowledge.html">← 返回知识库</a>
+  <h1>ComfyUI 主程序与自定义插件更新（严谨完整版）</h1>
+  <div class="article-meta">ComfyUI · 整理自 Gary 的教程文档</div>
+  <div class="article-body">
+<p><strong>更新 ComfyUI 主程序 / 自定义插件流程（严谨完整版）</strong></p>
+<h2><strong>安装/更新插件简化版本丨直接用！</strong></h2>
+<h3><strong>for /f &quot;tokens=2 delims==&quot; %a in (&#x27;wmic os get localdatetime /value&#x27;) do set &quot;dt=%a&quot;</strong></h3>
+<h2><strong>说明</strong></h2>
+<p>本流程适用于 <strong>Git 克隆的 ComfyUI 主程序</strong> 和 <strong>Git 克隆的自定义插件</strong>（ZIP 解压无 .git 目录的项目，见「第五章」单独处理）；</p>
+<p>核心原则：先备份、再查看、后更新、补依赖、有兜底，全程规避依赖冲突和环境损坏风险。</p>
+<p><strong>命令中的路径，需要替换成你自己的实际路径！</strong></p>
+<h3><strong>一、 查看更新（确认是否需要更新 + 更新内容）</strong></h3>
+<h4><strong>步骤 1：打开对应目录的 CMD 窗口</strong></h4>
+<p>打开文件资源管理器，切换到目标目录（你的实际路径！）：</p>
+<p>若更新「ComfyUI 主程序」：切换到 G:\Comfyui\COMFYUI_Laoxu\ComfyUI</p>
+<p>若更新「单个插件」：切换到 G:\Comfyui\COMFYUI_Laoxu\ComfyUI\custom_nodes\【你的插件目录】</p>
+<p>点击文件资源管理器 <strong>地址栏</strong>，输入 cmd 并回车，快速打开当前目录的 CMD 窗口（避免手动切换目录出错）。</p>
+<h4><strong>步骤 2：确认远程默认分支（避免分支名错误）</strong></h4>
+<table>
+<tr><th>Bashgit branch -r</th></tr>
+</table>
+<p>输出示例：origin/main（远程默认分支是 main）、origin/master（远程默认分支是 master）；</p>
+<p>后续所有命令中，需将 origin/main 替换为实际的远程分支名（如 origin/master）。</p>
+<h4><strong>步骤 3：拉取远程最新信息（不合并代码，仅同步更新记录）</strong></h4>
+<table>
+<tr><th>Bashgit fetch origin</th></tr>
+</table>
+<p>作用：确保本地获取到远程仓库的最新状态，避免查询到过时的更新信息；</p>
+<p>正常输出：显示拉取的对象数量、分支更新、版本标签等（无报错即成功）。</p>
+<h4><strong>步骤 4：查看是否有更新 + 简化版更新内容</strong></h4>
+<table>
+<tr><th>Bash# 替换 origin/main 为步骤2确认的远程分支名（如 origin/master）git log HEAD..origin/main --oneline</th></tr>
+</table>
+<p>有输出：本地版本落后于远程，输出内容即为「更新记录」（每行 = 简短哈希 + 更新备注，快速了解核心更新）；</p>
+<p>无输出：本地与远程版本完全同步，无需更新。</p>
+<h4><strong>步骤 5：查看详细更新内容（可选，精准了解细节）</strong></h4>
+<table>
+<tr><th>Bash# 替换 origin/main 为步骤2确认的远程分支名git log HEAD..origin/main</th></tr>
+</table>
+<p>输出：每个提交的完整信息（作者、提交时间、详细更新说明）；</p>
+<p>适用场景：需确认是否修复了自身遇到的 Bug、新增功能是否必要等。</p>
+<h3><strong>二、 执行更新（安全可控，优先兜底）</strong></h3>
+<h4><strong>前置准备：2 类备份（双重保障，必做！）</strong></h4>
+<table>
+<tr><th>备份是更新失败后快速回滚的核心，优先备份目录（一键恢复），再备份依赖快照（环境兜底）</th></tr>
+</table>
+<h4>1. <strong>插件 / 主程序目录备份（最优先，一键回滚）</strong></h4>
+<p>操作方式（手动操作，简单直观）：</p>
+<p>关闭 ComfyUI（避免文件占用，导致复制/删除失败）；</p>
+<p>在文件资源管理器中，复制目标目录（如插件目录 ComfyUI-SeedVR2_VideoUpscaler）；</p>
+<p>粘贴到同一上级目录，重命名为「原目录名_备份_YYYYMMDD」（如 ComfyUI-SeedVR2_VideoUpscaler_备份_20260103）。</p>
+<p>作用：更新失败后，直接删除更新后的异常目录，将备份目录重命名回原名称，重启 ComfyUI 即可恢复正常。</p>
+<h4>2. <strong>Python 依赖快照备份（可选，环境回退用）</strong></h4>
+<p>场景 1：在 <strong>批处理文件 (.bat)</strong> 中使用（一次性配置，自动生成日期）</p>
+<p><strong>里面的路径需要换成你自己的文件路径！</strong></p>
+<table>
+<tr><th>Bash:: 仅在.bat文件中有效，一次性配置日期变量python.exe -m pip freeze &gt; requirements-backup%date_str%.txt</th></tr>
+</table>
+<p>场景 2：直接在 <strong>CMD 终端</strong> 中使用（依次执行，修改语法避免报错）</p>
+<p>每一步的指令，单独复制输入👇</p>
+<table>
+<tr><th>Bash:: 第一步：获取日期变量（终端中需将 %%a 改为 %a）python.exe -m pip freeze &gt; requirements-backup%date_str%.txt</th></tr>
+</table>
+<p>备份频率：建议每月 1 次，或更新重要插件/主程序前必做 1 次；</p>
+<p>备份路径：默认在当前 CMD 目录下，推荐切换到便携包 Python 目录备份（统一管理，不易丢失）。</p>
+<h4><strong>步骤 1：执行更新（Git 命令，明确分支更可控）</strong></h4>
+<p>确保在目标目录的 CMD 窗口中（插件/ComfyUI 主程序目录）；</p>
+<p>执行更新命令（指定分支，避免默认分支混乱）：</p>
+<table>
+<tr><th>Bash# 替换 origin/main 为步骤2确认的远程分支名（如 origin/master）git pull origin main</th></tr>
+</table>
+<p>正常输出：显示 “Already up to date.”（已最新）或 “Fast-forward”（快速更新成功）；</p>
+<p>异常情况：若提示「代码冲突」，优先用「目录备份」回滚（新手不建议手动解决冲突，避免源码损坏）。</p>
+<h4><strong>步骤 2：安装 / 更新依赖（安全无冲突，避免插件加载失败）</strong></h4>
+<table>
+<tr><th>核心：使用 --upgrade-strategy only-if-needed，仅安装缺失/必需升级的依赖，不改动现有兼容依赖，最大程度保护环境稳定</th></tr>
+</table>
+<p>切换到便携包 Python 目录（必做，确保依赖安装到便携包内，不污染其他环境）：</p>
+<table>
+<tr><th>Bashcd /d G:\\\\Comfyui\\\\COMFYUI_Laoxu\\\\python_dapao312</th></tr>
+</table>
+<p>依赖安装预检（无报错再执行正式安装，规避风险）：</p>
+<table>
+<tr><th>Bash# 替换 【你的依赖文件路径】 为实际的 requirements.txt 路径（如插件/主程序目录下的 requirements.txt）python.exe -m pip install -r 【你的依赖文件路径】 --upgrade-strategy only-if-needed --dry-run</th></tr>
+</table>
+<p>预检结果判断与处理：</p>
+<p>无报错、无核心库（torch/xformers/onnxruntime 等）不必要变动 → 执行正式安装；</p>
+<p>有报错 → 优先手动修改 requirements.txt（如指定兼容版本：torch&gt;=2.0.0,&lt;3.0.0），再重新预检；</p>
+<p>若冲突无法解决，可尝试删除冲突的依赖项（⚠️ 仅删除非核心库的冲突依赖，勿删除 torch/xformers 等核心库，避免环境损坏），再重新预检。</p>
+<p>正式安装依赖：</p>
+<table>
+<tr><th>Bashpython.exe -m pip install -r 【你的依赖文件路径】 --upgrade-strategy only-if-needed</th></tr>
+</table>
+<p>特殊情况：插件无 requirements.txt（针对性安装缺失依赖）</p>
+<p>第一步：启动 ComfyUI，查看启动日志（comfyui-user-comfyui.log）；</p>
+<p>第二步：日志中会提示 “ModuleNotFoundError: No module named &#x27;XXX&#x27;”，记录缺失的依赖名 XXX；</p>
+<p>第三步：执行预检（避免版本冲突）：</p>
+<table>
+<tr><th>Bashpython.exe -m pip install XXX --upgrade-strategy only-if-needed --dry-run</th></tr>
+</table>
+<p>第四步：根据预检结果安装：</p>
+<p>情况 A：无报错，提示“Would install XXX x.x.x”或“Requirement already satisfied” → 正式安装：</p>
+<table>
+<tr><th>Bashpython.exe -m pip install XXX --upgrade-strategy only-if-needed</th></tr>
+</table>
+<p>情况 B：提示版本冲突/网络错误 → 先解决问题（如指定兼容版本 XXX==x.x.x，或切换 PyPI 镜像源），再重新预检安装：</p>
+<table>
+<tr><th>Bashpython.exe -m pip install XXX==x.x.x --upgrade-strategy only-if-needed --dry-runpython.exe -m pip install XXX==x.x.x --upgrade-strategy only-if-needed</th></tr>
+</table>
+<h4><strong>步骤 3：重启 ComfyUI 验证</strong></h4>
+<p>关闭原有 CMD 窗口和 ComfyUI 进程；</p>
+<p>重新启动 ComfyUI；</p>
+<p>查看启动日志，无插件加载报错、功能可正常使用 → 更新成功。</p>
+<h3><strong>三、 问题回退（更新失败快速恢复）</strong></h3>
+<h4><strong>方案 1：优先使用「目录备份」回滚（最简单，一键恢复）</strong></h4>
+<table>
+<tr><th>优先级最高，无需改动依赖，直接恢复到更新前的稳定状态</th></tr>
+</table>
+<p>关闭 ComfyUI 及相关进程；</p>
+<p>删除更新后异常的插件/主程序目录；</p>
+<p>将之前备份的目录（如 XXX_备份_20260103）重命名为原目录名；</p>
+<p>重启 ComfyUI → 恢复正常。</p>
+<h4><strong>方案 2：使用「依赖快照」回退（仅解决依赖问题）</strong></h4>
+<table>
+<tr><th>仅当目录备份丢失，且问题明确是依赖导致时使用；优先温和回退，避免强制重装</th></tr>
+</table>
+<p>切换到便携包 Python 目录（根据自己的目录来）：</p>
+<table>
+<tr><th>Bashcd /d G:\\\\Comfyui\\\\COMFYUI_Laoxu\\\\python_dapao312</th></tr>
+</table>
+<p>温和回退（优先推荐，安全高效）：</p>
+<table>
+<tr><th>Bash# 替换 【你的备份文件路径】 为实际的依赖快照路径（如 requirements-backup20260103.txt）python.exe -m pip install -r 【你的备份文件路径】 --upgrade-strategy only-if-needed</th></tr>
+</table>
+<p>核心效果：仅安装/调整快照与当前环境不一致的依赖，不强制重装兼容的核心库，风险极低。</p>
+<p>强制回退（仅温和回退无效时使用）：</p>
+<table>
+<tr><th>Bash# 基础强制回退（强制重装所有依赖，覆盖当前环境）python.exe -m pip install -r 【你的备份文件路径】 --force-reinstall --upgrade-strategy only-if-needed</th></tr>
+</table>
+<p>注意：强制回退会卸载并重装所有依赖，可能导致核心库（如 torch）的硬件加速失效，需谨慎使用。</p>
+<p>重启 ComfyUI 验证，若仍异常，优先采用「目录备份」回滚（若有）。</p>
+<h3><strong>四、 补充说明</strong></h3>
+<p>内置 Manager 适配：可使用 ComfyUI 内置 Manager 替代「第一章 查看更新」的操作（更可视化），但更新仍建议用本流程的 Git 命令 + 手动备份（更可控，避免依赖遗漏）；</p>
+<p>批量查看插件更新（Windows CMD）：若需快速排查所有插件更新状态，可在 custom_nodes 目录下执行以下命令（不自动更新，安全无风险）：</p>
+<table>
+<tr><th>Bash# 第一步：切换到 custom_nodes 目录)</th></tr>
+</table>
+<p>输出说明：有内容=该插件有更新，无内容=该插件与远程同步；</p>
+<p>核心库保护：预检中若发现 torch/xformers 等核心库将被升级，先暂停操作，前往插件/主程序官方文档确认兼容性后，再决定是否安装；</p>
+<p>日志排查：更新后若插件加载失败，优先查看 ComfyUI 启动日志（comfyui-user-comfyui.log），根据报错信息针对性处理（如缺失依赖、版本冲突）。</p>
+<h3><strong>五、 无.git目录项目的更新方案（ZIP解压下载）</strong></h3>
+<h4><strong>核心原则</strong></h4>
+<p>无 .git 目录无法增量更新，采用「备份配置 + 下载最新ZIP + 替换源码 + 补依赖」的方式，既保留个性化配置，又获取最新版本。</p>
+<h4><strong>场景 1：更新无.git目录的ComfyUI主程序</strong></h4>
+<p>备份关键配置（必做，避免丢失设置）： 关闭 ComfyUI，备份以下文件/目录（复制到非主程序目录，命名为「ComfyUI_配置备份」）：</p>
+<p>核心配置：comfyui_settings.json、extra_model_paths.yaml（重中之重，丢失会导致模型路径失效）；</p>
+<p>可选备份：models（本地模型，若已迁移到其他盘可忽略）、custom_nodes（插件目录）。</p>
+<p>下载最新版本：前往 ComfyUI 官方仓库（https://github.com/comfyanonymous/ComfyUI），点击「Code」→「Download ZIP」，下载最新ZIP压缩包并解压（得到 ComfyUI-latest 目录）。</p>
+<p>替换源码：</p>
+<p>删除旧 ComfyUI 目录中「除备份文件外」的所有核心源码（如 js、python、web 等目录）；</p>
+<p>从 ComfyUI-latest 目录中，复制所有核心源码（js、python、web 等），粘贴到旧 ComfyUI 目录（覆盖原有文件）；</p>
+<p>将备份的配置文件（comfyui_settings.json 等）粘贴回旧 ComfyUI 目录，覆盖默认配置。</p>
+<p>补装依赖：参考本流程「第二章 步骤2」的依赖安装方式，安装最新依赖（执行主程序目录下的 requirements.txt）。</p>
+<p>重启验证：确认 ComfyUI 正常启动，个性化配置生效。</p>
+<h4><strong>场景 2：更新无.git目录的自定义插件</strong></h4>
+<p>备份配置（可选）：若插件目录下有个性化配置文件（如 xxx_config.json），先复制备份到临时目录。</p>
+<p>下载最新版本：前往插件官方仓库，下载最新版本的 ZIP 压缩包并解压（得到 XXX-Plugin-latest 目录）。</p>
+<p>替换插件（两种方式可选）：</p>
+<p>方式 A（新手推荐）：删除旧插件目录，将 XXX-Plugin-latest 目录重命名为「旧插件目录名」（保持与原来一致，避免 ComfyUI 无法识别），粘贴备份配置（如有）。</p>
+<p>方式 B（进阶）：保留旧插件目录中的配置文件，删除核心源码（.py、.js 等），从 XXX-Plugin-latest 目录复制核心源码，粘贴到旧插件目录（覆盖原有文件）。</p>
+<p>补装依赖：参考本流程「第二章 步骤2」的依赖安装方式（有无 requirements.txt 均适用）。</p>
+<p>重启验证：确认插件正常加载，功能生效。</p>
+<h4><strong>补充说明</strong></h4>
+<p>更新前必须关闭 ComfyUI，避免文件占用导致替换失败；</p>
+<p>无 .git 目录无版本跟踪能力，备份是唯一兜底方案，切勿省略；</p>
+<p>无法通过命令查看更新内容，需前往插件/ComfyUI 官方仓库的「Releases」或「Changelog」文档查看。</p>
+<h3><strong>六、 常见问题排查</strong></h3>
+<p>Git 命令报错「unknown revision or path」：确认远程分支名正确（通过 git branch -r 验证），将命令中的 origin/main 替换为实际远程分支（如 origin/master）；</p>
+<p>依赖安装报错「WinError 5 拒绝访问」：确认便携包目录已配置「完全控制」权限（右键目录 → 属性 → 安全 → 编辑 → 勾选当前用户的「完全控制」）；</p>
+<p>插件加载失败「ModuleNotFoundError」：按日志提示针对性安装缺失依赖（参考「第二章 步骤2-5」）；</p>
+<p>核心库升级后功能异常（如 torch 升级后 CUDA 失效）：使用依赖快照回退到之前的稳定版本（参考「第三章 方案2」）。</p>
+  </div>
+
+</main>
+
+<div class="donate-strip" id="donateBtn">打赏作者</div>
+<div class="modal-mask" id="donateModal">
+  <div class="modal-card">
+    <div class="modal-title">请作者喝杯咖啡</div>
+    <div class="modal-desc">如果你觉得本站对你有帮助，微信扫码支持一下，任意金额都是鼓励</div>
+    <div class="modal-qr"><img src="../wx-pay.jpg" alt="微信收款码"></div>
+    <button class="modal-close" id="donateClose" type="button">关闭</button>
+  </div>
+</div>
+
+<footer class="footer">© 2025 GaryAIGC · 让 AI 创作更简单</footer>
+<script>
+function setTheme(t){document.documentElement.setAttribute("data-theme",t);localStorage.setItem("gary-theme",t)}
+(function(){var t=localStorage.getItem("gary-theme");if(t)setTheme(t)})();
+document.querySelectorAll(".unav-item > button.unav-btn").forEach(function(btn){
+  btn.addEventListener("click", function(e){
+    e.stopPropagation();
+    var item = btn.parentElement, was = item.classList.contains("open");
+    document.querySelectorAll(".unav-item.open").forEach(function(el){el.classList.remove("open")});
+    if (!was) item.classList.add("open");
+  });
+});
+document.addEventListener("click", function(e){
+  if (!e.target.closest(".unav-item"))
+    document.querySelectorAll(".unav-item.open").forEach(function(el){el.classList.remove("open")});
+});
+</script>
+
+<script>
+(function(){
+  var btn=document.getElementById("donateBtn"),modal=document.getElementById("donateModal"),close=document.getElementById("donateClose");
+  if(!btn||!modal)return;
+  btn.addEventListener("click",function(){modal.classList.add("show")});
+  if(close)close.addEventListener("click",function(){modal.classList.remove("show")});
+  modal.addEventListener("click",function(e){if(e.target===modal)modal.classList.remove("show")});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")modal.classList.remove("show")});
+})();
+</script>
+</body>
+</html>

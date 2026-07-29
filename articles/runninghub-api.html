@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark-gold">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RunningHub API 教程 · 知识库 · GaryAIGC</title>
+<style>
+:root{--font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+--ease:cubic-bezier(0.16,1,0.3,1);--transition:0.3s var(--ease);--radius:14px}
+[data-theme="dark-gold"]{--bg:#0a0a0f;--bg-card:#101017;--border:rgba(200,164,92,0.15);--border-hover:rgba(200,164,92,0.4);
+--text:#ececf2;--text-dim:#9a9ab0;--text-muted:#5f5f78;--accent:#c8a45c;--accent-strong:#e8c97a;--accent-glow:rgba(200,164,92,0.1);
+--gradient:linear-gradient(135deg,#c8a45c,#e8c97a);--nav-bg:rgba(10,10,15,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="dark-blue"]{--bg:#060b14;--bg-card:#0c1220;--border:rgba(56,139,253,0.15);--border-hover:rgba(56,139,253,0.4);
+--text:#e2e8f4;--text-dim:#8298b4;--text-muted:#4e5f7d;--accent:#388bfd;--accent-strong:#79c0ff;--accent-glow:rgba(56,139,253,0.1);
+--gradient:linear-gradient(135deg,#388bfd,#79c0ff);--nav-bg:rgba(6,11,20,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="dark-purple"]{--bg:#0e0a17;--bg-card:#141021;--border:rgba(168,130,255,0.15);--border-hover:rgba(168,130,255,0.4);
+--text:#ebe2fa;--text-dim:#a08ec2;--text-muted:#615080;--accent:#a882ff;--accent-strong:#d4b8ff;--accent-glow:rgba(168,130,255,0.1);
+--gradient:linear-gradient(135deg,#a882ff,#d4b8ff);--nav-bg:rgba(14,10,23,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="light-warm"]{--bg:#faf7f2;--bg-card:#ffffff;--border:rgba(150,110,55,0.18);--border-hover:rgba(150,110,55,0.42);
+--text:#2b2822;--text-dim:#7c7263;--text-muted:#a2947f;--accent:#a87c3e;--accent-strong:#8a6030;--accent-glow:rgba(168,124,62,0.09);
+--gradient:linear-gradient(135deg,#a87c3e,#c8a05e);--nav-bg:rgba(250,247,242,0.88);--nav-border:rgba(0,0,0,0.08)}
+[data-theme="light-cool"]{--bg:#f5f7fa;--bg-card:#ffffff;--border:rgba(50,105,180,0.16);--border-hover:rgba(50,105,180,0.38);
+--text:#1b2536;--text-dim:#5c6c84;--text-muted:#8c9cb4;--accent:#2f6cbd;--accent-strong:#255aa0;--accent-glow:rgba(47,108,189,0.08);
+--gradient:linear-gradient(135deg,#2f6cbd,#4f8ad8);--nav-bg:rgba(245,247,250,0.88);--nav-border:rgba(0,0,0,0.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-strong)}
+::selection{background:var(--accent-glow)}
+/* 统一胶囊导航 */
+.unav-wrap{position:sticky;top:14px;z-index:200;display:flex;justify-content:center;padding:14px 16px 0}
+.unav{display:flex;align-items:center;gap:3px;background:var(--nav-bg);
+backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);
+border:1px solid var(--nav-border);border-radius:999px;padding:7px 12px;
+box-shadow:0 10px 34px rgba(0,0,0,0.28);max-width:100%;flex-wrap:wrap;justify-content:center}
+.unav-logo{font-size:17px;font-weight:800;letter-spacing:-0.3px;background:var(--gradient);
+-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding:6px 12px;cursor:pointer;white-space:nowrap}
+.unav-sep{width:1px;height:18px;background:var(--nav-border);margin:0 5px}
+.unav-item{position:relative}
+.unav-btn{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:999px;
+font-size:13.5px;font-weight:500;color:var(--text-dim);cursor:pointer;border:none;background:transparent;
+transition:all var(--transition);white-space:nowrap;font-family:var(--font);text-decoration:none}
+.unav-btn:hover,.unav-item.open .unav-btn,.unav-btn.active{color:var(--text);background:var(--accent-glow)}
+.unav-btn .caret{font-size:9px;opacity:0.6;transition:transform var(--transition)}
+.unav-item:hover .caret,.unav-item.open .caret{transform:rotate(180deg)}
+.unav-drop{position:absolute;top:calc(100% + 10px);right:0;min-width:160px;background:var(--bg-card);
+border:1px solid var(--border);border-radius:14px;padding:8px;opacity:0;visibility:hidden;
+transition:all 0.22s;z-index:300;box-shadow:0 16px 44px rgba(0,0,0,0.4)}
+.unav-item:hover .unav-drop,.unav-item.open .unav-drop{opacity:1;visibility:visible}
+.unav-link{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;
+font-size:13px;color:var(--text-dim);cursor:pointer;transition:all var(--transition)}
+.unav-link:hover{background:var(--accent-glow);color:var(--text)}
+/* 文章排版 */
+.article{max-width:820px;margin:0 auto;padding:48px 24px 80px}
+.article-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);
+margin-bottom:28px;transition:color var(--transition)}
+.article-back:hover{color:var(--accent)}
+.article h1{font-size:clamp(26px,4.5vw,38px);font-weight:900;letter-spacing:-0.5px;line-height:1.25;
+margin-bottom:14px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.article-meta{font-size:13px;color:var(--text-muted);padding-bottom:24px;margin-bottom:32px;border-bottom:1px solid var(--border)}
+.article-body h2{font-size:22px;font-weight:800;margin:40px 0 14px;padding-top:14px;border-top:1px solid var(--border)}
+.article-body h2:first-child{border-top:none;padding-top:0;margin-top:0}
+.article-body h3{font-size:17px;font-weight:700;margin:28px 0 10px;color:var(--accent-strong)}
+.article-body h4{font-size:15px;font-weight:700;margin:20px 0 8px}
+.article-body p{margin:12px 0;color:var(--text-dim);font-size:15px}
+.article-body p.li{padding-left:14px}
+.article-body strong{color:var(--text);font-weight:700}
+.article-body code{font-family:ui-monospace,Consolas,monospace;font-size:13px;background:var(--accent-glow);
+border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:var(--accent-strong)}
+.article-body pre{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;
+padding:16px;overflow-x:auto;margin:14px 0}
+.article-body pre code{background:none;border:none;padding:0;color:var(--text-dim)}
+.article-body blockquote{border-left:3px solid var(--accent);background:var(--accent-glow);
+border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;color:var(--text-dim);font-size:14px}
+.article-body table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+.article-body th,.article-body td{border:1px solid var(--border);padding:9px 12px;text-align:left}
+.article-body th{background:var(--accent-glow);color:var(--accent-strong);font-weight:700}
+.article-body td{color:var(--text-dim)}
+.article-body hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+.article-note{margin-top:36px;padding:14px 18px;border:1px dashed var(--border-hover);border-radius:12px;
+font-size:13px;color:var(--text-muted)}
+.footer{border-top:1px solid var(--border);padding:28px 24px;text-align:center;color:var(--text-muted);font-size:13px}
+</style>
+
+<!-- 打赏作者 -->
+<style>
+.donate-strip{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:90;
+  writing-mode:vertical-rl;padding:16px 8px;font-size:13px;letter-spacing:3px;cursor:pointer;
+  color:var(--accent);background:var(--bg-card);border:1px solid var(--border);border-right:none;
+  border-radius:12px 0 0 12px;transition:all .25s;font-family:var(--font)}
+.donate-strip:hover{border-color:var(--border-hover);padding-right:12px}
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);
+  z-index:500;display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:all .25s}
+.modal-mask.show{opacity:1;visibility:visible}
+.modal-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
+  padding:28px 32px;text-align:center;max-width:90vw;transform:translateY(10px);transition:transform .25s}
+.modal-mask.show .modal-card{transform:translateY(0)}
+.modal-title{font-size:18px;font-weight:800;margin-bottom:6px}
+.modal-desc{font-size:13.5px;color:var(--text-dim);margin-bottom:16px;max-width:300px}
+.modal-qr img{width:190px;aspect-ratio:3/4;height:auto;object-fit:contain;background:#fff;padding:8px;border-radius:12px}
+.modal-close{margin-top:16px;padding:8px 22px;border-radius:20px;border:1px solid var(--border);
+  background:transparent;color:var(--text-dim);font-size:13px;cursor:pointer;font-family:var(--font)}
+.modal-close:hover{border-color:var(--border-hover);color:var(--text)}
+@media (max-width:767px){.donate-strip{display:none}}
+</style>
+</head>
+<body>
+<div class="unav-wrap">
+  <nav class="unav">
+    <span class="unav-logo" onclick="location.href='../index.html'">GaryAIGC</span>
+    <span class="unav-sep"></span>
+    <div class="unav-item"><a class="unav-btn" href="../index.html#tools">AI创作</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../benefits.html">AI福利</a></div>
+    <div class="unav-item"><a class="unav-btn active" href="../knowledge.html">知识库</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../resources.html">资源库</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../videos.html">视频教程</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../community.html">社区</a></div>
+    <span class="unav-sep"></span>
+    <div class="unav-item">
+      <button class="unav-btn" type="button"><span>主题</span><span class="caret">▼</span></button>
+      <div class="unav-drop">
+        <a class="unav-link" onclick="setTheme('dark-gold')">暗金 Dark Gold</a>
+        <a class="unav-link" onclick="setTheme('dark-blue')">暗蓝 Deep Blue</a>
+        <a class="unav-link" onclick="setTheme('dark-purple')">暗紫 Violet</a>
+        <a class="unav-link" onclick="setTheme('light-warm')">暖白 Warm</a>
+        <a class="unav-link" onclick="setTheme('light-cool')">冷白 Cool</a>
+      </div>
+    </div>
+  </nav>
+</div>
+<main class="article">
+  <a class="article-back" href="../knowledge.html">← 返回知识库</a>
+  <h1>RunningHub API 教程</h1>
+  <div class="article-meta">RunningHub · 整理自 Gary 的教程文档</div>
+  <div class="article-body">
+<h2>RunningHub API 调用新手教程</h2>
+<blockquote>基于真实实操记录整理。以下所有命令和环境变量均已在实际环境中验证通过。</blockquote>
+<p>&gt;</p>
+<blockquote><strong>适用场景</strong>：你有 RunningHub 账号，想通过代码/API 方式调用平台上已有的 AI 应用（ComfyUI 工作流），而不是每次都打开网页拖拽节点。</blockquote>
+<hr>
+<h2>一、准备工作</h2>
+<h3>1.1 获取 API Key</h3>
+<p class='li'>1. 登录 <a href="https://www.runninghub.cn" target="_blank" rel="noopener">RunningHub 官网</a></p>
+<p class='li'>2. 进入「企业 API」→「共享 API Key」页面</p>
+<p class='li'>3. 创建 Key，复制备用（格式类似：<code>59dfca00...</code>）</p>
+<p class='li'>4. <strong>充值</strong>：AI 应用调用走 <strong>RH 币</strong>，标准模型 API 走 <strong>钱包余额</strong>。建议充会员，AI 应用调用有减免。</p>
+<h3>1.2 确认账户状态</h3>
+<p>把 Key 配到环境变量，然后跑检查：</p>
+<pre><code>export RUNNINGHUB_API_KEY=你的APIKey
+
+# 检查账户状态
+python3 ~/.openclaw/workspace/skills/runninghub/scripts/runninghub.py --check</code></pre>
+<p><strong>预期输出</strong>：</p>
+<pre><code>{&quot;status&quot;: &quot;ready&quot;, &quot;balance&quot;: &quot;58.335&quot;, &quot;currency&quot;: &quot;CNY&quot;, &quot;coins&quot;: &quot;45458&quot;, &quot;api_type&quot;: &quot;NORMAL&quot;}</code></pre>
+<p class='li'>· <code>balance</code>：钱包余额（标准模型 API 扣这里）</p>
+<p class='li'>· <code>coins</code>：RH 币（AI 应用扣这里）</p>
+<p class='li'>· <code>api_type</code>：<code>NORMAL</code> 表示个人消费级，<code>ENTERPRISE</code> 表示企业级</p>
+<blockquote>⚠️ <strong>重要区别</strong>：NORMAL 类型的 Key <strong>只能调用 AI 应用</strong>，不能调用标准模型 API（如文生图/文生视频等 endpoint）。只有企业级共享 API Key 才能调标准模型。</blockquote>
+<hr>
+<h2>二、核心流程：调用 AI 应用</h2>
+<p>这是本教程的重点——调用平台上已有的 ComfyUI 工作流（AI 应用）。</p>
+<h3>2.1 获取应用信息</h3>
+<p>每个 AI 应用都有一个 <code>webappId</code>（应用 ID）。从应用页面地址栏复制，格式如：<code>2045558582556499969</code>。</p>
+<pre><code>export RUNNINGHUB_API_KEY=你的APIKey
+
+python3 ~/.openclaw/workspace/skills/runninghub/scripts/runninghub_app.py \
+  --info 2045558582556499969</code></pre>
+<p><strong>预期输出</strong>：</p>
+<pre><code>{
+  &quot;webappId&quot;: &quot;2045558582556499969&quot;,
+  &quot;nodes&quot;: [
+    {
+      &quot;nodeId&quot;: &quot;49&quot;,
+      &quot;nodeName&quot;: &quot;CR Text&quot;,
+      &quot;fieldName&quot;: &quot;text&quot;,
+      &quot;fieldValue&quot;: &quot;默认提示词...&quot;,
+      &quot;fieldType&quot;: &quot;STRING&quot;,
+      &quot;description&quot;: &quot;text&quot;
+    },
+    {
+      &quot;nodeId&quot;: &quot;21&quot;,
+      &quot;nodeName&quot;: &quot;EmptyLatentImage&quot;,
+      &quot;fieldName&quot;: &quot;width&quot;,
+      &quot;fieldValue&quot;: &quot;1080&quot;,
+      &quot;fieldType&quot;: &quot;INT&quot;
+    }
+  ]
+}</code></pre>
+<p><strong>关键字段说明</strong>：</p>
+<p class='li'>· <code>nodeId</code>：节点 ID，后续修改时用来定位</p>
+<p class='li'>· <code>fieldName</code>：字段名，如 <code>text</code>（提示词）、<code>width</code>（宽度）</p>
+<p class='li'>· <code>fieldType</code>：字段类型，<code>STRING</code>（文本）、<code>INT</code>（整数）、<code>IMAGE</code>（图片）等</p>
+<p class='li'>· <code>fieldValue</code>：当前默认值</p>
+<h3>2.2 运行应用</h3>
+<p>基于上面的节点信息，你可以修改任意可修改的字段。最常见的场景是改提示词：</p>
+<pre><code>export RUNNINGHUB_API_KEY=你的APIKey
+
+python3 ~/.openclaw/workspace/skills/runninghub/scripts/runninghub_app.py \
+  --run 2045558582556499969 \
+  --node &quot;49:text=你的提示词内容&quot; \
+  -o /tmp/openclaw/rh-output/result_$(date +%s).png</code></pre>
+<p><strong>参数说明</strong>：</p>
+<p class='li'>· <code>--run</code>：运行模式（区别于 <code>--info</code> 查询模式）</p>
+<p class='li'>· <code>--node &quot;nodeId:fieldName=新值&quot;</code>：修改指定节点的字段。多个 <code>--node</code> 可以叠加。</p>
+<p class='li'>· <code>-o</code>：输出文件路径。支持 <code>$(date +%s)</code> 自动生成时间戳，避免覆盖。</p>
+<p><strong>多字段修改示例</strong>：</p>
+<pre><code>python3 ~/.openclaw/workspace/skills/runninghub/scripts/runninghub_app.py \
+  --run 2045558582556499969 \
+  --node &quot;49:text=超写实风格，赛博朋克城市&quot; \
+  --node &quot;21:width=1920&quot; \
+  --node &quot;21:height=1080&quot; \
+  -o /tmp/openclaw/rh-output/result_$(date +%s).png</code></pre>
+<p><strong>上传图片示例</strong>（如果工作流需要输入图片）：</p>
+<pre><code>python3 ~/.openclaw/workspace/skills/runninghub/scripts/runninghub_app.py \
+  --run 2045558582556499969 \
+  --file &quot;39:image=/path/to/your/photo.jpg&quot; \
+  --node &quot;52:prompt=给图中人物换红色外套&quot; \
+  -o /tmp/openclaw/rh-output/result_$(date +%s).png</code></pre>
+<h3>2.3 等待结果</h3>
+<p>AI 应用运行时间取决于工作流复杂度：</p>
+<p class='li'>· 简单文生图：30-60 秒</p>
+<p class='li'>· 复杂工作流（含放大、换脸、多节点）：1-5 分钟</p>
+<p class='li'>· 视频生成：3-10 分钟</p>
+<p>脚本会自动轮询任务状态，直到完成或失败。完成后会输出：</p>
+<pre><code>OUTPUT_FILE:/tmp/openclaw/rh-output/result_1234567890.png
+DURATION:140s</code></pre>
+<p>如果工作流输出多张图，会有多个 <code>OUTPUT_FILE</code> 行。</p>
+<hr>
+<h2>三、费用与消耗</h2>
+<h3>3.1 AI 应用调用</h3>
+<p class='li'>· <strong>计费方式</strong>：RH 币</p>
+<p class='li'>· <strong>会员减免</strong>：消费级-会员 Key 有减免，实测一单约 20-50 RH 币</p>
+<p class='li'>· <strong>钱包扣费</strong>：¥0（会员状态下）</p>
+<p><strong>查看消耗</strong>：登录 RunningHub 网页 →「我的任务」→ 找到对应任务 ID，可看到明细：</p>
+<p class='li'>· 原始费用、折扣、RH 币消耗</p>
+<p class='li'>· 任务时长、GPU 规格</p>
+<h3>3.2 标准模型 API</h3>
+<p class='li'>· <strong>计费方式</strong>：钱包余额（人民币）</p>
+<p class='li'>· <strong>适用 Key</strong>：仅企业级共享 API Key（<code>api_type: ENTERPRISE</code>）</p>
+<p class='li'>· <strong>NORMAL Key 不支持</strong>：会报 <code>NO_API_KEY</code> 或权限错误</p>
+<hr>
+<h2>四、常见问题</h2>
+<h3>Q1：提示 <code>NO_API_KEY</code></h3>
+<p>环境变量没配好。确认：</p>
+<pre><code>echo $RUNNINGHUB_API_KEY</code></pre>
+<p>如果没有输出，重新执行 <code>export RUNNINGHUB_API_KEY=你的Key</code>。</p>
+<p>也可以把 Key 持久化到 <code>~/.openclaw/openclaw.json</code>：</p>
+<pre><code>python3 -c &quot;
+import json, pathlib
+p = pathlib.Path.home() / &#x27;.openclaw&#x27; / &#x27;openclaw.json&#x27;
+p.parent.mkdir(exist_ok=True)
+cfg = json.loads(p.read_text()) if p.exists() else {}
+cfg.setdefault(&#x27;skills&#x27;, {}).setdefault(&#x27;entries&#x27;, {}).setdefault(&#x27;runninghub&#x27;, {})[&#x27;apiKey&#x27;] = &#x27;你的Key&#x27;
+p.write_text(json.dumps(cfg, indent=2))
+&quot;</code></pre>
+<h3>Q2：提示 <code>APP_INFO_FAILED</code></h3>
+<p><code>webappId</code> 写错了，或者应用不是公开的。检查一下应用页面地址栏的数字。</p>
+<h3>Q3：提示 <code>NO_NODES</code></h3>
+<p>这个应用需要先在 RunningHub 网页上成功运行至少一次，才能通过 API 调用。去网页上点一次「运行」，等出结果后再试 API。</p>
+<h3>Q4：任务失败了怎么办？</h3>
+<p class='li'>1. 检查提示词是否触发了平台安全策略</p>
+<p class='li'>2. 检查上传的文件格式是否正确（图片只支持 jpg/png）</p>
+<p class='li'>3. 检查节点参数类型是否匹配（不要给 INT 类型传字符串）</p>
+<p class='li'>4. 去网页版「我的任务」看详细错误日志</p>
+<h3>Q5：如何找更多 AI 应用？</h3>
+<pre><code># 查看推荐应用（前 10 个）
+python3 ~/.openclaw/workspace/skills/runninghub/scripts/runninghub_app.py \
+  --list --sort RECOMMEND --size 10
+
+# 查看最热门应用（近 7 天）
+python3 ~/.openclaw/workspace/skills/runninghub/scripts/runninghub_app.py \
+  --list --sort HOTTEST --size 10 --days 7
+
+# 查看最新应用
+python3 ~/.openclaw/workspace/skills/runninghub/scripts/runninghub_app.py \
+  --list --sort NEWEST --size 10</code></pre>
+<p>输出包含 <code>webappId</code>、<code>title</code>、<code>description</code>，直接复制 ID 就能用。</p>
+<hr>
+<h2>五、完整示例：从 0 到跑出第一张图</h2>
+<pre><code># Step 1: 配 Key
+export RUNNINGHUB_API_KEY=59dfca00xxxxxxxx
+
+# Step 2: 检查账户
+python3 ~/.openclaw/workspace/skills/runninghub/scripts/runninghub.py --check
+# → 确认 status=ready，coins 充足
+
+# Step 3: 选一个应用（比如 2045558582556499969）
+# 先查它能改什么参数
+python3 ~/.openclaw/workspace/skills/runninghub/scripts/runninghub_app.py \
+  --info 2045558582556499969
+
+# Step 4: 运行！改提示词
+python3 ~/.openclaw/workspace/skills/runninghub/scripts/runninghub_app.py \
+  --run 2045558582556499969 \
+  --node &quot;49:text=一只穿着宇航服的柴犬，站在月球上&quot; \
+  -o /tmp/openclaw/rh-output/my_first_image_$(date +%s).png
+
+# Step 5: 等输出，下载图片
+# → OUTPUT_FILE:/tmp/openclaw/rh-output/my_first_image_1234567890.png</code></pre>
+<hr>
+<h2>六、进阶：原生 ComfyUI 接口（Workflow API）</h2>
+<p>如果你想完全自定义工作流，而不是调用别人封装好的 AI 应用，可以用 RunningHub 的原生 ComfyUI 接口：</p>
+<pre><code>https://www.runninghub.cn/proxy/你的APIKey</code></pre>
+<p>这个地址功能等同于本地 <code>http://127.0.0.1:8188</code>。你可以：</p>
+<p class='li'>1. 在本地 ComfyUI 搭好工作流</p>
+<p class='li'>2. 导出 API JSON（ComfyUI 菜单 → Save → API Format）</p>
+<p class='li'>3. 直接 POST 到上面的地址</p>
+<p class='li'>4. RunningHub 云端执行，返回结果</p>
+<p>但这需要企业级 API Key，且需要自行处理轮询和文件下载。对新手来说，先用 AI 应用方式（上面的流程）更稳定。</p>
+<hr>
+<h2>七、总结</h2>
+<table>
+<tr><th>方式</th><th>适用场景</th><th>Key 类型</th><th>计费</th></tr>
+<tr><td>AI 应用（推荐新手）</td><td>调用现成工作流</td><td>NORMAL（消费级）</td><td>RH 币</td></tr>
+<tr><td>标准模型 API</td><td>直接调用文生图/视频模型</td><td>ENTERPRISE（企业级）</td><td>钱包余额</td></tr>
+<tr><td>原生 ComfyUI</td><td>完全自定义工作流</td><td>ENTERPRISE（企业级）</td><td>钱包余额</td></tr>
+</table>
+<p><strong>新手建议路线</strong>：</p>
+<p class='li'>1. 注册 → 充会员（AI 应用减免）→ 创建 NORMAL Key</p>
+<p class='li'>2. 在网页上找到喜欢的 AI 应用，记下 webappId</p>
+<p class='li'>3. 用 <code>--info</code> 查看可修改参数</p>
+<p class='li'>4. 用 <code>--run</code> + <code>--node</code> 批量生成</p>
+<p class='li'>5. 熟练后再考虑企业级 Key 和原生 ComfyUI 接口</p>
+<hr>
+<blockquote>最后更新：2026-07-28 | 基于 OpenClaw RunningHub Skill 实测</blockquote>
+  </div>
+
+</main>
+
+<div class="donate-strip" id="donateBtn">打赏作者</div>
+<div class="modal-mask" id="donateModal">
+  <div class="modal-card">
+    <div class="modal-title">请作者喝杯咖啡</div>
+    <div class="modal-desc">如果你觉得本站对你有帮助，微信扫码支持一下，任意金额都是鼓励</div>
+    <div class="modal-qr"><img src="../wx-pay.jpg" alt="微信收款码"></div>
+    <button class="modal-close" id="donateClose" type="button">关闭</button>
+  </div>
+</div>
+
+<footer class="footer">© 2025 GaryAIGC · 让 AI 创作更简单</footer>
+<script>
+function setTheme(t){document.documentElement.setAttribute("data-theme",t);localStorage.setItem("gary-theme",t)}
+(function(){var t=localStorage.getItem("gary-theme");if(t)setTheme(t)})();
+document.querySelectorAll(".unav-item > button.unav-btn").forEach(function(btn){
+  btn.addEventListener("click", function(e){
+    e.stopPropagation();
+    var item = btn.parentElement, was = item.classList.contains("open");
+    document.querySelectorAll(".unav-item.open").forEach(function(el){el.classList.remove("open")});
+    if (!was) item.classList.add("open");
+  });
+});
+document.addEventListener("click", function(e){
+  if (!e.target.closest(".unav-item"))
+    document.querySelectorAll(".unav-item.open").forEach(function(el){el.classList.remove("open")});
+});
+</script>
+
+<script>
+(function(){
+  var btn=document.getElementById("donateBtn"),modal=document.getElementById("donateModal"),close=document.getElementById("donateClose");
+  if(!btn||!modal)return;
+  btn.addEventListener("click",function(){modal.classList.add("show")});
+  if(close)close.addEventListener("click",function(){modal.classList.remove("show")});
+  modal.addEventListener("click",function(e){if(e.target===modal)modal.classList.remove("show")});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")modal.classList.remove("show")});
+})();
+</script>
+</body>
+</html>

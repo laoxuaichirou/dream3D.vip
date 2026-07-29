@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark-gold">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ComfyUI 手册 03：报错关键词翻译官 · 知识库 · GaryAIGC</title>
+<style>
+:root{--font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+--ease:cubic-bezier(0.16,1,0.3,1);--transition:0.3s var(--ease);--radius:14px}
+[data-theme="dark-gold"]{--bg:#0a0a0f;--bg-card:#101017;--border:rgba(200,164,92,0.15);--border-hover:rgba(200,164,92,0.4);
+--text:#ececf2;--text-dim:#9a9ab0;--text-muted:#5f5f78;--accent:#c8a45c;--accent-strong:#e8c97a;--accent-glow:rgba(200,164,92,0.1);
+--gradient:linear-gradient(135deg,#c8a45c,#e8c97a);--nav-bg:rgba(10,10,15,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="dark-blue"]{--bg:#060b14;--bg-card:#0c1220;--border:rgba(56,139,253,0.15);--border-hover:rgba(56,139,253,0.4);
+--text:#e2e8f4;--text-dim:#8298b4;--text-muted:#4e5f7d;--accent:#388bfd;--accent-strong:#79c0ff;--accent-glow:rgba(56,139,253,0.1);
+--gradient:linear-gradient(135deg,#388bfd,#79c0ff);--nav-bg:rgba(6,11,20,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="dark-purple"]{--bg:#0e0a17;--bg-card:#141021;--border:rgba(168,130,255,0.15);--border-hover:rgba(168,130,255,0.4);
+--text:#ebe2fa;--text-dim:#a08ec2;--text-muted:#615080;--accent:#a882ff;--accent-strong:#d4b8ff;--accent-glow:rgba(168,130,255,0.1);
+--gradient:linear-gradient(135deg,#a882ff,#d4b8ff);--nav-bg:rgba(14,10,23,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="light-warm"]{--bg:#faf7f2;--bg-card:#ffffff;--border:rgba(150,110,55,0.18);--border-hover:rgba(150,110,55,0.42);
+--text:#2b2822;--text-dim:#7c7263;--text-muted:#a2947f;--accent:#a87c3e;--accent-strong:#8a6030;--accent-glow:rgba(168,124,62,0.09);
+--gradient:linear-gradient(135deg,#a87c3e,#c8a05e);--nav-bg:rgba(250,247,242,0.88);--nav-border:rgba(0,0,0,0.08)}
+[data-theme="light-cool"]{--bg:#f5f7fa;--bg-card:#ffffff;--border:rgba(50,105,180,0.16);--border-hover:rgba(50,105,180,0.38);
+--text:#1b2536;--text-dim:#5c6c84;--text-muted:#8c9cb4;--accent:#2f6cbd;--accent-strong:#255aa0;--accent-glow:rgba(47,108,189,0.08);
+--gradient:linear-gradient(135deg,#2f6cbd,#4f8ad8);--nav-bg:rgba(245,247,250,0.88);--nav-border:rgba(0,0,0,0.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-strong)}
+::selection{background:var(--accent-glow)}
+/* 统一胶囊导航 */
+.unav-wrap{position:sticky;top:14px;z-index:200;display:flex;justify-content:center;padding:14px 16px 0}
+.unav{display:flex;align-items:center;gap:3px;background:var(--nav-bg);
+backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);
+border:1px solid var(--nav-border);border-radius:999px;padding:7px 12px;
+box-shadow:0 10px 34px rgba(0,0,0,0.28);max-width:100%;flex-wrap:wrap;justify-content:center}
+.unav-logo{font-size:17px;font-weight:800;letter-spacing:-0.3px;background:var(--gradient);
+-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding:6px 12px;cursor:pointer;white-space:nowrap}
+.unav-sep{width:1px;height:18px;background:var(--nav-border);margin:0 5px}
+.unav-item{position:relative}
+.unav-btn{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:999px;
+font-size:13.5px;font-weight:500;color:var(--text-dim);cursor:pointer;border:none;background:transparent;
+transition:all var(--transition);white-space:nowrap;font-family:var(--font);text-decoration:none}
+.unav-btn:hover,.unav-item.open .unav-btn,.unav-btn.active{color:var(--text);background:var(--accent-glow)}
+.unav-btn .caret{font-size:9px;opacity:0.6;transition:transform var(--transition)}
+.unav-item:hover .caret,.unav-item.open .caret{transform:rotate(180deg)}
+.unav-drop{position:absolute;top:calc(100% + 10px);right:0;min-width:160px;background:var(--bg-card);
+border:1px solid var(--border);border-radius:14px;padding:8px;opacity:0;visibility:hidden;
+transition:all 0.22s;z-index:300;box-shadow:0 16px 44px rgba(0,0,0,0.4)}
+.unav-item:hover .unav-drop,.unav-item.open .unav-drop{opacity:1;visibility:visible}
+.unav-link{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;
+font-size:13px;color:var(--text-dim);cursor:pointer;transition:all var(--transition)}
+.unav-link:hover{background:var(--accent-glow);color:var(--text)}
+/* 文章排版 */
+.article{max-width:820px;margin:0 auto;padding:48px 24px 80px}
+.article-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);
+margin-bottom:28px;transition:color var(--transition)}
+.article-back:hover{color:var(--accent)}
+.article h1{font-size:clamp(26px,4.5vw,38px);font-weight:900;letter-spacing:-0.5px;line-height:1.25;
+margin-bottom:14px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.article-meta{font-size:13px;color:var(--text-muted);padding-bottom:24px;margin-bottom:32px;border-bottom:1px solid var(--border)}
+.article-body h2{font-size:22px;font-weight:800;margin:40px 0 14px;padding-top:14px;border-top:1px solid var(--border)}
+.article-body h2:first-child{border-top:none;padding-top:0;margin-top:0}
+.article-body h3{font-size:17px;font-weight:700;margin:28px 0 10px;color:var(--accent-strong)}
+.article-body h4{font-size:15px;font-weight:700;margin:20px 0 8px}
+.article-body p{margin:12px 0;color:var(--text-dim);font-size:15px}
+.article-body p.li{padding-left:14px}
+.article-body strong{color:var(--text);font-weight:700}
+.article-body code{font-family:ui-monospace,Consolas,monospace;font-size:13px;background:var(--accent-glow);
+border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:var(--accent-strong)}
+.article-body pre{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;
+padding:16px;overflow-x:auto;margin:14px 0}
+.article-body pre code{background:none;border:none;padding:0;color:var(--text-dim)}
+.article-body blockquote{border-left:3px solid var(--accent);background:var(--accent-glow);
+border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;color:var(--text-dim);font-size:14px}
+.article-body table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+.article-body th,.article-body td{border:1px solid var(--border);padding:9px 12px;text-align:left}
+.article-body th{background:var(--accent-glow);color:var(--accent-strong);font-weight:700}
+.article-body td{color:var(--text-dim)}
+.article-body hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+.article-note{margin-top:36px;padding:14px 18px;border:1px dashed var(--border-hover);border-radius:12px;
+font-size:13px;color:var(--text-muted)}
+.footer{border-top:1px solid var(--border);padding:28px 24px;text-align:center;color:var(--text-muted);font-size:13px}
+</style>
+
+<!-- 打赏作者 -->
+<style>
+.donate-strip{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:90;
+  writing-mode:vertical-rl;padding:16px 8px;font-size:13px;letter-spacing:3px;cursor:pointer;
+  color:var(--accent);background:var(--bg-card);border:1px solid var(--border);border-right:none;
+  border-radius:12px 0 0 12px;transition:all .25s;font-family:var(--font)}
+.donate-strip:hover{border-color:var(--border-hover);padding-right:12px}
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);
+  z-index:500;display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:all .25s}
+.modal-mask.show{opacity:1;visibility:visible}
+.modal-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
+  padding:28px 32px;text-align:center;max-width:90vw;transform:translateY(10px);transition:transform .25s}
+.modal-mask.show .modal-card{transform:translateY(0)}
+.modal-title{font-size:18px;font-weight:800;margin-bottom:6px}
+.modal-desc{font-size:13.5px;color:var(--text-dim);margin-bottom:16px;max-width:300px}
+.modal-qr img{width:190px;aspect-ratio:3/4;height:auto;object-fit:contain;background:#fff;padding:8px;border-radius:12px}
+.modal-close{margin-top:16px;padding:8px 22px;border-radius:20px;border:1px solid var(--border);
+  background:transparent;color:var(--text-dim);font-size:13px;cursor:pointer;font-family:var(--font)}
+.modal-close:hover{border-color:var(--border-hover);color:var(--text)}
+@media (max-width:767px){.donate-strip{display:none}}
+</style>
+</head>
+<body>
+<div class="unav-wrap">
+  <nav class="unav">
+    <span class="unav-logo" onclick="location.href='../index.html'">GaryAIGC</span>
+    <span class="unav-sep"></span>
+    <div class="unav-item"><a class="unav-btn" href="../index.html#tools">AI创作</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../benefits.html">AI福利</a></div>
+    <div class="unav-item"><a class="unav-btn active" href="../knowledge.html">知识库</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../resources.html">资源库</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../videos.html">视频教程</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../community.html">社区</a></div>
+    <span class="unav-sep"></span>
+    <div class="unav-item">
+      <button class="unav-btn" type="button"><span>主题</span><span class="caret">▼</span></button>
+      <div class="unav-drop">
+        <a class="unav-link" onclick="setTheme('dark-gold')">暗金 Dark Gold</a>
+        <a class="unav-link" onclick="setTheme('dark-blue')">暗蓝 Deep Blue</a>
+        <a class="unav-link" onclick="setTheme('dark-purple')">暗紫 Violet</a>
+        <a class="unav-link" onclick="setTheme('light-warm')">暖白 Warm</a>
+        <a class="unav-link" onclick="setTheme('light-cool')">冷白 Cool</a>
+      </div>
+    </div>
+  </nav>
+</div>
+<main class="article">
+  <a class="article-back" href="../knowledge.html">← 返回知识库</a>
+  <h1>ComfyUI 手册 03：报错关键词翻译官</h1>
+  <div class="article-meta">ComfyUI · 整理自 Gary 的教程文档</div>
+  <div class="article-body">
+<p><strong>第三章：报错关键词翻译官</strong></p>
+<h2><strong>ComfyUI 报错词典与自救逻辑：从“看懂”到“修好”</strong></h2>
+<p>1 报错排查的“三步走”元逻辑</p>
+<p>1.1 第一步：定位报错位置</p>
+<p>1.1.1 观察红框节点：标题栏通常显示该节点所属的插件包名</p>
+<p>1.1.2 观察黑窗口末尾：最后一两行代码（Traceback）通常是报错的终点</p>
+<p>1.2 第二步：识别报错类型</p>
+<p>1.2.1 红框报错：代码执行逻辑错误或参数设置非法</p>
+<p>1.2.2 紫框报错：资源加载失败（通常是缺模型或路径不对）</p>
+<p>1.3 第三步：按图索骥</p>
+<p>1.3.1 根据本手册的关键词进行对比，找到对应解决方案</p>
+<p>2 第一类：节点与工作流逻辑报错（红框高发区）</p>
+<p>2.1 关键词：Arguments missing（缺少参数）</p>
+<p>2.1.1 含义：你有一些必填的“插孔”没连线</p>
+<p>2.1.2 原因：常见于删除了某些中转节点，导致 K 采样器等核心节点没连上</p>
+<p>2.1.3 自救：检查变红节点左侧的所有圆点，确保所有必填项都有连线</p>
+<p>2.2 关键词：ZeroSizeError（零尺寸错误）</p>
+<p>2.2.1 含义：你试图让 AI 在一张“不存在”的画布上画画</p>
+<p>2.2.2 原因：常见于“批量裁剪”节点。如果你图片只有 512，你裁剪位置写了 1024，裁剪结果就是 0</p>
+<p>2.2.3 自救：检查裁剪坐标或缩放倍数，确保操作后的像素值大于 0</p>
+<p>2.3 关键词：Value not in list（数值不在列表内）</p>
+<p>2.3.1 含义：节点下拉框里选的内容，“消失”了</p>
+<p>2.3.2 原因：工作流作者用的采样器或模型，你本地没有。比如作者选了 DPM++ 3M，你旧版核心里没这个</p>
+<p>2.3.3 自救：手动点击红色的下拉框，重新选一个你本地有的选项</p>
+<p>2.4 关键词：False not in [list]（布尔值冲突）</p>
+<p>2.4.1 含义：本来该选 1234 的，结果显示了个 False</p>
+<p>2.4.2 原因：通常是插件版本更新后，原来的开关逻辑变了，导致旧工作流失效</p>
+<p>2.4.3 自救：重新切换一下该节点的开关或下拉菜单，刷新其状态</p>
+<p>2.5 关键词：mat1 and mat2 shapes cannot be multiplied（矩阵不匹配）</p>
+<p>2.5.1 含义：两份数据“对不上号”</p>
+<p>2.5.2 原因：最典型的是 <strong>SD1.5 模型接了 SDXL 的组件</strong>。它们的底层数据维度天生不合</p>
+<p>2.5.3 自救：检查全流程模型版本，确保从 Checkpoint 到 LoRA 到 ControlNet 全是同一系列</p>
+<p>3 第二类：硬件与资源限制报错（显存/内存）</p>
+<p>3.1 关键词：Allocation on device 0（设备 0 分配失败）</p>
+<p>3.1.1 含义：显卡（设备 0）转不动了</p>
+<p>3.1.2 原因：显存溢出。你画的图太大，或者开启了太多高耗能插件</p>
+<p>3.1.3 自救：重启 ComfyUI；减小生成分辨率；检查是否有其他生图软件占用显存</p>
+<p>3.2 关键词：CUDA Out of Memory（显存溢出）</p>
+<p>3.2.1 含义：显卡的内存被挤爆了</p>
+<p>3.2.2 原因：显存（VRAM）不足以支撑当前计算量</p>
+<p>3.2.3 自救：调小 Batch Size（批次）；开启 --lowvram 启动参数；增加系统虚拟内存（辅助手段）</p>
+<p>3.3 关键词：CPU and CUDA are not on the same device（设备不统一）</p>
+<p>3.3.1 含义：一部分数据在内存，一部分在显存，AI 无法跨界计算</p>
+<p>3.3.2 原因：常见于 SAM 探测器等节点。节点里让你选 GPU/CPU，如果你选乱了就会报错</p>
+<p>3.3.3 自救：在报错节点里将 device 或 prefer_device 统一设置为 GPU 或 CUDA</p>
+<p>4 第三类：环境与依赖缺失报错（黑窗口重灾区）</p>
+<p>4.1 关键词：No module named &#x27;xxx&#x27;（找不到模块）</p>
+<p>4.1.1 含义：你的 Python 环境缺“零件”</p>
+<p>4.1.2 原因：新插件安装后，它依赖的第三方库没装。比如 No module named &#x27;cv2&#x27; 缺的就是 OpenCV</p>
+<p>4.1.3 自救：参考第二部分，执行 pip install [xxx] 或安装该插件对应的 requirements.txt</p>
+<p>4.2 关键词：Invalid wheel（无效的包文件）</p>
+<p>4.2.1 含义：下载的 Python 包损坏或与当前系统不匹配</p>
+<p>4.2.2 原因：网络下载不全，或者你拿 Linux 的包在 Windows 上装</p>
+<p>4.2.3 自救：删除当前包缓存，执行强制重装命令 --force-reinstall</p>
+<p>4.3 关键词：<strong>init</strong> 或 ImportError（接口导入失败）</p>
+<p>4.3.1 含义：插件的大门打不开了</p>
+<p>4.3.2 原因：插件下载残缺，连最基础的启动接口文件（<strong>init</strong>.py）都没下好</p>
+<p>4.3.3 自救：彻底删除该插件文件夹，重新进行 git clone 手动下载</p>
+<p>4.4 关键词：module &#x27;comfy&#x27; has no attribute &#x27;xxx&#x27;（内核属性缺失）</p>
+<p>4.4.1 含义：插件在调用一个你的 ComfyUI 根本没有的功能</p>
+<p>4.4.2 原因：ComfyUI 核心版本太低，不支持新版插件的高级功能</p>
+<p>4.4.3 自救：执行 ComfyUI 核心更新（Update ComfyUI）</p>
+<p>5 第四类：模型加载与文件报错（紫色框常见）</p>
+<p>5.1 关键词：No such file（找不到文件）</p>
+<p>5.1.1 含义：模型名字在，但文件不在那个文件夹里</p>
+<p>5.1.2 原因：移动了模型位置，或者文件夹路径带了中文导致 AI 读不出来</p>
+<p>5.1.3 自救：检查模型后缀（.pth / .safetensors），确保文件确实躺在指定的 models 目录下</p>
+<p>5.2 关键词：NoneType has no attribute &#x27;lower&#x27;（空类型错误）</p>
+<p>5.2.1 含义：你在试图操作一个“空气”</p>
+<p>5.2.2 原因：通常是模型加载失败（None 代表无）。模型损坏、或者是显存不足导致模型被踢出了内存</p>
+<p>5.2.3 自救：重新加载模型；检查模型文件大小是否正常（几 KB 的通常是没下完的残次品）</p>
+<p>5.3 关键词：mat1 and mat2 mismatch（尺寸不匹配）</p>
+<p>5.3.1 含义：模型架构打架</p>
+<p>5.3.2 原因：比如你试图用 SD1.5 的 LoRA 去“强修” SDXL 的 Checkpoint</p>
+<p>5.3.3 自救：统一全流程架构，1.5 归 1.5，XL 归 XL</p>
+<p>6 第五类：网络与连接报错</p>
+<p>6.1 关键词：HTTP Error / Connection Error（网络连接错误）</p>
+<p>6.1.1 含义：ComfyUI 联网失败</p>
+<p>6.1.2 原因：正在下载模型或调用在线 API（如 Gemini/Ollama）时梯子断了</p>
+<p>6.1.3 自救：检查魔法上网工具；如果是 Git 报错，需配置 Git 的全局代理</p>
+<p>6.2 关键词：SSL: CERTIFICATE_VERIFY_FAILED（证书验证失败）</p>
+<p>6.2.1 含义：安全验证没通过，网站不让下</p>
+<p>6.2.2 原因：通常是由于魔法工具的证书干扰，或者是 Python 环境证书过期</p>
+<p>6.2.3 自救：在命令行执行 pip install --trusted-host 相关参数跳过验证</p>
+<p>6.3 关键词：URI 或 URLlib（地址解析报错）</p>
+<p>6.3.1 含义：网络地址写错了或者服务器没响应</p>
+<p>6.3.2 原因：插件开发者提供的自动下载链接失效，或者你的网络屏蔽了该地址</p>
+<p>6.3.3 自救：尝试手动去 GitHub 下载对应的依赖文件</p>
+  </div>
+
+</main>
+
+<div class="donate-strip" id="donateBtn">打赏作者</div>
+<div class="modal-mask" id="donateModal">
+  <div class="modal-card">
+    <div class="modal-title">请作者喝杯咖啡</div>
+    <div class="modal-desc">如果你觉得本站对你有帮助，微信扫码支持一下，任意金额都是鼓励</div>
+    <div class="modal-qr"><img src="../wx-pay.jpg" alt="微信收款码"></div>
+    <button class="modal-close" id="donateClose" type="button">关闭</button>
+  </div>
+</div>
+
+<footer class="footer">© 2025 GaryAIGC · 让 AI 创作更简单</footer>
+<script>
+function setTheme(t){document.documentElement.setAttribute("data-theme",t);localStorage.setItem("gary-theme",t)}
+(function(){var t=localStorage.getItem("gary-theme");if(t)setTheme(t)})();
+document.querySelectorAll(".unav-item > button.unav-btn").forEach(function(btn){
+  btn.addEventListener("click", function(e){
+    e.stopPropagation();
+    var item = btn.parentElement, was = item.classList.contains("open");
+    document.querySelectorAll(".unav-item.open").forEach(function(el){el.classList.remove("open")});
+    if (!was) item.classList.add("open");
+  });
+});
+document.addEventListener("click", function(e){
+  if (!e.target.closest(".unav-item"))
+    document.querySelectorAll(".unav-item.open").forEach(function(el){el.classList.remove("open")});
+});
+</script>
+
+<script>
+(function(){
+  var btn=document.getElementById("donateBtn"),modal=document.getElementById("donateModal"),close=document.getElementById("donateClose");
+  if(!btn||!modal)return;
+  btn.addEventListener("click",function(){modal.classList.add("show")});
+  if(close)close.addEventListener("click",function(){modal.classList.remove("show")});
+  modal.addEventListener("click",function(e){if(e.target===modal)modal.classList.remove("show")});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")modal.classList.remove("show")});
+})();
+</script>
+</body>
+</html>
