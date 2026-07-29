@@ -1,0 +1,6 @@
+# 本地备份与原始文档，不上站
+*-backup.html
+nebula.html
+*.md
+视频素材/
+gpt2_prompts.json
