@@ -20,6 +20,7 @@ const VIDEO_DB = [
   /* AI 视频 */
   {bv:"BV1qAKQ69EA9", t:"Seedance 2.0 / Fast / Mini 三模型横评：Mini 性价比真的高吗？", cat:"ai-video", cover:"covers/BV1qAKQ69EA9.jpg", dur:"13:54"},
   {bv:"BV1ygMH6sESQ", t:"0.36元/s 高燃 AI 打戏：Shotlab 节点画布实战", cat:"ai-video", cover:"covers/BV1ygMH6sESQ.jpg", dur:"15:33"},
+  {bv:"BV1y1Gg6vEM6", t:"MiniMax 海螺H3将开源？！ 省钱攻略｜模型拆解｜比官网便宜60%丨使用方式+测试对比", cat:"ai-video", cover:"covers/BV1y1Gg6vEM6.jpg", dur:"11:07"},
   /* ComfyUI */
   {bv:"BV1XdxezAEa7", t:"基础：目录结构、报错解决、安装与启动", cat:"comfyui", cover:"covers/BV1XdxezAEa7.jpg", dur:"16:22"},
   {bv:"BV1mJHjzFEcy", t:"整合包极速启动：N卡配置、虚拟内存、网络环境", cat:"comfyui", cover:"covers/BV1mJHjzFEcy.jpg", dur:"2:48"},
