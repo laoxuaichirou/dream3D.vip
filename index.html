@@ -278,7 +278,7 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
       <a href="#tools" class="nav-link" data-i18n="nav_create">AI创作</a>
       <div class="drop-panel">
         <a class="drop-link" href="https://123skills.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener" data-i18n="sub_c1">Skills</a>
-        <a class="drop-link" href="https://garyimage.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener" data-i18n="sub_c2">绘画</a>
+        <a class="drop-link" href="https://gary-image.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener" data-i18n="sub_c2">绘画</a>
         <a class="drop-link" href="#tools" data-i18n="sub_c3">视频</a>
         <a class="drop-link" href="https://frameforge.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener" data-i18n="sub_c4">解析视频</a>
       </div>
@@ -389,8 +389,8 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
         <span class="cat-go">→</span>
       </a>
       <div class="sub-grid">
-        <a class="sub-link" href="#tools" data-i18n="sub_c1">Skills</a>
-        <a class="sub-link" href="https://garyimage.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener" data-i18n="sub_c2">绘画</a>
+        <a class="sub-link" href="https://123skills.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener" data-i18n="sub_c1">Skills</a>
+        <a class="sub-link" href="https://gary-image.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener" data-i18n="sub_c2">绘画</a>
         <a class="sub-link" href="#tools" data-i18n="sub_c3">视频</a>
         <a class="sub-link" href="https://frameforge.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener" data-i18n="sub_c4">解析视频</a>
       </div>
@@ -461,7 +461,7 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
     <div class="tools-strip" id="tools">
       <div class="sec-head"><span class="sec-title" data-i18n="sec_tools">AI 创作工具</span><span class="sec-line"></span></div>
       <div class="tools-grid">
-        <a class="tool-card" href="https://garyimage.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener">
+        <a class="tool-card" href="https://gary-image.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener">
           <span class="tool-num">01</span>
           <div class="tool-head">
             <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-4.5-4.5L6 21"/></svg></div>
@@ -697,7 +697,10 @@ window.addEventListener("load", function(){
 });
 
 (function(){
-  setTheme(localStorage.getItem("gary-theme") || "dark-gold");
+  var saved = localStorage.getItem("gary-theme");
+  /* 进入即暗金（用户 2026-08-01 要求）：浅色主题不跨会话记忆，刷新回退黑金 */
+  if (saved && THEMES.indexOf(saved) >= 0 && saved.indexOf("light-") !== 0) setTheme(saved);
+  else setTheme("dark-gold");
   setLang(LANG);
 })();
 </script>

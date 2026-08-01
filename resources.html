@@ -102,6 +102,31 @@ a{color:inherit;text-decoration:none}
 .page-header h1 span{background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .page-header p{font-size:15px;color:var(--text-dim);max-width:560px;margin:0 auto}
 
+/* 信息简报（2026-08-01 新增：资源库上半部分信息发布区，以后新增信息在此追加卡片） */
+.brief-section{margin-bottom:44px}
+.brief-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}
+.brief-title{font-size:22px;font-weight:800;letter-spacing:-0.5px}
+.brief-title span{background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.brief-hint{font-size:12.5px;color:var(--text-muted)}
+.brief-grid{display:grid;grid-template-columns:1fr;gap:14px}
+.brief-card{display:flex;align-items:center;gap:16px;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;
+  transition:all var(--transition);position:relative;overflow:hidden}
+.brief-card:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,0.25)}
+.brief-card:hover .brief-go{color:var(--accent);transform:translateX(3px)}
+.brief-badge{flex-shrink:0;background:var(--gradient);color:#0c0c12;font-size:11px;font-weight:800;
+  padding:3px 10px;border-radius:12px;letter-spacing:1px}
+.brief-main{flex:1;min-width:0}
+.brief-name{font-size:16px;font-weight:800;margin-bottom:3px}
+.brief-desc{font-size:13px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brief-date{flex-shrink:0;font-size:12.5px;color:var(--text-muted);font-variant-numeric:tabular-nums;
+  border:1px solid var(--border);padding:3px 10px;border-radius:12px}
+.brief-go{flex-shrink:0;font-size:14px;font-weight:700;color:var(--text-dim);transition:all var(--transition)}
+@media (max-width:767px){
+  .brief-desc{white-space:normal}
+  .brief-date{display:none}
+}
+
 /* 资源卡 */
 .res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:18px;margin-bottom:56px}
 .res-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
@@ -195,6 +220,25 @@ a{color:inherit;text-decoration:none}
 </section>
 
 <main class="container" style="padding-top:36px;padding-bottom:60px">
+  <!-- 信息简报：行业动态 / 工具情报 / 价格对比，新增信息在此追加卡片 -->
+  <section class="brief-section">
+    <div class="brief-head">
+      <span class="brief-title"><span>📢 信息简报</span></span>
+      <span class="brief-hint">行业动态 · 工具情报 · 价格对比</span>
+    </div>
+    <div class="brief-grid">
+      <a class="brief-card" href="h3-price.html">
+        <span class="brief-badge">NEW</span>
+        <span class="brief-main">
+          <span class="brief-name">🎬 MiniMax H3 视频模型 · 全平台价格对比</span>
+          <span class="brief-desc">H3 能力概览 + 7 大平台单价排名，RunningHub 低至 0.38 倍海螺价</span>
+        </span>
+        <span class="brief-date">2026-08-01</span>
+        <span class="brief-go">查看 →</span>
+      </a>
+    </div>
+  </section>
+
   <div class="res-grid">
 
     <div class="res-card">
