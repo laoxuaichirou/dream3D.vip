@@ -479,7 +479,7 @@ function setTheme(t){
 }
 (function(){
   const saved=localStorage.getItem('gary-theme');
-  if(saved){setTheme(saved)}
+  if(saved&&saved.indexOf("light-")!==0){setTheme(saved)}else{setTheme("dark-gold")}
 })();
 /* 统一导航下拉（触屏点击支持） */
 document.querySelectorAll(".unav-item > button.unav-btn").forEach(function(btn){

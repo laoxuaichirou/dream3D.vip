@@ -244,7 +244,8 @@ function setTheme(t){
 }
 (function(){
   var saved = localStorage.getItem('gary-theme');
-  if (saved) setTheme(saved);
+  if (saved && saved.indexOf("light-") !== 0) setTheme(saved);
+  else setTheme("dark-gold");
 })();
 /* ===== 导航下拉（触屏点击支持） ===== */
 function closeUnavDrops(){ document.querySelectorAll(".unav-item.open").forEach(function(i){ i.classList.remove("open"); }); }

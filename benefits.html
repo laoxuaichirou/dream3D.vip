@@ -616,7 +616,7 @@ document.querySelectorAll(".list-card a.btn[href^='http'], .featured-card a.btn[
 
 (function(){
   var theme = localStorage.getItem("gary-theme");
-  if (["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(theme) < 0) theme = "dark-gold";
+  if (["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(theme) < 0 || theme.indexOf("light-") === 0) theme = "dark-gold";
   document.documentElement.setAttribute("data-theme", theme);
 })();
 </script>
