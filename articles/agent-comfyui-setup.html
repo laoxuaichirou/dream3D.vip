@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark-gold">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Agent 时代 ComfyUI 部署指南 · 知识库 · GaryAIGC</title>
+<style>
+:root{--font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+--ease:cubic-bezier(0.16,1,0.3,1);--transition:0.3s var(--ease);--radius:14px}
+[data-theme="dark-gold"]{--bg:#0a0a0f;--bg-card:#101017;--border:rgba(200,164,92,0.15);--border-hover:rgba(200,164,92,0.4);
+--text:#ececf2;--text-dim:#9a9ab0;--text-muted:#5f5f78;--accent:#c8a45c;--accent-strong:#e8c97a;--accent-glow:rgba(200,164,92,0.1);
+--gradient:linear-gradient(135deg,#c8a45c,#e8c97a);--nav-bg:rgba(10,10,15,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="dark-blue"]{--bg:#060b14;--bg-card:#0c1220;--border:rgba(56,139,253,0.15);--border-hover:rgba(56,139,253,0.4);
+--text:#e2e8f4;--text-dim:#8298b4;--text-muted:#4e5f7d;--accent:#388bfd;--accent-strong:#79c0ff;--accent-glow:rgba(56,139,253,0.1);
+--gradient:linear-gradient(135deg,#388bfd,#79c0ff);--nav-bg:rgba(6,11,20,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="dark-purple"]{--bg:#0e0a17;--bg-card:#141021;--border:rgba(168,130,255,0.15);--border-hover:rgba(168,130,255,0.4);
+--text:#ebe2fa;--text-dim:#a08ec2;--text-muted:#615080;--accent:#a882ff;--accent-strong:#d4b8ff;--accent-glow:rgba(168,130,255,0.1);
+--gradient:linear-gradient(135deg,#a882ff,#d4b8ff);--nav-bg:rgba(14,10,23,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="light-warm"]{--bg:#faf7f2;--bg-card:#ffffff;--border:rgba(150,110,55,0.18);--border-hover:rgba(150,110,55,0.42);
+--text:#2b2822;--text-dim:#7c7263;--text-muted:#a2947f;--accent:#a87c3e;--accent-strong:#8a6030;--accent-glow:rgba(168,124,62,0.09);
+--gradient:linear-gradient(135deg,#a87c3e,#c8a05e);--nav-bg:rgba(250,247,242,0.88);--nav-border:rgba(0,0,0,0.08)}
+[data-theme="light-cool"]{--bg:#f5f7fa;--bg-card:#ffffff;--border:rgba(50,105,180,0.16);--border-hover:rgba(50,105,180,0.38);
+--text:#1b2536;--text-dim:#5c6c84;--text-muted:#8c9cb4;--accent:#2f6cbd;--accent-strong:#255aa0;--accent-glow:rgba(47,108,189,0.08);
+--gradient:linear-gradient(135deg,#2f6cbd,#4f8ad8);--nav-bg:rgba(245,247,250,0.88);--nav-border:rgba(0,0,0,0.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-strong)}
+::selection{background:var(--accent-glow)}
+.unav-wrap{position:sticky;top:14px;z-index:200;display:flex;justify-content:center;padding:14px 16px 0}
+.unav{display:flex;align-items:center;gap:3px;background:var(--nav-bg);
+backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);
+border:1px solid var(--nav-border);border-radius:999px;padding:7px 12px;
+box-shadow:0 10px 34px rgba(0,0,0,0.28);max-width:100%;flex-wrap:wrap;justify-content:center}
+.unav-logo{font-size:17px;font-weight:800;letter-spacing:-0.3px;background:var(--gradient);
+-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding:6px 12px;cursor:pointer;white-space:nowrap}
+.unav-sep{width:1px;height:18px;background:var(--nav-border);margin:0 5px}
+.unav-item{position:relative}
+.unav-btn{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:999px;
+font-size:13.5px;font-weight:500;color:var(--text-dim);cursor:pointer;border:none;background:transparent;
+transition:all var(--transition);white-space:nowrap;font-family:var(--font);text-decoration:none}
+.unav-btn:hover,.unav-item.open .unav-btn,.unav-btn.active{color:var(--text);background:var(--accent-glow)}
+.unav-btn .caret{font-size:9px;opacity:0.6;transition:transform var(--transition)}
+.unav-item:hover .caret,.unav-item.open .caret{transform:rotate(180deg)}
+.unav-drop{position:absolute;top:calc(100% + 10px);right:0;min-width:160px;background:var(--bg-card);
+border:1px solid var(--border);border-radius:14px;padding:8px;opacity:0;visibility:hidden;
+transition:all 0.22s;z-index:300;box-shadow:0 16px 44px rgba(0,0,0,0.4)}
+.unav-item:hover .unav-drop,.unav-item.open .unav-drop{opacity:1;visibility:visible}
+.unav-link{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;
+font-size:13px;color:var(--text-dim);cursor:pointer;transition:all var(--transition)}
+.unav-link:hover{background:var(--accent-glow);color:var(--text)}
+.article{max-width:820px;margin:0 auto;padding:48px 24px 80px}
+.article-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);
+margin-bottom:28px;transition:color var(--transition)}
+.article-back:hover{color:var(--accent)}
+.article h1{font-size:clamp(26px,4.5vw,38px);font-weight:900;letter-spacing:-0.5px;line-height:1.25;
+margin-bottom:14px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.article-meta{font-size:13px;color:var(--text-muted);padding-bottom:24px;margin-bottom:32px;border-bottom:1px solid var(--border)}
+.article-body h2{font-size:22px;font-weight:800;margin:40px 0 14px;padding-top:14px;border-top:1px solid var(--border)}
+.article-body h2:first-child{border-top:none;padding-top:0;margin-top:0}
+.article-body h3{font-size:17px;font-weight:700;margin:28px 0 10px;color:var(--accent-strong)}
+.article-body h4{font-size:15px;font-weight:700;margin:20px 0 8px}
+.article-body p{margin:12px 0;color:var(--text-dim);font-size:17px}
+.article-body li{font-size:16px}
+.article-body strong{color:var(--text);font-weight:700}
+.article-body code{font-family:ui-monospace,Consolas,monospace;font-size:14px;background:var(--accent-glow);
+border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:var(--accent-strong)}
+.article-body pre{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;
+padding:16px;overflow-x:auto;margin:14px 0;font-family:ui-monospace,Consolas,monospace;font-size:14.5px;color:var(--text-dim);line-height:1.7}
+.article-body blockquote{border-left:3px solid var(--accent);background:var(--accent-glow);
+border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;color:var(--text-dim);font-size:15.5px}
+.article-body table{width:100%;border-collapse:collapse;margin:16px 0;font-size:15px}
+.article-body th,.article-body td{border:1px solid var(--border);padding:9px 12px;text-align:left}
+.article-body th{background:var(--accent-glow);color:var(--accent-strong);font-weight:700}
+.article-body td{color:var(--text-dim)}
+.article-body .hl{color:#ff8a7a;font-weight:800}
+.article-body .hl-gold{color:var(--accent-strong);font-weight:800}
+.article-body hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+.article-body figure{margin:16px 0;text-align:center}
+.article-body figure img{max-width:100%;border-radius:10px;border:1px solid var(--border);
+background:#fff;box-shadow:0 6px 24px rgba(0,0,0,0.25)}
+.article-note{margin-top:36px;padding:14px 18px;border:1px dashed var(--border-hover);border-radius:12px;
+font-size:13px;color:var(--text-muted)}
+.agent-card{background:var(--bg-card);border:1px solid var(--border);border-left:4px solid var(--accent);
+border-radius:12px;padding:14px 18px;margin:14px 0}
+.manual-card{background:var(--bg-card);border:1px solid var(--border);border-left:4px solid #f59e0b;
+border-radius:12px;padding:14px 18px;margin:14px 0}
+.warn-box{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;
+padding:12px 16px;color:#fcd34d;font-size:14px;margin:14px 0}
+.ok-box{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:10px;
+padding:12px 16px;color:#6ee7b7;font-size:14px;margin:14px 0}
+.badge{display:inline-flex;align-items:center;gap:.3rem;padding:.15rem .6rem;border-radius:999px;
+font-size:.75rem;font-weight:700;letter-spacing:.02em;vertical-align:middle}
+.badge-agent{background:rgba(200,164,92,.15);color:var(--accent-strong);border:1px solid rgba(200,164,92,.35)}
+.badge-manual{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.3)}
+.badge-ok{background:rgba(16,185,129,.15);color:#6ee7b7;border:1px solid rgba(16,185,129,.3)}
+.flow{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin:14px 0;justify-content:center}
+.flow-box{background:var(--bg-card);padding:.45rem .9rem;border-radius:8px;font-size:.88rem;
+color:var(--text-dim);border:1px solid var(--border);font-weight:500}
+.flow-arrow{color:var(--text-muted);font-size:1.2rem}
+.footer{border-top:1px solid var(--border);padding:28px 24px;text-align:center;color:var(--text-muted);font-size:13px}
+</style>
+<style>
+.donate-strip{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:90;
+  writing-mode:vertical-rl;padding:16px 8px;font-size:13px;letter-spacing:3px;cursor:pointer;
+  color:var(--accent);background:var(--bg-card);border:1px solid var(--border);border-right:none;
+  border-radius:12px 0 0 12px;transition:all .25s;font-family:var(--font)}
+.donate-strip:hover{border-color:var(--border-hover);padding-right:12px}
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);
+  z-index:500;display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:all .25s}
+.modal-mask.show{opacity:1;visibility:visible}
+.modal-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
+  padding:28px 32px;text-align:center;max-width:90vw;transform:translateY(10px);transition:transform .25s}
+.modal-mask.show .modal-card{transform:translateY(0)}
+.modal-title{font-size:18px;font-weight:800;margin-bottom:6px}
+.modal-desc{font-size:13.5px;color:var(--text-dim);margin-bottom:16px;max-width:300px}
+.modal-qr img{width:190px;aspect-ratio:3/4;height:auto;object-fit:contain;background:#fff;padding:8px;border-radius:12px}
+.modal-close{margin-top:16px;padding:8px 22px;border-radius:20px;border:1px solid var(--border);
+  background:transparent;color:var(--text-dim);font-size:13px;cursor:pointer;font-family:var(--font)}
+.modal-close:hover{border-color:var(--border-hover);color:var(--text)}
+@media (max-width:767px){.donate-strip{display:none}}
+</style>
+<script>try{var t=localStorage.getItem("gary-theme");if(!t||["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(t)<0||t.indexOf("light-")===0)t="dark-gold";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark-gold")}</script>
+</head>
+<body>
+<div class="unav-wrap">
+  <nav class="unav">
+    <span class="unav-logo" onclick="location.href='../index.html'">GaryAIGC</span>
+    <span class="unav-sep"></span>
+    <div class="unav-item"><a class="unav-btn" href="../index.html">AI创作</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../benefits.html">AI福利</a></div>
+    <div class="unav-item"><a class="unav-btn active" href="../knowledge.html">知识库文档</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../resources.html">资源库</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../videos.html">视频教程</a></div>
+    <div class="unav-item"><a class="unav-btn" href="../community.html">社区</a></div>
+    <span class="unav-sep"></span>
+    <div class="unav-item">
+      <button class="unav-btn" type="button"><span>主题</span><span class="caret">▼</span></button>
+      <div class="unav-drop">
+        <a class="unav-link" onclick="setTheme('dark-gold')">暗金 Dark Gold</a>
+        <a class="unav-link" onclick="setTheme('dark-blue')">暗蓝 Deep Blue</a>
+        <a class="unav-link" onclick="setTheme('dark-purple')">暗紫 Violet</a>
+        <a class="unav-link" onclick="setTheme('light-warm')">暖白 Warm</a>
+        <a class="unav-link" onclick="setTheme('light-cool')">冷白 Cool</a>
+      </div>
+    </div>
+  </nav>
+</div>
+<main class="article">
+  <a class="article-back" href="../knowledge.html">← 返回知识库</a>
+  <h1>Agent 时代 ComfyUI 部署指南</h1>
+  <div class="article-meta">ComfyUI · Agent 自动化 · Hermes · 新手入门 · 配套最新整合包（cu130）</div>
+  <div class="article-body">
+
+<p><strong>说清意图，让 Agent 自己动手——你只管决策，它管实现。</strong></p>
+<p>这是 ComfyUI 入门配置的 <strong>Agent 时代版本</strong>，配套 GaryAIGC 最新整合包（内置 CUDA 13.0 / Python 3.12 / 最新前端，开箱即用）。和老教程相比，你<strong>不用再手动装 Git、Python、CUDA、cuDNN、ffmpeg</strong>——整合包全部自带。你只需要做 3 件手动的事：<strong>装显卡驱动、下载解压、开代理</strong>，剩下的交给 Agent。</p>
+
+<h2>核心思路：说意图，不写代码</h2>
+<div class="flow">
+  <span class="flow-box">1. 手动：装驱动 / 下载 / 开代理</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-box">2. Agent 探测环境</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-box">3. Agent 配置启动器</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-box">4. Agent 启动验证</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-box">5. 人工确认出图</span>
+</div>
+
+<div class="agent-card">
+  <span class="badge badge-agent">🤖 Agent 接管</span>
+  <p style="margin-top:.5rem;font-size:14px;">你<strong>不需要</strong>告诉 Agent 具体路径、具体命令、具体版本号。只需描述<strong>目标</strong>，Agent 会自动扫描你的电脑：找到整合包、检测显卡驱动、识别代理端口，然后生成适配你机器的脚本并执行。</p>
+</div>
+<div class="manual-card">
+  <span class="badge badge-manual">👤 人工把关</span>
+  <p style="margin-top:.5rem;font-size:14px;">涉及<strong>物理机操作、账号权限、重启、肉眼确认</strong>的节点，Agent 无法替代。全流程只有 3 个手动步骤 + 1 次最终确认，其余全部交给 Agent。</p>
+</div>
+
+<div class="warn-box">
+  <strong>⚠️ 核心约束（全程有效）</strong>：整合包使用<strong>便携版 Python</strong>（位于 <code>python_embeded</code> 目录）。所有 pip 安装、依赖修复，必须使用便携 Python，<strong>禁止写入系统 Python</strong>。给 Agent 的指令里这句话一定要带。
+</div>
+
+<p>👴 不会用 Agent？走传统图文教程：<a href="comfyui-setup-guide.html"><strong>ComfyUI 入门环境配置图文教程</strong></a></p>
+
+<h2>第 1 步：下载并解压整合包 <span class="badge badge-manual">👤 手动</span></h2>
+<div class="manual-card">
+  <p style="font-size:16px;">整合包托管在夸克网盘，Agent 无法自动登录你的网盘账号下载。请手动完成：</p>
+  <p style="font-size:17px;"><strong>下载地址</strong>：<a href="https://pan.quark.cn/s/b5509d5c360f" target="_blank" rel="noopener">https://pan.quark.cn/s/b5509d5c360f</a>（B站老许分享-Comfyui整合包-老许8月轻量包，<span class="hl">不含模型</span>）</p>
+  <p style="font-size:16px;"><strong>解压密码</strong>：<span class="hl">为防恶意贩卖，压缩包已加密——密码请到老许粉丝群「群公告」自取</span>（找不到进群方式看站内「社区」页）。</p>
+  <p style="font-size:17px;"><strong>解压要求</strong>：解压到<strong>非中文路径</strong>（例如 <code>D:\ComfyUI</code>，路径里<strong>不能出现中文和空格</strong>）——<span class="hl">老教程血泪教训：路径带中文会出各种奇怪问题，排查起来很痛苦</span>。</p>
+  <p style="font-size:16px;"><strong>注意</strong>：解压后请确认目录里有 <code>python_embeded</code> 文件夹（整合包的便携 Python 环境），有它才是完整包。</p>
+</div>
+<figure><img src="img/comfyui-setup/image23.png" alt="解压到非中文目录" loading="lazy" style="max-width:552px"></figure>
+
+<h2>第 2 步：安装显卡驱动 + 开启虚拟内存 <span class="badge badge-manual">👤 手动</span></h2>
+<div class="manual-card">
+  <p style="font-size:16px;">这是<strong>唯一必须手动安装的软件</strong>。<span class="hl">整合包内置 CUDA 13.0，需要较新的 NVIDIA 驱动</span>，建议直接安装<strong>官网最新版 Studio 驱动</strong>：</p>
+  <p style="font-size:16px;">① 打开 <a href="https://www.nvidia.cn/geforce/drivers/">NVIDIA 官网驱动下载</a> → 选择你的显卡型号 + Windows → 下载 <strong>Studio 驱动</strong>（比 Game Ready 更稳定）</p>
+  <p style="font-size:16px;">② 安装过程屏幕可能黑屏闪烁，属正常；<span class="hl">装完必须重启电脑</span></p>
+  <p style="font-size:16px;">③ 重启后：右键「此电脑」→ 属性 → 高级系统设置 → 性能设置 → 高级 → 虚拟内存 → 改为「自动管理」（容易爆显存就手动设 20GB+）</p>
+</div>
+<figure><img src="img/comfyui-setup/image1.png" alt="NVIDIA 官网驱动下载" loading="lazy" style="max-width:552px"></figure>
+<figure><img src="img/comfyui-setup/image2.png" alt="驱动选择页面" loading="lazy" style="max-width:552px"></figure>
+<div class="ok-box">
+  <strong>✅ 怎么验证驱动装好了？</strong> 按 <code>Win+R</code> 输入 <code>cmd</code> 回车，输入 <code>nvidia-smi</code>，能显示显卡信息表格就说明驱动正常。
+</div>
+
+<h2>第 3 步：开启网络代理 <span class="badge badge-manual">👤 手动</span></h2>
+<div class="manual-card">
+  <p style="font-size:14px;">ComfyUI 更新节点、下载模型需要访问 GitHub / HuggingFace，国内网络需要代理。请确认你的代理软件（Clash Verge / v2rayN 等）已开启<strong>系统代理</strong>或<strong>TUN 模式</strong>：</p>
+  <p style="font-size:14px;">① 打开代理软件 → 开启「系统代理」</p>
+  <p style="font-size:14px;">② 记下你的代理端口号（Clash Verge 默认 <code>7897</code>，其他常见 7890/10809）——告诉 Agent 时要用到</p>
+  <p style="font-size:14px;">③ 不会开？用 Clash Verge 的话，设置 → 系统代理开关打开即可；再不行问群友/Agent</p>
+</div>
+<figure><img src="img/comfyui-setup/image25.png" alt="Windows 代理设置" loading="lazy" style="max-width:552px"></figure>
+<figure><img src="img/comfyui-setup/image26.png" alt="代理端口查看" loading="lazy" style="max-width:552px"></figure>
+
+<h2>第 4 步：让 Agent 帮你搞定一切 <span class="badge badge-agent">🤖 Agent 接管</span></h2>
+<p>完成上面 3 个手动步骤后，打开 <strong>Hermes</strong>（推荐，桌面版体验最好；Kimi Code / Claude Code 也可以），把下面这段话复制给它。它会自己找整合包、检测环境、配置启动器、启动验证。</p>
+
+<div class="agent-card">
+  <span class="badge badge-agent">🤖 复制给 Agent 的第一句话</span>
+  <pre>请帮我完成 ComfyUI 整合包的部署配置。先做环境探测：
+1. 扫描电脑上所有 ComfyUI 整合包目录（含 python_embeded 的就是），确认位置、大小、版本
+2. 检测：显卡型号、驱动版本（运行 nvidia-smi）、显存、Windows 版本、磁盘剩余空间
+3. 检测代理：读取系统代理设置，确认代理端口号
+4. 输出《环境就绪报告》，每项标注 [就绪]/[缺失]/[需升级]
+
+绝对约束：
+- 我是整合包用户，所有 Python 操作必须用整合包自带的 python_embeded\python.exe，禁止动系统 Python
+- 不需要安装 Git / CUDA / cuDNN / ffmpeg / 系统 Python（整合包已内置）
+- 如果驱动版本过低，告诉我需要手动升级到最新 Studio 驱动（这步我不能自动做）</pre>
+</div>
+
+<div class="agent-card">
+  <span class="badge badge-agent">🤖 报告确认后，复制给 Agent 的第二句话</span>
+  <pre>基于刚才的《环境就绪报告》，继续完成配置：
+1. 确认整合包解压位置正确（非中文路径），检查 python_embeded 存在
+2. 用整合包自带的启动脚本（启动.bat 或官方 run 脚本）配置代理端口，端口用我系统代理的实际端口
+3. 启动 ComfyUI，等待出现 http://127.0.0.1:8188，确认界面正常
+4. 用浏览器验证 8188 端口可访问，加载默认工作流能正常出图
+5. 输出《安装完成验证清单》
+
+绝对约束：全程使用 python_embeded 的便携 Python；改任何配置前先备份；每完成一大步输出状态让我确认</pre>
+</div>
+
+<div class="ok-box">
+  <strong>💡 Agent 会做什么</strong>：扫描磁盘找整合包 → 检查驱动/代理 → 写启动配置 → 启动服务 → 验证端口 → 汇报。你只需要在它问你"驱动版本对吗？"的时候回答，或者让它继续。
+</div>
+
+<h2>第 5 步：人工验证与收尾 <span class="badge badge-manual">👤 人工确认</span></h2>
+<div class="manual-card">
+  <p style="font-size:14px;">Agent 跑完后，你要肉眼确认这几件事：</p>
+  <p style="font-size:14px;">① 浏览器打开 <code>http://127.0.0.1:8188</code>，ComfyUI 界面正常加载（暗色界面 + 左侧节点面板）</p>
+  <p style="font-size:14px;">② 加载默认工作流 → 点「Queue Prompt」→ 能正常出图</p>
+  <p style="font-size:14px;">③ 启动日志没有红色报错（驱动/显存相关报错见下方排查表）</p>
+  <p style="font-size:14px;">④ 装插件：告诉 Agent「帮我在 ComfyUI-Manager 里安装 XX 插件」，它会用便携 Python 装依赖</p>
+</div>
+<figure><img src="img/comfyui-setup/image30.png" alt="启动成功" loading="lazy" style="max-width:552px"></figure>
+<figure><img src="img/comfyui-setup/image31.png" alt="ComfyUI 界面" loading="lazy" style="max-width:552px"></figure>
+
+<h2>模型从哪来？（重要）</h2>
+<div class="warn-box">
+  <strong>⚠️ 本整合包不含模型</strong>（为控制体积，网盘标注「轻量包·不含模型」）。你需要自己准备模型文件，放进整合包 <code>ComfyUI\models</code> 对应子目录：
+  <ul style="margin:.5rem 0;padding-left:1.2rem;font-size:15px;">
+    <li><code>checkpoints</code> — 主模型（如 SDXL / Flux 等，根据你想玩的类型下载）</li>
+    <li><code>diffusion_models</code> — 扩散模型（视频类，如 MiniMax H3）</li>
+    <li><code>vae</code> — VAE 文件</li>
+  </ul>
+  <strong>模型获取渠道</strong>：模型文件另行分享——<span class="hl">关注老许粉丝群公告 / 网盘「模型」目录</span>（也可以让 Agent 帮你从 HuggingFace 下载，需要代理）。模型放对目录后，直接让 Agent「扫描我的 models 目录，告诉我缺哪些模型」即可。
+</div>
+
+<h2>故障排查：Agent 报错怎么办？</h2>
+<table>
+  <tr><th style="width:26%">报错现象</th><th style="width:20%">责任方</th><th>解决方案</th></tr>
+  <tr><td><code>nvidia-smi 不是内部命令</code></td><td><span class="badge badge-manual">👤 人工</span></td><td>驱动没装好或没重启。回到第 2 步，装完重启再试。</td></tr>
+  <tr><td><code>CUDA out of memory</code></td><td><span class="badge badge-manual">👤 人工</span></td><td>显存不足。虚拟内存开大一点，或用低显存模式启动。</td></tr>
+  <tr><td><code>Failed to initialize NVML</code></td><td><span class="badge badge-manual">👤 人工</span></td><td>驱动过旧或损坏。装官网最新 Studio 驱动，重启。</td></tr>
+  <tr><td><code>git clone 超时 / 443</code></td><td><span class="badge badge-manual">👤 人工</span></td><td>代理没生效。确认代理软件系统代理开启，端口写对。</td></tr>
+  <tr><td><code>ModuleNotFoundError: No module named 'xxx'</code></td><td><span class="badge badge-agent">🤖 Agent</span></td><td><strong>大概率包装到了系统 Python。</strong> 告诉 Agent：「请检查这个依赖装到了哪里，如果是系统 Python，卸载并重装到整合包的 python_embeded 里。」</td></tr>
+  <tr><td><code>模型加载失败 / 文件损坏</code></td><td><span class="badge badge-manual">👤 人工</span></td><td>模型没放对目录或下载不完整。确认放在 <code>models</code> 对应子目录，重新下载。</td></tr>
+</table>
+
+<h2>附录：给 Agent 的指令速查</h2>
+<h4>指令 A：探测环境（不安装）</h4>
+<pre>扫描我电脑上所有 ComfyUI 整合包和系统环境（显卡/驱动/磁盘/代理），输出《环境就绪报告》标注 [就绪]/[缺失]/[需升级]。注意：我是整合包用户，用 python_embeded 便携 Python，不需要装 Git/CUDA/系统 Python。</pre>
+<h4>指令 B：配置并启动</h4>
+<pre>基于环境报告，配置整合包启动器的代理端口（用我系统代理实际端口），启动 ComfyUI 到 http://127.0.0.1:8188，浏览器验证能出图，输出验证清单。绝对约束：只用 python_embeded，改配置先备份。</pre>
+<h4>指令 C：装插件</h4>
+<pre>帮我在 ComfyUI-Manager 安装插件「XXX」。用整合包的 python_embeded 装依赖，禁止写系统 Python。装完重启验证节点出现在节点列表。</pre>
+<h4>指令 D：修复包装错位置</h4>
+<pre>我遇到 ModuleNotFoundError，怀疑依赖装进了系统 Python。请检查最近安装的包位置，如果在系统 Python，迁移到整合包 python_embeded 并验证。</pre>
+
+<h2>总结：Agent 时代装 ComfyUI，其实只有 3 件手动事</h2>
+<div class="ok-box">
+  <p style="font-size:14px;"><strong>✅ 手动（3 件）</strong>：装驱动（必做）、下载解压（必做）、开代理（必做）——都是系统级/账号级操作，Agent 替代不了。</p>
+  <p style="font-size:14px;"><strong>✅ Agent（剩下全包）</strong>：探测环境、配置启动器、启动验证、装插件、修报错。</p>
+  <p style="font-size:14px;"><strong>✅ 一条铁律</strong>：所有 Python 操作走 <code>python_embeded</code>，不碰系统 Python。</p>
+</div>
+
+<div class="article-note">
+  本文配套 GaryAIGC 最新整合包（CUDA 13.0 / 内置 H3 节点）｜旧版传统图文教程见 <a href="comfyui-setup-guide.html">ComfyUI 入门环境配置图文教程</a>｜最后更新：2026 年 8 月
+</div>
+
+  </div>
+</main>
+
+<div class="donate-strip" id="donateBtn">打赏作者</div>
+<div class="modal-mask" id="donateModal">
+  <div class="modal-card">
+    <div class="modal-title">请作者喝杯咖啡</div>
+    <div class="modal-desc">如果你觉得本站对你有帮助，微信扫码支持一下，任意金额都是鼓励</div>
+    <div class="modal-qr"><img src="../wx-pay.jpg" alt="微信收款码"></div>
+    <button class="modal-close" id="donateClose" type="button">关闭</button>
+  </div>
+</div>
+
+<footer class="footer">© 2025 GaryAIGC · 让 AI 创作更简单</footer>
+<script>
+function setTheme(t){if (["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(t) < 0) t = "dark-gold";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("gary-theme",t)}
+(function(){var t=localStorage.getItem("gary-theme");if(t&&t.indexOf("light-")!==0)setTheme(t);else setTheme("dark-gold")})();
+document.querySelectorAll(".unav-item > button.unav-btn").forEach(function(btn){
+  btn.addEventListener("click", function(e){
+    e.stopPropagation();
+    var item = btn.parentElement, was = item.classList.contains("open");
+    document.querySelectorAll(".unav-item.open").forEach(function(el){el.classList.remove("open")});
+    if (!was) item.classList.add("open");
+  });
+});
+document.addEventListener("click", function(e){
+  if (!e.target.closest(".unav-item"))
+    document.querySelectorAll(".unav-item.open").forEach(function(el){el.classList.remove("open")});
+});
+</script>
+<script>
+(function(){
+  var btn=document.getElementById("donateBtn"),modal=document.getElementById("donateModal"),close=document.getElementById("donateClose");
+  if(!btn||!modal)return;
+  btn.addEventListener("click",function(){modal.classList.add("show")});
+  if(close)close.addEventListener("click",function(){modal.classList.remove("show")});
+  modal.addEventListener("click",function(e){if(e.target===modal)modal.classList.remove("show")});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")modal.classList.remove("show")});
+})();
+</script>
+</body>
+</html>

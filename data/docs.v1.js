@@ -16,6 +16,7 @@ const DOC_CATS = [
 
 const DOC_DB = [
   /* ComfyUI */
+  {t:"Agent 时代 ComfyUI 部署指南", file:"articles/agent-comfyui-setup.html", cat:"comfyui", d:"说意图让 Agent 干活：3 个手动步骤 + Hermes 自动搞定，配套最新整合包"},
   {t:"ComfyUI 入门环境配置图文教程", file:"articles/comfyui-setup-guide.html", cat:"comfyui", d:"新手必看：下载、环境变量到启动全流程，31 张步骤配图"},
   {t:"ComfyUI 手册 01：数据流语法与强制转换", file:"articles/comfyui-manual-01.html", cat:"comfyui", d:"节点数据类型与转换规则"},
   {t:"ComfyUI 手册 02：工程维护指令集", file:"articles/comfyui-manual-02.html", cat:"comfyui", d:"工程目录与日常维护指令"},

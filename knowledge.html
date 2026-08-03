@@ -180,7 +180,18 @@ a{color:inherit;text-decoration:none}
     <span class="unav-sep"></span>
     <div class="unav-item"><a class="unav-btn" href="index.html">AI创作</a></div>
     <div class="unav-item"><a class="unav-btn" href="benefits.html">AI福利</a></div>
-    <div class="unav-item"><a class="unav-btn active" href="knowledge.html">知识库</a></div>
+    <div class="unav-item">
+      <a class="unav-btn active" href="knowledge.html">知识库文档</a>
+      <div class="unav-drop" style="left:0;right:auto">
+        <a class="unav-link" href="knowledge.html#comfyui">ComfyUI</a>
+        <a class="unav-link" href="knowledge.html#ai-image">AI 绘画</a>
+        <a class="unav-link" href="knowledge.html#ai-video">AI 视频</a>
+        <a class="unav-link" href="knowledge.html#ai-coding">AI Coding</a>
+        <a class="unav-link" href="knowledge.html#runninghub">RunningHub</a>
+        <a class="unav-link" href="knowledge.html#storyboard">分镜镜头</a>
+        <a class="unav-link" href="resources.html#briefing">📢 信息简报</a>
+      </div>
+    </div>
     <div class="unav-item"><a class="unav-btn" href="resources.html">资源库</a></div>
     <div class="unav-item"><a class="unav-btn" href="videos.html">视频教程</a></div>
     <div class="unav-item"><a class="unav-btn" href="community.html">社区</a></div>
@@ -200,7 +211,7 @@ a{color:inherit;text-decoration:none}
 
 <section class="page-header">
   <div class="container">
-    <h1><span>知识库</span></h1>
+    <h1><span>知识库文档</span></h1>
     <p>教程文档的知识体系，标题直达。视频教学集中在视频专栏，文档区只放文档。</p>
   </div>
 </section>
@@ -270,7 +281,7 @@ a{color:inherit;text-decoration:none}
         + '<span class="doc-desc">' + d.d + '</span>'
         + '<span class="doc-arrow">→</span></a>';
     }).join("");
-    return '<section class="section">'
+    return '<section class="section" id="' + c.key + '">'
       + '<div class="section-title"><h2>' + c.name + '</h2>'
       + '<span class="sub">' + c.sub + '</span>'
       + '<span class="count">' + list.length + ' 篇</span></div>'
