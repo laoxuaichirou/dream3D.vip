@@ -71,21 +71,21 @@ border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;color:var(--text-dim
 </style>
 </head>
 <body>
-<nav>
-GaryAIGC
+<div class="unav-wrap"><nav class="unav">
+<div class="unav-logo">GaryAIGC</div>
+<div class="unav-sep"></div>
+<div class="unav-item"><a class="unav-btn" href="../index.html">AI创作</a></div>
+<div class="unav-item"><a class="unav-btn" href="../benefits.html">AI福利</a></div>
+<div class="unav-item"><a class="unav-btn" href="../knowledge.html">知识库</a></div>
+<div class="unav-item"><a class="unav-btn" href="../community.html">社区</a></div>
+<div class="unav-item"><a class="unav-btn" href="../videos.html">视频</a></div>
+</nav></div>
 
-<a href="../index.html">AI创作</a>
-<a href="../benefits.html">AI福利</a>
-<a href="../knowledge.html">知识库</a>
-<a href="../community.html">社区</a>
-<a href="../videos.html">视频</a>
-</nav>
-
-<article>
-<a href="../knowledge.html">← 返回知识库</a>
+<article class="article">
+<a class="article-back" href="../knowledge.html">← 返回知识库</a>
 <h1>MiniMax H3 终极提示词指南</h1>
-官方规范 + 社区实测 · v1.2 · 2026-08-06 · 13 章完整版 · 配套 8 个场景预设
-
+<div class="article-meta">官方规范 + 社区实测 · v1.2 · 2026-08-06 · 13 章完整版 · 配套 8 个场景预设</div>
+<div class="article-body">
 <h2>H3 核心认知：它不是视频模型，是通用多模态生成器</h2>
 <h3>📋 基础参数</h3>
                     <table>
@@ -98,23 +98,19 @@ GaryAIGC
                         <tr><td>支持语言</td><td>对话支持 11 种语言（含中文）；提示词结构字段建议英文</td><td>官方 FAQ</td></tr>
                         <tr><td>比例</td><td>21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16 / adaptive</td><td>API 文档</td></tr>
                     </table>
-            
                 💡
-                
-                    <strong>核心原则
+                    <strong>核心原则</strong>
                     <p>H3 的提示词遵循"写你能看到的和听到的，不写你想感受到的"。避免"史诗感""电影级"这类抽象词，用具体的镜头、动作、声音来描述。</p>
 
 <h2>提示词三字段结构（Base 模式强制格式）</h2>
-
-                ⚠️
-                
-                    I2VA / FL2VA / L2VA 的额外字段
+⚠️
+                    <strong>I2VA / FL2VA / L2VA 的额外字段</strong>
                     <p>这些模式在 <code>integrated_multimodal_description</code> 之前增加一个 <strong>IMAGE-ALIGNMENT INSTRUCTION</strong>，用于锁定首帧/尾帧的内容（身份、服装、位置、光线、背景）。详见第十二节案例。</p>
 
 <h2>Integrated Multimodal Description 逐段拆解</h2>
 <h3>3.2 视觉风格（必须在开头声明）</h3>
                     <p>在 Shot 1 开头立即声明整体风格，使用直接类别而非模糊赞美：</p>
-                    <p><code>Live-action</code> <code>Cinematic</code> <code>2D-animated</code> <code>3D CG</code> <code>Claymation</code> <code>Watercolor</code> <code>Vintage film</p>
+                    <p><code>Live-action</code> <code>Cinematic</code> <code>2D-animated</code> <code>3D CG</code> <code>Claymation</code> <code>Watercolor</code> <code>Vintage film</code></p>
             <h3>3.3 参考图锚定（I2V / R2V）</h3>
                     <p>立即识别参考图中必须保持一致的元素：</p>
                     <ul>
@@ -147,17 +143,14 @@ GaryAIGC
                     <p><strong>&lt;d&gt; 内部只能有：语言标记 + 确切的台词文字。</strong>所有表演指令（语气、情绪、语速）必须写在标签外面。</p>
             <h3>3.5 画外音（Voiceover）</h3>
                     <p>使用精确短语 <code>says in an off-screen voiceover</code>，并在标签后声明角色嘴唇完全闭合：</p>
-                    
                         <p>(S1) says in an off-screen voiceover: <code>&lt;d&gt;[English] The city never sleeps.&lt;/d&gt;</code> Her lips remain completely closed throughout.</p>
             </blockquote>
             <h3>3.6 跨切对话</h3>
                     <p>如果对话跨越镜头切换，在连接点两侧都放置对话，并声明音频连续：</p>
-                    
                         <p>[Shot 1] ... <code>&lt;d&gt;[Chinese] 你必须在日落前&lt;/d&gt;</code></p>
                         <p>[Shot 2] At 00:03.500, the camera cuts to a close-up. <code>&lt;d&gt;[Chinese] 赶到山顶。&lt;/d&gt;</code> The audio continues across the cut.</p>
             <h3>3.7 画面文字（On-Screen Text）</h3>
                     <p>所有可见的文字（横幅、招牌、标签、字幕、霓虹灯）必须用<strong>英文双引号</strong>包裹，逐字保留原文和标点，不翻译：</p>
-                    
                         <p>A red neon sign reading <strong>"营业中"</strong> glows above the doorway.</p>
                         <p>The title card displays <strong>"EPISODE 1"</strong> in bold sans-serif.</p>
                     <p>生成后仍需视觉审查，不要假设拼写、品牌处理或法律许可是自动正确的。</p>
@@ -174,10 +167,8 @@ GaryAIGC
                     <tr><td>手持跟随</td><td>A handheld follow shot tracks behind the subject.</td><td>控制纪录片式抖动的程度</td></tr>
                     <tr><td>焦点转移</td><td>A rack focus shifts from the foreground watch to the background city.</td><td>指定前后景关系</td></tr>
                 </table>
-            
                 🚫
-                
-                    致命错误
+                    <strong>致命错误</strong>
                     <p>不要把多个不兼容的镜头运动堆到一个 15 秒片段里。"Orbit + tracking + push-in" 会让模型困惑。每个片段只选一个主导运动。</p>
 
 <h2>音频生成：对话、环境音、音乐的三层分离</h2>
@@ -192,25 +183,20 @@ GaryAIGC
                     <p>角色能听到的音乐（收音机、手机、现场演奏）属于 diegetic 事件，必须写在 <code>integrated_multimodal_description</code> 里，而不是 <code>non_diegetic_music</code>。</p>
             <h3>5.4 物理发声表演（提升真实感）</h3>
                     <p>不要写"完美的口型同步和真实表演"，而是描述可观察的解剖学动作：</p>
-                    
                         <p>Her lips, jaw, cheeks, throat and chest move naturally. The jaw opens naturally, cheeks respond to pressure, throat engages, chest contracts during breath, lips shape the sustained vowel.</p>
             </blockquote>
 
 <h2>参考文件 R2V：给每个文件分配一个明确的任务</h2>
 <h3>6.1 参考分配模式（官方推荐）</h3>
-                    
                         <p>&lt;Picture 1&gt; defines the fictional adult subject's identity and clothing only.</p>
                         <p>&lt;Video 1&gt; defines body timing and the tracking camera only.</p>
                         <p>&lt;Audio 1&gt; defines the authorised voice timbre only.</p>
                     <p><strong>黄金法则：</strong>给每个参考一个狭窄的任务。不要写"Use Image 1 for everything"。</p>
             <h3>6.2 音频参考的严格限制</h3>
-            
                 🚫
-                
-                    音频参考 ≠ 背景音乐参考
+                    <strong>音频参考 ≠ 背景音乐参考</strong>
                     <p>音频参考只传递<strong>音色（timbre）</strong>，不传递口音、情绪、语速、节奏、旋律。这些必须在提示词里用文字指定。参考音频必须是<strong>干净的人声</strong>，不能有背景音乐、重叠说话声、环境噪音。</p>
                 <h3>🎙️ 音频参考最小可行示例</h3>
-                    
                         <p><strong>Prompt:</strong> Character dialogue: "Follow the wind, live free. Leave worries behind, enjoy the moment." Use Audio 1 as the voice-timbre reference.</p>
                         <p><strong>你需要提供：</strong></p>
                         <ul>
@@ -323,10 +309,8 @@ Audience-only background score, or N/A.</code></pre>
                             <td>大致情绪参考</td>
                         </tr>
                     </table>
-            
                 ⚠️
-                
-                    非官方词汇不要用
+                    <strong>非官方词汇不要用</strong>
                     <p><code>loosely_inspired</code>、<code>style_only</code>、<code>do_not_use</code> 不是官方 retention 标签。H3 可能无法识别这些词汇，导致保留策略失效。请严格使用上表中的官方标签。</p>
             <h3>7.3 Ref2VA 完整示例（官方标签）</h3>
             <pre><code>subject_definitions:
@@ -351,10 +335,8 @@ overall_soundscape:
 Light rain on wet stone, distant car horns, one passing bicycle, subtle silk fabric movement, footsteps on wet ground. No other speech.
 non_diegetic_music:
 N/A</code></pre>
-            
                 💡
-                
-                    Ref2VA 与 Base 的关键区别
+                    <strong>Ref2VA 与 Base 的关键区别</strong>
                     <p>Base 模式（T2V/I2V/FL2V）的 <code>integrated_multimodal_description</code> 里直接描述一切；Ref2VA 先通过 <code>subject_definitions</code> 和 <code>retention_analysis</code> 建立"合同"，再在 <code>detailed_description</code> 里引用这些定义。这让复杂多参考任务的可控性大幅提升。</p>
 
 <h2>五大生成模式与选择逻辑</h2>
@@ -374,22 +356,18 @@ non_diegetic_music:
 Sparse solo piano, slow tempo, minor key, fading out at the end.</code></pre>
             <h3>9.2 如果必须用中文写画面描述</h3>
                     <p>API 层面支持中文 prompt，但官方指南建议结构化字段用英文（镜头、风格、约束）。如果坚持用中文写主体描述，<strong>建议追加</strong>防误解声明（社区实践，待实测）：</p>
-                    
                         <p>No dialogue, no voiceover, no spoken words. Characters' lips remain completely closed throughout. No on-screen text, no subtitles, no captions.</p>
                     <p>除非用户在"台词"区域明确填写了内容。</p>
             <h3>9.3 中文台词的正确写法</h3>
-                    
                         <p>The young woman with a clear, gentle voice (S1) speaks softly:</p>
                         <p><code>&lt;d&gt;[Chinese] 今天的晚霞真美。&lt;/d&gt;</code></p>
                         <p>Her lips shape each word naturally, jaw moves with relaxed rhythm.</p>
                     <p><strong>关键：</strong>语气、情绪、语速写在 <code>&lt;d&gt;</code> 外面；标签内只有 <code>[Chinese] 台词</code>。</p>
             <h3>9.4 中文画面文字的写法</h3>
                     <p>如果画面需要出现中文文字（招牌、字幕），用英文句子描述，文字内容用英文双引号包裹中文：</p>
-                    
                         <p>A red neon sign reading <strong>"营业中"</strong> glows above the doorway.</p>
                         <p>The subtitle displays <strong>"第二集"</strong> in white sans-serif.</p>
                     <p>然后必须追加约束：</p>
-                    
                         <p>Do not add Chinese text elsewhere. Do not generate garbled characters. Do not misspell.</p>
 
 <h2>负面约束清单：免费的质量提升</h2>
@@ -442,10 +420,10 @@ No music, no dialogue, no camera cuts, no push-in.</code></pre>
 
 <h2>常见翻车与修复方案</h2>
 
-</strong>
+</div>
 </article>
 
-<footer>© 2025 GaryAIGC · 让 AI 创作更简单</footer>
+<footer class="footer">© 2025 GaryAIGC · 让 AI 创作更简单</footer>
 <script>
 function setTheme(t){if (["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(t) < 0) t = "dark-gold";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("gary-theme",t)}
 (function(){var t=localStorage.getItem("gary-theme");if(t&&t.indexOf("light-")!==0)setTheme(t);else setTheme("dark-gold")})();
