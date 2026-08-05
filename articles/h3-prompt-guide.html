@@ -1,93 +1,441 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="dark-gold">
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>MiniMax H3 终极提示词指南 · 知识库 · GaryAIGC</title>
-<style>
-:root{--font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
---ease:cubic-bezier(0.16,1,0.3,1);--transition:0.3s var(--ease);--radius:14px}
-[data-theme="dark-gold"]{--bg:#0a0a0f;--bg-card:#101017;--border:rgba(200,164,92,0.15);--border-hover:rgba(200,164,92,0.4);
---text:#ececf2;--text-dim:#9a9ab0;--text-muted:#5f5f78;--accent:#c8a45c;--accent-strong:#e8c97a;--accent-glow:rgba(200,164,92,0.1);
---gradient:linear-gradient(135deg,#c8a45c,#e8c97a);--nav-bg:rgba(10,10,15,0.85);--nav-border:rgba(255,255,255,0.07)}
-[data-theme="dark-blue"]{--bg:#060b14;--bg-card:#0c1220;--border:rgba(56,139,253,0.15);--border-hover:rgba(56,139,253,0.4);
---text:#e2e8f4;--text-dim:#8298b4;--text-muted:#4e5f7d;--accent:#388bfd;--accent-strong:#79c0ff;--accent-glow:rgba(56,139,253,0.1);
---gradient:linear-gradient(135deg,#388bfd,#79c0ff);--nav-bg:rgba(6,11,20,0.85);--nav-border:rgba(255,255,255,0.07)}
-[data-theme="dark-purple"]{--bg:#0e0a17;--bg-card:#141021;--border:rgba(168,130,255,0.15);--border-hover:rgba(168,130,255,0.4);
---text:#ebe2fa;--text-dim:#a08ec2;--text-muted:#615080;--accent:#a882ff;--accent-strong:#d4b8ff;--accent-glow:rgba(168,130,255,0.1);
---gradient:linear-gradient(135deg,#a882ff,#d4b8ff);--nav-bg:rgba(14,10,23,0.85);--nav-border:rgba(255,255,255,0.07)}
-[data-theme="light-warm"]{--bg:#faf7f2;--bg-card:#ffffff;--border:rgba(150,110,55,0.18);--border-hover:rgba(150,110,55,0.42);
---text:#2b2822;--text-dim:#7c7263;--text-muted:#a2947f;--accent:#a87c3e;--accent-strong:#8a6030;--accent-glow:rgba(168,124,62,0.09);
---gradient:linear-gradient(135deg,#a87c3e,#c8a05e);--nav-bg:rgba(250,247,242,0.88);--nav-border:rgba(0,0,0,0.08)}
-[data-theme="light-cool"]{--bg:#f5f7fa;--bg-card:#ffffff;--border:rgba(50,105,180,0.16);--border-hover:rgba(50,105,180,0.38);
---text:#1b2536;--text-dim:#5c6c84;--text-muted:#8c9cb4;--accent:#2f6cbd;--accent-strong:#255aa0;--accent-glow:rgba(47,108,189,0.08);
---gradient:linear-gradient(135deg,#2f6cbd,#4f8ad8);--nav-bg:rgba(245,247,250,0.88);--nav-border:rgba(0,0,0,0.08)}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
-a{color:var(--accent);text-decoration:none}
-a:hover{color:var(--accent-strong)}
-::selection{background:var(--accent-glow)}
-.unav-wrap{position:sticky;top:14px;z-index:200;display:flex;justify-content:center;padding:14px 16px 0}
-.unav{display:flex;align-items:center;gap:3px;background:var(--nav-bg);
-backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);
-border:1px solid var(--nav-border);border-radius:999px;padding:7px 12px;
-box-shadow:0 10px 34px rgba(0,0,0,0.28);max-width:100%;flex-wrap:wrap;justify-content:center}
-.unav-logo{font-size:17px;font-weight:800;letter-spacing:-0.3px;background:var(--gradient);
--webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding:6px 12px;cursor:pointer;white-space:nowrap}
-.unav-sep{width:1px;height:18px;background:var(--nav-border);margin:0 5px}
-.unav-item{position:relative}
-.unav-btn{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:999px;
-font-size:13.5px;font-weight:500;color:var(--text-dim);cursor:pointer;border:none;background:transparent;
-transition:all var(--transition);white-space:nowrap;font-family:var(--font);text-decoration:none}
-.unav-btn:hover,.unav-item.open .unav-btn,.unav-btn.active{color:var(--text);background:var(--accent-glow)}
-.article{max-width:900px;margin:0 auto;padding:48px 24px 80px}
-.article-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);
-margin-bottom:28px;transition:color var(--transition)}
-.article-back:hover{color:var(--accent)}
-.article h1{font-size:clamp(26px,4.5vw,38px);font-weight:900;letter-spacing:-0.5px;line-height:1.25;
-margin-bottom:14px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.article-meta{font-size:13px;color:var(--text-muted);padding-bottom:24px;margin-bottom:32px;border-bottom:1px solid var(--border)}
-.article-body h2{font-size:22px;font-weight:800;margin:40px 0 14px;padding-top:14px;border-top:1px solid var(--border)}
-.article-body h2:first-child{border-top:none;padding-top:0;margin-top:0}
-.article-body h3{font-size:17px;font-weight:700;margin:28px 0 10px;color:var(--accent-strong)}
-.article-body h4{font-size:15px;font-weight:700;margin:20px 0 8px}
-.article-body p{margin:12px 0;color:var(--text-dim);font-size:15px}
-.article-body p.li{padding-left:14px}
-.article-body strong{color:var(--text);font-weight:700}
-.article-body code{font-family:ui-monospace,Consolas,monospace;font-size:13px;background:var(--accent-glow);
-border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:var(--accent-strong)}
-.article-body pre{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;
-padding:16px;overflow-x:auto;margin:14px 0}
-.article-body pre code{background:none;border:none;padding:0;color:var(--text-dim);white-space:pre-wrap;word-break:break-word}
-.article-body blockquote{border-left:3px solid var(--accent);background:var(--accent-glow);
-border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;color:var(--text-dim);font-size:14px}
-.article-body table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
-.article-body th,.article-body td{border:1px solid var(--border);padding:9px 12px;text-align:left}
-.article-body th{background:var(--accent-glow);color:var(--accent-strong);font-weight:700}
-.article-body td{color:var(--text-dim)}
-.article-body ul,.article-body ol{padding-left:22px;margin:12px 0;color:var(--text-dim);font-size:15px}
-.article-body li{margin:4px 0}
-.footer{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border)}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniMax H3 终极提示词指南 · 官方规范 + 社区实测</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border-color: #30363d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --success: #3fb950;
+            --warning: #d29922;
+            --danger: #f85149;
+            --code-bg: #1e2530;
+            --gradient-start: #58a6ff;
+            --gradient-end: #a371f7;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+        ::selection { background: rgba(88, 166, 255, 0.3); }
+        .hero {
+            position: relative;
+            padding: 80px 20px 60px;
+            text-align: center;
+            overflow: hidden;
+            background: linear-gradient(180deg, rgba(88,166,255,0.08) 0%, transparent 60%);
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(88,166,255,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 14px;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+        .hero h1 {
+            font-size: clamp(26px, 4.5vw, 44px);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-subtitle {
+            font-size: 17px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 32px;
+        }
+        .hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+        .section { margin-bottom: 56px; }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .section-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .section-title { font-size: 22px; font-weight: 700; }
+        .section-desc { color: var(--text-secondary); margin-bottom: 20px; font-size: 15px; }
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+        .card:hover { border-color: var(--accent); }
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-body { color: var(--text-secondary); font-size: 15px; }
+        .code-block {
+            position: relative;
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin: 14px 0;
+            overflow: hidden;
+        }
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 14px;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .code-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .code-lang {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .community-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            background: rgba(210, 153, 34, 0.12);
+            border: 1px solid rgba(210, 153, 34, 0.3);
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--warning);
+        }
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            color: var(--text-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover { background: var(--border-color); color: var(--text-primary); }
+        .copy-btn.copied {
+            background: rgba(63, 185, 80, 0.15);
+            border-color: var(--success);
+            color: var(--success);
+        }
+        pre {
+            padding: 14px 18px;
+            overflow-x: auto;
+            font-family: "SF Mono", "Fira Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text-primary);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        code { font-family: "SF Mono", "Fira Code", "JetBrains Mono", Consolas, monospace; }
+        p code, li code, td code {
+            background: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--accent);
+        }
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin: 14px 0;
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+        th {
+            background: var(--bg-tertiary);
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            vertical-align: top;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(88, 166, 255, 0.03); }
+        ul, ol { padding-left: 20px; margin: 10px 0; }
+        li { margin-bottom: 6px; color: var(--text-secondary); }
+        li::marker { color: var(--accent); }
+        .alert {
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin: 14px 0;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+        .alert-content { flex: 1; }
+        .alert-title { font-weight: 600; margin-bottom: 3px; font-size: 15px; }
+        .alert-warning {
+            background: rgba(210, 153, 34, 0.1);
+            border: 1px solid rgba(210, 153, 34, 0.3);
+        }
+        .alert-warning .alert-title { color: var(--warning); }
+        .alert-info {
+            background: rgba(88, 166, 255, 0.08);
+            border: 1px solid rgba(88, 166, 255, 0.25);
+        }
+        .alert-info .alert-title { color: var(--accent); }
+        .alert-success {
+            background: rgba(63, 185, 80, 0.08);
+            border: 1px solid rgba(63, 185, 80, 0.25);
+        }
+        .alert-success .alert-title { color: var(--success); }
+        .alert-danger {
+            background: rgba(248, 81, 73, 0.08);
+            border: 1px solid rgba(248, 81, 73, 0.25);
+        }
+        .alert-danger .alert-title { color: var(--danger); }
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--accent);
+            margin-right: 4px;
+        }
+        .toc {
+            position: sticky;
+            top: 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 32px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        .toc-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin-bottom: 3px; }
+        .toc-list a {
+            display: block;
+            padding: 5px 8px;
+            border-radius: 5px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.15s;
+        }
+        .toc-list a:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+        .main-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        @media (max-width: 900px) {
+            .main-layout { grid-template-columns: 1fr; }
+            .toc { position: relative; top: 0; max-height: none; }
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.2s;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .back-to-top.visible { opacity: 1; pointer-events: auto; }
+        .back-to-top:hover { border-color: var(--accent); color: var(--text-primary); }
+        .footer {
+            text-align: center;
+            padding: 50px 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        h3 { font-size: 18px; font-weight: 600; margin: 24px 0 10px; color: var(--text-primary); }
+        h4 { font-size: 15px; font-weight: 600; margin: 18px 0 8px; color: var(--text-secondary); }
+        strong { color: var(--text-primary); }
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        @media (max-width: 640px) {
+            .two-col { grid-template-columns: 1fr; }
+        }
+        .example-box {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
+            margin: 10px 0;
+            font-size: 13.5px;
+            line-height: 1.7;
+        }
+        .example-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .check-item {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        .check-icon { color: var(--success); font-weight: bold; flex-shrink: 0; }
+        .cross-icon { color: var(--danger); font-weight: bold; flex-shrink: 0; }
+    </style>
 </head>
 <body>
-<div class="unav-wrap"><nav class="unav">
-<div class="unav-logo">GaryAIGC</div>
-<div class="unav-sep"></div>
-<div class="unav-item"><a class="unav-btn" href="../index.html">AI创作</a></div>
-<div class="unav-item"><a class="unav-btn" href="../benefits.html">AI福利</a></div>
-<div class="unav-item"><a class="unav-btn" href="../knowledge.html">知识库</a></div>
-<div class="unav-item"><a class="unav-btn" href="../community.html">社区</a></div>
-<div class="unav-item"><a class="unav-btn" href="../videos.html">视频</a></div>
-</nav></div>
 
-<article class="article">
-<a class="article-back" href="../knowledge.html">← 返回知识库</a>
-<h1>MiniMax H3 终极提示词指南</h1>
-<div class="article-meta">官方规范 + 社区实测 · v1.2 · 2026-08-06 · 13 章完整版 · 配套 8 个场景预设</div>
-<div class="article-body">
-<h2>H3 核心认知：它不是视频模型，是通用多模态生成器</h2>
-<h3>📋 基础参数</h3>
+<header class="hero">
+    <div class="hero-badge">官方规范 + 社区实测 · v1.2</div>
+    <h1>MiniMax H3 终极提示词指南</h1>
+    <p class="hero-subtitle">从官方三字段结构到 Ref2VA 六字段、45 个官方案例拆解，覆盖 T2V / I2V / FL2V / R2V 全模式，含中文防翻车专项方案。</p>
+    <div class="hero-meta">
+        <span>📄 基于官方 Video Prompt Writing Guide (Base & Ref)</span>
+        <span>🎬 44+ 官方案例验证</span>
+        <span>🔊 原生音频生成规范</span>
+    </div>
+</header>
+
+<div class="main-layout">
+    <aside>
+        <nav class="toc">
+            <div class="toc-title">目录</div>
+            <ul class="toc-list">
+                <li><a href="#s1">一、H3 核心认知</a></li>
+                <li><a href="#s2">二、提示词三字段结构</a></li>
+                <li><a href="#s3">三、Integrated 详解</a></li>
+                <li><a href="#s4">四、镜头语言规范</a></li>
+                <li><a href="#s5">五、音频与对话</a></li>
+                <li><a href="#s6">六、参考文件 R2V</a></li>
+                <li><a href="#s6b">七、Ref2VA 六字段结构</a></li>
+                <li><a href="#s7">八、五大生成模式</a></li>
+                <li><a href="#s8">九、中文使用专项</a></li>
+                <li><a href="#s9">十、负面约束清单</a></li>
+                <li><a href="#s10">十一、21 点自检清单</a></li>
+                <li><a href="#s11">十二、案例模板</a></li>
+                <li><a href="#s12">十三、常见翻车与修复</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main>
+
+        <!-- 一、核心认知 -->
+        <section class="section" id="s1">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2 class="section-title">H3 核心认知：它不是视频模型，是通用多模态生成器</h2>
+            </div>
+            <div class="card">
+                <div class="card-title">🎯 定位差异</div>
+                <div class="card-body">
+                    <p>MiniMax H3 不是传统意义上的"文生视频模型"。官方将其定义为 <strong>general-purpose omni-modal generation model</strong>——它把 T2V、I2V、首尾帧、参考视频、参考音频、视频编辑全部折叠进同一个预训练范式里。</p>
+                    <p style="margin-top:10px;">关键后果：<strong>提示词不是"描述"，而是"剧本"</strong>。H3 的提示词是一份结构化的视听简报（audiovisual brief），包含时间轴、镜头、对话、音效、音乐。自由格式写法会被模型误解。</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">📋 基础参数</div>
+                <div class="table-wrap">
                     <table>
                         <tr><th>参数</th><th>规格</th><th>来源</th></tr>
                         <tr><td>输出分辨率</td><td>2K（短边 1440px，宽屏约 2976×1248）</td><td>API 文档</td></tr>
@@ -98,20 +446,114 @@ border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;color:var(--text-dim
                         <tr><td>支持语言</td><td>对话支持 11 种语言（含中文）；提示词结构字段建议英文</td><td>官方 FAQ</td></tr>
                         <tr><td>比例</td><td>21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16 / adaptive</td><td>API 文档</td></tr>
                     </table>
-                💡
-                    <strong>核心原则</strong>
+                </div>
+            </div>
+            <div class="alert alert-info">
+                <div class="alert-icon">💡</div>
+                <div class="alert-content">
+                    <div class="alert-title">核心原则</div>
                     <p>H3 的提示词遵循"写你能看到的和听到的，不写你想感受到的"。避免"史诗感""电影级"这类抽象词，用具体的镜头、动作、声音来描述。</p>
+                </div>
+            </div>
+        </section>
 
-<h2>提示词三字段结构（Base 模式强制格式）</h2>
-⚠️
-                    <strong>I2VA / FL2VA / L2VA 的额外字段</strong>
+        <!-- 二、三字段结构 -->
+        <section class="section" id="s2">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2 class="section-title">提示词三字段结构（Base 模式强制格式）</h2>
+            </div>
+            <p class="section-desc">T2VA / I2VA / FL2VA / L2VA 共享以下三字段。R2V（Ref2VA）在此基础上扩展为六字段（见第七节）。</p>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-lang">H3 Prompt Structure (Base)</span></div>
+                <pre>integrated_multimodal_description:
+[Shot 1] STYLE + INITIAL FRAMING + SUBJECT + ENVIRONMENT.
+REFERENCE OR OPENING-STATE CONTINUITY.
+SMALL NATURAL MOVEMENT.
+ACTION ONSET.
+SPEAKER DESCRIPTION + SPEAKER ID + DELIVERY:
+&lt;d&gt;[Language] Exact dialogue.&lt;/d&gt;
+VISIBLE PHYSICAL RESPONSE.
+CAMERA MOTION TYPE + AMPLITUDE + SPEED.
+INTERMEDIATE COMPOSITIONAL CHANGES.
+SYNCHRONIZED DIEGETIC SOUND.
+FINAL CHARACTER STATE + FINAL COMPOSITION.
+
+overall_soundscape:
+The full environmental and physical sound environment.
+
+non_diegetic_music:
+The audience-only background score, or N/A.</pre>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📌 字段说明</div>
+                <div class="table-wrap">
+                    <table>
+                        <tr><th>字段</th><th>内容</th><th>禁止</th></tr>
+                        <tr>
+                            <td><code>integrated_multimodal_description</code></td>
+                            <td>主视听时间线：画面、动作、镜头、说话人、台词、同步音效</td>
+                            <td>不要把环境音写在这里（会重复）</td>
+                        </tr>
+                        <tr>
+                            <td><code>overall_soundscape</code></td>
+                            <td>环境物理音：风声、脚步、碰撞、布料、呼吸</td>
+                            <td>不要写台词；不要和 integrated 里的音效重复</td>
+                        </tr>
+                        <tr>
+                            <td><code>non_diegetic_music</code></td>
+                            <td>背景音乐：乐器、速度、节奏、动态变化</td>
+                            <td>不要写"史诗感音乐"；角色能听到的音乐要写在 integrated 里</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-content">
+                    <div class="alert-title">I2VA / FL2VA / L2VA 的额外字段</div>
                     <p>这些模式在 <code>integrated_multimodal_description</code> 之前增加一个 <strong>IMAGE-ALIGNMENT INSTRUCTION</strong>，用于锁定首帧/尾帧的内容（身份、服装、位置、光线、背景）。详见第十二节案例。</p>
+                </div>
+            </div>
+        </section>
 
-<h2>Integrated Multimodal Description 逐段拆解</h2>
-<h3>3.2 视觉风格（必须在开头声明）</h3>
+        <!-- 三、Integrated 详解 -->
+        <section class="section" id="s3">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2 class="section-title">Integrated Multimodal Description 逐段拆解</h2>
+            </div>
+
+            <h3>3.1 Shot 声明</h3>
+            <div class="card">
+                <div class="card-body">
+                    <p><strong>第一个 Shot 不需要时间戳。</strong>后续 Shot 必须使用严格递增的时间戳。</p>
+                    <div class="example-box">
+                        <div class="example-label">正确</div>
+                        <p>[Shot 1] Live-action, cinematic...</p>
+                        <p>[Shot 2] At 00:04.500, the camera cuts to a close-up.</p>
+                    </div>
+                    <div class="example-box">
+                        <div class="example-label">错误</div>
+                        <p>[Shot 1] At 00:00.000... ← 不需要</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>3.2 视觉风格（必须在开头声明）</h3>
+            <div class="card">
+                <div class="card-body">
                     <p>在 Shot 1 开头立即声明整体风格，使用直接类别而非模糊赞美：</p>
-                    <p><code>Live-action</code> <code>Cinematic</code> <code>2D-animated</code> <code>3D CG</code> <code>Claymation</code> <code>Watercolor</code> <code>Vintage film</code></p>
+                    <p><span class="tag">Live-action</span> <span class="tag">Cinematic</span> <span class="tag">2D-animated</span> <span class="tag">3D CG</span> <span class="tag">Claymation</span> <span class="tag">Watercolor</span> <span class="tag">Vintage film</span></p>
+                </div>
+            </div>
+
             <h3>3.3 参考图锚定（I2V / R2V）</h3>
+            <div class="card">
+                <div class="card-body">
                     <p>立即识别参考图中必须保持一致的元素：</p>
                     <ul>
                         <li>Character identity（面部身份）</li>
@@ -123,10 +565,17 @@ border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;color:var(--text-dim
                         <li>Background（背景）</li>
                         <li>Composition（构图）</li>
                     </ul>
-                    <blockquote><strong>示例</strong><br><p>The young female hiker shown in &lt;Picture 1&gt; remains on the narrow mountain ridge, preserving her exact facial identity, natural skin texture, brown hair...</p>
-            </blockquote>
+                    <div class="example-box">
+                        <div class="example-label">示例</div>
+                        <p>The young female hiker shown in &lt;Picture 1&gt; remains on the narrow mountain ridge, preserving her exact facial identity, natural skin texture, brown hair...</p>
+                    </div>
+                </div>
+            </div>
+
             <h3>3.4 说话人与对话（最容易翻车的部分）</h3>
-                <h3>🎙️ 对话语法规范</h3>
+            <div class="card">
+                <div class="card-title">🎙️ 对话语法规范</div>
+                <div class="card-body">
                     <p><strong>说话人身份（Speaker ID）</strong></p>
                     <ul>
                         <li>首次出现时指定：年龄、性别、音高、音色、口音、语速</li>
@@ -135,28 +584,74 @@ border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;color:var(--text-dim
                         <li>从未发声的角色不分配 ID</li>
                     </ul>
                     <p><strong>对话标签 <code>&lt;d&gt;</code>（绝对规则）</strong></p>
-                        <blockquote><strong>✅ 正确</strong><br><p>She shouts with joyful energy: <code>&lt;d&gt;[English] Helloooooooo!&lt;/d&gt;</code></p>
+                    <div class="two-col">
+                        <div class="example-box">
+                            <div class="example-label">✅ 正确</div>
+                            <p>She shouts with joyful energy: <code>&lt;d&gt;[English] Helloooooooo!&lt;/d&gt;</code></p>
                             <p>Her lips, jaw, cheeks, throat and chest move naturally...</p>
-                        </blockquote>
-                        <blockquote><strong>❌ 错误</strong><br><p><code>&lt;d&gt;[English, shouting loudly and happily] Helloooooooo!&lt;/d&gt;</code></p>
+                        </div>
+                        <div class="example-box">
+                            <div class="example-label">❌ 错误</div>
+                            <p><code>&lt;d&gt;[English, shouting loudly and happily] Helloooooooo!&lt;/d&gt;</code></p>
                             <p>← 语气描述塞进了标签内</p>
-                    <p><strong>&lt;d&gt; 内部只能有：语言标记 + 确切的台词文字。</strong>所有表演指令（语气、情绪、语速）必须写在标签外面。</p>
+                        </div>
+                    </div>
+                    <p style="margin-top:10px;"><strong>&lt;d&gt; 内部只能有：语言标记 + 确切的台词文字。</strong>所有表演指令（语气、情绪、语速）必须写在标签外面。</p>
+                </div>
+            </div>
+
             <h3>3.5 画外音（Voiceover）</h3>
+            <div class="card">
+                <div class="card-body">
                     <p>使用精确短语 <code>says in an off-screen voiceover</code>，并在标签后声明角色嘴唇完全闭合：</p>
+                    <div class="example-box">
                         <p>(S1) says in an off-screen voiceover: <code>&lt;d&gt;[English] The city never sleeps.&lt;/d&gt;</code> Her lips remain completely closed throughout.</p>
-            </blockquote>
+                    </div>
+                </div>
+            </div>
+
             <h3>3.6 跨切对话</h3>
+            <div class="card">
+                <div class="card-body">
                     <p>如果对话跨越镜头切换，在连接点两侧都放置对话，并声明音频连续：</p>
+                    <div class="example-box">
                         <p>[Shot 1] ... <code>&lt;d&gt;[Chinese] 你必须在日落前&lt;/d&gt;</code></p>
                         <p>[Shot 2] At 00:03.500, the camera cuts to a close-up. <code>&lt;d&gt;[Chinese] 赶到山顶。&lt;/d&gt;</code> The audio continues across the cut.</p>
+                    </div>
+                </div>
+            </div>
+
             <h3>3.7 画面文字（On-Screen Text）</h3>
+            <div class="card">
+                <div class="card-body">
                     <p>所有可见的文字（横幅、招牌、标签、字幕、霓虹灯）必须用<strong>英文双引号</strong>包裹，逐字保留原文和标点，不翻译：</p>
+                    <div class="example-box">
                         <p>A red neon sign reading <strong>"营业中"</strong> glows above the doorway.</p>
                         <p>The title card displays <strong>"EPISODE 1"</strong> in bold sans-serif.</p>
-                    <p>生成后仍需视觉审查，不要假设拼写、品牌处理或法律许可是自动正确的。</p>
+                    </div>
+                    <p style="margin-top:8px;">生成后仍需视觉审查，不要假设拼写、品牌处理或法律许可是自动正确的。</p>
+                </div>
+            </div>
+        </section>
 
-<h2>镜头语言规范：写成自然动作，不是标签堆叠</h2>
-<table>
+        <!-- 四、镜头语言 -->
+        <section class="section" id="s4">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <h2 class="section-title">镜头语言规范：写成自然动作，不是标签堆叠</h2>
+            </div>
+            <p class="section-desc">H3 期望镜头语言读起来像自然动作描述，而不是 disconnected tags。每个短片段只选一个主导镜头运动。</p>
+
+            <div class="card">
+                <div class="card-title">📷 完整镜头描述公式</div>
+                <div class="card-body">
+                    <p><strong>Motion Type + Amplitude + Speed</strong>（运动类型 + 幅度 + 速度）</p>
+                    <p>中等幅度和正常速度在添加无意义时可以省略。</p>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
                     <tr><th>需求</th><th>清晰写法</th><th>为什么有效</th></tr>
                     <tr><td>缓慢推进</td><td>The camera pushes in with small amplitude at slow speed.</td><td>定义了物理运动和节奏</td></tr>
                     <tr><td>水平揭示</td><td>The camera pans right with large amplitude at fast speed.</td><td>区分旋转与平移</td></tr>
@@ -167,36 +662,133 @@ border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;color:var(--text-dim
                     <tr><td>手持跟随</td><td>A handheld follow shot tracks behind the subject.</td><td>控制纪录片式抖动的程度</td></tr>
                     <tr><td>焦点转移</td><td>A rack focus shifts from the foreground watch to the background city.</td><td>指定前后景关系</td></tr>
                 </table>
-                🚫
-                    <strong>致命错误</strong>
-                    <p>不要把多个不兼容的镜头运动堆到一个 15 秒片段里。"Orbit + tracking + push-in" 会让模型困惑。每个片段只选一个主导运动。</p>
+            </div>
 
-<h2>音频生成：对话、环境音、音乐的三层分离</h2>
-<h3>5.2 对话支持的语言</h3>
+            <div class="alert alert-danger">
+                <div class="alert-icon">🚫</div>
+                <div class="alert-content">
+                    <div class="alert-title">致命错误</div>
+                    <p>不要把多个不兼容的镜头运动堆到一个 15 秒片段里。"Orbit + tracking + push-in" 会让模型困惑。每个片段只选一个主导运动。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 五、音频与对话 -->
+        <section class="section" id="s5">
+            <div class="section-header">
+                <div class="section-number">5</div>
+                <h2 class="section-title">音频生成：对话、环境音、音乐的三层分离</h2>
+            </div>
+
+            <h3>5.1 三层音频架构</h3>
+            <div class="card">
+                <div class="table-wrap">
+                    <table>
+                        <tr><th>层级</th><th>位置</th><th>内容</th><th>示例</th></tr>
+                        <tr>
+                            <td><strong>对话/歌唱</strong></td>
+                            <td><code>integrated_multimodal_description</code></td>
+                            <td>角色说出的台词、同步音效</td>
+                            <td><code>&lt;d&gt;[Chinese] 你好&lt;/d&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>环境音景</strong></td>
+                            <td><code>overall_soundscape</code></td>
+                            <td> ambience、脚步、碰撞、布料、天气、呼吸</td>
+                            <td>Steady high-altitude wind, subtle jacket-fabric movement...</td>
+                        </tr>
+                        <tr>
+                            <td><strong>背景音乐</strong></td>
+                            <td><code>non_diegetic_music</code></td>
+                            <td>观众能听到、角色听不到的音乐</td>
+                            <td>Sparse piano notes at a slow tempo...</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <h3>5.2 对话支持的语言</h3>
+            <div class="card">
+                <div class="card-body">
                     <p>MiniMax 官方报告稳定对话支持 <strong>11 种语言</strong>：阿拉伯语、中文、英语、法语、德语、意大利语、日语、韩语、葡萄牙语、俄语、西班牙语。其他语言支持程度不一。</p>
                     <p>语言标记写法：<code>&lt;d&gt;[Chinese] 台词&lt;/d&gt;</code>、<code>&lt;d&gt;[English] Dialogue&lt;/d&gt;</code>、<code>&lt;d&gt;[Japanese] 台詞&lt;/d&gt;</code></p>
-            <h3>5.3 音乐描述规范</h3>
-                    <p>用 1-3 句英文描述乐器、速度、节奏和动态变化。不要用抽象情绪词：</p>
-                        <blockquote><strong>✅ 好</strong><br><p>Sparse piano notes at a slow tempo, joined by sustained low strings that gradually increase in volume before fading out.</p>
-                        </blockquote>
-                        <blockquote><strong>❌ 差</strong><br><p>Epic cinematic music that feels emotional and inspiring.</p>
-                    <p>角色能听到的音乐（收音机、手机、现场演奏）属于 diegetic 事件，必须写在 <code>integrated_multimodal_description</code> 里，而不是 <code>non_diegetic_music</code>。</p>
-            <h3>5.4 物理发声表演（提升真实感）</h3>
-                    <p>不要写"完美的口型同步和真实表演"，而是描述可观察的解剖学动作：</p>
-                        <p>Her lips, jaw, cheeks, throat and chest move naturally. The jaw opens naturally, cheeks respond to pressure, throat engages, chest contracts during breath, lips shape the sustained vowel.</p>
-            </blockquote>
+                </div>
+            </div>
 
-<h2>参考文件 R2V：给每个文件分配一个明确的任务</h2>
-<h3>6.1 参考分配模式（官方推荐）</h3>
+            <h3>5.3 音乐描述规范</h3>
+            <div class="card">
+                <div class="card-body">
+                    <p>用 1-3 句英文描述乐器、速度、节奏和动态变化。不要用抽象情绪词：</p>
+                    <div class="two-col">
+                        <div class="example-box">
+                            <div class="example-label">✅ 好</div>
+                            <p>Sparse piano notes at a slow tempo, joined by sustained low strings that gradually increase in volume before fading out.</p>
+                        </div>
+                        <div class="example-box">
+                            <div class="example-label">❌ 差</div>
+                            <p>Epic cinematic music that feels emotional and inspiring.</p>
+                        </div>
+                    </div>
+                    <p style="margin-top:10px;">角色能听到的音乐（收音机、手机、现场演奏）属于 diegetic 事件，必须写在 <code>integrated_multimodal_description</code> 里，而不是 <code>non_diegetic_music</code>。</p>
+                </div>
+            </div>
+
+            <h3>5.4 物理发声表演（提升真实感）</h3>
+            <div class="card">
+                <div class="card-body">
+                    <p>不要写"完美的口型同步和真实表演"，而是描述可观察的解剖学动作：</p>
+                    <div class="example-box">
+                        <p>Her lips, jaw, cheeks, throat and chest move naturally. The jaw opens naturally, cheeks respond to pressure, throat engages, chest contracts during breath, lips shape the sustained vowel.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 六、参考文件 -->
+        <section class="section" id="s6">
+            <div class="section-header">
+                <div class="section-number">6</div>
+                <h2 class="section-title">参考文件 R2V：给每个文件分配一个明确的任务</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📎 参考文件配额</div>
+                <div class="table-wrap">
+                    <table>
+                        <tr><th>类型</th><th>数量</th><th>限制</th></tr>
+                        <tr><td>参考图片</td><td>最多 9 张</td><td>JPEG/PNG/WEBP，单张 ≤30MB</td></tr>
+                        <tr><td>参考视频</td><td>最多 3 段</td><td>MP4/MOV，H.264/H.265 + AAC/MP3，单段 ≤50MB，2-15s，总计 ≤15s</td></tr>
+                        <tr><td>参考音频</td><td>最多 3 段</td><td>WAV/MP3，单段 ≤15MB，2-15s，总计 ≤15s</td></tr>
+                        <tr><td>总计</td><td>最多 12 个文件</td><td>音频不能单独使用，必须至少配一个图片或视频</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <h3>6.1 参考分配模式（官方推荐）</h3>
+            <div class="card">
+                <div class="card-body">
+                    <div class="example-box">
                         <p>&lt;Picture 1&gt; defines the fictional adult subject's identity and clothing only.</p>
                         <p>&lt;Video 1&gt; defines body timing and the tracking camera only.</p>
                         <p>&lt;Audio 1&gt; defines the authorised voice timbre only.</p>
-                    <p><strong>黄金法则：</strong>给每个参考一个狭窄的任务。不要写"Use Image 1 for everything"。</p>
+                    </div>
+                    <p style="margin-top:10px;"><strong>黄金法则：</strong>给每个参考一个狭窄的任务。不要写"Use Image 1 for everything"。</p>
+                </div>
+            </div>
+
             <h3>6.2 音频参考的严格限制</h3>
-                🚫
-                    <strong>音频参考 ≠ 背景音乐参考</strong>
+            <div class="alert alert-danger">
+                <div class="alert-icon">🚫</div>
+                <div class="alert-content">
+                    <div class="alert-title">音频参考 ≠ 背景音乐参考</div>
                     <p>音频参考只传递<strong>音色（timbre）</strong>，不传递口音、情绪、语速、节奏、旋律。这些必须在提示词里用文字指定。参考音频必须是<strong>干净的人声</strong>，不能有背景音乐、重叠说话声、环境噪音。</p>
-                <h3>🎙️ 音频参考最小可行示例</h3>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">🎙️ 音频参考最小可行示例</div>
+                <div class="card-body">
+                    <div class="example-box">
                         <p><strong>Prompt:</strong> Character dialogue: "Follow the wind, live free. Leave worries behind, enjoy the moment." Use Audio 1 as the voice-timbre reference.</p>
                         <p><strong>你需要提供：</strong></p>
                         <ul>
@@ -205,28 +797,63 @@ border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;color:var(--text-dim
                             <li>确切的台词文字（逐字引用，不转述）</li>
                         </ul>
                         <p><strong>为什么有效：</strong>台词被引用而非转述， timing 和口型有具体锚点；Audio 1 只分配了一个狭窄任务——音色。</p>
+                    </div>
+                </div>
+            </div>
+
             <h3>6.3 可复用主体 vs 源素材</h3>
+            <div class="card">
+                <div class="card-body">
                     <p>官方区分了两类引用：</p>
                     <ul>
                         <li><strong>Subject（可复用主体）：</strong>人、物体、场景、动作、效果——在目标中复用的内容</li>
                         <li><strong>Video label（源素材标签）：</strong>时间或剪辑来源</li>
                     </ul>
                     <p>一致的标签让复杂提示词更容易审查。</p>
+                </div>
+            </div>
+        </section>
 
-<h2>Ref2VA 六字段结构（R2V 专属）</h2>
-<pre><code>subject_definitions:
+        <!-- 七、Ref2VA 六字段结构（修正版） -->
+        <section class="section" id="s6b">
+            <div class="section-header">
+                <div class="section-number">7</div>
+                <h2 class="section-title">Ref2VA 六字段结构（R2V 专属）</h2>
+            </div>
+            <p class="section-desc">Ref2VA（Reference to Video with Audio）是 H3 最复杂的模式，在 Base 三字段基础上扩展为六字段。这是身份锁定、风格迁移、声音克隆、视频编辑的核心入口。</p>
+
+            <div class="alert alert-danger">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-content">
+                    <div class="alert-title">字段名必须与官方一致</div>
+                    <p>全参考模式的第四字段官方名称为 <code>detailed_description</code>，不是 <code>integrated_multimodal_description</code>。以下结构严格对应官方 ref-en.txt 原文。</p>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header"><span class="code-lang">H3 Prompt Structure (Ref2VA)</span></div>
+                <pre>subject_definitions:
 Define what each reference file controls. Assign a narrow, explicit task to every Picture, Video, and Audio.
+
 summary:
 One-sentence overview of the creative direction.
+
 retention_analysis:
 For each reference, state what is preserved and what is changed.
+
 detailed_description:
 [Shot 1] STYLE + FRAMING + SUBJECT + ENVIRONMENT...
+
 overall_soundscape:
 Environmental and physical sound.
+
 non_diegetic_music:
-Audience-only background score, or N/A.</code></pre>
+Audience-only background score, or N/A.</pre>
+            </div>
+
             <h3>7.1 六字段顺序与作用</h3>
+            <div class="card">
+                <div class="table-wrap">
                     <table>
                         <tr><th>字段</th><th>作用</th><th>写法要点</th></tr>
                         <tr>
@@ -260,8 +887,13 @@ Audience-only background score, or N/A.</code></pre>
                             <td>N/A 或具体乐器描述</td>
                         </tr>
                     </table>
+                </div>
+            </div>
+
             <h3>7.2 Retention 标签（官方词汇）</h3>
-                <h3>🔒 视觉参考标签（Visual）</h3>
+            <div class="card">
+                <div class="card-title">🔒 视觉参考标签（Visual）</div>
+                <div class="table-wrap">
                     <table>
                         <tr><th>标签</th><th>含义</th><th>使用场景</th></tr>
                         <tr>
@@ -285,7 +917,12 @@ Audience-only background score, or N/A.</code></pre>
                             <td>氛围参考、大致风格参考</td>
                         </tr>
                     </table>
-                <h3>🔒 音频参考标签（Audio）</h3>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">🔒 音频参考标签（Audio）</div>
+                <div class="table-wrap">
                     <table>
                         <tr><th>标签</th><th>含义</th><th>使用场景</th></tr>
                         <tr>
@@ -309,69 +946,220 @@ Audience-only background score, or N/A.</code></pre>
                             <td>大致情绪参考</td>
                         </tr>
                     </table>
-                ⚠️
-                    <strong>非官方词汇不要用</strong>
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-content">
+                    <div class="alert-title">非官方词汇不要用</div>
                     <p><code>loosely_inspired</code>、<code>style_only</code>、<code>do_not_use</code> 不是官方 retention 标签。H3 可能无法识别这些词汇，导致保留策略失效。请严格使用上表中的官方标签。</p>
+                </div>
+            </div>
+
             <h3>7.3 Ref2VA 完整示例（官方标签）</h3>
-            <pre><code>subject_definitions:
-&lt;Picture 1&gt; defines the adult woman&#x27;s exact facial identity, skin texture, and brown hair only.
+            <div class="code-block">
+                <div class="code-header"><span class="code-lang">Ref2VA · Identity + Style + Voice</span><button class="copy-btn" onclick="copyCode(this)">复制</button></div>
+                <pre>subject_definitions:
+&lt;Picture 1&gt; defines the adult woman's exact facial identity, skin texture, and brown hair only.
 &lt;Picture 2&gt; defines the red silk evening dress and its drape behaviour only.
 &lt;Video 1&gt; defines the slow walking gait and hip sway timing only.
 &lt;Audio 1&gt; defines the authorised voice timbre only.
+
 summary:
 A woman in a red silk dress walks through a rainy Shanghai alley at night, speaking one line in Chinese.
+
 retention_analysis:
 - &lt;Picture 1&gt;: fully_preserved (facial identity, skin, hair)
 - &lt;Picture 2&gt;: fully_preserved (dress design, colour, material)
 - &lt;Video 1&gt;: attribute_transfer (gait timing applied to new environment)
 - &lt;Audio 1&gt;: fully_copy (voice timbre)
 - Background from &lt;Picture 1&gt;: weak_reference
+
 detailed_description:
 [Shot 1] Live-action, cinematic. The woman defined in &lt;Picture 1&gt; wears the red silk dress from &lt;Picture 2&gt;. She walks through a narrow Shanghai alley at night, neon signs reflecting on wet pavement. The camera tracks behind her with medium amplitude at slow speed. She stops, turns to face the camera.
+
 The woman with a calm, clear voice (S1) says softly:
 &lt;d&gt;[Chinese] 雨停了，该走了。&lt;/d&gt;
 Her lips, jaw, and throat move naturally with each word.
+
 overall_soundscape:
 Light rain on wet stone, distant car horns, one passing bicycle, subtle silk fabric movement, footsteps on wet ground. No other speech.
-non_diegetic_music:
-N/A</code></pre>
-                💡
-                    <strong>Ref2VA 与 Base 的关键区别</strong>
-                    <p>Base 模式（T2V/I2V/FL2V）的 <code>integrated_multimodal_description</code> 里直接描述一切；Ref2VA 先通过 <code>subject_definitions</code> 和 <code>retention_analysis</code> 建立"合同"，再在 <code>detailed_description</code> 里引用这些定义。这让复杂多参考任务的可控性大幅提升。</p>
 
-<h2>五大生成模式与选择逻辑</h2>
-<h3>8.1 各模式提示词差异</h3>
+non_diegetic_music:
+N/A</pre>
+            </div>
+
+            <div class="alert alert-info">
+                <div class="alert-icon">💡</div>
+                <div class="alert-content">
+                    <div class="alert-title">Ref2VA 与 Base 的关键区别</div>
+                    <p>Base 模式（T2V/I2V/FL2V）的 <code>integrated_multimodal_description</code> 里直接描述一切；Ref2VA 先通过 <code>subject_definitions</code> 和 <code>retention_analysis</code> 建立"合同"，再在 <code>detailed_description</code> 里引用这些定义。这让复杂多参考任务的可控性大幅提升。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 八、五大生成模式 -->
+        <section class="section" id="s7">
+            <div class="section-header">
+                <div class="section-number">8</div>
+                <h2 class="section-title">五大生成模式与选择逻辑</h2>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <tr><th>模式</th><th>何时使用</th><th>输入</th><th>输出比例</th></tr>
+                    <tr>
+                        <td><strong>T2VA</strong><br>Text to Video</td>
+                        <td>只有文字创意简报，没有任何素材</td>
+                        <td>Prompt</td>
+                        <td>可选 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16</td>
+                    </tr>
+                    <tr>
+                        <td><strong>I2VA</strong><br>Image to Video</td>
+                        <td>有一张起始图，需要让它动起来</td>
+                        <td>Prompt + 首帧图</td>
+                        <td>跟随输入图片比例</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FL2VA</strong><br>First & Last Frame</td>
+                        <td>有首帧和尾帧，需要填充中间运动</td>
+                        <td>Prompt + 首帧图 + 尾帧图</td>
+                        <td>跟随输入图片比例</td>
+                    </tr>
+                    <tr>
+                        <td><strong>L2VA</strong><br>Last Frame</td>
+                        <td>只有尾帧，需要倒推生成</td>
+                        <td>Prompt + 尾帧图</td>
+                        <td>跟随输入图片比例</td>
+                    </tr>
+                    <tr>
+                        <td><strong>R2VA</strong><br>Reference to Video</td>
+                        <td>需要身份锁定、动作迁移、风格匹配、声音克隆、视频编辑</td>
+                        <td>Prompt + 最多 12 个参考文件</td>
+                        <td>可选 adaptive 或固定比例</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="alert alert-info">
+                <div class="alert-icon">💡</div>
+                <div class="alert-content">
+                    <div class="alert-title">选择逻辑</div>
+                    <p>没有媒体输入 → T2V。图片是字面意义上的首帧/尾帧 → First & Last Frame。图片/视频/音频是作为<strong>参考</strong>而非字面帧 → R2V（Ref2VA）。</p>
+                </div>
+            </div>
+
+            <h3>8.1 各模式提示词差异</h3>
+            <div class="card">
+                <div class="card-body">
                     <p><strong>T2V：</strong>需要完整描述视觉世界（主体、环境、动作、镜头、结尾）。</p>
                     <p><strong>I2V：</strong>上传图已传达外观和构图，Prompt 聚焦运动、镜头行为、保留规则、环境变化、结尾。</p>
                     <p><strong>FL2VA：</strong>描述<strong>过渡</strong>而非重复两张图。解释什么在动、什么渐变、什么保持对齐、如何收尾。选择透视、比例、风格兼容的帧。</p>
                     <p><strong>R2V（Ref2VA）：</strong>使用六字段结构，给参考排序并分配角色，通过 retention 标签控制保留程度。</p>
+                </div>
+            </div>
+        </section>
 
-<h2>中文使用专项：防念咒指南</h2>
-<h3>9.1 中文提示词正确结构</h3>
-            <pre><code>integrated_multimodal_description:
+        <!-- 九、中文使用专项 -->
+        <section class="section" id="s8">
+            <div class="section-header">
+                <div class="section-number">9</div>
+                <h2 class="section-title">中文使用专项：防念咒指南</h2>
+            </div>
+
+            <div class="alert alert-danger">
+                <div class="alert-icon">🚨</div>
+                <div class="alert-content">
+                    <div class="alert-title">核心问题：不是中文不能用，是结构不对</div>
+                    <p>官方明确确认 H3 支持中文提示词。但如果你把中文画面描述写得像对话，模型就会尝试生成语音。中文提示词必须严格按字段拆分。</p>
+                </div>
+            </div>
+
+            <h3>9.1 中文提示词正确结构</h3>
+            <div class="code-block">
+                <div class="code-header"><span class="code-lang">Chinese Prompt Example</span></div>
+                <pre>integrated_multimodal_description:
 [Shot 1] Live-action, cinematic. A young woman stands in a Shanghai alley at dusk, neon signs reflecting on wet pavement. She adjusts her coat and looks toward the camera. The camera holds a static medium shot. No dialogue, no voiceover. Her lips remain completely closed. Synchronized diegetic sound: distant traffic, light rain on fabric.
+
 overall_soundscape:
 Steady rain on wet stone, distant car horns, one passing bicycle with a bell, subtle fabric movement as she adjusts her coat. No speech, no vocalization.
+
 non_diegetic_music:
-Sparse solo piano, slow tempo, minor key, fading out at the end.</code></pre>
+Sparse solo piano, slow tempo, minor key, fading out at the end.</pre>
+            </div>
+
             <h3>9.2 如果必须用中文写画面描述</h3>
+            <div class="card">
+                <div class="card-body">
                     <p>API 层面支持中文 prompt，但官方指南建议结构化字段用英文（镜头、风格、约束）。如果坚持用中文写主体描述，<strong>建议追加</strong>防误解声明（社区实践，待实测）：</p>
+                    <div class="example-box">
                         <p>No dialogue, no voiceover, no spoken words. Characters' lips remain completely closed throughout. No on-screen text, no subtitles, no captions.</p>
+                    </div>
                     <p>除非用户在"台词"区域明确填写了内容。</p>
+                </div>
+            </div>
+
             <h3>9.3 中文台词的正确写法</h3>
+            <div class="card">
+                <div class="card-body">
+                    <div class="example-box">
                         <p>The young woman with a clear, gentle voice (S1) speaks softly:</p>
                         <p><code>&lt;d&gt;[Chinese] 今天的晚霞真美。&lt;/d&gt;</code></p>
                         <p>Her lips shape each word naturally, jaw moves with relaxed rhythm.</p>
-                    <p><strong>关键：</strong>语气、情绪、语速写在 <code>&lt;d&gt;</code> 外面；标签内只有 <code>[Chinese] 台词</code>。</p>
+                    </div>
+                    <p style="margin-top:10px;"><strong>关键：</strong>语气、情绪、语速写在 <code>&lt;d&gt;</code> 外面；标签内只有 <code>[Chinese] 台词</code>。</p>
+                </div>
+            </div>
+
             <h3>9.4 中文画面文字的写法</h3>
+            <div class="card">
+                <div class="card-body">
                     <p>如果画面需要出现中文文字（招牌、字幕），用英文句子描述，文字内容用英文双引号包裹中文：</p>
+                    <div class="example-box">
                         <p>A red neon sign reading <strong>"营业中"</strong> glows above the doorway.</p>
                         <p>The subtitle displays <strong>"第二集"</strong> in white sans-serif.</p>
+                    </div>
                     <p>然后必须追加约束：</p>
+                    <div class="example-box">
                         <p>Do not add Chinese text elsewhere. Do not generate garbled characters. Do not misspell.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<h2>负面约束清单：免费的质量提升</h2>
-<h3>🚫 按场景追加</h3>
+        <!-- 十、负面约束 -->
+        <section class="section" id="s9">
+            <div class="section-header">
+                <div class="section-number">10</div>
+                <h2 class="section-title">负面约束清单：免费的质量提升</h2>
+            </div>
+            <p class="section-desc">官方 45 个案例的共性：文字拼写和负面清单不增加生成成本，但品质大多来自这里。以下约束为<strong>社区实践</strong>，非官方三字段格式，建议追加在 integrated/detailed_description 末尾或作为独立备注。</p>
+
+            <div class="card">
+                <div class="card-title">🚫 通用负面约束</div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">negative constraints</span>
+                            <span class="community-tag">社区实践</span>
+                        </div>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre>Do not add any on-screen text. Do not add subtitles. Do not add captions.
+Do not generate garbled characters or misspellings.
+Do not introduce Chinese text unless explicitly requested.
+No soft dissolves or fluid morphs.
+No tearing, black frames, hard cuts, obvious VFX, or compositing seams.
+No giant eyes, split mouths, fangs, threatening behavior, or jump scares.
+No camera movement unless explicitly directed.
+No repetitive titles or names. Each credit and title appears only once.</pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">🚫 按场景追加</div>
+                <div class="table-wrap">
                     <table>
                         <tr><th>场景</th><th>追加约束</th></tr>
                         <tr><td>产品广告</td><td>Do not deform the product. Do not change label position or logo geometry.</td></tr>
@@ -381,52 +1169,296 @@ Sparse solo piano, slow tempo, minor key, fading out at the end.</code></pre>
                         <tr><td>无音乐</td><td>No music. No background score. Ambience only.</td></tr>
                         <tr><td>无对话</td><td>No dialogue. No voiceover. Lips remain closed.</td></tr>
                     </table>
+                </div>
+            </div>
+        </section>
 
-<h2>21 点写作自检清单（官方审计）</h2>
+        <!-- 十一、21点自检 -->
+        <section class="section" id="s10">
+            <div class="section-header">
+                <div class="section-number">11</div>
+                <h2 class="section-title">21 点写作自检清单（官方审计）</h2>
+            </div>
+            <p class="section-desc">来自官方指南的 21 点 audit，写完 prompt 后逐条确认。</p>
 
+            <div class="card">
+                <div class="card-body">
+                    <div class="check-item"><span class="check-icon">☑</span><span>建立了地点（establish the location）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>定义了主体（define the main subject）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>描述了一个清晰的动作（describe one clear action）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>自然地指导了镜头（direct the camera naturally）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>为每个后续剪辑标注了时间（time every later cut）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>命名了每个说话角色（name each speaking character）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>逐字保留了提供的对话（preserve supplied dialogue exactly）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>分离了物理场景音（separate physical scene sound）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>描述了观众专属音乐（describe audience-only music）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>逐字引用了可见文字（quote visible text exactly）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>为每个参考分配了角色（assign every reference role）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>保护了关键帧锚点（protect keyframe anchors）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>声明了最终状态（state the final condition）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>移除了冲突细节（remove conflicting detail）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>审查了 MiniMax 导出结果（review the exported result）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>使用了授权的 H3 参考（use authorised H3 references）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>放大前预览（preview before scaling）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>一次只改变一个变量（change one variable at a time）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>记录了每个生产设置（record every production setting）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>验证了每个渲染文字（verify every rendered word）</span></div>
+                    <div class="check-item"><span class="check-icon">☑</span><span>审查了权利和许可（review rights and consent）</span></div>
+                </div>
+            </div>
+        </section>
 
-<h2>案例模板（官方规范 + 社区优化）</h2>
-<pre><code>integrated_multimodal_description:
+        <!-- 十二、案例模板 -->
+        <section class="section" id="s11">
+            <div class="section-header">
+                <div class="section-number">12</div>
+                <h2 class="section-title">案例模板（官方规范 + 社区优化）</h2>
+            </div>
+            <p class="section-desc">以下案例基于官方 Video Prompt Writing Guide 结构。Constraints 段为<strong>社区实践</strong>（非官方三字段格式），建议按需追加。</p>
+
+            <h3>12.1 产品广告（T2V）</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-header-left">
+                        <span class="code-lang">T2V · Product</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                </div>
+                <pre>integrated_multimodal_description:
+[Shot 1] A brushed-steel automatic watch rests on black volcanic stone. Fine rain lands on the glass while the second hand moves naturally. The camera begins with an extreme macro, then makes a slow 30-degree orbit, ending on the watch face. High-contrast luxury commercial, deep black background. Keep the logo and dial geometry unchanged. Subtle rain and room-tone audio.
+
+overall_soundscape:
+Soft mechanical ticking, light rain on glass, one distant low thunder rumble.
+
+non_diegetic_music:
+One restrained low cinematic pulse at 0s, fading by 3s. No melody.
+
+Constraints:
+No dialogue. No on-screen text. No soft dissolves.</pre>
+            </div>
+            <p style="color:var(--text-muted);font-size:13px;margin-top:-8px;margin-bottom:16px;">Constraints 段为社区实践，非官方三字段格式。</p>
+
+            <h3>12.2 人物对话（R2V + 音频参考）</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-header-left">
+                        <span class="code-lang">R2V · Dialogue</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                </div>
+                <pre>integrated_multimodal_description:
+[Shot 1] Live-action, cinematic. The young woman shown in &lt;Picture 1&gt; sits in a hospital corridor at night, preserving her exact facial identity and dark hair. 0 to 5s she returns with two paper cups and sits. 5 to 11s she speaks. 11 to 15s neither answers and one takes the other's hand. Medium-close coverage, restrained shot-reverse-shot.
+
+The young woman with a calm, low, natural voice (S1) says with controlled sadness:
+&lt;d&gt;[Chinese] 有些话，我们都不想说出口。&lt;/d&gt;
+Her lips, jaw, and throat move naturally with each word. Her eyes remain fixed forward.
+
+overall_soundscape:
+A distant trolley, the vending machine's hum, fabric movement as she sits.
+
+non_diegetic_music:
+N/A
+
+Constraints:
+No music. No subtitles. No on-screen text. No soft dissolves.</pre>
+            </div>
+            <p style="color:var(--text-muted);font-size:13px;margin-top:-8px;margin-bottom:16px;">Constraints 段为社区实践，非官方三字段格式。</p>
+
+            <h3>12.3 风格迁移（R2V · 简化写法）</h3>
+            <div class="alert alert-warning">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-content">
+                    <div class="alert-title">简化写法</div>
+                    <p>以下示例使用单字段简化写法（Base 模式风格）。进阶多参考任务请使用第七节 Ref2VA 六字段结构（subject_definitions / retention_analysis / detailed_description）。</p>
+                </div>
+            </div>
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-header-left">
+                        <span class="code-lang">R2V · Style Transfer</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                </div>
+                <pre>integrated_multimodal_description:
 [Shot 1] Image 1 is the character and art-style reference: keep this exact hand-painted 2D webcomic look, the same watercolour texture, the same ink outline weight, the same dog, the same little hat, the same mug. Do not redraw him in 3D, do not change his proportions, do not clean up the linework.
+
 Put him in a different room and keep his composure. A cramped open-plan office at night, fluorescent tubes flickering, a wall of monitors all showing a red error state, printer paper drifting down through the frame, a small electrical fire in the corner. He sits in an office chair at the centre of the frame, mug in paw, looking straight at the camera, completely relaxed.
+
 Camera: locked off, static wide shot. No push in, no cuts.
+
 overall_soundscape:
 Fluorescent hum, printer grinding, soft alarm chirp every 2s, distant electrical crackle, one calm sip at 4s.
+
 non_diegetic_music:
 N/A
+
 Constraints:
-No on-screen text. No subtitles. No other characters.</code></pre>
-            <p>Constraints 段为社区实践，非官方三字段格式。</p>
+No on-screen text. No subtitles. No other characters.</pre>
+            </div>
+            <p style="color:var(--text-muted);font-size:13px;margin-top:-8px;margin-bottom:16px;">Constraints 段为社区实践，非官方三字段格式。</p>
+
             <h3>12.4 首尾帧过渡（FL2VA）</h3>
-            <pre><code>How the reference pictures align with the generated video:
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-header-left">
+                        <span class="code-lang">FL2VA · Day to Night</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                </div>
+                <pre>How the reference pictures align with the generated video:
 - Picture 1 aligns with 0.00s (the first frame).
 - Picture 2 aligns with 15.00s (the last frame).
+
 integrated_multimodal_description:
 Hold the opening composition briefly. Daylight gradually fades as shop windows illuminate, traffic begins moving, and reflections appear across the wet street. Keep the buildings and camera position aligned. Resolve smoothly into the supplied nighttime frame without a sudden cut. No camera movement. No dialogue.
+
 overall_soundscape:
 Day ambience fading into evening: distant traffic increasing, one car horn, wet tire sounds, shop door chimes.
+
 non_diegetic_music:
-N/A</code></pre>
+N/A</pre>
+            </div>
+
             <h3>12.5 纯动作无台词（T2V · 运镜示范）</h3>
-            <pre><code>integrated_multimodal_description:
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-header-left">
+                        <span class="code-lang">T2V · Camera Only</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                </div>
+                <pre>integrated_multimodal_description:
 [Shot 1] A 21:9 ultra-wide of a single-track causeway running dead straight across a tidal flat, the incoming sea already crossing it in thin sheets. A small pale car slows, hesitates, and begins a three-point turn as water climbs the tyres. Flat overcast light, silver water against dark wet sand, the horizon a low hard line across the middle of the frame. Slow lateral drift of the camera, the emptiness on either side doing the work.
+
 overall_soundscape:
 Shallow water moving over tarmac, wind, one distant gull.
+
 non_diegetic_music:
 N/A
+
 Constraints:
-No music, no dialogue, no camera cuts, no push-in.</code></pre>
-            <p>Constraints 段为社区实践，非官方三字段格式。</p>
+No music, no dialogue, no camera cuts, no push-in.</pre>
+            </div>
+            <p style="color:var(--text-muted);font-size:13px;margin-top:-8px;margin-bottom:16px;">Constraints 段为社区实践，非官方三字段格式。</p>
+        </section>
 
-<h2>常见翻车与修复方案</h2>
+        <!-- 十三、常见翻车 -->
+        <section class="section" id="s12">
+            <div class="section-header">
+                <div class="section-number">13</div>
+                <h2 class="section-title">常见翻车与修复方案</h2>
+            </div>
 
+            <div class="table-wrap">
+                <table>
+                    <tr><th>翻车现象</th><th>根本原因</th><th>修复方案</th></tr>
+                    <tr>
+                        <td>中文提示词被念出来 / 乱语</td>
+                        <td>画面描述写得像对话，或没有声明 No dialogue</td>
+                        <td>在 integrated/detailed_description 开头加 "No dialogue, no voiceover. Lips remain completely closed."</td>
+                    </tr>
+                    <tr>
+                        <td>给了参考音频但声音不像</td>
+                        <td>参考音频里有背景音乐/噪音</td>
+                        <td>换一段干净人声，无伴奏，2-15 秒</td>
+                    </tr>
+                    <tr>
+                        <td>角色没按参考图生成</td>
+                        <td>没有写 "&lt;Picture 1&gt; defines identity only"</td>
+                        <td>明确分配参考任务，不要写 "use all images"</td>
+                    </tr>
+                    <tr>
+                        <td>画面出现乱码 / 错误英文</td>
+                        <td>没有约束文字生成，或没有逐字拼写</td>
+                        <td>需要出现的文字用英文双引号逐字写出；追加 "Do not generate garbled characters"</td>
+                    </tr>
+                    <tr>
+                        <td>镜头运动不自然</td>
+                        <td>堆叠了多个不兼容的镜头运动</td>
+                        <td>每个片段只选一个主导运动：static / push-in / tracking / orbit</td>
+                    </tr>
+                    <tr>
+                        <td>软溶解 / 流体变形</td>
+                        <td>模型默认过渡方式</td>
+                        <td>明确写 "No soft dissolves or fluid morphs"</td>
+                    </tr>
+                    <tr>
+                        <td>音频和画面不同步</td>
+                        <td>台词文字长度和片段时长不匹配</td>
+                        <td>控制 &lt;d&gt; 内文字量，15 秒片段不宜超过 20 个汉字</td>
+                    </tr>
+                    <tr>
+                        <td>角色面部漂移</td>
+                        <td>同时改变了姿势、服装和镜头角度</td>
+                        <td>一次只改一个变量；用参考图锁定面部</td>
+                    </tr>
+                    <tr>
+                        <td>生成结果太"通用"</td>
+                        <td>用了太多抽象形容词，缺少具体动作</td>
+                        <td>用 "A does B" 替代 "epic cinematic dynamic"</td>
+                    </tr>
+                    <tr>
+                        <td>产品变形 / 标签错位</td>
+                        <td>没有写保留约束</td>
+                        <td>"Preserve the exact bottle shape, label position, cap, glass material, colours, and proportions."</td>
+                    </tr>
+                    <tr>
+                        <td>Ref2VA 参考混乱</td>
+                        <td>没有写 subject_definitions 和 retention_analysis</td>
+                        <td>补六字段结构，用官方 retention 标签（fully_preserved / attribute_transfer / weak_reference 等）</td>
+                    </tr>
+                    <tr>
+                        <td>FL2VA 首帧/尾帧对不上</td>
+                        <td>缺少 IMAGE-ALIGNMENT INSTRUCTION</td>
+                        <td>在 integrated/detailed_description 之前写 "Picture 1 aligns with 0.00s; Picture 2 aligns with S.SSs"</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="alert alert-success" style="margin-top:24px;">
+                <div class="alert-icon">✅</div>
+                <div class="alert-content">
+                    <div class="alert-title">迭代流程（官方推荐）</div>
+                    <p>1. 生成一个简单版本 → 2. 识别最大失败点 → 3. 只改一个指令 → 4. 保持种子和设置不变 → 5. 同一 prompt 跑多次 → 6. 记录成功/失败/时间/成本 → 7. 保存精确 prompt 和参考顺序。</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
 </div>
-</article>
 
-<footer class="footer">© 2025 GaryAIGC · 让 AI 创作更简单</footer>
+<footer class="footer">
+    <p>整合来源：MiniMax 官方 Video Prompt Writing Guide (Base & Ref) · ComfyUI 官方文档 · fal.ai / EvoLink / APIDot / Sogni / AtlasCloud / VidMuse 社区实测</p>
+    <p style="margin-top:6px;">v1.2 修订：修正 Ref2VA 第四字段为 detailed_description、retention 标签严格按官方词汇（视觉/音频分类）、Constraints 社区标签移出 pre、12.3 标注简化写法 · 2026.08.06</p>
+</footer>
+
+<a href="#" class="back-to-top" id="backToTop">↑</a>
+
 <script>
-function setTheme(t){if (["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(t) < 0) t = "dark-gold";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("gary-theme",t)}
-(function(){var t=localStorage.getItem("gary-theme");if(t&&t.indexOf("light-")!==0)setTheme(t);else setTheme("dark-gold")})();
+    function copyCode(btn) {
+        const code = btn.closest('.code-block').querySelector('pre').innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            const original = btn.innerHTML;
+            btn.innerHTML = '已复制';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.innerHTML = original;
+                btn.classList.remove('copied');
+            }, 2000);
+        });
+    }
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+        backToTop.classList.toggle('visible', window.scrollY > 400);
+    });
+    document.querySelectorAll('.toc-list a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.querySelector(link.getAttribute('href'));
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
 </script>
+
 </body>
 </html>

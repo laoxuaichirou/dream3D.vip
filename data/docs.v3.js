@@ -12,6 +12,7 @@ const DOC_CATS = [
   {key:"ai-coding", name:"AI Coding", sub:"AI 编程工具与配置"},
   {key:"runninghub",name:"RunningHub", sub:"API 与平台进阶"},
   {key:"storyboard",name:"分镜镜头",  sub:"镜头语言与构图速查"},
+  {key:"briefing", name:"信息简报",  sub:"要点速览与版本动态"},
 ];
 
 const DOC_DB = [
@@ -26,7 +27,8 @@ const DOC_DB = [
   {t:"ComfyUI 插件安装与更新（简化版）", file:"articles/comfyui-plugins-quick.html", cat:"comfyui", d:"即学即用的简化流程"},
   {t:"ComfyUI 主程序与自定义插件更新（严谨完整版）", file:"articles/comfyui-update-full.html", cat:"comfyui", d:"完整更新流程与避坑"},
   {t:"MiniMax H3 终极提示词指南", file:"articles/h3-prompt-guide.html", cat:"comfyui", d:"官方三字段/六字段语法 13 章完整版,含案例模板与翻车修复"},
-  {t:"H3 提示词指南 v1.2 信息简报", file:"articles/h3-guide-briefing.html", cat:"comfyui", d:"30 秒版核心要点与改版记录"},
+  /* 信息简报 */
+  {t:"H3 提示词指南 v1.2 信息简报", file:"articles/h3-prompt-guide.html", cat:"briefing", d:"H3 指南信息简报:30 秒版要点与改版记录"},
   /* AI 绘画 */
   {t:"GPT Image 2 提示词库", file:"gpt2-gallery.html", cat:"ai-image", d:"1000 条精选提示词图库"},
   {t:"WAN 2.7 Image 提示词示例", file:"articles/wan27-prompts.html", cat:"ai-image", d:"官方示例与写法参考"},
