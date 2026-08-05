@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark-gold">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MiniMax H3 终极提示词指南 · 知识库 · GaryAIGC</title>
+<style>
+:root{--font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+--ease:cubic-bezier(0.16,1,0.3,1);--transition:0.3s var(--ease);--radius:14px}
+[data-theme="dark-gold"]{--bg:#0a0a0f;--bg-card:#101017;--border:rgba(200,164,92,0.15);--border-hover:rgba(200,164,92,0.4);
+--text:#ececf2;--text-dim:#9a9ab0;--text-muted:#5f5f78;--accent:#c8a45c;--accent-strong:#e8c97a;--accent-glow:rgba(200,164,92,0.1);
+--gradient:linear-gradient(135deg,#c8a45c,#e8c97a);--nav-bg:rgba(10,10,15,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="dark-blue"]{--bg:#060b14;--bg-card:#0c1220;--border:rgba(56,139,253,0.15);--border-hover:rgba(56,139,253,0.4);
+--text:#e2e8f4;--text-dim:#8298b4;--text-muted:#4e5f7d;--accent:#388bfd;--accent-strong:#79c0ff;--accent-glow:rgba(56,139,253,0.1);
+--gradient:linear-gradient(135deg,#388bfd,#79c0ff);--nav-bg:rgba(6,11,20,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="dark-purple"]{--bg:#0e0a17;--bg-card:#141021;--border:rgba(168,130,255,0.15);--border-hover:rgba(168,130,255,0.4);
+--text:#ebe2fa;--text-dim:#a08ec2;--text-muted:#615080;--accent:#a882ff;--accent-strong:#d4b8ff;--accent-glow:rgba(168,130,255,0.1);
+--gradient:linear-gradient(135deg,#a882ff,#d4b8ff);--nav-bg:rgba(14,10,23,0.85);--nav-border:rgba(255,255,255,0.07)}
+[data-theme="light-warm"]{--bg:#faf7f2;--bg-card:#ffffff;--border:rgba(150,110,55,0.18);--border-hover:rgba(150,110,55,0.42);
+--text:#2b2822;--text-dim:#7c7263;--text-muted:#a2947f;--accent:#a87c3e;--accent-strong:#8a6030;--accent-glow:rgba(168,124,62,0.09);
+--gradient:linear-gradient(135deg,#a87c3e,#c8a05e);--nav-bg:rgba(250,247,242,0.88);--nav-border:rgba(0,0,0,0.08)}
+[data-theme="light-cool"]{--bg:#f5f7fa;--bg-card:#ffffff;--border:rgba(50,105,180,0.16);--border-hover:rgba(50,105,180,0.38);
+--text:#1b2536;--text-dim:#5c6c84;--text-muted:#8c9cb4;--accent:#2f6cbd;--accent-strong:#255aa0;--accent-glow:rgba(47,108,189,0.08);
+--gradient:linear-gradient(135deg,#2f6cbd,#4f8ad8);--nav-bg:rgba(245,247,250,0.88);--nav-border:rgba(0,0,0,0.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-strong)}
+::selection{background:var(--accent-glow)}
+.unav-wrap{position:sticky;top:14px;z-index:200;display:flex;justify-content:center;padding:14px 16px 0}
+.unav{display:flex;align-items:center;gap:3px;background:var(--nav-bg);
+backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);
+border:1px solid var(--nav-border);border-radius:999px;padding:7px 12px;
+box-shadow:0 10px 34px rgba(0,0,0,0.28);max-width:100%;flex-wrap:wrap;justify-content:center}
+.unav-logo{font-size:17px;font-weight:800;letter-spacing:-0.3px;background:var(--gradient);
+-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding:6px 12px;cursor:pointer;white-space:nowrap}
+.unav-sep{width:1px;height:18px;background:var(--nav-border);margin:0 5px}
+.unav-item{position:relative}
+.unav-btn{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:999px;
+font-size:13.5px;font-weight:500;color:var(--text-dim);cursor:pointer;border:none;background:transparent;
+transition:all var(--transition);white-space:nowrap;font-family:var(--font);text-decoration:none}
+.unav-btn:hover,.unav-item.open .unav-btn,.unav-btn.active{color:var(--text);background:var(--accent-glow)}
+.article{max-width:900px;margin:0 auto;padding:48px 24px 80px}
+.article-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);
+margin-bottom:28px;transition:color var(--transition)}
+.article-back:hover{color:var(--accent)}
+.article h1{font-size:clamp(26px,4.5vw,38px);font-weight:900;letter-spacing:-0.5px;line-height:1.25;
+margin-bottom:14px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.article-meta{font-size:13px;color:var(--text-muted);padding-bottom:24px;margin-bottom:32px;border-bottom:1px solid var(--border)}
+.article-body h2{font-size:22px;font-weight:800;margin:40px 0 14px;padding-top:14px;border-top:1px solid var(--border)}
+.article-body h2:first-child{border-top:none;padding-top:0;margin-top:0}
+.article-body h3{font-size:17px;font-weight:700;margin:28px 0 10px;color:var(--accent-strong)}
+.article-body h4{font-size:15px;font-weight:700;margin:20px 0 8px}
+.article-body p{margin:12px 0;color:var(--text-dim);font-size:15px}
+.article-body p.li{padding-left:14px}
+.article-body strong{color:var(--text);font-weight:700}
+.article-body code{font-family:ui-monospace,Consolas,monospace;font-size:13px;background:var(--accent-glow);
+border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:var(--accent-strong)}
+.article-body pre{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;
+padding:16px;overflow-x:auto;margin:14px 0}
+.article-body pre code{background:none;border:none;padding:0;color:var(--text-dim);white-space:pre-wrap;word-break:break-word}
+.article-body blockquote{border-left:3px solid var(--accent);background:var(--accent-glow);
+border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;color:var(--text-dim);font-size:14px}
+.article-body table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+.article-body th,.article-body td{border:1px solid var(--border);padding:9px 12px;text-align:left}
+.article-body th{background:var(--accent-glow);color:var(--accent-strong);font-weight:700}
+.article-body td{color:var(--text-dim)}
+.article-body ul,.article-body ol{padding-left:22px;margin:12px 0;color:var(--text-dim);font-size:15px}
+.article-body li{margin:4px 0}
+.footer{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<nav>
+GaryAIGC
+
+<a href="../index.html">AI创作</a>
+<a href="../benefits.html">AI福利</a>
+<a href="../knowledge.html">知识库</a>
+<a href="../community.html">社区</a>
+<a href="../videos.html">视频</a>
+</nav>
+
+<article>
+<a href="../knowledge.html">← 返回知识库</a>
+<h1>MiniMax H3 终极提示词指南</h1>
+官方规范 + 社区实测 · v1.2 · 2026-08-06 · 13 章完整版 · 配套 8 个场景预设
+
+<h2>H3 核心认知：它不是视频模型，是通用多模态生成器</h2>
+<h3>📋 基础参数</h3>
+                    <table>
+                        <tr><th>参数</th><th>规格</th><th>来源</th></tr>
+                        <tr><td>输出分辨率</td><td>2K（短边 1440px，宽屏约 2976×1248）</td><td>API 文档</td></tr>
+                        <tr><td>帧率</td><td>24 FPS（电影级，无需转帧率）</td><td>API 文档</td></tr>
+                        <tr><td>时长</td><td>5–15 秒（整数秒）</td><td>API 文档</td></tr>
+                        <tr><td>音频</td><td>原生 32kHz 立体声，与画面同步生成</td><td>API 文档</td></tr>
+                        <tr><td>提示词上限</td><td>约 7000 字符（社区实测）</td><td>社区实测</td></tr>
+                        <tr><td>支持语言</td><td>对话支持 11 种语言（含中文）；提示词结构字段建议英文</td><td>官方 FAQ</td></tr>
+                        <tr><td>比例</td><td>21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16 / adaptive</td><td>API 文档</td></tr>
+                    </table>
+            
+                💡
+                
+                    <strong>核心原则
+                    <p>H3 的提示词遵循"写你能看到的和听到的，不写你想感受到的"。避免"史诗感""电影级"这类抽象词，用具体的镜头、动作、声音来描述。</p>
+
+<h2>提示词三字段结构（Base 模式强制格式）</h2>
+
+                ⚠️
+                
+                    I2VA / FL2VA / L2VA 的额外字段
+                    <p>这些模式在 <code>integrated_multimodal_description</code> 之前增加一个 <strong>IMAGE-ALIGNMENT INSTRUCTION</strong>，用于锁定首帧/尾帧的内容（身份、服装、位置、光线、背景）。详见第十二节案例。</p>
+
+<h2>Integrated Multimodal Description 逐段拆解</h2>
+<h3>3.2 视觉风格（必须在开头声明）</h3>
+                    <p>在 Shot 1 开头立即声明整体风格，使用直接类别而非模糊赞美：</p>
+                    <p><code>Live-action</code> <code>Cinematic</code> <code>2D-animated</code> <code>3D CG</code> <code>Claymation</code> <code>Watercolor</code> <code>Vintage film</p>
+            <h3>3.3 参考图锚定（I2V / R2V）</h3>
+                    <p>立即识别参考图中必须保持一致的元素：</p>
+                    <ul>
+                        <li>Character identity（面部身份）</li>
+                        <li>Appearance（外貌）</li>
+                        <li>Clothing（服装）</li>
+                        <li>Body proportions（身体比例）</li>
+                        <li>Position（位置）</li>
+                        <li>Lighting（光线）</li>
+                        <li>Background（背景）</li>
+                        <li>Composition（构图）</li>
+                    </ul>
+                    <blockquote><strong>示例</strong><br><p>The young female hiker shown in &lt;Picture 1&gt; remains on the narrow mountain ridge, preserving her exact facial identity, natural skin texture, brown hair...</p>
+            </blockquote>
+            <h3>3.4 说话人与对话（最容易翻车的部分）</h3>
+                <h3>🎙️ 对话语法规范</h3>
+                    <p><strong>说话人身份（Speaker ID）</strong></p>
+                    <ul>
+                        <li>首次出现时指定：年龄、性别、音高、音色、口音、语速</li>
+                        <li>使用稳定 ID：<code>(S1)</code>、<code>(S2)</code></li>
+                        <li>多人同时说话用复合 ID：<code>(S1,S2)</code></li>
+                        <li>从未发声的角色不分配 ID</li>
+                    </ul>
+                    <p><strong>对话标签 <code>&lt;d&gt;</code>（绝对规则）</strong></p>
+                        <blockquote><strong>✅ 正确</strong><br><p>She shouts with joyful energy: <code>&lt;d&gt;[English] Helloooooooo!&lt;/d&gt;</code></p>
+                            <p>Her lips, jaw, cheeks, throat and chest move naturally...</p>
+                        </blockquote>
+                        <blockquote><strong>❌ 错误</strong><br><p><code>&lt;d&gt;[English, shouting loudly and happily] Helloooooooo!&lt;/d&gt;</code></p>
+                            <p>← 语气描述塞进了标签内</p>
+                    <p><strong>&lt;d&gt; 内部只能有：语言标记 + 确切的台词文字。</strong>所有表演指令（语气、情绪、语速）必须写在标签外面。</p>
+            <h3>3.5 画外音（Voiceover）</h3>
+                    <p>使用精确短语 <code>says in an off-screen voiceover</code>，并在标签后声明角色嘴唇完全闭合：</p>
+                    
+                        <p>(S1) says in an off-screen voiceover: <code>&lt;d&gt;[English] The city never sleeps.&lt;/d&gt;</code> Her lips remain completely closed throughout.</p>
+            </blockquote>
+            <h3>3.6 跨切对话</h3>
+                    <p>如果对话跨越镜头切换，在连接点两侧都放置对话，并声明音频连续：</p>
+                    
+                        <p>[Shot 1] ... <code>&lt;d&gt;[Chinese] 你必须在日落前&lt;/d&gt;</code></p>
+                        <p>[Shot 2] At 00:03.500, the camera cuts to a close-up. <code>&lt;d&gt;[Chinese] 赶到山顶。&lt;/d&gt;</code> The audio continues across the cut.</p>
+            <h3>3.7 画面文字（On-Screen Text）</h3>
+                    <p>所有可见的文字（横幅、招牌、标签、字幕、霓虹灯）必须用<strong>英文双引号</strong>包裹，逐字保留原文和标点，不翻译：</p>
+                    
+                        <p>A red neon sign reading <strong>"营业中"</strong> glows above the doorway.</p>
+                        <p>The title card displays <strong>"EPISODE 1"</strong> in bold sans-serif.</p>
+                    <p>生成后仍需视觉审查，不要假设拼写、品牌处理或法律许可是自动正确的。</p>
+
+<h2>镜头语言规范：写成自然动作，不是标签堆叠</h2>
+<table>
+                    <tr><th>需求</th><th>清晰写法</th><th>为什么有效</th></tr>
+                    <tr><td>缓慢推进</td><td>The camera pushes in with small amplitude at slow speed.</td><td>定义了物理运动和节奏</td></tr>
+                    <tr><td>水平揭示</td><td>The camera pans right with large amplitude at fast speed.</td><td>区分旋转与平移</td></tr>
+                    <tr><td>跟随动作</td><td>A tracking shot follows the cyclist through the gate.</td><td>将镜头与主体运动连接</td></tr>
+                    <tr><td>无运动</td><td>The camera holds a static shot as the steam clears.</td><td>阻止模型发明不想要的运动</td></tr>
+                    <tr><td>新镜头</td><td>[Shot 2] At 00:04.500, the camera cuts to a close-up.</td><td>在有效时间引入真实剪辑</td></tr>
+                    <tr><td>环绕</td><td>The camera makes a slow clockwise orbit around the product.</td><td>明确方向、速度和主体</td></tr>
+                    <tr><td>手持跟随</td><td>A handheld follow shot tracks behind the subject.</td><td>控制纪录片式抖动的程度</td></tr>
+                    <tr><td>焦点转移</td><td>A rack focus shifts from the foreground watch to the background city.</td><td>指定前后景关系</td></tr>
+                </table>
+            
+                🚫
+                
+                    致命错误
+                    <p>不要把多个不兼容的镜头运动堆到一个 15 秒片段里。"Orbit + tracking + push-in" 会让模型困惑。每个片段只选一个主导运动。</p>
+
+<h2>音频生成：对话、环境音、音乐的三层分离</h2>
+<h3>5.2 对话支持的语言</h3>
+                    <p>MiniMax 官方报告稳定对话支持 <strong>11 种语言</strong>：阿拉伯语、中文、英语、法语、德语、意大利语、日语、韩语、葡萄牙语、俄语、西班牙语。其他语言支持程度不一。</p>
+                    <p>语言标记写法：<code>&lt;d&gt;[Chinese] 台词&lt;/d&gt;</code>、<code>&lt;d&gt;[English] Dialogue&lt;/d&gt;</code>、<code>&lt;d&gt;[Japanese] 台詞&lt;/d&gt;</code></p>
+            <h3>5.3 音乐描述规范</h3>
+                    <p>用 1-3 句英文描述乐器、速度、节奏和动态变化。不要用抽象情绪词：</p>
+                        <blockquote><strong>✅ 好</strong><br><p>Sparse piano notes at a slow tempo, joined by sustained low strings that gradually increase in volume before fading out.</p>
+                        </blockquote>
+                        <blockquote><strong>❌ 差</strong><br><p>Epic cinematic music that feels emotional and inspiring.</p>
+                    <p>角色能听到的音乐（收音机、手机、现场演奏）属于 diegetic 事件，必须写在 <code>integrated_multimodal_description</code> 里，而不是 <code>non_diegetic_music</code>。</p>
+            <h3>5.4 物理发声表演（提升真实感）</h3>
+                    <p>不要写"完美的口型同步和真实表演"，而是描述可观察的解剖学动作：</p>
+                    
+                        <p>Her lips, jaw, cheeks, throat and chest move naturally. The jaw opens naturally, cheeks respond to pressure, throat engages, chest contracts during breath, lips shape the sustained vowel.</p>
+            </blockquote>
+
+<h2>参考文件 R2V：给每个文件分配一个明确的任务</h2>
+<h3>6.1 参考分配模式（官方推荐）</h3>
+                    
+                        <p>&lt;Picture 1&gt; defines the fictional adult subject's identity and clothing only.</p>
+                        <p>&lt;Video 1&gt; defines body timing and the tracking camera only.</p>
+                        <p>&lt;Audio 1&gt; defines the authorised voice timbre only.</p>
+                    <p><strong>黄金法则：</strong>给每个参考一个狭窄的任务。不要写"Use Image 1 for everything"。</p>
+            <h3>6.2 音频参考的严格限制</h3>
+            
+                🚫
+                
+                    音频参考 ≠ 背景音乐参考
+                    <p>音频参考只传递<strong>音色（timbre）</strong>，不传递口音、情绪、语速、节奏、旋律。这些必须在提示词里用文字指定。参考音频必须是<strong>干净的人声</strong>，不能有背景音乐、重叠说话声、环境噪音。</p>
+                <h3>🎙️ 音频参考最小可行示例</h3>
+                    
+                        <p><strong>Prompt:</strong> Character dialogue: "Follow the wind, live free. Leave worries behind, enjoy the moment." Use Audio 1 as the voice-timbre reference.</p>
+                        <p><strong>你需要提供：</strong></p>
+                        <ul>
+                            <li>Video 1: 将要说话的角色视频</li>
+                            <li>Audio 1: 目标声音的干净样本，2-15 秒， ideally 无背景音乐</li>
+                            <li>确切的台词文字（逐字引用，不转述）</li>
+                        </ul>
+                        <p><strong>为什么有效：</strong>台词被引用而非转述， timing 和口型有具体锚点；Audio 1 只分配了一个狭窄任务——音色。</p>
+            <h3>6.3 可复用主体 vs 源素材</h3>
+                    <p>官方区分了两类引用：</p>
+                    <ul>
+                        <li><strong>Subject（可复用主体）：</strong>人、物体、场景、动作、效果——在目标中复用的内容</li>
+                        <li><strong>Video label（源素材标签）：</strong>时间或剪辑来源</li>
+                    </ul>
+                    <p>一致的标签让复杂提示词更容易审查。</p>
+
+<h2>Ref2VA 六字段结构（R2V 专属）</h2>
+<pre><code>subject_definitions:
+Define what each reference file controls. Assign a narrow, explicit task to every Picture, Video, and Audio.
+summary:
+One-sentence overview of the creative direction.
+retention_analysis:
+For each reference, state what is preserved and what is changed.
+detailed_description:
+[Shot 1] STYLE + FRAMING + SUBJECT + ENVIRONMENT...
+overall_soundscape:
+Environmental and physical sound.
+non_diegetic_music:
+Audience-only background score, or N/A.</code></pre>
+            <h3>7.1 六字段顺序与作用</h3>
+                    <table>
+                        <tr><th>字段</th><th>作用</th><th>写法要点</th></tr>
+                        <tr>
+                            <td><code>subject_definitions</code></td>
+                            <td>给每个参考文件分配角色</td>
+                            <td>"&lt;Picture 1&gt; defines identity and clothing only."</td>
+                        </tr>
+                        <tr>
+                            <td><code>summary</code></td>
+                            <td>一句话概括创意方向</td>
+                            <td>让审查者 3 秒理解你要做什么</td>
+                        </tr>
+                        <tr>
+                            <td><code>retention_analysis</code></td>
+                            <td>声明每个参考的保留策略</td>
+                            <td>使用官方 retention 标签（见下表）</td>
+                        </tr>
+                        <tr>
+                            <td><code>detailed_description</code></td>
+                            <td>主视听时间线（同 Base 的 integrated）</td>
+                            <td>但可引用已定义的 subject</td>
+                        </tr>
+                        <tr>
+                            <td><code>overall_soundscape</code></td>
+                            <td>环境物理音</td>
+                            <td>不写台词</td>
+                        </tr>
+                        <tr>
+                            <td><code>non_diegetic_music</code></td>
+                            <td>背景音乐</td>
+                            <td>N/A 或具体乐器描述</td>
+                        </tr>
+                    </table>
+            <h3>7.2 Retention 标签（官方词汇）</h3>
+                <h3>🔒 视觉参考标签（Visual）</h3>
+                    <table>
+                        <tr><th>标签</th><th>含义</th><th>使用场景</th></tr>
+                        <tr>
+                            <td><code>fully_preserved</code></td>
+                            <td>参考中的元素在输出中完全保留，不做任何改变</td>
+                            <td>身份克隆、品牌 logo、特定服装</td>
+                        </tr>
+                        <tr>
+                            <td><code>partially_preserved</code></td>
+                            <td>参考中的部分元素保留，其余允许变化</td>
+                            <td>保留面部但改变发型/服装颜色</td>
+                        </tr>
+                        <tr>
+                            <td><code>attribute_transfer</code></td>
+                            <td>提取参考的某个属性（颜色、材质、风格），应用到新主体</td>
+                            <td>把 A 的衣服风格穿到 B 身上</td>
+                        </tr>
+                        <tr>
+                            <td><code>weak_reference</code></td>
+                            <td>参考仅作为弱引导，输出可以大幅偏离</td>
+                            <td>氛围参考、大致风格参考</td>
+                        </tr>
+                    </table>
+                <h3>🔒 音频参考标签（Audio）</h3>
+                    <table>
+                        <tr><th>标签</th><th>含义</th><th>使用场景</th></tr>
+                        <tr>
+                            <td><code>fully_copy</code></td>
+                            <td>完整复制参考音频的内容和特征</td>
+                            <td>精确克隆某段声音</td>
+                        </tr>
+                        <tr>
+                            <td><code>partially_copy</code></td>
+                            <td>部分复制参考音频，其余由模型生成</td>
+                            <td>提取音色但改变语调</td>
+                        </tr>
+                        <tr>
+                            <td><code>reference</code></td>
+                            <td>参考音频作为生成目标，但允许合理变化</td>
+                            <td>风格相似的背景音乐</td>
+                        </tr>
+                        <tr>
+                            <td><code>weak_reference</code></td>
+                            <td>参考音频仅作为弱引导</td>
+                            <td>大致情绪参考</td>
+                        </tr>
+                    </table>
+            
+                ⚠️
+                
+                    非官方词汇不要用
+                    <p><code>loosely_inspired</code>、<code>style_only</code>、<code>do_not_use</code> 不是官方 retention 标签。H3 可能无法识别这些词汇，导致保留策略失效。请严格使用上表中的官方标签。</p>
+            <h3>7.3 Ref2VA 完整示例（官方标签）</h3>
+            <pre><code>subject_definitions:
+&lt;Picture 1&gt; defines the adult woman&#x27;s exact facial identity, skin texture, and brown hair only.
+&lt;Picture 2&gt; defines the red silk evening dress and its drape behaviour only.
+&lt;Video 1&gt; defines the slow walking gait and hip sway timing only.
+&lt;Audio 1&gt; defines the authorised voice timbre only.
+summary:
+A woman in a red silk dress walks through a rainy Shanghai alley at night, speaking one line in Chinese.
+retention_analysis:
+- &lt;Picture 1&gt;: fully_preserved (facial identity, skin, hair)
+- &lt;Picture 2&gt;: fully_preserved (dress design, colour, material)
+- &lt;Video 1&gt;: attribute_transfer (gait timing applied to new environment)
+- &lt;Audio 1&gt;: fully_copy (voice timbre)
+- Background from &lt;Picture 1&gt;: weak_reference
+detailed_description:
+[Shot 1] Live-action, cinematic. The woman defined in &lt;Picture 1&gt; wears the red silk dress from &lt;Picture 2&gt;. She walks through a narrow Shanghai alley at night, neon signs reflecting on wet pavement. The camera tracks behind her with medium amplitude at slow speed. She stops, turns to face the camera.
+The woman with a calm, clear voice (S1) says softly:
+&lt;d&gt;[Chinese] 雨停了，该走了。&lt;/d&gt;
+Her lips, jaw, and throat move naturally with each word.
+overall_soundscape:
+Light rain on wet stone, distant car horns, one passing bicycle, subtle silk fabric movement, footsteps on wet ground. No other speech.
+non_diegetic_music:
+N/A</code></pre>
+            
+                💡
+                
+                    Ref2VA 与 Base 的关键区别
+                    <p>Base 模式（T2V/I2V/FL2V）的 <code>integrated_multimodal_description</code> 里直接描述一切；Ref2VA 先通过 <code>subject_definitions</code> 和 <code>retention_analysis</code> 建立"合同"，再在 <code>detailed_description</code> 里引用这些定义。这让复杂多参考任务的可控性大幅提升。</p>
+
+<h2>五大生成模式与选择逻辑</h2>
+<h3>8.1 各模式提示词差异</h3>
+                    <p><strong>T2V：</strong>需要完整描述视觉世界（主体、环境、动作、镜头、结尾）。</p>
+                    <p><strong>I2V：</strong>上传图已传达外观和构图，Prompt 聚焦运动、镜头行为、保留规则、环境变化、结尾。</p>
+                    <p><strong>FL2VA：</strong>描述<strong>过渡</strong>而非重复两张图。解释什么在动、什么渐变、什么保持对齐、如何收尾。选择透视、比例、风格兼容的帧。</p>
+                    <p><strong>R2V（Ref2VA）：</strong>使用六字段结构，给参考排序并分配角色，通过 retention 标签控制保留程度。</p>
+
+<h2>中文使用专项：防念咒指南</h2>
+<h3>9.1 中文提示词正确结构</h3>
+            <pre><code>integrated_multimodal_description:
+[Shot 1] Live-action, cinematic. A young woman stands in a Shanghai alley at dusk, neon signs reflecting on wet pavement. She adjusts her coat and looks toward the camera. The camera holds a static medium shot. No dialogue, no voiceover. Her lips remain completely closed. Synchronized diegetic sound: distant traffic, light rain on fabric.
+overall_soundscape:
+Steady rain on wet stone, distant car horns, one passing bicycle with a bell, subtle fabric movement as she adjusts her coat. No speech, no vocalization.
+non_diegetic_music:
+Sparse solo piano, slow tempo, minor key, fading out at the end.</code></pre>
+            <h3>9.2 如果必须用中文写画面描述</h3>
+                    <p>API 层面支持中文 prompt，但官方指南建议结构化字段用英文（镜头、风格、约束）。如果坚持用中文写主体描述，<strong>建议追加</strong>防误解声明（社区实践，待实测）：</p>
+                    
+                        <p>No dialogue, no voiceover, no spoken words. Characters' lips remain completely closed throughout. No on-screen text, no subtitles, no captions.</p>
+                    <p>除非用户在"台词"区域明确填写了内容。</p>
+            <h3>9.3 中文台词的正确写法</h3>
+                    
+                        <p>The young woman with a clear, gentle voice (S1) speaks softly:</p>
+                        <p><code>&lt;d&gt;[Chinese] 今天的晚霞真美。&lt;/d&gt;</code></p>
+                        <p>Her lips shape each word naturally, jaw moves with relaxed rhythm.</p>
+                    <p><strong>关键：</strong>语气、情绪、语速写在 <code>&lt;d&gt;</code> 外面；标签内只有 <code>[Chinese] 台词</code>。</p>
+            <h3>9.4 中文画面文字的写法</h3>
+                    <p>如果画面需要出现中文文字（招牌、字幕），用英文句子描述，文字内容用英文双引号包裹中文：</p>
+                    
+                        <p>A red neon sign reading <strong>"营业中"</strong> glows above the doorway.</p>
+                        <p>The subtitle displays <strong>"第二集"</strong> in white sans-serif.</p>
+                    <p>然后必须追加约束：</p>
+                    
+                        <p>Do not add Chinese text elsewhere. Do not generate garbled characters. Do not misspell.</p>
+
+<h2>负面约束清单：免费的质量提升</h2>
+<h3>🚫 按场景追加</h3>
+                    <table>
+                        <tr><th>场景</th><th>追加约束</th></tr>
+                        <tr><td>产品广告</td><td>Do not deform the product. Do not change label position or logo geometry.</td></tr>
+                        <tr><td>人物特写</td><td>Do not alter facial proportions. Keep hands anatomically correct.</td></tr>
+                        <tr><td>品牌内容</td><td>Do not introduce competing brand marks. Replace real logos with fictional ones.</td></tr>
+                        <tr><td>多镜头</td><td>Do not repeat the same transition type. Vary wipe, mask, and cut styles.</td></tr>
+                        <tr><td>无音乐</td><td>No music. No background score. Ambience only.</td></tr>
+                        <tr><td>无对话</td><td>No dialogue. No voiceover. Lips remain closed.</td></tr>
+                    </table>
+
+<h2>21 点写作自检清单（官方审计）</h2>
+
+
+<h2>案例模板（官方规范 + 社区优化）</h2>
+<pre><code>integrated_multimodal_description:
+[Shot 1] Image 1 is the character and art-style reference: keep this exact hand-painted 2D webcomic look, the same watercolour texture, the same ink outline weight, the same dog, the same little hat, the same mug. Do not redraw him in 3D, do not change his proportions, do not clean up the linework.
+Put him in a different room and keep his composure. A cramped open-plan office at night, fluorescent tubes flickering, a wall of monitors all showing a red error state, printer paper drifting down through the frame, a small electrical fire in the corner. He sits in an office chair at the centre of the frame, mug in paw, looking straight at the camera, completely relaxed.
+Camera: locked off, static wide shot. No push in, no cuts.
+overall_soundscape:
+Fluorescent hum, printer grinding, soft alarm chirp every 2s, distant electrical crackle, one calm sip at 4s.
+non_diegetic_music:
+N/A
+Constraints:
+No on-screen text. No subtitles. No other characters.</code></pre>
+            <p>Constraints 段为社区实践，非官方三字段格式。</p>
+            <h3>12.4 首尾帧过渡（FL2VA）</h3>
+            <pre><code>How the reference pictures align with the generated video:
+- Picture 1 aligns with 0.00s (the first frame).
+- Picture 2 aligns with 15.00s (the last frame).
+integrated_multimodal_description:
+Hold the opening composition briefly. Daylight gradually fades as shop windows illuminate, traffic begins moving, and reflections appear across the wet street. Keep the buildings and camera position aligned. Resolve smoothly into the supplied nighttime frame without a sudden cut. No camera movement. No dialogue.
+overall_soundscape:
+Day ambience fading into evening: distant traffic increasing, one car horn, wet tire sounds, shop door chimes.
+non_diegetic_music:
+N/A</code></pre>
+            <h3>12.5 纯动作无台词（T2V · 运镜示范）</h3>
+            <pre><code>integrated_multimodal_description:
+[Shot 1] A 21:9 ultra-wide of a single-track causeway running dead straight across a tidal flat, the incoming sea already crossing it in thin sheets. A small pale car slows, hesitates, and begins a three-point turn as water climbs the tyres. Flat overcast light, silver water against dark wet sand, the horizon a low hard line across the middle of the frame. Slow lateral drift of the camera, the emptiness on either side doing the work.
+overall_soundscape:
+Shallow water moving over tarmac, wind, one distant gull.
+non_diegetic_music:
+N/A
+Constraints:
+No music, no dialogue, no camera cuts, no push-in.</code></pre>
+            <p>Constraints 段为社区实践，非官方三字段格式。</p>
+
+<h2>常见翻车与修复方案</h2>
+
+</strong>
+</article>
+
+<footer>© 2025 GaryAIGC · 让 AI 创作更简单</footer>
+<script>
+function setTheme(t){if (["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(t) < 0) t = "dark-gold";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("gary-theme",t)}
+(function(){var t=localStorage.getItem("gary-theme");if(t&&t.indexOf("light-")!==0)setTheme(t);else setTheme("dark-gold")})();
+</script>
+</body>
+</html>
