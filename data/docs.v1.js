@@ -36,6 +36,7 @@ const DOC_DB = [
   {t:"AI 编程工具安装与配置实操手册", file:"articles/ai-coding-setup.html", cat:"ai-coding", d:"主流工具一次配好"},
   {t:"Claude Code 完全指南", file:"claude-code-guide.html", cat:"ai-coding", d:"形态辨析、国内配置与概念词典"},
   {t:"Kimi Code 指令大全", file:"kimi-code-guide.html", cat:"ai-coding", d:"交互式指令教程"},
+  {t:"Kimi Code / Hermes 防翻车+防失忆配置指南", file:"ai-constraint-guide.html", cat:"ai-coding", d:"SOUL.md 全局约束 + 记忆文档：让 AI 不偷懒、不编造、不忘事"},
   /* RunningHub */
   {t:"RunningHub API 教程", file:"articles/runninghub-api.html", cat:"runninghub", d:"API 调用全流程"},
   {t:"RunningHub API 新手入门教程", file:"articles/runninghub-api-beginner.html", cat:"runninghub", d:"零基础上手"},
