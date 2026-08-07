@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【即梦】Seedance 2.0 使用手册 - GaryAIGC</title>
+<style>
+:root{
+  --gold:#d4af37; --gold-l:#f2d98a; --gold-d:#a8842a;
+  --bg0:#0d0b08; --bg1:#15110b; --bg2:#1b1610; --bg3:#221c13;
+  --line:#2e2618; --line2:#3a3020;
+  --text:#e9e2d2; --text-dim:#a89f8a; --text-faint:#7d7562;
+  --serif:"Noto Serif SC","Source Han Serif SC","Songti SC",SimSun,serif;
+  --sans:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sans-serif;
+  --mono:Consolas,"JetBrains Mono","Courier New",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg0);color:var(--text);font-family:var(--sans);line-height:1.85;font-size:16px}
+body::before{content:"";position:fixed;inset:0;background:
+  radial-gradient(1200px 500px at 50% -10%,rgba(212,175,55,.06),transparent 60%),
+  radial-gradient(800px 400px at 90% 110%,rgba(212,175,55,.04),transparent 60%);
+  pointer-events:none;z-index:0}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+
+/* Hero */
+.hero{padding:56px 20px 40px;text-align:center;position:relative}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;padding:8px 18px;border:1px solid var(--line2);border-radius:999px;background:linear-gradient(180deg,rgba(212,175,55,.08),transparent)}
+.hero h1{font-family:var(--serif);font-size:clamp(28px,4.5vw,44px);font-weight:700;color:var(--gold-l);margin:22px 0 6px;letter-spacing:.04em;line-height:1.35}
+.hero .sub{color:var(--text-dim);font-size:15px;max-width:720px;margin:0 auto}
+.hero .meta{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;font-size:12.5px;color:var(--text-faint)}
+.hero .meta span{border:1px solid var(--line);border-radius:6px;padding:4px 10px;background:var(--bg1)}
+.hero .meta a{color:var(--gold);text-decoration:none}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.5;max-width:640px;margin:0 auto 8px}
+
+/* TOC */
+.toc{max-width:1080px;margin:26px auto 8px;padding:0 20px}
+.toc-inner{background:var(--bg1);border:1px solid var(--line);border-radius:14px;padding:20px 24px}
+.toc-title{font-size:14px;letter-spacing:.25em;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.toc-title::after{content:"";flex:1;height:1px;background:var(--line2)}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
+.toc a{color:var(--text-dim);text-decoration:none;font-size:13.5px;padding:7px 12px;border-radius:8px;transition:all .15s;display:block;border:1px solid transparent}
+.toc a:hover{color:var(--gold-l);background:var(--bg2);border-color:var(--line2)}
+.toc a.t2{padding-left:22px;font-size:12.5px;color:var(--text-faint)}
+
+/* Main */
+main{max-width:1080px;margin:20px auto 0;padding:0 20px 40px}
+section.sec{background:var(--bg1);border:1px solid var(--line);border-radius:16px;padding:30px 36px;margin-bottom:22px;box-shadow:0 1px 0 rgba(255,255,255,.02) inset}
+h2.sec-h{font-family:var(--serif);font-size:23px;color:var(--gold-l);margin:8px 0 18px;padding-bottom:12px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+h2.sec-h .num{font-family:var(--serif);font-size:15px;color:var(--gold-d);border:1px solid var(--line2);border-radius:8px;padding:2px 10px;white-space:nowrap}
+h3{font-family:var(--serif);font-size:18.5px;color:var(--gold-l);margin:26px 0 10px;padding-left:14px;border-left:3px solid var(--gold)}
+h4{font-size:15.5px;color:var(--text);margin:20px 0 8px;font-weight:600}
+p{margin:10px 0;color:var(--text);font-size:15.5px}
+p.dim{color:var(--text-dim);font-size:14px}
+
+/* Lists */
+ul,ol{margin:10px 0 10px 4px;padding-left:22px}
+li{margin:7px 0;font-size:15px;color:var(--text)}
+li::marker{color:var(--gold)}
+ul li ul,ol li ul{margin:6px 0}
+
+/* Quote */
+blockquote{background:linear-gradient(90deg,rgba(212,175,55,.07),transparent 70%);border-left:3px solid var(--gold);padding:14px 20px;margin:14px 0;border-radius:0 10px 10px 0;color:var(--text-dim);font-size:14px;line-height:1.8}
+blockquote strong{color:var(--gold-l)}
+
+/* Table */
+.table-wrap{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+thead th{background:linear-gradient(180deg,#241d10,#1e1810);color:var(--gold-l);font-weight:600;text-align:left;padding:12px 16px;border-bottom:2px solid var(--gold);white-space:nowrap;font-size:13.5px;letter-spacing:.03em}
+tbody td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--text)}
+tbody tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+tbody tr:hover td{background:rgba(212,175,55,.05)}
+tbody tr:last-child td{border-bottom:none}
+td strong{color:var(--gold-l)}
+td:first-child{color:var(--gold-l);font-weight:500;white-space:nowrap}
+
+/* Code */
+pre{background:#0a0806;border:1px solid var(--line);border-radius:10px;padding:16px 20px;overflow-x:auto;margin:14px 0;font-family:var(--mono);font-size:13px;line-height:1.7;color:#e6d9b8;white-space:pre-wrap}
+code.ic{font-family:var(--mono);font-size:13px;color:#e8c98a;background:rgba(212,175,55,.08);padding:1px 6px;border-radius:4px;border:1px solid rgba(212,175,55,.15)}
+
+hr{border:none;height:1px;background:var(--line2);margin:26px 0}
+
+/* Footer */
+footer{margin-top:40px;padding:28px 0 40px;border-top:1px solid var(--line);text-align:center;color:var(--text-faint);font-size:13px}
+footer .brand{color:var(--gold);font-weight:600;font-size:14px;letter-spacing:.1em}
+footer a{color:var(--gold);text-decoration:none}
+
+/* Back to top */
+.totop{position:fixed;right:24px;bottom:24px;width:42px;height:42px;border-radius:50%;background:var(--bg2);border:1px solid var(--line2);color:var(--gold);font-size:18px;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:.7;transition:opacity .2s;z-index:9}
+.totop:hover{opacity:1;background:var(--bg3)}
+
+@media(max-width:700px){
+  body{font-size:15px}
+  section.sec{padding:22px 18px;border-radius:12px}
+  .hero{padding:40px 16px 28px}
+  .hero h1{font-size:26px}
+  table{font-size:12.5px;min-width:480px}
+  .toc-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <span class="eyebrow">✦ AI 视频模型官方手册整理</span>
+  <h1>【即梦】Seedance 2.0 使用手册</h1>
+  <p class="sub">四模态创作 · 参考万物 —— 官方参数与 9 大能力实战案例</p>
+  <div class="meta">
+    <span>来源：字节官方文档 · 2026-07-30 更新</span>
+    <span><a href="https://bytedance.larkoffice.com/wiki/A5RHwWhoBiOnjukIIw6cu5ybnXQ" target="_blank" rel="noopener">官方原文 ↗</a></span>
+    <span>整理：2026-08-07</span>
+    <span><span>AI影视</span> · <span>Seedance</span> · <span>提示词</span></span>
+  </div>
+</header>
+<div class="divider"></div>
+<nav class="toc"><div class="toc-inner">
+  <div class="toc-title">目 录</div>
+  <div class="toc-grid"><a href="#一-上线与定位">一、上线与定位</a><a href="#二-多模态创作-2-0-核心">二、多模态创作（2.0 核心）</a><a href="#2-1-多模态介绍" class="t2">2.1 多模态介绍</a><a href="#2-2-特殊使用方式-参考示例" class="t2">2.2 特殊使用方式（参考示例）</a><a href="#三-参数预览-核心">三、参数预览（核心）</a><a href="#四-交互形式-三大模式">四、交互形式（三大模式）</a><a href="#五-9-大能力提升-含案例提示词">五、9 大能力提升（含案例提示词）</a><a href="#2-3-1-一致性全面提升" class="t2">2.3.1 一致性全面提升</a><a href="#2-3-2-高难度-可控的运镜和动作精准复刻" class="t2">2.3.2 高难度/可控的运镜和动作精准复刻</a><a href="#2-3-3-创意模版-复杂特效精准复刻" class="t2">2.3.3 创意模版/复杂特效精准复刻</a><a href="#2-3-4-模型的创意性-剧情补全能力" class="t2">2.3.4 模型的创意性、剧情补全能力</a><a href="#2-3-5-视频延长" class="t2">2.3.5 视频延长</a><a href="#2-3-6-音色更准-声音更真" class="t2">2.3.6 音色更准，声音更真</a><a href="#2-3-7-镜头连贯性-一镜到底-更强" class="t2">2.3.7 镜头连贯性（一镜到底）更强</a><a href="#2-3-8-视频编辑可用度高" class="t2">2.3.8 视频编辑可用度高</a><a href="#2-3-9-可进行音乐卡点" class="t2">2.3.9 可进行音乐卡点</a><a href="#2-3-10-情绪演绎更好" class="t2">2.3.10 情绪演绎更好</a><a href="#四-注意事项">四、注意事项</a><a href="#五-案例提示词速查表">五、案例提示词速查表</a></div>
+</div></nav>
+<main>
+<blockquote>来源：字节官方飞书文档（2026-07-30 更新） | 整理：2026-08-07
+原文：https://bytedance.larkoffice.com/wiki/A5RHwWhoBiOnjukIIw6cu5ybnXQ
+体验：https://jimeng.jianying.com/ | 英文版：Dreamina Seedance 2.0 User Manual</blockquote><hr><section class="sec" id="一-上线与定位"><h2 class="sec-h"><span class="num">第01章</span>一、上线与定位</h2><ul><li>Seedance 2.0 模型已全量上线，支持<strong>图像、视频、音频、文本四种模态输入</strong></li><li>用法：一张图定画面风格 + 一个视频指定动作和镜头 + 几秒音频带节奏 + 提示词</li><li>提示：高峰期可尝试 <strong>Seedance 2.0 Fast 模型</strong>获取更流畅体验</li><li>核心亮点：<strong>“参考能力”</strong>——参考图像可精准还原画面构图、角色细节</li></ul></section><section class="sec" id="二-多模态创作-2-0-核心"><h2 class="sec-h"><span class="num">第02章</span>二、多模态创作（2.0 核心）</h2><h3 id="2-1-多模态介绍">2.1 多模态介绍</h3><ul><li>支持上传文本、图片、视频、音频，都可作为<strong>使用对象或参考对象</strong></li><li>可参考任何内容：动作、特效、形式、运镜、人物、场景、声音</li><li>Seedance 2.0 = 多模态参考能力（可参考万物）+ 强创意生成 + 指令响应精准</li><li>提示：素材多时务必检查各个 @对象标清楚，别把图、视频、角色搞混</li></ul><h3 id="2-2-特殊使用方式-参考示例">2.2 特殊使用方式（参考示例）</h3><div class="table-wrap"><table><thead><tr><th>场景</th><th>提示词示例</th></tr></thead><tbody><tr><td>首帧+多场景参考</td><td>把@图片1作为画面的首帧图，第一人称视角，参考@视频1的运镜效果，上方场景参考@图片2，左边场景参考@图片3，右边场景参考@图片4</td></tr><tr><td>多主体+武器绑定</td><td>将@图片1的红衣女将军作为主体1、主体1的武器为@图片3;@图片2的蓝衣女将军作为主体2，主体2的武器为@图片4。参考@视频1打戏风格，制作两位女将军对战视频。故事线：0-2秒主体1挥动主体3击打主体2...3-12秒正式交锋。..13-14秒再次击退。整体色调古风，光影细腻柔和，节奏张弛有度</td></tr><tr><td>简单动作参考</td><td>女孩在优雅的晒衣服，晒完接着在桶里拿出另一件，用力抖一抖衣服</td></tr><tr><td>创意广告</td><td>画里的人物心虚地探出画框，拿起可乐喝了一口。..画面最下方出现艺术感字幕和旁白：“宜口可乐，不可不尝！”</td></tr><tr><td>运镜+音效</td><td>镜头小幅度拉远（露出街头全景）并跟随女主移动。..背景音效为走路声，人群声，汽车声等等</td></tr></tbody></table></div></section><section class="sec" id="三-参数预览-核心"><h2 class="sec-h"><span class="num">第03章</span>三、参数预览（核心）</h2><div class="table-wrap"><table><thead><tr><th>输入类型</th><th>规格</th></tr></thead><tbody><tr><td><strong>图片</strong></td><td>jpeg/png/webp/bmp/tiff/gif;<strong>≤9 张</strong>；单张 &lt;30MB</td></tr><tr><td><strong>视频</strong></td><td>mp4/mov;<strong>≤3 个，总时长 [2,15]s</strong>；单视频 &lt;50MB；总像素数范围：[409600(640×640/480p), 927408(834×1112/720p)];<strong>（有参考视频生成更贵）</strong></td></tr><tr><td><strong>音频</strong></td><td>mp3/wav;<strong>≤3 个，总时长 ≤15s</strong>；单音频 &lt;15MB</td></tr><tr><td><strong>文本</strong></td><td>自然语言</td></tr><tr><td><strong>生成时长</strong></td><td><strong>≤15s，可自由选择 4-15s</strong></td></tr><tr><td><strong>声音输出</strong></td><td>自带音效/配乐</td></tr></tbody></table></div><ul><li><strong>交互限制：混合输入总上限 12 个文件</strong>。建议优先上传对画面或节奏影响最大的素材，合理分配不同模态的文件数量</li><li>编辑能力同步增强：支持对已有视频进行<strong>角色更替、删减、增加</strong></li></ul></section><section class="sec" id="四-交互形式-三大模式"><h2 class="sec-h"><span class="num">第04章</span>四、交互形式（三大模式）</h2><div class="table-wrap"><table><thead><tr><th>模式</th><th>时长</th><th>案例 prompt 要点</th></tr></thead><tbody><tr><td><strong>编辑</strong></td><td>15s</td><td>小猫洗澡：将@视频1中的小猫作为主体1，给小猫洗澡的主人作为主体2...替换原视频中害怕、震惊的神态（情绪改写）</td></tr><tr><td><strong>延长</strong></td><td>10s</td><td>小狗圆滚滚：将@视频1的小狗作为主体1。延长原视频时长到10秒，补充后续画面。0-5s原画面，6-8s斜坡滚动，9-10s卡在小木屋门处（情绪：委屈又呆萌）</td></tr><tr><td><strong>多参</strong></td><td>15s</td><td>女将军对战：主体1/武器/主体2/武器分别绑定@图1-4，参考@视频1打戏风格，时间轴分镜</td></tr></tbody></table></div><blockquote>prompt 提示词参考写法：将所参考的视频/图片/音频等<strong>多次@</strong>，并注明<strong>情绪、时序、各环节细节</strong>等，可帮助更好地生成</blockquote></section><section class="sec" id="五-9-大能力提升-含案例提示词"><h2 class="sec-h"><span class="num">第05章</span>五、9 大能力提升（含案例提示词）</h2><h3 id="2-3-1-一致性全面提升">2.3.1 一致性全面提升</h3><ul><li>参考图像精准还原画面构图、角色细节；多场景/多主体参考稳定</li><li>案例：首帧+四方向场景参考、双女将军对战（主体/武器/情绪分离绑定）</li></ul><h3 id="2-3-2-高难度-可控的运镜和动作精准复刻">2.3.2 高难度/可控的运镜和动作精准复刻</h3><ul><li>上传参考视频即可模仿电影走位、运镜、复杂动作</li><li>案例：</li></ul><p>  - 电梯惊悚：参考@图1的男人形象，在@图2的电梯中，完全参考@视频1的所有运镜效果还有主角的面部表情，主角在惊恐时<strong>希区柯克变焦</strong>，然后几个环绕镜头展示电梯内视角，电梯门打开，跟随镜头走出电梯，电梯外场景参考@图片3，男人环顾四周，参考@视频1用<strong>机械臂多角度跟随人物的视线</strong></p><p>  - VR 眼镜穿梭：将@视频1的人物换成@图片1,@图片1为首帧，人物带上虚拟科幻眼镜，参考@视频1的运镜。..从第三人称视角变成人物主观视角，在AI虚拟眼镜中穿梭，来到@图片2的蓝色宇宙。..@图片3的像素世界。..@图片4的浅绿色星球</p><p>  - 模特换装：参考第一张图片里模特的五官长相。模特分别穿着第2-6张参考图里的服装凑近镜头，做出调皮、冷酷、可爱、惊讶、耍帅的造型，每次更换画面伴随切镜，参考视频的<strong>鱼眼镜头效果、重影闪烁炫影画面效果</strong></p><p>  - 广告创意迁移：参考视频的广告创意，用提供的羽绒服图片，参考鹅绒图片、天鹅图片，搭配广告词“这是根鹅绒，这是暖天鹅，这是能穿的极地天鹅绒羽绒服，新年穿得暖，生活过得暖”，生成新的羽绒服广告视频</p><h3 id="2-3-3-创意模版-复杂特效精准复刻">2.3.3 创意模版/复杂特效精准复刻</h3><ul><li>案例：</li></ul><p>  - 拼图转场：由@图片1的天花板开始，参考@视频1的<strong>拼图破碎效果</strong>进行转场，“BELIEVE”字体替换成“Seedance”，参考@图2的字体</p><p>  - 粒子特效：以黑幕开场，参考视频1的<strong>粒子特效和材质</strong>，金色鎏金材质的沙砾从画面左边飘出并向右覆盖，参考@视频1的粒子吹散效果，@图片1的字体逐渐出现在画面中心</p><p>  - 动作迁移：@图片1的人物参考@视频1中的动作和表情变化，展示吃泡面的抽象行为</p><h3 id="2-3-4-模型的创意性-剧情补全能力">2.3.4 模型的创意性、剧情补全能力</h3><ul><li>案例：</li></ul><p>  - 漫画演绎：将@图1以从左到右从上到下的顺序进行漫画演绎，保持人物说的台词与图片上的一致，分镜切换以及重点的情节演绎加入特殊音效，整体风格诙谐幽默；演绎方式参考@视频1</p><p>  - 涂口红剧情：先是固定镜头，主体涂口红然后抿了抿嘴唇，镜头开始向镜子前推，主体对着镜子用口红在。..</p><h3 id="2-3-5-视频延长">2.3.5 视频延长</h3><ul><li>案例：</li></ul><p>  - 鱼眼镜头：固定镜头，中央鱼眼镜头透过圆形孔洞向下窥视，参考视频1的鱼眼镜头，让@视频2中的马看向鱼眼镜头，参考@视频1中的说话动作，背景BGM参考@视频3中的音效</p><p>  - 地产纪录片：根据提供的写字楼宣传照，生成一段15秒电影级写实风格的地产纪录片，采用<strong>2.35:1宽银幕，24fps</strong>，细腻的画面风格，其中旁白的音色参考@视频1，拍摄“写字楼的生态”</p><h3 id="2-3-6-音色更准-声音更真">2.3.6 音色更准，声音更真</h3><ul><li>案例：</li></ul><p>  - 猫狗脱口秀：在“猫狗吐槽间”里的一段吐槽对话，要求情感丰沛，符合脱口秀表演（猫主持舔毛翻眼：“家人们谁懂啊。..”)(带角色动作标注+情绪+台词）</p><p>  - 豫剧：豫剧经前桥段《铡美案》的伴奏响起，左侧的黑衣包拯指着右侧的红衣陈世美，咬牙切齿地唱着豫剧：“刀对鞘，真凭实据你敢不招？”陈世美的眼珠左右滴溜溜乱转。..画面外传来一声豫剧旦角的念白：“且慢！”</p><h3 id="2-3-7-镜头连贯性-一镜到底-更强">2.3.7 镜头连贯性（一镜到底）更强</h3><ul><li>案例：</li></ul><p>  - 冰淇淋云朵：以@图片1为首帧，画面放大至飞机舷窗外，云朵缓缓飘入，其中一朵彩色糖豆云朵居中，缓缓变形为@图片2的冰淇淋，镜头推远回到机舱内，@图片3伸手从窗外拿进冰淇淋，吃了一口，嘴巴上沾满奶油，脸上洋溢出甜蜜的笑容</p><p>  - 谍战片：谍战片风格，@图片1作为首帧，镜头正面跟拍红风衣女特工，不断有路人遮挡，走到拐角处（参考@图片2），面具女孩（形象参考@图片3）恶狠狠盯着她，镜头摇向豪宅（参考@图片4）。<strong>全程不要切镜头，一镜到底</strong></p><p>  - 小鹿喝茶：根据@图片1外景的镜头，第一人称主观视角快推镜头到木屋内的环境场景近景，一只小鹿@图片2和一只羊@图片3在围炉旁喝茶聊天，镜头推进特写茶杯样式参考@图片4</p><p>  - 过山车：@图片1-5，主观视角一镜到底的惊险过山车镜头，过山车的速度越来越快</p><h3 id="2-3-8-视频编辑可用度高">2.3.8 视频编辑可用度高</h3><ul><li>直接用已有视频作为输入，指定片段、动作或节奏进行<strong>定向修改</strong>，无需重头生成</li><li>案例（情绪改写）:</li></ul><p>  - 将视频@视频1中的小猫作为主体1，给小猫洗澡的主人作为主体2。主体2给主体1洗澡，主体1对洗澡从适应到主动喜欢，呈现轻松愉悦的洗澡全过程，穿插主体1舒适享受的特写画面，<strong>替换原视频中害怕、震惊的神态</strong>，贴合原视频洗澡画面与特写穿插的剪辑逻辑。具体故事线：0-5秒好奇试探（情绪：好奇、放松）;6-11秒涂抹沐浴露、温水冲洗（情绪：惬意、享受），穿插眯眼、蹭洗澡工具特写（情绪：温顺、欢喜）;12-15秒甩毛、舔毛（情绪：满足、慵懒）。整体画面色调柔和，节奏舒缓，搭配轻快治愈的背景音乐，全程突出小猫喜欢洗澡的状态，无任何害怕、震惊的表情和动作</p><h3 id="2-3-9-可进行音乐卡点">2.3.9 可进行音乐卡点</h3><ul><li>案例：海报中的女生在不停的换装，服装参考@图片1@图片2的样式，手中提着@图片3的包，<strong>视频节奏参考@视频</strong></li></ul><h3 id="2-3-10-情绪演绎更好">2.3.10 情绪演绎更好</h3><ul><li>支持复杂情绪描述与演绎（参考 2.3.6 猫狗吐槽、2.3.8 小猫洗澡案例中的情绪标注）</li></ul><hr></section><section class="sec" id="四-注意事项"><h2 class="sec-h"><span class="num">第06章</span>四、注意事项</h2><ul><li>⚠️ <strong>当前不支持上传含有写实人脸的素材</strong>（官方限制，案例仅为示例）</li><li>素材多时注意 @对象标注清楚</li><li>遇到 Bug/建议可反馈官方</li></ul></section><section class="sec" id="五-案例提示词速查表"><h2 class="sec-h"><span class="num">第07章</span>五、案例提示词速查表</h2><div class="table-wrap"><table><thead><tr><th>#</th><th>案例</th><th>能力点</th></tr></thead><tbody><tr><td>1</td><td>晒衣服（图+视频参考）</td><td>基础多模态</td></tr><tr><td>2</td><td>可乐广告（探出画框创意）</td><td>创意+字幕旁白</td></tr><tr><td>3</td><td>伦敦裙摆（运镜+音效）</td><td>运镜+环境音</td></tr><tr><td>4</td><td>黑衣逃亡（跟拍+撞摊）</td><td>动作跟随</td></tr><tr><td>5</td><td>女将军对战（双主体+武器+时间轴）</td><td>一致性/多主体绑定</td></tr><tr><td>6</td><td>电梯希区柯克变焦</td><td>运镜复刻</td></tr><tr><td>7</td><td>VR 眼镜四世界穿梭</td><td>视角切换/场景参考</td></tr><tr><td>8</td><td>模特五连换装（鱼眼+炫影）</td><td>特效复刻</td></tr><tr><td>9</td><td>羽绒服广告（创意迁移+广告词）</td><td>广告创意</td></tr><tr><td>10</td><td>拼图破碎转场（字体替换）</td><td>特效复刻</td></tr><tr><td>11</td><td>金色沙砾粒子片头</td><td>粒子特效</td></tr><tr><td>12</td><td>吃泡面（动作表情迁移）</td><td>动作迁移</td></tr><tr><td>13</td><td>漫画演绎（台词一致）</td><td>剧情补全</td></tr><tr><td>14</td><td>涂口红</td><td>剧情连贯</td></tr><tr><td>15</td><td>鱼眼镜头马（3视频参考）</td><td>多视频参考</td></tr><tr><td>16</td><td>写字楼纪录片（2.35:1/24fps/音色）</td><td>音色参考+参数控制</td></tr><tr><td>17</td><td>猫狗脱口秀</td><td>情绪演绎/台词</td></tr><tr><td>18</td><td>豫剧铡美案</td><td>戏曲/念白</td></tr><tr><td>19</td><td>冰淇淋云朵（一镜到底）</td><td>镜头连贯</td></tr><tr><td>20</td><td>谍战女特工（一镜到底）</td><td>镜头连贯/遮挡</td></tr><tr><td>21</td><td>小鹿羊喝茶（POV)</td><td>主观视角</td></tr><tr><td>22</td><td>过山车（主观一镜到底）</td><td>速度感</td></tr><tr><td>23</td><td>小猫洗澡（情绪改写）</td><td>视频编辑</td></tr><tr><td>24</td><td>换装音乐卡点</td><td>卡点节奏</td></tr></tbody></table></div></section>
+</main>
+<footer>
+  <div class="brand">GaryAIGC · dream3d.vip</div>
+  <p style="margin-top:8px">转载注明出处 · 内容整理自官方公开文档 · 仅供学习交流</p>
+</footer>
+</div>
+<a href="#" class="totop">↑</a>
+</body>
+</html>

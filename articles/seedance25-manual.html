@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【即梦】Seedance 2.5 使用手册 - GaryAIGC</title>
+<style>
+:root{
+  --gold:#d4af37; --gold-l:#f2d98a; --gold-d:#a8842a;
+  --bg0:#0d0b08; --bg1:#15110b; --bg2:#1b1610; --bg3:#221c13;
+  --line:#2e2618; --line2:#3a3020;
+  --text:#e9e2d2; --text-dim:#a89f8a; --text-faint:#7d7562;
+  --serif:"Noto Serif SC","Source Han Serif SC","Songti SC",SimSun,serif;
+  --sans:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sans-serif;
+  --mono:Consolas,"JetBrains Mono","Courier New",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg0);color:var(--text);font-family:var(--sans);line-height:1.85;font-size:16px}
+body::before{content:"";position:fixed;inset:0;background:
+  radial-gradient(1200px 500px at 50% -10%,rgba(212,175,55,.06),transparent 60%),
+  radial-gradient(800px 400px at 90% 110%,rgba(212,175,55,.04),transparent 60%);
+  pointer-events:none;z-index:0}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+
+/* Hero */
+.hero{padding:56px 20px 40px;text-align:center;position:relative}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;padding:8px 18px;border:1px solid var(--line2);border-radius:999px;background:linear-gradient(180deg,rgba(212,175,55,.08),transparent)}
+.hero h1{font-family:var(--serif);font-size:clamp(28px,4.5vw,44px);font-weight:700;color:var(--gold-l);margin:22px 0 6px;letter-spacing:.04em;line-height:1.35}
+.hero .sub{color:var(--text-dim);font-size:15px;max-width:720px;margin:0 auto}
+.hero .meta{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;font-size:12.5px;color:var(--text-faint)}
+.hero .meta span{border:1px solid var(--line);border-radius:6px;padding:4px 10px;background:var(--bg1)}
+.hero .meta a{color:var(--gold);text-decoration:none}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.5;max-width:640px;margin:0 auto 8px}
+
+/* TOC */
+.toc{max-width:1080px;margin:26px auto 8px;padding:0 20px}
+.toc-inner{background:var(--bg1);border:1px solid var(--line);border-radius:14px;padding:20px 24px}
+.toc-title{font-size:14px;letter-spacing:.25em;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.toc-title::after{content:"";flex:1;height:1px;background:var(--line2)}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
+.toc a{color:var(--text-dim);text-decoration:none;font-size:13.5px;padding:7px 12px;border-radius:8px;transition:all .15s;display:block;border:1px solid transparent}
+.toc a:hover{color:var(--gold-l);background:var(--bg2);border-color:var(--line2)}
+.toc a.t2{padding-left:22px;font-size:12.5px;color:var(--text-faint)}
+
+/* Main */
+main{max-width:1080px;margin:20px auto 0;padding:0 20px 40px}
+section.sec{background:var(--bg1);border:1px solid var(--line);border-radius:16px;padding:30px 36px;margin-bottom:22px;box-shadow:0 1px 0 rgba(255,255,255,.02) inset}
+h2.sec-h{font-family:var(--serif);font-size:23px;color:var(--gold-l);margin:8px 0 18px;padding-bottom:12px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+h2.sec-h .num{font-family:var(--serif);font-size:15px;color:var(--gold-d);border:1px solid var(--line2);border-radius:8px;padding:2px 10px;white-space:nowrap}
+h3{font-family:var(--serif);font-size:18.5px;color:var(--gold-l);margin:26px 0 10px;padding-left:14px;border-left:3px solid var(--gold)}
+h4{font-size:15.5px;color:var(--text);margin:20px 0 8px;font-weight:600}
+p{margin:10px 0;color:var(--text);font-size:15.5px}
+p.dim{color:var(--text-dim);font-size:14px}
+
+/* Lists */
+ul,ol{margin:10px 0 10px 4px;padding-left:22px}
+li{margin:7px 0;font-size:15px;color:var(--text)}
+li::marker{color:var(--gold)}
+ul li ul,ol li ul{margin:6px 0}
+
+/* Quote */
+blockquote{background:linear-gradient(90deg,rgba(212,175,55,.07),transparent 70%);border-left:3px solid var(--gold);padding:14px 20px;margin:14px 0;border-radius:0 10px 10px 0;color:var(--text-dim);font-size:14px;line-height:1.8}
+blockquote strong{color:var(--gold-l)}
+
+/* Table */
+.table-wrap{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+thead th{background:linear-gradient(180deg,#241d10,#1e1810);color:var(--gold-l);font-weight:600;text-align:left;padding:12px 16px;border-bottom:2px solid var(--gold);white-space:nowrap;font-size:13.5px;letter-spacing:.03em}
+tbody td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--text)}
+tbody tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+tbody tr:hover td{background:rgba(212,175,55,.05)}
+tbody tr:last-child td{border-bottom:none}
+td strong{color:var(--gold-l)}
+td:first-child{color:var(--gold-l);font-weight:500;white-space:nowrap}
+
+/* Code */
+pre{background:#0a0806;border:1px solid var(--line);border-radius:10px;padding:16px 20px;overflow-x:auto;margin:14px 0;font-family:var(--mono);font-size:13px;line-height:1.7;color:#e6d9b8;white-space:pre-wrap}
+code.ic{font-family:var(--mono);font-size:13px;color:#e8c98a;background:rgba(212,175,55,.08);padding:1px 6px;border-radius:4px;border:1px solid rgba(212,175,55,.15)}
+
+hr{border:none;height:1px;background:var(--line2);margin:26px 0}
+
+/* Footer */
+footer{margin-top:40px;padding:28px 0 40px;border-top:1px solid var(--line);text-align:center;color:var(--text-faint);font-size:13px}
+footer .brand{color:var(--gold);font-weight:600;font-size:14px;letter-spacing:.1em}
+footer a{color:var(--gold);text-decoration:none}
+
+/* Back to top */
+.totop{position:fixed;right:24px;bottom:24px;width:42px;height:42px;border-radius:50%;background:var(--bg2);border:1px solid var(--line2);color:var(--gold);font-size:18px;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:.7;transition:opacity .2s;z-index:9}
+.totop:hover{opacity:1;background:var(--bg3)}
+
+@media(max-width:700px){
+  body{font-size:15px}
+  section.sec{padding:22px 18px;border-radius:12px}
+  .hero{padding:40px 16px 28px}
+  .hero h1{font-size:26px}
+  table{font-size:12.5px;min-width:480px}
+  .toc-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <span class="eyebrow">✦ AI 视频模型官方手册整理</span>
+  <h1>【即梦】Seedance 2.5 使用手册</h1>
+  <p class="sub">更长 · 更真 · 更听话 —— 官方最新提示词方法论与参数全解</p>
+  <div class="meta">
+    <span>来源：字节官方文档 · 2026-08-06 更新</span>
+    <span><a href="https://bytedance.larkoffice.com/wiki/RXh5ww6EqighMdkVTMccm2d4n7e" target="_blank" rel="noopener">官方原文 ↗</a></span>
+    <span>整理：2026-08-07</span>
+    <span><span>AI影视</span> · <span>Seedance</span> · <span>提示词</span></span>
+  </div>
+</header>
+<div class="divider"></div>
+<nav class="toc"><div class="toc-inner">
+  <div class="toc-title">目 录</div>
+  <div class="toc-grid"><a href="#一-版本定位">一、版本定位</a><a href="#二-2-0-2-5-升级对照表-用户头部反馈驱动">二、2.0 → 2.5 升级对照表（用户头部反馈驱动）</a><a href="#多模态参考优化的-10-个子能力" class="t2">多模态参考优化的 10 个子能力</a><a href="#三-参数设定-输入素材规范">三、参数设定（输入素材规范）</a><a href="#3-1-多模态素材限制对比" class="t2">3.1 多模态素材限制对比</a><a href="#3-2-生成参数" class="t2">3.2 生成参数</a><a href="#3-3-输入素材建议-官方实测" class="t2">3.3 输入素材建议（官方实测）</a><a href="#四-功能交互">四、功能交互</a><a href="#五-提示词方法论-核心">五、提示词方法论（核心）</a><a href="#5-1-基础提示词写法" class="t2">5.1 基础提示词写法</a><a href="#5-2-真人人物公式-重点" class="t2">5.2 真人人物公式（重点）</a><a href="#5-3-30-秒长视频写法" class="t2">5.3 30 秒长视频写法</a><a href="#5-4-超长视频写法" class="t2">5.4 超长视频写法</a><a href="#5-5-视频延长写法" class="t2">5.5 视频延长写法</a><a href="#5-6-智能编辑-高级编辑-视频编辑写法" class="t2">5.6 智能编辑/高级编辑/视频编辑写法</a><a href="#5-7-白模写法" class="t2">5.7 白模写法</a><a href="#5-8-转场分类表-切镜-转场提示词模板" class="t2">5.8 转场分类表（切镜/转场提示词模板）</a><a href="#六-亮点功能详解">六、亮点功能详解</a><a href="#视频延长-创作不断档" class="t2">🕒 视频延长 创作不断档</a><a href="#超长视频最长达-180-秒" class="t2">✌️ 超长视频最长达 180 秒</a><a href="#时间戳文本控制" class="t2">🎯 时间戳文本控制</a><a href="#打破语言边界" class="t2">🌍 打破语言边界</a><a href="#去除无关字幕与bgm" class="t2">🔇 去除无关字幕与BGM</a><a href="#基础生成效果全面优化" class="t2">🌟 基础生成效果全面优化</a><a href="#多模态参考全面优化-四大维度" class="t2">🚀 多模态参考全面优化（四大维度）</a><a href="#分离-移除背景音乐-bgm" class="t2">🎵 分离/移除背景音乐（BGM)</a><a href="#迁移创意" class="t2">✨ 迁移创意</a><a href="#局部消除与编辑" class="t2">✂️ 局部消除与编辑</a><a href="#空间视角修改" class="t2">🎥 空间视角修改</a><a href="#音色参考升级" class="t2">🎙️ 音色参考升级</a><a href="#多人参考升级" class="t2">👥 多人参考升级</a><a href="#无缝绿幕编辑" class="t2">🟩 无缝绿幕编辑</a><a href="#专业级白模控制" class="t2">🎬 专业级白模控制</a><a href="#视频无缝转场" class="t2">🔗 视频无缝转场</a><a href="#多宫格分镜" class="t2">🎞️ 多宫格分镜</a><a href="#七-完整提示词案例库-官方实测通过">七、完整提示词案例库（官方实测通过）</a><a href="#八-社区反馈-真实口碑">八、社区反馈（真实口碑）</a><a href="#九-插件化要点-给开发者的结构化建议">九、插件化要点（给开发者的结构化建议）</a></div>
+</div></nav>
+<main>
+<blockquote>来源：字节官方飞书文档（2026-08-06 更新） | 整理：2026-08-07 | 用途：AI 视频提示词插件优化参考
+原文：https://bytedance.larkoffice.com/wiki/RXh5ww6EqighMdkVTMccm2d4n7e
+英文版：【Dreamina】Seedance 2.5 User Guide
+体验地址：https://jimeng.jianying.com/</blockquote><hr><section class="sec" id="一-版本定位"><h2 class="sec-h"><span class="num">第01章</span>一、版本定位</h2><p>Seedance 2.5 已全量上线。定位：<strong>专业创作的新基准</strong>——“更长、更真、更听话，指哪打哪”。相对 2.0(支持图/视频/音频/文本四模态输入）的升级：<strong>从“导演体验”到“全能的专业数字片场”</strong>。</p></section><section class="sec" id="二-2-0-2-5-升级对照表-用户头部反馈驱动"><h2 class="sec-h"><span class="num">第02章</span>二、2.0 → 2.5 升级对照表（用户头部反馈驱动）</h2><div class="table-wrap"><table><thead><tr><th>#</th><th>用户反馈</th><th>亮点</th><th>具体介绍</th></tr></thead><tbody><tr><td>1</td><td>希望支持更长时间生成/无损续写</td><td>🕒 视频延长</td><td>单次最高 30 秒内延长，可多次套娃延长，<strong>最长至 60 秒</strong></td></tr><tr><td>2</td><td>同上</td><td>✌️ 超长视频</td><td>超长视频模式最多生成 <strong>180 秒</strong></td></tr><tr><td>3</td><td>精准控制动作时机（第3秒转身、第5秒转场）</td><td>🎯 时间戳文本控制</td><td>文本指定具体时间戳，精确到秒，剧本级还原</td></tr><tr><td>4</td><td>小语种理解差，需翻译</td><td>🌍 打破语言边界</td><td>重点优化中/英/西/印尼/马来语；覆盖泰/阿/葡/越/日/韩</td></tr><tr><td>5</td><td>负向 prompt 响应差，出现不想要字幕/BGM</td><td>🔇 去除无关字幕与BGM</td><td>大幅优化生成稳定性，解决随机字幕和无关 BGM</td></tr><tr><td>6</td><td>人物 AI 感、复杂镜头崩坏</td><td>🌟 基础生成效果全面优化</td><td>弱化“AI感”，更逼真物理质感；切镜一致性提升；解锁复杂长尾动作</td></tr><tr><td>7</td><td>多人像“双胞胎”；缺绿幕/白模；难单独去 BGM；只想改局部</td><td>🚀 多模态参考全面优化</td><td>新增音色参考、多人参考；优化视频延长连续性；新增白模控制与绿幕编辑</td></tr></tbody></table></div><h3 id="多模态参考优化的-10-个子能力">多模态参考优化的 10 个子能力</h3><ul><li>🎵 <strong>分离/移除 BGM</strong>：提示词要求删除音乐背景音，仅留人声，同时保留原画面字幕等其他元素</li><li>✨ <strong>迁移创意</strong>：从“迁移动态”升级为“迁移创意”——复刻复杂运动 + 深层情绪 + 镜头语言 + 创意网感</li><li>✂️ <strong>局部消除与编辑</strong>：精准识别并移除/再编辑视频中特定物体</li><li>🎥 <strong>空间视角修改</strong>：修改机位视角，合理外推和补全原始视频中未呈现的空间细节</li><li>🎙️ <strong>音色参考升级</strong>：参考更多音色，声线复刻精准度大幅提升</li><li>👥 <strong>多人参考升级</strong>：解决“双胞胎（长相趋同）”与“换脸错位”，同框角色保持独立独特面部特征</li><li>🟩 <strong>无缝绿幕编辑</strong>：绿幕编辑能力，后期合成/背景替换/特效制作</li><li>🎬 <strong>专业级白模控制</strong>：白模精准控制镜头调度、分镜设计、角色站位与运动轨迹</li><li>🔗 <strong>视频无缝转场</strong>：输入两段视频，自动生成补全间隙无缝衔接，支持多种创意过渡</li><li>🎞️ <strong>多宫格分镜</strong>：输入多宫格分镜图（推荐简约线稿/火柴人分镜图）作剧情参考，通过 Prompt 控制构图/景别/运镜/动作</li></ul><hr></section><section class="sec" id="三-参数设定-输入素材规范"><h2 class="sec-h"><span class="num">第03章</span>三、参数设定（输入素材规范）</h2><h3 id="3-1-多模态素材限制对比">3.1 多模态素材限制对比</h3><div class="table-wrap"><table><thead><tr><th>类型</th><th>2.0 参考</th><th>2.5 参考</th></tr></thead><tbody><tr><td><strong>图片</strong></td><td>单张：jpeg/png/webp/bmp/tiff/gif/heic/heif；宽高比（0.4,2.5）；宽高 300-6000px；单张&lt;30MB；请求体&lt;64MB(大文件勿用Base64）</td><td>单次请求 <strong>0~9 张</strong></td><td>单次请求 <strong>30 张</strong></td></tr><tr><td><strong>视频</strong></td><td>mp4/mov;480p-4k；宽高比[0.4,2.5]；宽高[300,6000]；总像素[409600,8295044]；单视频&lt;200MB;FPS[24,60]；单视频[2,15]s，最多 3 个，总时长≤15s(实际单视频 1.8-15.2s，总 15.2s)</td><td>单视频[2,30]s,<strong>最多 10 个，总时长≤30s</strong>（实际单视频 1.8-30.2s，总 30.2s)</td></tr><tr><td><strong>音频</strong></td><td>wav/mp3；单音频&lt;15MB；请求体&lt;64MB；单段[2,15]s，最多 3 段，总≤15s(实际 1.8-15.2s)</td><td>单段[2,30]s,<strong>最多 10 段，总≤30s</strong>（实际 1.8-30.2s)</td></tr></tbody></table></div><p><strong>2.5 新增：R2V 链路支持仅传入音频</strong>（2.0 要求至少图/视频任一）。</p><h3 id="3-2-生成参数">3.2 生成参数</h3><div class="table-wrap"><table><thead><tr><th>参数</th><th>2.0</th><th>2.5</th></tr></thead><tbody><tr><td>duration</td><td>-1 &amp; [4, 15]s，即 97-361 帧</td><td>-1 &amp; <strong>[4, 30]s，即 97-721 帧</strong></td></tr><tr><td>resolution</td><td>480p、720p...</td><td>(同前，见下）</td></tr></tbody></table></div><h3 id="3-3-输入素材建议-官方实测">3.3 输入素材建议（官方实测）</h3><div class="table-wrap"><table><thead><tr><th>问题</th><th>建议</th></tr></thead><tbody><tr><td>输入素材总上限</td><td>图片≤30 张 4K 内；视频≤10 段总≤30s；音频≤10 段总≤30s</td></tr><tr><td>主体音视频，建议输入多少主体</td><td><strong>1-5 主体效果较好</strong>；6-10 可尝试但稳定性下降、可能需抽卡</td></tr><tr><td>主体音视频，建议时长</td><td><strong>5-10s 效果较好</strong>；更长稳定性下降</td></tr><tr><td>主体图，建议输入多少主体</td><td><strong>1-8 主体效果较好</strong>；9-12 可尝试但稳定性下降</td></tr><tr><td>不同视角主体图差异</td><td>1-5 主体“单视图”“多视图”均可；<strong>超 5 主体“单视图”更稳</strong>；多视角建议拆多张输入（多图多视图 &gt; 单图多视图）</td></tr><tr><td>视频编辑，建议多长视频</td><td><strong>20s 以内效果较好</strong>；更长稳定性下降</td></tr><tr><td>视频参考图编辑，建议几张图</td><td><strong>1-5 张效果较好</strong>；6-8 可尝试但稳定性下降</td></tr></tbody></table></div><hr></section><section class="sec" id="四-功能交互"><h2 class="sec-h"><span class="num">第04章</span>四、功能交互</h2><ul><li><strong>智能编辑</strong>：对视频进行局部修改（消除/替换/改变），支持圈选、画笔等编辑</li><li><strong>高级编辑</strong>：智能编辑升级版，可对<strong>本地上传的视频</strong>进行框选、画笔等编辑</li><li><strong>视频编辑</strong>：与高级编辑类似，区别在于<strong>针对生成后视频</strong>的编辑</li></ul><hr></section><section class="sec" id="五-提示词方法论-核心"><h2 class="sec-h"><span class="num">第05章</span>五、提示词方法论（核心）</h2><h3 id="5-1-基础提示词写法">5.1 基础提示词写法</h3><p>要素：场景描述 + 主体 + 时间戳分段 + 镜头语言 + 声音设计。</p><p>参考示例（自然纪录片）:</p><blockquote>写实自然纪录片风格，电影级真实光影，清晨的薄雾中，在广阔的湿地芦苇荡@图片1里，一只优雅的丹顶鹤正展翅起舞。@图片2丹顶鹤羽毛洁白如雪，头顶鲜红，身姿修长挺拔，动作轻盈高贵。场景为秋季的浅水湿地，水面波光粼粼，周围长满金黄色的芦苇、浮萍与水草，虚化背景中是远处的晨雾与初升的太阳。镜头为低机位中景，轻微手持感，整体基本固定，始终保持丹顶鹤在画面中央。0s-3s：一只丹顶鹤静立在浅水中，身姿优雅。它刚开始缓慢地展开宽大的黑白双翼，动作轻柔，水面被翅膀扇动的气流带起阵阵涟漪。晨风吹拂，阳光从地平线斜射过来，穿透薄雾形成丁达尔光效。3s-8s：丹顶鹤在水面上轻盈跳跃，双脚交替点水，溅起晶莹的水花。它修长的颈部向后仰起，鸟喙指向天空，随后身体轻盈落地，收拢双翼恢复站立姿态，头部优雅地环顾四周，发出一声清脆的长鸣。低机位，轻微手持感，轻微跟随丹顶鹤的跳跃轨迹上下移动。景深自然，前景的芦苇轻微虚化，丹顶鹤主体清晰，背景的晨雾与朝阳柔和虚化。自然环境音，水流声、翅膀扇动时有力的扑击声以及鹤鸣声，整体宁静、空灵、唯美。</blockquote><h3 id="5-2-真人人物公式-重点">5.2 真人人物公式（重点）</h3><p><strong>总体公式：</strong></p><blockquote>人物 = [年龄/种族] + [肤色/皮肤质感] + [面部细节特征] + [眼神/灵魂] + [发型/发色] + [服装/服装质感] + [体型/情绪/气质] + [其他要求](如有）</blockquote><p>(动画人物同样适用）</p><p><strong>各维度细分公式：</strong></p><div class="table-wrap"><table><thead><tr><th>维度</th><th>细分公式</th><th>示例</th></tr></thead><tbody><tr><td>1. [年龄/种族](人物基调）</td><td>[具体岁数]+[具体国籍/人种]+[风格形容词]+[脸型名词]</td><td>22岁东亚女性，清冷古典的骨相脸；25岁英国男性，瘦削高智感的英伦贵族脸；26岁非裔黑人女性，骨骼极其立体的黑珍珠超模脸</td></tr><tr><td>2. [肤色/皮肤质感](避免扁平白，增强真实感）</td><td>[冷暖色调]+[具体肤色名词]+[皮肤质感形容词]+强制保真后缀（保留真实的微细毛孔与肌肤纹理，可增加雀斑/瑕疵）</td><td>冷调白皙肤色，透出细腻的温润玉石质感，保留真实的微细毛孔与肌肤纹理；暖调蜜糖色，带有阳光照射后的光泽感，鼻梁处有淡淡的真实雀斑；粗糙的小麦色皮肤，带有风霜感与细微的干纹，保留真实的粗大毛孔、胡茬痕迹与肌肤纹理</td></tr><tr><td>3. [面部细节特征](决定辨识度）</td><td>[眼型描述]+[眉骨特征]+[鼻梁特征]+[唇形特征]+[下颌线/骨相特征](至少 3-4 点组合）</td><td>细长的桃花眼（眼眶微润），鼻梁小巧挺直，唇部丰润且嘴角带着若有若无的浅笑，下颌线线条柔和</td></tr><tr><td>4. [眼神/灵魂]</td><td>描述眼神情绪、目光状态</td><td>眼神极其深情、含情脉脉，眼底仿佛有一汪春水，目光温柔而专注，透着深深的眷恋与一丝不舍</td></tr><tr><td>5. [发型/发色]</td><td>发型样式+发色+细节装饰</td><td>乌黑的发丝绾成随性典雅的古典低盘发，仅用一支素色玉簪固定。几缕细碎的黑发不经意地垂落在脸颊边缘，随着微风轻轻拂动</td></tr><tr><td>6. [服装/服装质感]</td><td>款式+颜色+面料质感+细节</td><td>穿着极简的素白色交领古装，布料是带有柔软光泽的素雅真丝或轻纱，衣襟处微微散开</td></tr><tr><td>7. [体型/情绪/气质]</td><td>身姿+肩形+气质氛围+构图</td><td>身姿纤细，双肩削瘦，散发出一种温柔婉约、深情缱绻的古典浪漫气质。特写构图，眼神直视镜头</td></tr></tbody></table></div><h3 id="5-3-30-秒长视频写法">5.3 30 秒长视频写法</h3><p><strong>结构：【全局设定】+【时间戳剧本分镜】+【音频设计】</strong></p><p>【全局设定】必备模块：</p><ul><li>基础环境与质感（场景+强调物理真实感）</li><li>视觉风格（风格流派+色调+质感）</li><li>镜头语言（运镜方式+节奏）</li><li>主体造型（主角描述）</li><li>表演核心（重点展现什么）</li><li>禁止项（防崩坏：禁止穿模/禁止字幕/禁止版权元素等）</li></ul><p>【时间戳剧本分镜】格式：</p><blockquote>[00:00 - 00:08] 【段落名】—— 段落副题
+动作/物理指令：具体画面、运镜、动作、物理效果
+镜头潜台词：向 AI 传达的情绪/意图（可选但有效）</blockquote><h3 id="5-4-超长视频写法">5.4 超长视频写法</h3><p><strong>完整提示词 = 【全局参数】+【素材描述】+【一句话概述】+【具体情节描述】+【全局补充（结尾）】</strong></p><ul><li>【全局参数】：时长、画幅比例等（因时间长，开头再次强调）</li><li>【素材描述】：素材编号（按上传顺序）+具体用途（人物/音色/动作/场景）；无素材可忽略</li><li>【一句话概述】：主体+地点+事件+题材/风格+特殊运镜</li><li>【具体情节描述】：分时间轴或故事线；单个分镜/时间段 = ➕正向描述（画面+运镜+动作+台词+音效）+ ➖反向描述（不要字幕/不要BGM)</li><li>【全局补充】：贯穿始终的元素（机位+环境/场景特征+整体声音/氛围+光影）；再次强调不想出现的元素</li></ul><p><strong>帧级时间戳示例（《奶奶的菜谱》720 帧，24s):</strong></p><blockquote>### 《奶奶的菜谱》（720帧）
+【全局约束声明】
+1. 视觉风格：全片严格采用动画毛毡风，禁止任何画面出现风格偏移。
+2. 字幕限制：除结尾（第 660–720 帧）淡入的指定字幕外，全片绝对禁止生成任何其他字幕或文字。
+3. 参考素材：做饭参考@视频1，背景音乐使用@音频1，环境与动作音效使用@音效2、@音效3，空镜风格参考@图片3。
+第 0–90 帧 (0s-3s):@图片1老式厨房，午后暖光透过纱窗，空气中浮动微尘；一本泛黄的手写菜谱@图片6摊在斑驳木桌上，镜头缓缓推近纸面褪色的字迹；怀旧钢琴渐入（参考@音频1），第 60 帧远处挂钟“滴答”声。
+第 90–240 帧 (3s-8s)：年轻女孩系着围裙照菜谱（@图片6）切菜，动作生疏，@图片4黄瓜切得歪歪扭扭（动作参考@视频1），她皱眉重切；下锅瞬间油花“滋啦”溅起（参考@音效3），她吓得后退抖手，镜头手持轻晃，第 180 帧锅铲碰撞声。
+第 240–390 帧 (8s-13s)：画面叠化为暖黄回忆闪回——@图片2幼年的她被奶奶从背后握着小手一起翻炒，奶奶笑着说话（无声），光晕柔焦；第 390 帧叠化拉回现实，女孩独自站在灶前，神情怔忡。
+第 390–540 帧 (13s-18s)：女孩稳下心神，认真翻炒，这次动作渐渐顺畅，菜香升腾（热气特写）；她将菜盛入白瓷盘，摆上木桌，第 480 帧钢琴旋律情绪推进。
+第 540–660 帧 (18s-22s)：女孩夹起一口尝下，咀嚼，动作停住，眼眶慢慢泛红；镜头缓推至她湿润的眼睛，第 630 帧她抬头望向墙上奶奶的旧照片参考@图片5。
+第 660–720 帧 (22s-24s)：旧照片特写（参考@图片5），奶奶慈祥微笑；女孩轻声说“还是这个味道”(注意：仅发声，无字幕），画面暖光柔化，下方淡入唯一字幕「有些味道，藏着一个人」。第 713 帧画面与音乐渐隐至黑，八音盒尾音收束。</blockquote><h3 id="5-5-视频延长写法">5.5 视频延长写法</h3><ul><li>方式：参考@视频1内容，延长视频 Ns(向前/向后延长）</li><li>要求词：延长自然、动作衔接流畅/自然，禁止生硬切镜、禁止物体凭空出现</li><li>每段延长时长建议标注（如“延长5s 10-15s”)，支持多次套娃（延长1-1 → 延长1-2 → 延长1-3）</li></ul><p>示例：</p><blockquote>参考@视频1的内容，延长视频5s向后延长。要求延长自然、动作衔接流畅、动作衔接自然，禁止生硬切镜、禁止物体凭空出现。@图1壮汉战士突然察觉到异样，停下脚步，眼神变得锐利。他迅速摆出防御姿态，紧紧盯着前方。</blockquote><p>跨场景延长示例（遮罩转场）:</p><blockquote>参考@视频1的内容，延长视频10s延长续写。要求需要在切镜处使用“遮罩转场”转场（禁止生硬切镜、禁止物体凭空出现）。镜头A展示正在防御的@图1壮汉战士（近景），一阵风吹过，一片正常大小的落叶飘向镜头，树叶完全遮挡镜头导致全屏变暗；随后镜头穿过树叶拉开，直接显现出下一个场景：@图2的年轻游侠正靠在一棵树旁边，正举起弓箭瞄准。要求必须自然切换场景。由战士的近景自然切换为游侠的中景。</blockquote><h3 id="5-6-智能编辑-高级编辑-视频编辑写法">5.6 智能编辑/高级编辑/视频编辑写法</h3><p><strong>A. 可填内容（常规提示词）:</strong></p><p>必填词汇：1. 编辑视频里的xx 2. 增加/加上 3. 删除/去掉 4. 修改/替换/改成 5. 其他相关描述</p><p><strong>公式： [具体修改对象/什么东西](锁定目标） + [动作与变化描述](下达修改指令） + [生效时序]</strong></p><ul><li>修改描述：把男生的牛仔裤，替换为深黑色的西装裤</li><li>搭配时间戳：在视频的1-8秒，把男生的牛仔裤，替换为深黑色的西装裤</li><li>支持额外输入图/视频/音频</li></ul><p><strong>B. 圈选/标记功能</strong>：高级编辑/视频编辑支持对视频框选、画笔等局部编辑。</p><p>示例：</p><ul><li>消除：将里左边的女子和右边的男子消除掉，只留下中间的女子，动作保持不变</li><li>视频编辑：把整体视频中角色拿的的武器换成一把狙击枪</li><li>时间+光影修改：将中的时间改为月夜，光影变为月光，将中跳舞的人变为，画面要有月光笼罩的那种朦胧感</li><li>文字消除：请将中会出现的绿色英文标题文字“Exercises for back pain...”(消除）</li></ul><h3 id="5-7-白模写法">5.7 白模写法</h3><p>上传通过专业三维软件（maya/blender)制作的白模动画素材作为参考，提示词赋予具体材质、光影与角色设定。</p><p>示例：</p><blockquote>赛博朋克风格的废土城市，画面主体是一名全副武装的机甲战士正在奔跑，霓虹灯光影闪烁</blockquote><h3 id="5-8-转场分类表-切镜-转场提示词模板">5.8 转场分类表（切镜/转场提示词模板）</h3><p>通用前缀：需要在切镜处使用“XX转场”转场（禁止生硬切镜、禁止物体凭空出现）...要求必须自然切换场景（可根据实际情况决定是否加景别描述）</p><div class="table-wrap"><table><thead><tr><th>类型</th><th>解释</th><th>适用场景</th><th>宽泛描述模板</th><th>具体示例（孟母三迁）</th></tr></thead><tbody><tr><td><strong>白闪/黑闪</strong></td><td>画面瞬间爆发出强烈的白光（或瞬间陷入全黑）一闪而过，极速切入下一个画面</td><td>增加视觉冲击力，配合重音（鼓点/枪声/快门声），卡点视频/混剪/紧张氛围</td><td>画面瞬间爆发出强烈的白光（或瞬间陷入全黑）一闪而过，紧接着极速切入下一个画面，带有强烈的视觉冲击感</td><td>孟母看到孟子学商贩大声叫卖，愤怒地摔碎了手中的织梭，画面瞬间爆发强烈白闪；紧接着极速切入下一个画面：一辆装满行李的牛车在颠簸的泥路上疾驰（表现果断的二次搬家）</td></tr><tr><td><strong>擦除</strong></td><td>画面B像推拉门一样，把画面A从某个方向“推走”或“擦掉”</td><td>老派复古风格（《星球大战》常用）、明显地点转移</td><td>画面B像推拉门一样，从左侧（或右侧/上下）平滑推进，将画面A完全覆盖/擦掉</td><td>画面A是喧闹嘈杂的集市，镜头像推拉门一样，从右向左平滑推进，将集市画面擦除，随之覆盖上画面B：庄严肃穆、环境清幽的学宫大门</td></tr><tr><td><strong>遮罩转场</strong></td><td>镜头推进被物体（墙壁/背影/手掌/柱子）完全遮挡导致画面变黑，下一个镜头从变黑状态拉开已是另一场景</td><td>空间跨越（穿过镜子到奇幻世界、纸飞过盖镜头）</td><td>镜头向前推进，被画面中的[某物体]完全遮挡导致全屏变黑，随后镜头穿过黑暗，直接拉开显现出下一个全新的场景</td><td>镜头A跟随孟母搬家的推车向前推进，推车进入一条幽暗的狭窄巷子，墙壁完全遮挡镜头导致全屏变黑；随后镜头穿过黑暗拉开，直接显现出下一个场景：宽敞明亮的学宫学堂</td></tr><tr><td><strong>相似物转场</strong></td><td>前镜头最后一画面与后镜头第一画面的形状/轮廓/颜色极其相似</td><td>蒙太奇（圆月→咖啡拉花）</td><td>利用形状或色彩的相似性进行无缝过渡。例如：上一个镜头的最后一帧是天上的圆形明月，镜头推进，明月无缝化为下一个镜头中杯子里的圆形咖啡拉花</td><td>利用形状相似性无缝过渡。镜头A是集市上商贩手中圆形的铜钱，镜头向铜钱极致推进；铜钱无缝化为下一个镜头中，学宫老师手中同样圆形的戒尺端部</td></tr><tr><td><strong>动作转场</strong></td><td>镜头在A场景猛甩动（向左/上下），画面模糊；B场景顺同样力道甩入定格。分相似动作（柔和）与冲突动作（有力量感）</td><td>动感极强：动作片/跑酷/旅行Vlog,“瞬间转移”速度感</td><td>利用镜头的极速运动进行衔接。镜头在A场景猛烈向左（或右）甩动，画面产生强烈的运动模糊；随后B场景顺着相同的甩动方向和力度，从模糊中切入并定格</td><td>镜头A中孟母猛地拉起孟子的手，镜头跟随动作猛烈向右甩动产生模糊；随后场景B顺着相同的甩动方向，从模糊中切入，定格在孟母拉着孟子跨入学宫的门槛</td></tr></tbody></table></div><hr></section><section class="sec" id="六-亮点功能详解"><h2 class="sec-h"><span class="num">第06章</span>六、亮点功能详解</h2><h3 id="视频延长-创作不断档">🕒 视频延长 创作不断档</h3><ul><li>单次最高 30s 内延长；多次套娃延长最长 60s</li></ul><h3 id="超长视频最长达-180-秒">✌️ 超长视频最长达 180 秒</h3><ul><li>超长视频模式最多生成 180s</li></ul><h3 id="时间戳文本控制">🎯 时间戳文本控制</h3><ul><li>文本指定具体时间戳，精确到秒；控制动作演变与场景转场，剧本级精准还原</li><li>用法：提示词中写 [00:00-00:08] 等时间段+动作指令；或第 N 秒转身/第 N 秒转场</li></ul><h3 id="打破语言边界">🌍 打破语言边界</h3><ul><li>重点优化：中文、英语、西班牙语、印尼语、马来语</li><li>覆盖：泰语、阿拉伯语、葡萄牙语、越南语、日语、韩语</li><li>优化对白发音准确率、生僻字误读、断句自然；口型与多语种语音配合</li><li>用法：母语撰写 Prompt；角色说话直接写目标语言台词</li><li>场景：出海营销本土化广告、全球创作者母语表达、多语言短片</li></ul><h3 id="去除无关字幕与bgm">🔇 去除无关字幕与BGM</h3><ul><li>用法：提示词加“纯净视频，无字幕，无背景音乐”</li><li>场景：纯净空镜素材积累、高定制化商业广告/MV(干净底片）、沉浸式视觉背景/屏保</li><li>示例（电商穿搭，全程静音）:</li></ul><blockquote>竖版9:16电商穿搭展示视频，纯白极简无缝影棚背景，固定分栏版式全程保持一致：画面左侧垂直排列3个带细黑色圆角边框的矩形模块，每个模块顶部是带左右短横线装饰的黑色衬线数字编号（1、2、3），模块内放置对应穿搭单品平铺图，单品下方标注小字“1x”；画面右侧是年轻女性模特全身站立穿搭实景展示，全身平视固定机位，浅柔和影棚均匀布光，无硬阴影，服装面料纹理清晰细腻，模特保持自然优雅站姿，有轻微的抬手整理衣物、调整站姿等舒缓动态，整体风格干净高级，符合女装电商带货审美。参考图作为风格和版式锚定，保持分栏边框样式、字体排版、光影质感全程统一，视频帧率24fps。全程禁止出现任何文字字幕、标语、水印、logo、额外标注，全程无背景音乐BGM、无人声旁白、无环境杂音，只有完全静音的纯视觉画面，镜头全程固定不推拉摇移，版式结构全程保持不变。</blockquote><h3 id="基础生成效果全面优化">🌟 基础生成效果全面优化</h3><ul><li>大幅弱化“AI感”，更逼真物理质感；切镜一致性显著提升；解锁大量复杂长尾动作</li><li>案例对比（2.5 vs 2.0）:VRMMORPG 亡灵巫师 Boss 登场 CG、2D 手绘独立游戏宣传片、科普连环画转视频——2.5 在风格/氛围/特效/BGM 节奏上全面优于 2.0</li></ul><h3 id="多模态参考全面优化-四大维度">🚀 多模态参考全面优化（四大维度）</h3><ol><li><strong>创意与元素的解构</strong>：分离BGM、迁移创意、无缝转场、多宫格分镜——无损移除BGM仅留人声与字幕；精准抓取迁移镜头语言和情绪氛围</li><li><strong>精细编辑的掌控</strong>：局部编辑、空间推理——局部消除和编辑、空间机位修改，自动补全画面外未见细节</li><li><strong>感官维度的拓宽</strong>：音色参考、多人参考——精准复刻声音情绪；解决群像戏时空一致性与换脸错位</li><li><strong>影视工业的深化</strong>：绿幕编辑、白模控制——白模精准调度复杂运镜与角色动态，绿幕轻松完成背景替换与特效合成</li></ol><h3 id="分离-移除背景音乐-bgm">🎵 分离/移除背景音乐（BGM)</h3><ul><li>用法：提示词中要求删除音乐背景音仅留人声，保留原画面字幕等元素</li><li>示例：</li></ul><blockquote>去除@视频1中的背景音乐，保留清晰的人声。同时参考@图1@图2@图3给视频加入阳光照进房间的效果，保证自然明亮，真实感。并去除掉视频中的水印。</blockquote><h3 id="迁移创意">✨ 迁移创意</h3><ul><li>三个层次：1）精准镜头语言提取（运镜轨迹：推拉摇移/手持摇晃）;2）深层情绪与氛围复刻（色彩逻辑/情绪基调/意境）;3）爆款“网感逻辑”迁移（视觉节奏/排版逻辑）</li><li>用法：@参考视频 + 详细描述要替换/迁移什么创意内容，描述内核（如可爱状态、喜剧效果）</li><li>场景：爆款网感短视频（舞蹈挑战/卡点变装/热梗模仿）、广告制作（运动品牌/汽车/时尚走秀）</li><li>示例：</li></ul><blockquote>请参考@视频1划动手机视频动作，保留手机样式，围绕@图片1-5中的画面内容，创作一支具有连贯视觉风格和创意表达的短视频。整体风格应具有高级感、创意感和社交媒体传播感，画面干净、细节丰富、色彩协调，避免杂乱和突兀变化。请确保视频中的主体元素稳定一致，不要随意改变参考图片中的核心内容、空间结构和视觉风格。</blockquote><h3 id="局部消除与编辑">✂️ 局部消除与编辑</h3><ul><li>精准识别并移除视频中特定物体，进行去除或再编辑</li><li>示例：消除左边女子和右边男子只留中间女子（动作保持不变）；消除绿色英文标题文字；时间改为月夜光影变为月光</li></ul><h3 id="空间视角修改">🎥 空间视角修改</h3><ul><li>三个能力：1）三维空间深度解析（理解空间关系与景深，虚拟摄像机）;2）多维视角自由重构（俯/仰/平视/特写/全景）;3）动态运镜平滑过渡（推拉摇移/环绕跟随）</li><li>用法：提示词直接加镜头语言与视角指令，例如：“将平视镜头修改为从高空俯拍，镜头缓慢向下推进”、“把第三人称视角，修改为视频中人物以第一人称视角穿梭于森林中”</li></ul><h3 id="音色参考升级">🎙️ 音色参考升级</h3><ul><li>用法：上传参考音色音频（建议清晰无杂音人声）+ 输入需要生成的文案 + 情感指令</li><li>示例：“参考@音频1说我找到了你，并保持低沉悬疑的语调”</li><li>场景：微短剧与强情绪剧情（歇斯底里争吵/隐忍哭泣/高燃霸总压迫感）、商业矩阵营销与品牌专属声</li></ul><h3 id="多人参考升级">👥 多人参考升级</h3><ul><li>1）精准的人物细节绑定（面部轮廓/五官细节/专属气质，避免脸盲与特征互串）;2）复杂空间交互与肢体交互（拥抱/眼神拉扯/动作对抗，物理遮挡与互动逻辑）</li><li>示例：</li></ul><blockquote>复古美式卡通动画都市街头（参考图5）欢乐短片，四位青年人物形象、穿搭、面部特征分别参考@图1-4，四人在复古步行街同步跳集体舞蹈，肢体动作整齐连贯，人物之间间距固定不变，街边霓虹冷暖撞色光影全程统一，正面固定机位+缓慢横移运镜，角色每一处服饰、五官、身形全程与参考图高度匹配，动作流畅无穿模畸变，复古卡通动画质感，时长15秒。</blockquote><h3 id="无缝绿幕编辑">🟩 无缝绿幕编辑</h3><ul><li>1）高精细分割（复杂轮廓，干净剥离，避免残影）;2）动态场景（人物与背景相对透视/运动轨迹帧级稳定，不闪烁跳脱）</li><li>用法：上传绿幕背景参考视频 + 描述替换的新场景/上传参考图。示例：“将背景替换为中世纪魔法森林，光影神秘”、“参考教室图片，将绿幕中的人物自然融入其中”</li><li>场景：奇幻/科幻制作（低成本还原宇宙异世界）、虚拟演播室与口播视频</li></ul><h3 id="专业级白模控制">🎬 专业级白模控制</h3><ul><li>1）场景结构解析；2）空间与构图锁定（前后景遮挡逻辑）;3）角色站位与运动轨迹控制（按编排“走位”表演）</li><li>用法：上传 maya/blender 白模动画 + 赋予材质/光影/角色设定</li><li>场景：影视动画前期预演（灰模转电影级画面）、复杂动作戏与大场面调度</li><li>注意：社区反馈白模渲染效果仍不理想、与原视频偏差大（2.5 初版）</li></ul><h3 id="视频无缝转场">🔗 视频无缝转场</h3><ul><li>输入两段视频，模型自动生成补全间隙无缝衔接；支持多种创意过渡方式</li><li>示例：将【视频A】和【视频B】无缝衔接起来，但是不修改尾帧；鲤鱼快速向前游。..</li></ul><h3 id="多宫格分镜">🎞️ 多宫格分镜</h3><ul><li>输入多宫格分镜图（推荐简约线稿/火柴人分镜图）作剧情参考，Prompt 控制构图/景别/运镜/动作</li><li>示例（9 宫格电影分镜脚本）:@图片1为完整电影分镜脚本，共包含9个连续镜头。小女孩参考@图片2，种子参考@图片3...分镜1:...分镜2:...(逐分镜描述）</li></ul><hr></section><section class="sec" id="七-完整提示词案例库-官方实测通过"><h2 class="sec-h"><span class="num">第07章</span>七、完整提示词案例库（官方实测通过）</h2><div class="table-wrap"><table><thead><tr><th>#</th><th>案例</th><th>时长</th><th>核心看点</th></tr></thead><tbody><tr><td>1</td><td>丹顶鹤自然纪录片</td><td>8s</td><td>基础提示词+时间戳分段+环境音</td></tr><tr><td>2</td><td>古典美女玫瑰花田</td><td>10s</td><td>空镜+镜头上摇</td></tr><tr><td>3</td><td>东京拉面店广告（日文）</td><td>15s</td><td>多镜头分镜+语言控制+品牌字幕规范+口型同步</td></tr><tr><td>4</td><td>Island of Whispers 游戏预告（马来语）</td><td>30s</td><td>多角色参考（11图）+分镜+音频参考+出海市场</td></tr><tr><td>5</td><td>赛博机甲追逐变形</td><td>30s</td><td>一镜到底+时间戳分镜+物理指令+禁止项</td></tr><tr><td>6</td><td>国漫武侠客栈</td><td>30s</td><td>切镜转场（相似物）+三渲二画风+禁止项</td></tr><tr><td>7</td><td>冰川穿越深海</td><td>30s</td><td>一镜到底+无缝转场+延时摄影</td></tr><tr><td>8</td><td>英伦庄园舞会</td><td>20s</td><td>焦点转换/前景遮挡/慢动作推镜三种转场+男女主公式+音频设计</td></tr><tr><td>9</td><td>《奶奶的菜谱》毛毡动画</td><td>24s/720帧</td><td>帧级时间戳+全局约束+多模态参考</td></tr><tr><td>10</td><td>电商穿搭（静音）</td><td>—</td><td>去字幕BGM标准范例+版式锚定</td></tr><tr><td>11</td><td>龙舌兰鸡尾酒广告</td><td>—</td><td>6图参考+产品特写+风格统一</td></tr><tr><td>12</td><td>VRMMORPG 亡灵巫师 Boss</td><td>—</td><td>游戏CG+UI元素+故障艺术</td></tr><tr><td>13</td><td>2D 手绘独立游戏</td><td>—</td><td>两幕结构+游戏UI+经验值气泡</td></tr><tr><td>14</td><td>科普连环画转视频</td><td>—</td><td>图组转视频+儿童教学</td></tr><tr><td>15</td><td>划手机创意短视频</td><td>—</td><td>迁移创意+视频动作参考</td></tr><tr><td>16</td><td>柴犬表情迁移</td><td>—</td><td>动态表情/神态/创意模式迁移</td></tr><tr><td>17</td><td>三人战龙（视频延长×3）</td><td>30s</td><td>延长套娃：12s+5s+13s，时间戳标注</td></tr><tr><td>18</td><td>战士森林（视频延长×3）</td><td>25s</td><td>10s+5s+15s，前后向延长</td></tr><tr><td>19</td><td>擂台大战（音色参考×4）</td><td>—</td><td>多音色参考+多角色+战斗特效</td></tr><tr><td>20</td><td>蜂医（无字幕无BGM)</td><td>—</td><td>纯环境音+动作音效+对白</td></tr><tr><td>21</td><td>四人集体舞蹈</td><td>15s</td><td>多人参考+间距固定+穿模防</td></tr><tr><td>22</td><td>小女孩异世界穿越</td><td>15s</td><td>时间轴精确到0.5s+穿越特效参考</td></tr><tr><td>23</td><td>健身动作对比分屏</td><td>—</td><td>上下分屏+双人参考+动作模板</td></tr><tr><td>24</td><td>白模-海浪灯塔/古战场</td><td>—</td><td>白模渲染（效果待优化）</td></tr><tr><td>25</td><td>鲤鱼无缝衔接</td><td>—</td><td>两视频无缝转场</td></tr><tr><td>26</td><td>小女孩播种（9宫格分镜）</td><td>—</td><td>分镜脚本+角色一致性</td></tr><tr><td>27</td><td>男孩生日（9宫格分镜）</td><td>—</td><td>分镜脚本+全景/中景/近景</td></tr></tbody></table></div><hr></section><section class="sec" id="八-社区反馈-真实口碑"><h2 class="sec-h"><span class="num">第08章</span>八、社区反馈（真实口碑）</h2><ul><li>正面：动作连贯性提升、超长视频实用、1k 人在线看文档</li><li>负面/待优化：价格太贵（积分消耗大）、“纯抽卡”、白模渲染效果不理想、视频修改精度不足（改了和没改一样）、打斗动作不够高燃</li><li>提示：参考提示词是内测用户总结，不一定适用所有人，建议按自己设计调整</li></ul><hr></section><section class="sec" id="九-插件化要点-给开发者的结构化建议"><h2 class="sec-h"><span class="num">第09章</span>九、插件化要点（给开发者的结构化建议）</h2><ol><li><strong>真人公式模板</strong>：8 维度字段化（年龄种族/肤色质感/面部细节/眼神/发型发色/服装质感/体型气质/其他），可做成表单或填空模板</li><li><strong>转场模板库</strong>：5 类转场（白闪黑闪/擦除/遮罩/相似物/动作）各自“解释+模板+示例”三段式，可做快捷插入</li><li><strong>时间戳分镜格式</strong>：[00:00-00:08] 段落名+动作/物理指令+镜头潜台词，自动校验时间戳区间连续性</li><li><strong>超长视频五段式</strong>：全局参数/素材描述/一句话概述/具体情节描述/全局补充，可做引导式生成器</li><li><strong>禁止项自动附加</strong>：去字幕/BGM/防穿模/防版权IP 等常用禁止项，一键附加</li><li><strong>多模态参考规范</strong>：@图1/@视频1/@音频1 引用格式 + 参考素材用途标注（人物/音色/动作/场景）</li><li><strong>语言控制</strong>：指定输出语言 + 字幕语言规范（全片统一、禁止混入其他语言）</li></ol></section>
+</main>
+<footer>
+  <div class="brand">GaryAIGC · dream3d.vip</div>
+  <p style="margin-top:8px">转载注明出处 · 内容整理自官方公开文档 · 仅供学习交流</p>
+</footer>
+</div>
+<a href="#" class="totop">↑</a>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【MiniMax H3】模型使用手册 - GaryAIGC</title>
+<style>
+:root{
+  --gold:#d4af37; --gold-l:#f2d98a; --gold-d:#a8842a;
+  --bg0:#0d0b08; --bg1:#15110b; --bg2:#1b1610; --bg3:#221c13;
+  --line:#2e2618; --line2:#3a3020;
+  --text:#e9e2d2; --text-dim:#a89f8a; --text-faint:#7d7562;
+  --serif:"Noto Serif SC","Source Han Serif SC","Songti SC",SimSun,serif;
+  --sans:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sans-serif;
+  --mono:Consolas,"JetBrains Mono","Courier New",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg0);color:var(--text);font-family:var(--sans);line-height:1.85;font-size:16px}
+body::before{content:"";position:fixed;inset:0;background:
+  radial-gradient(1200px 500px at 50% -10%,rgba(212,175,55,.06),transparent 60%),
+  radial-gradient(800px 400px at 90% 110%,rgba(212,175,55,.04),transparent 60%);
+  pointer-events:none;z-index:0}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+
+/* Hero */
+.hero{padding:56px 20px 40px;text-align:center;position:relative}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;padding:8px 18px;border:1px solid var(--line2);border-radius:999px;background:linear-gradient(180deg,rgba(212,175,55,.08),transparent)}
+.hero h1{font-family:var(--serif);font-size:clamp(28px,4.5vw,44px);font-weight:700;color:var(--gold-l);margin:22px 0 6px;letter-spacing:.04em;line-height:1.35}
+.hero .sub{color:var(--text-dim);font-size:15px;max-width:720px;margin:0 auto}
+.hero .meta{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;font-size:12.5px;color:var(--text-faint)}
+.hero .meta span{border:1px solid var(--line);border-radius:6px;padding:4px 10px;background:var(--bg1)}
+.hero .meta a{color:var(--gold);text-decoration:none}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.5;max-width:640px;margin:0 auto 8px}
+
+/* TOC */
+.toc{max-width:1080px;margin:26px auto 8px;padding:0 20px}
+.toc-inner{background:var(--bg1);border:1px solid var(--line);border-radius:14px;padding:20px 24px}
+.toc-title{font-size:14px;letter-spacing:.25em;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.toc-title::after{content:"";flex:1;height:1px;background:var(--line2)}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
+.toc a{color:var(--text-dim);text-decoration:none;font-size:13.5px;padding:7px 12px;border-radius:8px;transition:all .15s;display:block;border:1px solid transparent}
+.toc a:hover{color:var(--gold-l);background:var(--bg2);border-color:var(--line2)}
+.toc a.t2{padding-left:22px;font-size:12.5px;color:var(--text-faint)}
+
+/* Main */
+main{max-width:1080px;margin:20px auto 0;padding:0 20px 40px}
+section.sec{background:var(--bg1);border:1px solid var(--line);border-radius:16px;padding:30px 36px;margin-bottom:22px;box-shadow:0 1px 0 rgba(255,255,255,.02) inset}
+h2.sec-h{font-family:var(--serif);font-size:23px;color:var(--gold-l);margin:8px 0 18px;padding-bottom:12px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+h2.sec-h .num{font-family:var(--serif);font-size:15px;color:var(--gold-d);border:1px solid var(--line2);border-radius:8px;padding:2px 10px;white-space:nowrap}
+h3{font-family:var(--serif);font-size:18.5px;color:var(--gold-l);margin:26px 0 10px;padding-left:14px;border-left:3px solid var(--gold)}
+h4{font-size:15.5px;color:var(--text);margin:20px 0 8px;font-weight:600}
+p{margin:10px 0;color:var(--text);font-size:15.5px}
+p.dim{color:var(--text-dim);font-size:14px}
+
+/* Lists */
+ul,ol{margin:10px 0 10px 4px;padding-left:22px}
+li{margin:7px 0;font-size:15px;color:var(--text)}
+li::marker{color:var(--gold)}
+ul li ul,ol li ul{margin:6px 0}
+
+/* Quote */
+blockquote{background:linear-gradient(90deg,rgba(212,175,55,.07),transparent 70%);border-left:3px solid var(--gold);padding:14px 20px;margin:14px 0;border-radius:0 10px 10px 0;color:var(--text-dim);font-size:14px;line-height:1.8}
+blockquote strong{color:var(--gold-l)}
+
+/* Table */
+.table-wrap{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+thead th{background:linear-gradient(180deg,#241d10,#1e1810);color:var(--gold-l);font-weight:600;text-align:left;padding:12px 16px;border-bottom:2px solid var(--gold);white-space:nowrap;font-size:13.5px;letter-spacing:.03em}
+tbody td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--text)}
+tbody tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+tbody tr:hover td{background:rgba(212,175,55,.05)}
+tbody tr:last-child td{border-bottom:none}
+td strong{color:var(--gold-l)}
+td:first-child{color:var(--gold-l);font-weight:500;white-space:nowrap}
+
+/* Code */
+pre{background:#0a0806;border:1px solid var(--line);border-radius:10px;padding:16px 20px;overflow-x:auto;margin:14px 0;font-family:var(--mono);font-size:13px;line-height:1.7;color:#e6d9b8;white-space:pre-wrap}
+code.ic{font-family:var(--mono);font-size:13px;color:#e8c98a;background:rgba(212,175,55,.08);padding:1px 6px;border-radius:4px;border:1px solid rgba(212,175,55,.15)}
+
+hr{border:none;height:1px;background:var(--line2);margin:26px 0}
+
+/* Footer */
+footer{margin-top:40px;padding:28px 0 40px;border-top:1px solid var(--line);text-align:center;color:var(--text-faint);font-size:13px}
+footer .brand{color:var(--gold);font-weight:600;font-size:14px;letter-spacing:.1em}
+footer a{color:var(--gold);text-decoration:none}
+
+/* Back to top */
+.totop{position:fixed;right:24px;bottom:24px;width:42px;height:42px;border-radius:50%;background:var(--bg2);border:1px solid var(--line2);color:var(--gold);font-size:18px;display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:.7;transition:opacity .2s;z-index:9}
+.totop:hover{opacity:1;background:var(--bg3)}
+
+@media(max-width:700px){
+  body{font-size:15px}
+  section.sec{padding:22px 18px;border-radius:12px}
+  .hero{padding:40px 16px 28px}
+  .hero h1{font-size:26px}
+  table{font-size:12.5px;min-width:480px}
+  .toc-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <span class="eyebrow">✦ AI 视频模型官方手册整理</span>
+  <h1>【MiniMax H3】模型使用手册</h1>
+  <p class="sub">开放通用多模态智能 —— 8 大商用场景 · 精准编辑 · 提示词公式</p>
+  <div class="meta">
+    <span>来源：MiniMax 官方文档 · 2026-08-04 更新</span>
+    <span><a href="https://vrfi1sk8a0.feishu.cn/wiki/FIWjwgL33ipnkekzk30crmKUnIh" target="_blank" rel="noopener">官方原文 ↗</a></span>
+    <span>整理：2026-08-07</span>
+    <span><span>AI影视</span> · <span>H3</span> · <span>提示词</span></span>
+  </div>
+</header>
+<div class="divider"></div>
+<nav class="toc"><div class="toc-inner">
+  <div class="toc-title">目 录</div>
+  <div class="toc-grid"><a href="#一-模型定位">一、模型定位</a><a href="#二-模型功能信息-核心参数">二、模型功能信息（核心参数）</a><a href="#三-模型亮点能力-示例">三、模型亮点能力&amp; 示例</a><a href="#1-商用级多场景内容生成-8-大场景" class="t2">1. 商用级多场景内容生成（8 大场景）</a><a href="#2-原生多模态理解与生成" class="t2">2. 原生多模态理解与生成</a><a href="#3-全能精准编辑与修改" class="t2">3. 全能精准编辑与修改</a><a href="#三-提示词方法论">三、提示词方法论</a><a href="#1-1-整体公式" class="t2">1.1 整体公式</a><a href="#1-2-四个要素如何描述" class="t2">1.2 四个要素如何描述</a><a href="#1-3-镜头怎么拆" class="t2">1.3 镜头怎么拆</a><a href="#1-4-三类模式生视频-提示词分别怎么写" class="t2">1.4 三类模式生视频，提示词分别怎么写</a><a href="#1-5-容易踩的坑" class="t2">1.5 容易踩的坑</a><a href="#2-特定风格提示词示意-3-撰写提示词的最佳方式" class="t2">2. 特定风格提示词示意 / 3. 撰写提示词的最佳方式</a><a href="#四-开源用户参考-官方提供">四、开源用户参考（官方提供）</a><a href="#五-案例速查表-官方-goodcase">五、案例速查表（官方 goodcase)</a></div>
+</div></nav>
+<main>
+<blockquote>来源：MiniMax 官方飞书文档（2026-08-04 更新） | 整理：2026-08-07
+原文：https://vrfi1sk8a0.feishu.cn/wiki/FIWjwgL33ipnkekzk30crmKUnIh
+体验：MiniMax Hub(桌面端免费 3 次）/ 海螺 AI 体验中心 / 开放平台 API</blockquote><hr><section class="sec" id="一-模型定位"><h2 class="sec-h"><span class="num">第01章</span>一、模型定位</h2><ul><li><strong>H3 = 新一代开放通用多模态视频模型</strong>：从“特化任务模型”迈向“通用多模态智能”</li><li>不以图片/视频/声音的生成、编辑、参考等单一任务为边界，而是面向<strong>文本+图像+视频+声音共同构成的多模态上下文</strong>，统一理解创作意图</li><li>持续更新中（8/4 新增 1.2 goodcase、1.3 MG动画、1.6 goodcase)</li></ul></section><section class="sec" id="二-模型功能信息-核心参数"><h2 class="sec-h"><span class="num">第02章</span>二、模型功能信息（核心参数）</h2><div class="table-wrap"><table><thead><tr><th>项目</th><th>参数</th></tr></thead><tbody><tr><td><strong>输出帧率</strong></td><td><strong>24 FPS</strong></td></tr><tr><td><strong>输出声音</strong></td><td><strong>所有结果全部带声音输出，原生双声道</strong></td></tr><tr><td><strong>首/尾帧入口</strong></td><td>图片 0/1/2 张；宽高范围 [256, 5760]；宽高比 5:2~2:5；无图片输入=文生视频模式</td></tr><tr><td><strong>全能参考入口</strong></td><td>图片 <strong>≤9 张</strong>（宽高[256,5760])；视频 <strong>≤3 段</strong>（单段[2,15]s，总≤15s，宽高[256,5760]，宽高比 5:2~2:5）；音频 <strong>≤3 段</strong>（须配图片/视频输入，<strong>不能单独输入</strong>，单段[2,15]s，总≤15s);<strong>混合输入总上限 12 个文件</strong>；无输入=文生视频</td></tr><tr><td><strong>输入格式</strong></td><td>视频：H.264/AVC、H.265/HEVC；视频内音频：AAC、MP3；图片：JPG/JPEG/PNG/WEBP/HEIC/HEIF；音频：WAV/MP3</td></tr><tr><td><strong>大小限制</strong></td><td>视频单个 <strong>50MB</strong>；图片单个 <strong>30MB</strong>；音频单个 <strong>15MB</strong>（限制在单个素材，不限制总数）;API 请求体 <strong>64MB</strong>（推荐 url 传入素材）</td></tr><tr><td><strong>提示词字数上限</strong></td><td><strong>不超过 7000 字符</strong></td></tr><tr><td><strong>语言支持</strong></td><td>多语言提示词输入输出；TTS 精准覆盖 11 种语言（中/英/日/韩/法/德/西等），可衍生 40+ 语言</td></tr></tbody></table></div><p><strong>三大能力阐释：</strong></p><div class="table-wrap"><table><thead><tr><th>能力</th><th>阐释</th></tr></thead><tbody><tr><td><strong>原生多模态理解与生成</strong></td><td>支持文字/图片/音频/视频多种输入，理解人物、动作、声音、情绪、镜头、风格与表达意图，自然融合多种参考信息，完成从素材理解到完整视听内容生成的一体化创作</td></tr><tr><td><strong>多模态精准编辑与控制</strong></td><td>支持对人物、物体、场景、声音与节奏多维度编辑，精细化指令遵循；可在已有内容上持续修改迭代</td></tr><tr><td><strong>商用级多场景内容生成</strong></td><td>面向影视/广告/品牌/电商/游戏等真实商业场景；兼顾字幕、品牌信息、创意特效、产品展示、UI/UX 动态演示、游戏视觉与风格化表达</td></tr></tbody></table></div></section><section class="sec" id="三-模型亮点能力-示例"><h2 class="sec-h"><span class="num">第03章</span>三、模型亮点能力&amp; 示例</h2><h3 id="1-商用级多场景内容生成-8-大场景">1. 商用级多场景内容生成（8 大场景）</h3><div class="table-wrap"><table><thead><tr><th>场景</th><th>说明</th><th>代表案例提示词</th></tr></thead><tbody><tr><td><strong>1.1 品牌大片与影视</strong></td><td>电影级预告、品牌广告</td><td>①望远镜窥视装置（4图连续关键帧+rack focus+转场+双圆镜片遮罩+红字淡入淡出+Wes Anderson 35mm胶片质感+禁止新增元素） ②太空歌剧院线预告（硬切+宽字距标题+克制发光+黑场闪现） ③科幻悬疑（SHOT 1超广角+THE STARS WERE LISTENING标题+Audio音效标注+Hard cut) ④时尚campaign(16:9+氛围/包袋/人物/logo四资产+冷感克制+荒漠公路故事线）</td></tr><tr><td><strong>1.2 视觉创意与包装</strong></td><td>实拍+动画混合</td><td>①傍晚小厨房+手绘发光动画（智能手机拍摄质感：手抖/对焦犹豫/逆光曝光波动+禁止恐怖元素+声音清单） ②深夜洗衣店（荧光灯频闪+手持纪实感） ③dark-pop/cyber-grunge MV(90s zine拼贴美学：粗颗粒/半色调网点/印刷毛边/硬切）</td></tr><tr><td><strong>1.3 动态图形/MG动画/AE特效</strong></td><td>图形动效、文字动画</td><td>①绿幕替换（去绿幕+换童话背景+光线匹配） ②TouchDesigner式动态追踪图形（严格保持原视频+矩形框规则：透明度0%/红青双色/闭合矩形/不嵌套）</td></tr><tr><td><strong>1.4 AI 剧情创作</strong></td><td>短剧、漫剧、角色演绎、AI配音</td><td>①古装武侠悬疑短剧（16:9电影画幅+冷蓝墨绿雪夜竹林+浅景深+正反打+禁字幕/现代元素） ②家庭争吵竖屏短剧（9:16+真实短剧表演+角色语气标注+情绪升级） ③海外吸血鬼爱情短剧（ReelShort/DramaBox感+15秒钩子+禁血腥/万圣节感）</td></tr><tr><td><strong>1.5 产品与电商营销</strong></td><td>—(官方文档本节内容未渲染）</td><td>—</td></tr><tr><td><strong>1.6 数字体验与游戏</strong></td><td>游戏UI、网页UI、交互演示</td><td>①赛博朋克游戏UI(角色/UI双参考+时间戳分镜[0-2s][2-4s][4-7s][7-8.5s][8.5-10s][10-15s]+UI元素英文标注） ②产品官网落地页（粗犷无衬线字体+速度感动态光影+悬停放大反转） ③汽车网站UI(标题下滑+文字上划+车灯由暗变红）</td></tr><tr><td><strong>1.7 硬件/实体工业/具身智能</strong></td><td>机器臂操作演示</td><td>①机器臂下降抓起红色方块移动放下 ②桌面替换为标准办公室工位+背景整体替换</td></tr><tr><td><strong>1.8 动画与风格化影像</strong></td><td>游戏CG、角色PV、动漫PV、二次元</td><td>①黏土动画狐狸飞跃熔岩峡谷（慢动作+大动态运镜） ②国风仙侠 3D(4K 16:9+固定人物参考+分镜节奏参考+露脸只能近景特写/远景只能背影） ③乙游男主 PV(严格角色身份参考：脸/发型/体型/服装/材质/乙游CG质感）</td></tr></tbody></table></div><h3 id="2-原生多模态理解与生成">2. 原生多模态理解与生成</h3><ul><li><strong>2.1 多素材联合参考</strong>：文字、图片、音频与视频自由组合</li></ul><p>  - 参考剪辑：图1-6，严格参考示例视频视频1的镜头节奏、转场风格及音乐</p><p>  - Minecraft 化：保持真实世界风格，仅将树木、轿车转化为 3D 像素/体素积木（Minecraft style)，像素化运动轨迹正常，保留真实阴影和透射光</p><p>  - 动作模仿（DIY表情包）：三个西装男替换为三只写实水豚，严格遵循运动轨迹（趴地→跳跃→翻滚→堆叠金字塔）</p><ul><li><strong>2.2 角色、动作与镜头参考</strong>：参考主角形象、人物动作、镜头运动与画面构图；音色迁移与克隆；氛围与剪辑理解（视觉风格/叙事节奏/声音氛围/整体剪辑感）</li><li><strong>2.3 音色克隆与迁移</strong>：<code class="ic">角色说话：Follow the wind, live free. Leave worries behind, enjoy the moment，音色参考音频1</code></li></ul><p><strong>🌍 语言支持</strong>：多语言提示词输入输出；TTS 精准覆盖 <strong>11 种语言</strong>（中/英/日/韩/法/德/西等），可衍生探索 <strong>40+ 语言</strong>（阿/泰/印尼/印地等）</p><h3 id="3-全能精准编辑与修改">3. 全能精准编辑与修改</h3><div class="table-wrap"><table><thead><tr><th>维度</th><th>说明</th><th>案例</th></tr></thead><tbody><tr><td><strong>3.1 角色与物体编辑</strong></td><td>替换/删除/增加人物物体</td><td>①角色替换+动作参考（街舞） ②增加人物（画面左边增加一个穿着相同团队制服的人，动作与旁人保持一致） ③精准换人换衣（视频1中最后面的小孩换成图1中的金毛狗，最左边小孩的卡其色外套改成图2中的牛仔外套） ④角色替换（男子靠近猫轻吻猫）</td></tr><tr><td><strong>3.2 场景与视觉效果</strong></td><td>替换背景、调整光影、增改特效</td><td>①绿幕→童话背景（背景元素完全匹配人物动作+光线匹配） ②改光影（参考视频，改变光照，改成夜晚） ③实拍景色替换（视频1窗外的场景改成图1）</td></tr><tr><td><strong>3.3 声音/台词/音色</strong></td><td>替换台词、迁移音色、调整人声</td><td>台词替换：将视频1女生说的话：“我们之间不可能在一起的，不是不爱，是我们真的走不到最后的”。改成音频1的台词：“别走了，好吗？这一次，我们不要放开彼此”，并略微调整对应的表演</td></tr><tr><td><strong>3.4 高精度指令遵循</strong></td><td>局部修改+未编辑内容稳定</td><td>—</td></tr></tbody></table></div><hr></section><section class="sec" id="三-提示词方法论"><h2 class="sec-h"><span class="num">第04章</span>三、提示词方法论</h2><h3 id="1-1-整体公式">1.1 整体公式</h3><pre><code>完整提示词 = 参考素材说明 + 核心创意 + 画面过程说明</code></pre><h3 id="1-2-四个要素如何描述">1.2 四个要素如何描述</h3><p><strong>（1） 参考素材说明</strong>（告诉 H3 每个素材干什么用）:</p><ul><li>写清素材编号：按上传顺序，如 @图片1、@音频2、@视频3</li><li>写清每个素材的用途：</li></ul><p>  - 人物参考（锁定脸/形象）| 物体参考（锁定物体）| 场景参考（锁定场景）</p><p>  - 关键帧（锁定帧，首帧尾帧需求明确提出）| 音色参考（锁定音色）</p><p>  - 故事版（根据故事版分镜生成镜头内容）| 风格参考 | 构图参考</p><p>  - 音频复用（音频直接复用）| 音频部分复用（某个声音轨道/时间段部分复用）</p><p>  - 动作参考（锁定动作）| 运镜参考（锁定运镜）| 视频编辑（增删改）</p><ul><li>没有上传素材时整段跳过</li><li>示例：<code class="ic">@图片1 提供了xx角色的形象（如果有多个角色，需要能指代清楚）,@视频2提供了动作参考</code></li><li>想保持的特征要明确写出来（一致性更好）</li><li><strong>音频复刻/部分复刻时，若要求人声对白/歌词保持，强烈建议补充具体歌词文本</strong>：<code class="ic">比如@音频1 作为目标视频的音频复刻素材，具体歌词是：“ABCDEFGHIJKLMN”</code></li></ul><p><strong>（2） 核心创意 + (3） 画面过程说明</strong>：按镜头拆解（见下）</p><h3 id="1-3-镜头怎么拆">1.3 镜头怎么拆</h3><ul><li><strong>台词与 shot 长度匹配</strong>：台词长短和画面变化内容要合乎每个 shot 的长短逻辑，不要出现 3s shot 说一大段话</li><li><strong>J-cut / L-cut</strong>：H3 能响应跨 shot 的台词，明确写出一句台词跨了哪些 shot 即可</li><li><strong>画内/画外说话人</strong>：</li></ul><p>  - 画面内说话 → 写清楚是哪个角色说的</p><p>  - 画面外说话 → 写清楚是画外说话人</p><p>  - 画内外因切镜转化 → 明确写出来。复杂例子：<code class="ic">一个画外音响起说：Wake up Wake up。之后切镜到一个中年妇女的近景，她是画外音的主人，她继续说道：It's time to go to school!</code></p><ul><li><strong>切镜一致性保持</strong>：切镜时明确写出切镜到什么景别、具体主体是之前的哪个角色</li></ul><h3 id="1-4-三类模式生视频-提示词分别怎么写">1.4 三类模式生视频，提示词分别怎么写</h3><div class="table-wrap"><table><thead><tr><th>模式</th><th>写法要点</th><th>示例</th></tr></thead><tbody><tr><td><strong>多模态参考</strong>（上传多素材融合）</td><td>人物图+动作视频+场景图+音乐，每个素材写清角色：@图片1→人物参考（锁脸）、@视频1→动作参考（锁动作）、@音频1→节奏/情绪参考</td><td>@图片1 是人物参考（锁这位女子的脸）,@视频1 是动作参考（用里面的舞剑动作）,@音频1 是情绪参考（古风配乐）。让这位女子在樱花庭院里按视频里的动作舞剑</td></tr><tr><td><strong>图生视频</strong>（上传图片）</td><td>只传 1 张：说清是首帧还是尾帧；传 2 张（首+尾帧）:H3 不自动加切镜，只补两帧之间的动作、光影、声音</td><td>@图片1 是首帧参考图：女子持剑站在樱花树下。让她从持剑起势到舞剑完毕，自然衔接，不要切镜</td></tr><tr><td><strong>纯文字生成</strong></td><td>文字描述要更具体（主体外观、场景细节、动作描述都要写清）</td><td>—</td></tr></tbody></table></div><h3 id="1-5-容易踩的坑">1.5 容易踩的坑</h3><blockquote>⚠️ 官方文档本节正文未渲染完整，以下干货来自<strong>官方评论区回复</strong>（8/3-8/6）:</blockquote><p><strong>防“人物念无意义台词”(官方回复用户）:</strong></p><ol><li>明确写正向约束：<code class="ic">人物全程保持安静，嘴巴自然闭合，没有说话或对话，面部只有轻微自然表情</code></li><li>负向约束补充：<code class="ic">无对白、无人声、无念白、无口型变化、无自言自语</code></li><li>避免“对着镜头、交谈、讲述、激动表达、嘴唇微动”等易触发说话的描述；少用引号和台词格式</li><li>给人物安排持续明确的动作（专注观察、低头阅读、转身行走）;“站着看镜头”最易自行补出讲话</li><li>特写不稳定 → 改侧脸、背影或中远景；不需要声音可关闭音频生成或后期静音</li></ol><p><strong>音效/音乐时间控制（官方推荐写法）:</strong></p><ul><li>音效：在 integrated_multimodal_description 的对应动作旁写一次，再在 overall_soundscape 中按事件顺序复述</li><li>配乐：写在 non_diegetic_music，用“某事件之前无音乐—事件发生时进入—某事件后完全停止”</li><li>音量：用<strong>相对混音描述</strong>，不要写百分比或 dB</li></ul><p><strong>官方数字人唱歌测试提示词（用户问“不能做数字人唱歌”):</strong></p><blockquote>女歌手微微前倾靠近复古银色麦克风，眼神半垂，嘴角带着一丝笑意，轻声吟唱 neo soul 歌曲 “Baby, slow down, let the night hold us close. Your love hums soft, like honey on my soul. Stay right here, let the world fade to gold.”。双手在 Rhodes 电钢琴键上缓慢滑动，肩膀随慢拍轻轻摇摆。唱到 “honey on my soul” 时头微微一偏，闭眼陶醉，尾音拖长。暖橘色舞台灯打在脸上，背景贝斯手和鼓手轻轻伴奏，虚焦。</blockquote><p><strong>已知限制（用户反馈+官方回应）:</strong></p><ul><li>视频扩图+字幕消除：不支持</li><li>首尾帧相同无法实现严格循环</li><li>替换视频人物时全视频一致性仍不稳（反馈中）</li></ul><h3 id="2-特定风格提示词示意-3-撰写提示词的最佳方式">2. 特定风格提示词示意 / 3. 撰写提示词的最佳方式</h3><blockquote>⚠️ 官方文档这两节正文未渲染完整（文档持续更新中）</blockquote><hr></section><section class="sec" id="四-开源用户参考-官方提供"><h2 class="sec-h"><span class="num">第05章</span>四、开源用户参考（官方提供）</h2><ul><li>视频提示词写作指南：https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/docs/VIDEO_PROMPT_WRITING_GUIDE_base_en.md</li><li>全参考模式输出指南：https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/docs/VIDEO_PROMPT_WRITING_GUIDE_ref_en.md</li><li>中文版：《MiniMax H3 - 视频扩写 Prompt 写作全能指南》</li></ul><hr></section><section class="sec" id="五-案例速查表-官方-goodcase"><h2 class="sec-h"><span class="num">第06章</span>五、案例速查表（官方 goodcase)</h2><div class="table-wrap"><table><thead><tr><th>#</th><th>案例</th><th>场景</th></tr></thead><tbody><tr><td>1</td><td>望远镜窥视 MINIMAX 装置</td><td>品牌大片/多图关键帧</td></tr><tr><td>2</td><td>太空歌剧院线预告</td><td>电影预告/标题包装</td></tr><tr><td>3</td><td>THE STARS WERE LISTENING</td><td>科幻悬疑/Audio标注</td></tr><tr><td>4</td><td>时尚品牌 campaign(荒漠公路）</td><td>商业广告/资产参考</td></tr><tr><td>5</td><td>傍晚小厨房手绘发光动画</td><td>视觉创意/实拍混合</td></tr><tr><td>6</td><td>深夜洗衣店手绘动画</td><td>视觉创意/手持纪实</td></tr><tr><td>7</td><td>dark-pop MV(90s zine 美学）</td><td>MV/拼贴风格</td></tr><tr><td>8</td><td>绿幕→童话背景</td><td>动态图形/背景替换</td></tr><tr><td>9</td><td>TouchDesigner 追踪图形</td><td>MG动画/规则遵循</td></tr><tr><td>10</td><td>古装武侠悬疑短剧</td><td>AI 剧情/电影质感</td></tr><tr><td>11</td><td>家庭争吵竖屏短剧</td><td>AI 剧情/短剧表演</td></tr><tr><td>12</td><td>吸血鬼爱情短剧（ReelShort)</td><td>AI 剧情/出海</td></tr><tr><td>13</td><td>赛博朋克游戏 UI 演示</td><td>数字体验/UI动效</td></tr><tr><td>14</td><td>产品官网落地页</td><td>网页UI/滚动动效</td></tr><tr><td>15</td><td>汽车网站 UI</td><td>网页UI</td></tr><tr><td>16</td><td>机器臂抓方块</td><td>硬件/具身智能</td></tr><tr><td>17</td><td>工位替换</td><td>场景替换</td></tr><tr><td>18</td><td>黏土狐狸飞跃峡谷</td><td>风格化动画</td></tr><tr><td>19</td><td>国风仙侠 3D PV</td><td>角色PV/分镜</td></tr><tr><td>20</td><td>乙游男主 PV</td><td>二次元/角色锁定</td></tr><tr><td>21</td><td>参考剪辑（图×6+视频）</td><td>多素材联合</td></tr><tr><td>22</td><td>Minecraft 化城市</td><td>多素材联合/风格迁移</td></tr><tr><td>23</td><td>西装男→水豚（动作模仿）</td><td>动作参考</td></tr><tr><td>24</td><td>街舞角色替换+动作参考</td><td>角色编辑</td></tr><tr><td>25</td><td>增加同制服人物</td><td>物体编辑</td></tr><tr><td>26</td><td>小孩→金毛狗+换外套</td><td>精准局部编辑</td></tr><tr><td>27</td><td>轻吻猫角色替换</td><td>角色编辑</td></tr><tr><td>28</td><td>台词替换（分手→挽留）</td><td>声音编辑</td></tr><tr><td>29</td><td>音色克隆（Follow the wind)</td><td>音色参考</td></tr><tr><td>30</td><td>数字人唱歌（neo soul)</td><td>官方评论区测试提示词</td></tr></tbody></table></div></section>
+</main>
+<footer>
+  <div class="brand">GaryAIGC · dream3d.vip</div>
+  <p style="margin-top:8px">转载注明出处 · 内容整理自官方公开文档 · 仅供学习交流</p>
+</footer>
+</div>
+<a href="#" class="totop">↑</a>
+</body>
+</html>
