@@ -127,6 +127,77 @@ a{color:inherit;text-decoration:none}
   .brief-date{display:none}
 }
 
+/* 信息简报搜索框 */
+.brief-search{
+  position:relative;
+  margin-bottom:18px;
+  max-width:480px;
+}
+.brief-search-input{
+  width:100%;
+  padding:11px 16px 11px 42px;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:24px;
+  color:var(--text-primary);
+  font-size:14px;
+  font-family:inherit;
+  outline:none;
+  transition:all var(--transition);
+}
+.brief-search-input::placeholder{color:var(--text-muted)}
+.brief-search-input:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(240,180,41,0.12);
+}
+.brief-search-icon{
+  position:absolute;
+  left:16px;top:50%;
+  transform:translateY(-50%);
+  font-size:15px;
+  color:var(--text-muted);
+  pointer-events:none;
+}
+.brief-search-clear{
+  position:absolute;
+  right:10px;top:50%;
+  transform:translateY(-50%);
+  width:24px;height:24px;
+  background:var(--bg-tertiary);
+  border:none;border-radius:50%;
+  color:var(--text-muted);
+  font-size:13px;line-height:24px;
+  cursor:pointer;
+  display:none;
+}
+.brief-search-clear.visible{display:block}
+.brief-search-clear:hover{background:var(--accent);color:#0c0c12}
+.brief-search-meta{
+  font-size:12.5px;
+  color:var(--text-muted);
+  margin-left:8px;
+  display:none;
+}
+.brief-search-meta.visible{display:inline}
+.brief-empty{
+  text-align:center;
+  padding:40px 20px;
+  color:var(--text-muted);
+  font-size:14px;
+  background:var(--bg-card);
+  border:1px dashed var(--border);
+  border-radius:var(--radius);
+  display:none;
+}
+.brief-empty.visible{display:block}
+.brief-card mark{
+  background:rgba(240,180,41,0.3);
+  color:var(--accent-strong);
+  padding:1px 3px;
+  border-radius:3px;
+  font-weight:700;
+}
+
 /* 资源卡 */
 .res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:18px;margin-bottom:56px}
 .res-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
@@ -228,7 +299,14 @@ a{color:inherit;text-decoration:none}
       <span class="brief-title"><span>📢 信息简报</span></span>
       <span class="brief-hint">行业动态 · 工具情报 · 价格对比</span>
     </div>
-    <div class="brief-grid">
+    <div class="brief-search">
+      <span class="brief-search-icon">🔍</span>
+      <input type="text" class="brief-search-input" id="briefSearchInput" placeholder="关键词搜索(标题、描述、日期),如 sageattention / ComfyUI / H3..." autocomplete="off">
+      <button class="brief-search-clear" id="briefSearchClear" title="清空搜索">✕</button>
+      <span class="brief-search-meta" id="briefSearchMeta"></span>
+    </div>
+    <div class="brief-empty" id="briefEmpty">🔍 没有匹配的信息简报。试试其他关键词?</div>
+    <div class="brief-grid" id="briefGrid">
       <a class="brief-card" href="ai-constraint-guide.html">
         <span class="brief-badge">NEW</span>
         <span class="brief-main">
@@ -261,6 +339,15 @@ a{color:inherit;text-decoration:none}
         <span class="brief-main">
           <span class="brief-name">📖 MiniMax H3 终极提示词指南 v1.2</span>
           <span class="brief-desc">官方三字段/六字段语法 13 章完整版：台词/镜头/音频参考/retention 标签规范，含案例模板与翻车修复</span>
+        </span>
+        <span class="brief-date">2026-08-06</span>
+        <span class="brief-go">查看 →</span>
+      </a>
+      <a class="brief-card" href="articles/sageattention-install-guide.html">
+        <span class="brief-badge">NEW</span>
+        <span class="brief-main">
+          <span class="brief-name">⚡ SageAttention 2.2 安装与使用完全教程</span>
+          <span class="brief-desc">ComfyUI 整合包专用：下载 wheel + pip 一行命令装好，老许整合包用户开箱即用，遇错直接问 AI（H3 视频加速 3-5×）</span>
         </span>
         <span class="brief-date">2026-08-06</span>
         <span class="brief-go">查看 →</span>
@@ -435,6 +522,97 @@ function closeUnavDrops(){
   if(close)close.addEventListener("click",function(){modal.classList.remove("show")});
   modal.addEventListener("click",function(e){if(e.target===modal)modal.classList.remove("show")});
   document.addEventListener("keydown",function(e){if(e.key==="Escape")modal.classList.remove("show")});
+})();
+</script>
+
+<script>
+// 信息简报关键词搜索(纯客户端,无需后端)
+(function(){
+  var input=document.getElementById("briefSearchInput");
+  var clearBtn=document.getElementById("briefSearchClear");
+  var grid=document.getElementById("briefGrid");
+  var meta=document.getElementById("briefSearchMeta");
+  var empty=document.getElementById("briefEmpty");
+  if(!input||!grid)return;
+
+  var cards=Array.prototype.slice.call(grid.querySelectorAll(".brief-card"));
+  // 缓存原始文本(去除HTML标记后的纯文本),用于匹配
+  var cache=cards.map(function(c){
+    var nameEl=c.querySelector(".brief-name");
+    var descEl=c.querySelector(".brief-desc");
+    var dateEl=c.querySelector(".brief-date");
+    var href=c.getAttribute("href")||"";
+    return {
+      el:c,
+      name:nameEl?nameEl.textContent:"",
+      desc:descEl?descEl.textContent:"",
+      date:dateEl?dateEl.textContent:"",
+      href:href,
+      // 拼接:标题 + 描述 + 日期 + 路径(全部小写)
+      searchText:((nameEl?nameEl.textContent:"")+" "+(descEl?descEl.textContent:"")+" "+(dateEl?dateEl.textContent:"")+" "+href).toLowerCase()
+    };
+  });
+
+  var origHtml=cards.map(function(c){return c.outerHTML;});
+
+  function escapeReg(s){return s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");}
+
+  function highlight(el,q){
+    if(!q){el.style.display="";return;}
+    var nameEl=el.querySelector(".brief-name");
+    var descEl=el.querySelector(".brief-desc");
+    var rx=new RegExp("("+escapeReg(q)+")","gi");
+    if(nameEl&&nameEl.dataset.orig===undefined)nameEl.dataset.orig=nameEl.innerHTML;
+    if(descEl&&descEl.dataset.orig===undefined)descEl.dataset.orig=descEl.innerHTML;
+    if(nameEl)nameEl.innerHTML=nameEl.dataset.orig.replace(rx,'<mark>$1</mark>');
+    if(descEl)descEl.innerHTML=descEl.dataset.orig.replace(rx,'<mark>$1</mark>');
+  }
+
+  function clearHighlight(){
+    cache.forEach(function(c){
+      var nameEl=c.el.querySelector(".brief-name");
+      var descEl=c.el.querySelector(".brief-desc");
+      if(nameEl&&nameEl.dataset.orig!==undefined){nameEl.innerHTML=nameEl.dataset.orig;delete nameEl.dataset.orig;}
+      if(descEl&&descEl.dataset.orig!==undefined){descEl.innerHTML=descEl.dataset.orig;delete descEl.dataset.orig;}
+    });
+  }
+
+  function doSearch(){
+    var q=input.value.trim().toLowerCase();
+    clearHighlight();
+    var visibleCount=0;
+    if(!q){
+      cache.forEach(function(c){c.el.style.display="";visibleCount++;});
+      meta.classList.remove("visible");
+      empty.classList.remove("visible");
+      clearBtn.classList.remove("visible");
+      return;
+    }
+    clearBtn.classList.add("visible");
+    cache.forEach(function(c){
+      var hit=c.searchText.indexOf(q)>=0;
+      c.el.style.display=hit?"":"none";
+      if(hit){visibleCount++;highlight(c.el,q);}
+    });
+    meta.classList.add("visible");
+    meta.textContent="匹配 "+visibleCount+" / "+cache.length+" 条";
+    if(visibleCount===0){empty.classList.add("visible");}else{empty.classList.remove("visible");}
+  }
+
+  var t=null;
+  input.addEventListener("input",function(){
+    if(t)clearTimeout(t);
+    t=setTimeout(doSearch,150);
+  });
+  input.addEventListener("keydown",function(e){
+    if(e.key==="Escape"){input.value="";doSearch();input.blur();}
+  });
+  clearBtn.addEventListener("click",function(){input.value="";doSearch();input.focus();});
+
+  // URL hash 自动搜索(支持 #search=sageattention)
+  var hash=window.location.hash;
+  var m=hash.match(/search=([^&]+)/);
+  if(m){input.value=decodeURIComponent(m[1]);doSearch();}
 })();
 </script>
 </body>

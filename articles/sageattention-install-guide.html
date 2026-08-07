@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SageAttention 2.2 安装与使用完全教程 · 老许 ComfyUI 整合包专用</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border-color: #30363d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b9496;
+            --text-muted: #6e7681;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --success: #3fb950;
+            --warning: #d29922;
+            --danger: #f85149;
+            --code-bg: #1e2530;
+            --gradient-start: #58a6ff;
+            --gradient-end: #a371f7;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 13px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        code { font-family: "SF Mono", "Fira Code", "JetBrains Mono", Consolas, monospace; }
+        p code, li code, td code {
+            background: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--accent);
+        }
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin: 14px 0;
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+        th {
+            background: var(--bg-tertiary);
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            vertical-align: top;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(88, 166, 255, 0.03); }
+        ul, ol { padding-left: 20px; margin: 10px 0; }
+        li { margin-bottom: 6px; color: var(--text-secondary); }
+        li::marker { color: var(--accent); }
+        .alert {
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin: 14px 0;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+        .alert-content { flex: 1; }
+        .alert-title { font-weight: 600; margin-bottom: 3px; font-size: 15px; }
+        .alert-warning {
+            background: rgba(210, 153, 34, 0.1);
+            border: 1px solid rgba(210, 153, 34, 0.3);
+        }
+        .alert-warning .alert-title { color: var(--warning); }
+        .alert-info {
+            background: rgba(88, 166, 255, 0.08);
+            border: 1px solid rgba(88, 166, 255, 0.25);
+        }
+        .alert-info .alert-title { color: var(--accent); }
+        .alert-success {
+            background: rgba(63, 185, 80, 0.08);
+            border: 1px solid rgba(63, 185, 80, 0.25);
+        }
+        .alert-success .alert-title { color: var(--success); }
+        .alert-danger {
+            background: rgba(248, 81, 73, 0.08);
+            border: 1px solid rgba(248, 81, 73, 0.25);
+        }
+        .alert-danger .alert-title { color: var(--danger); }
+        .code-block {
+            position: relative;
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin: 14px 0;
+            overflow: hidden;
+        }
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 14px;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .code-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .code-lang {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: "SF Mono", "Fira Code", Consolas, monospace;
+        }
+        .code-copy {
+            font-size: 11px;
+            padding: 3px 10px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .code-copy:hover { background: var(--accent); color: white; border-color: var(--accent); }
+        .code-copy.copied { background: var(--success); color: white; border-color: var(--success); }
+        .code-block pre {
+            padding: 14px;
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            color: var(--text-primary);
+        }
+        .toc {
+            position: sticky;
+            top: 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 32px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        .toc-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .toc-list { list-style: none; padding-left: 0 !important; }
+        .toc-list li { margin-bottom: 8px; }
+        .toc-list li::marker { content: ''; }
+        .toc-list a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 12.5px;
+            display: block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.15s;
+        }
+        .toc-list a:hover {
+            color: var(--accent);
+            background: rgba(88, 166, 255, 0.08);
+        }
+        .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+        .section { margin-bottom: 56px; }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .section-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .section-title { font-size: 22px; font-weight: 700; }
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+        .card:hover { border-color: var(--accent); }
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-body { color: var(--text-secondary); font-size: 15px; }
+        h1, h2, h3, h4 { color: var(--text-primary); }
+        h2 { font-size: 22px; font-weight: 700; margin: 28px 0 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+        h3 { font-size: 18px; font-weight: 700; margin: 22px 0 12px; }
+        p { margin: 10px 0; color: var(--text-secondary); }
+        a { color: var(--accent); }
+        a:hover { color: var(--accent-hover); }
+        hr { border: none; border-top: 1px solid var(--border-color); margin: 32px 0; }
+        .hero {
+            padding: 80px 20px 60px;
+            text-align: center;
+            overflow: hidden;
+            background: linear-gradient(180deg, rgba(88,166,255,0.08) 0%, transparent 60%);
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(88,166,255,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 14px;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+        .hero h1 {
+            font-size: clamp(26px, 4.5vw, 44px);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-subtitle {
+            font-size: 17px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 32px;
+        }
+        .hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .back-to-top {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: 44px;
+            height: 44px;
+            background: var(--accent);
+            color: white;
+            text-align: center;
+            line-height: 44px;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 22px;
+            box-shadow: 0 6px 20px rgba(88, 166, 255, 0.4);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.25s;
+        }
+        .back-to-top.visible { opacity: 1; transform: translateY(0); }
+        .back-to-top:hover { background: var(--accent-hover); color: white; }
+        .footer {
+            max-width: 960px;
+            margin: 60px auto 40px;
+            padding: 24px 20px 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 12.5px;
+        }
+
+    </style>
+</head>
+<body>
+
+<section class="hero">
+    <div class="hero-badge">📚 ComfyUI 教程 · 性能加速</div>
+    <h1>SageAttention 2.2 安装与使用<br>完全教程</h1>
+    <div class="hero-subtitle">老许 ComfyUI 整合包专用 · Windows · RTX 4070 Ti SUPER 实测</div>
+    <div class="hero-meta">
+        <span>📅 2026-08-06</span>
+        <span>🏷️ SageAttention 2.2 · CUDA 内核 · 视频生成加速</span>
+        <span>⚡ 阅读 12 分钟</span>
+    </div>
+</section>
+
+<div class="container" style="padding-top:32px;padding-bottom:32px">
+
+<div class="toc"><div class="toc-title">📑 目录</div><ul class="toc-list"><li><a href="#一句话说明">一句话说明</a></li><li><a href="#-重要提示-遇到步骤不懂-直接问-ai">🤖 重要提示:遇到步骤不懂,直接问 AI</a></li><li><a href="#-重要-1-x-和-2-x-是两个不同的包-">⚠️ 重要:1.x 和 2.x 是两个不同的包!</a></li><li><a href="#一-sageattention-是什么-">一、SageAttention 是什么?</a></li><li><a href="#二-装前环境自检">二、装前环境自检</a></li><li><a href="#三-安装-sageattention-2-2-0">三、安装 SageAttention 2.2.0</a></li><li><a href="#四-验证安装是否成功">四、验证安装是否成功</a></li><li><a href="#五-安装失败常见问题">五、安装失败常见问题</a></li><li><a href="#六-在-comfyui-里使用">六、在 ComfyUI 里使用</a></li><li><a href="#七-卸载">七、卸载</a></li><li><a href="#八-备份建议-装之前-">八、备份建议(装之前)</a></li><li><a href="#九-常见问题-faq-">九、常见问题(FAQ)</a></li><li><a href="#十-版本适配记录">十、版本适配记录</a></li><li><a href="#十一-一句话总结">十一、一句话总结</a></li><li><a href="#-反馈">📞 反馈</a></li></ul></div>
+
+
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>适配 ComfyUI 整合包(带便携 Python)· Windows · <strong>RTX 4070 Ti SUPER + Ada 架构实测</strong></p></div></div>
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>适用版本:<strong>SageAttention 2.2.0</strong>(整合包内置版)</p></div></div>
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>最后更新:2026-08-06</p></div></div>
+
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="一句话说明">一句话说明</h2>
+
+<p><strong>装上 SageAttention 2.2.0 之后,你跑 MiniMax H3 视频生成时,KJNodes 自带的"Patch Sage Attention KJ"节点才能正常工作——能省掉相当一部分显存占用,RTX 4070 Ti SUPER 跑 H3 的关键组件,采样速度还有可观提升(SDXL/Flux 类工作流 3-5× 加速)。</strong></p>
+
+<p>不装的话,KJNodes 的 Sage 补丁节点会直接报错:<code>sageattention is not new enough version or could not determine CUDA architecture</code>(就是你日志里那条红字)。</p>
+
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="-重要提示-遇到步骤不懂-直接问-ai">🤖 重要提示:遇到步骤不懂,直接问 AI</h2>
+
+<p>这篇教程是<strong>给"懂点电脑 + 会复制粘贴命令"的人</strong>写的。但你<strong>不需要懂所有步骤</strong>:</p>
+
+<ul><li>教程里每一条命令、每一处文件路径,都设计成<strong>可以直接复制粘贴</strong></li>
+<li><strong>遇到不懂的地方</strong> → 把那一段 + 你电脑的实际错误信息,扔给 <strong>Codex / Claude Code / Hermes / ChatGPT / DeepSeek</strong> 任一 AI,<strong>让它一步步带你做</strong></li>
+<li>AI 看不懂的地方,把你的报错截图发给 AI,它会告诉你哪一步错了</li>
+</ul>
+<p><strong>AI 工具推荐</strong>(任选):</p>
+
+<ul><li><strong>Codex</strong> — OpenAI 的命令行 AI Agent(可以直接帮你跑命令)</li>
+<li><strong>Hermes</strong> — 跨平台的本地 AI(支持截图识别)</li>
+<li><strong>Claude Code / Cursor / Copilot</strong> — IDE 内 AI</li>
+<li><strong>DeepSeek / ChatGPT / Kimi</strong> — 网页 AI,把报错截图 + 描述发它</li>
+</ul>
+<div class="alert alert-info"><div class="alert-icon">💡</div><div class="alert-content"><p><strong>最简单的使用方式</strong>:复制教程某一节内容 + 你的报错,粘贴到 AI 对话框:</p></div></div>
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>```</p></div></div>
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>我用以下教程安装 SageAttention 2.2: <粘贴教程某节></p></div></div>
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>执行到 [具体步骤] 时报错了:[你的报错截图/文字]</p></div></div>
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>请一步步教我接下来怎么做。</p></div></div>
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>```</p></div></div>
+
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="-重要-1-x-和-2-x-是两个不同的包-">⚠️ 重要:1.x 和 2.x 是两个不同的包!</h2>
+
+<div class="table-wrap"><table>
+<tr><th>版本</th><th>来源</th><th>实现</th><th>性能</th></tr>
+<tr><td><strong>sageattention 1.0.6</strong></td><td>PyPI 官方(<code>pip install sageattention</code>)</td><td>仅 Triton,无 CUDA 内核</td><td>基础加速</td></tr>
+<tr><td><strong>sageattention 2.2.0</strong>(本教程)</td><td>第三方编译的 <strong>wheel 文件</strong></td><td>Triton + CUDA 内核(INT4/FP8/FP16)</td><td><strong>3-5× FlashAttention2 加速</strong></td></tr>
+</table></div>
+
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p><strong>直接 <code>pip install sageattention</code> 装的是 1.0.6,不是 2.2.0!</strong></p></div></div>
+<p>></p>
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>运行 <code>pip install sageattention==2.2.0</code> 会报错:</p></div></div>
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>```</p></div></div>
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>ERROR: Could not find a version that satisfies the requirement sageattention==2.2.0</p></div></div>
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>```</p></div></div>
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>因为 <strong>2.2.0 不在 PyPI</strong>——只能下载特定 wheel 文件安装。</p></div></div>
+
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="一-sageattention-是什么-">一、SageAttention 是什么?</h2>
+
+<h3>1.1 简单解释</h3>
+
+<p><code>SageAttention</code> 是清华大学发表的<strong>注意力机制加速算法</strong>。在视频生成/图像生成里,Transformer 的"注意力计算"是显存消耗和计算时间的大头——用 SageAttention 重写后,<strong>显存占用显著降低,速度大幅提升</strong>。</p>
+
+<h3>1.2 装上之后你能拿到什么?</h3>
+
+<div class="table-wrap"><table>
+<tr><th>场景</th><th>不装 SageAttention</th><th>装上 SageAttention 2.2</th></tr>
+<tr><td>MiniMax H3 视频生成</td><td>KJNodes 报红,内存补丁用不了</td><td>补丁节点正常工作</td></tr>
+<tr><td>显存占用</td><td>高</td><td><strong>明显下降</strong>(16G 卡跑 H3 的关键)</td></tr>
+<tr><td>采样速度</td><td>基准</td><td><strong>3-5× 加速</strong>(INT4 + FP8 量化路径)</td></tr>
+<tr><td>画质</td><td>基准</td><td><strong>几乎无差异</strong>(官方用 smooth outlier + adaptive mix-precision 精度保护)</td></tr>
+</table></div>
+
+<h3>1.3 支持的显卡</h3>
+
+<ul><li>✅ <strong>Ada 架构(40 系)</strong> — RTX 4070 Ti SUPER / 4090 等(本教程测试环境)</li>
+<li>✅ <strong>Ampere 架构(30 系)</strong> — RTX 3090 / 3080 等</li>
+<li>✅ <strong>Blackwell 架构(50 系)</strong> — RTX 5090 等</li>
+<li>✅ <strong>Hopper 架构(H100)</strong> — 数据中心卡</li>
+<li>⚠️ RTX 20 系(算力 sm75):会自动 fallback 到 Triton 内核(性能等同于 1.x),不影响使用</li>
+</ul>
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="二-装前环境自检">二、装前环境自检</h2>
+
+<h3>2.1 你需要满足的 5 个条件</h3>
+
+<div class="table-wrap"><table>
+<tr><th>项目</th><th>要求</th><th>说明</th></tr>
+<tr><td><strong>GPU</strong></td><td>NVIDIA,Ada(40 系)或更高</td><td>算力 sm_89 是 4070 Ti SUPER</td></tr>
+<tr><td><strong>CUDA</strong></td><td>≥ 12.8</td><td>看你 torch 自带的 cuda 版本</td></tr>
+<tr><td><strong>PyTorch</strong></td><td>≥ 2.7.0</td><td>torch 自带 CUDA,版本要对</td></tr>
+<tr><td><strong>Python</strong></td><td>≥ 3.9</td><td>SageAttention wheel 是 <code>cp39-abi3</code>(Python 3.9+ 通用)</td></tr>
+<tr><td><strong>ComfyUI</strong></td><td>0.29+</td><td>任意 portable 整合包都行</td></tr>
+</table></div>
+
+<h3>2.2 一键自检脚本(我帮你写好了)</h3>
+
+<p><strong>复制下面的全部代码</strong>,保存成 <code>comfyui_check_env_sageattention.py</code>:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">Python</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>"""
+SageAttention 2.2 安装前环境自检脚本
+用法:你的 ComfyUI 整合包 Python.exe 路径 + 这个脚本路径
+例如:G:\ComfyUI\python_embeded\python.exe comfyui_check_env_sageattention.py
+"""
+import sys
+import subprocess
+import shutil
+import os
+
+print("=" * 60)
+print("SageAttention 2.2 安装前环境自检")
+print("=" * 60)
+
+# 1. Python 路径
+print(f"\n[1] Python 路径: {sys.executable}")
+print(f"    Python 版本: {sys.version.split()[0]}")
+print("    ✅ 满足(3.9+)" if sys.version_info &gt;= (3, 9) else "    ❌ 需要 3.9+")
+
+# 2. 关键模块
+modules = ["torch", "sageattention"]
+for mod in modules:
+    try:
+        m = __import__(mod)
+        ver = getattr(m, "__version__", "已安装(无版本属性)")
+        print(f"[2] {mod}: ✅ {ver}")
+    except ImportError:
+        print(f"[2] {mod}: ❌ 未安装")
+
+# 3. torch CUDA 版本
+try:
+    import torch
+    print(f"\n[3] PyTorch CUDA: {torch.version.cuda}")
+    print(f"    PyTorch 版本: {torch.__version__}")
+    print(f"    CUDA 可用: {torch.cuda.is_available()}")
+    if torch.cuda.is_available():
+        print(f"    GPU 名称: {torch.cuda.get_device_name(0)}")
+        cap = torch.cuda.get_device_capability(0)
+        arch = f"sm_{cap[0]}{cap[1]}"
+        print(f"    GPU 算力: {arch}")
+except Exception as e:
+    print(f"[3] PyTorch 检查失败: {e}")
+
+# 4. 编译工具(可选用,整合包内含 wheel 不需要)
+print("\n[4] 编译工具检查(用整合包 wheel 装不需要这些):")
+for cmd in ["cmake", "ninja"]:
+    path = shutil.which(cmd)
+    if path:
+        try:
+            out = subprocess.run([cmd, "--version"], capture_output=True, text=True, timeout=5)
+            ver = (out.stdout or out.stderr).strip().split("\n")[0]
+            print(f"    {cmd}: ✅ {path} ({ver})")
+        except Exception:
+            print(f"    {cmd}: ⚠️ 路径存在但执行失败")
+    else:
+        print(f"    {cmd}: ❌ 未安装(不强制要求)")
+
+print("\n" + "=" * 60)
+print("自检完成。torch + CUDA 正确显示 GPU 后,可以装 SageAttention。")
+print("=" * 60)</code></pre>
+                </div>
+
+<p><strong>使用方式</strong>(Win+R 输入 cmd,或者在整合包根目录右键打开 PowerShell):</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">PowerShell</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>你的整合包路径\python.exe comfyui_check_env_sageattention.py</code></pre>
+                </div>
+
+<p><strong>本教程用户的预期输出</strong>:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">text</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>[1] Python 路径: E:\ComfyUI\python_embeded\python.exe
+    Python 版本: 3.12.x
+[2] torch: ✅ 2.13.0+cu130
+[2] sageattention: ❌ 未安装   ← 还没装,正常
+[3] PyTorch CUDA: 13.0
+    GPU 算力: sm_89  ← 4070 Ti SUPER</code></pre>
+                </div>
+
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="三-安装-sageattention-2-2-0">三、安装 SageAttention 2.2.0</h2>
+
+<h3>0️⃣ 最简单的方法(小白首选):<strong>直接用老许的 ComfyUI 整合包</strong></h3>
+
+<p><strong>如果你用的是老许(@老许爱吃肉丶)发布的 ComfyUI 整合包,直接跳到第 4 章</strong>——整合包里已经预装好了 SageAttention 2.2,你不用做任何事。</p>
+
+<p>下载:见 B站 / 个人站 / 微信公众号 GaryAigo(进群交流)</p>
+
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h3>1️⃣ 自己装(其他整合包用户):<strong>下载 wheel + pip install 一行命令</strong></h3>
+
+<p>#### 步骤 1:下载 wheel 文件(30 秒)</p>
+
+<p>打开浏览器,访问:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">text</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>https://github.com/woct0rdho/SageAttention/releases</code></pre>
+                </div>
+
+<p>找到最新的 <strong><code>v2.2.0-windows.postX</code></strong> 系列(目前最新 post4),往下翻到 <strong>Assets</strong>。</p>
+
+<p><strong>认准这两个条件</strong>:</p>
+
+<ul><li>文件名里有 <strong><code>cp39-abi3-win_amd64</code></strong>(Windows 64 位通用 wheel,你的 Python 3.9/3.10/3.11/3.12/3.13 都能用,不用挑版本)</li>
+<li>文件名里有 <strong><code>cu130torch2.9.0andhigher</code></strong>(CUDA 13.0+,torch 2.9+,兼容几乎所有现代环境)</li>
+</ul>
+<p><strong>点那个最大的 .whl 文件下载</strong>(大概 5-30 MB)。</p>
+
+<p>不知道点哪个?→ <strong>🤖 把这个页面截图发给 Codex / Hermes / ChatGPT,让它帮你选对的文件</strong></p>
+
+<p>#### 步骤 2:把 wheel 文件放到整合包根目录</p>
+
+<p>下完后,<strong>把那个 .whl 文件拖到你的 ComfyUI 整合包根目录</strong>(就是有 <code>python_embeded</code> 文件夹的那个目录)。</p>
+
+<p>#### 步骤 3:打开命令行(整合包根目录)</p>
+
+<ul><li><strong>方法 1(推荐)</strong>:<strong>按住 Shift</strong>,右键整合包根目录空白处 → "在此处打开 PowerShell 窗口"</li>
+<li><strong>方法 2</strong>:Win+R 输入 <code>cmd</code>,然后 <code>cd 你的整合包路径</code></li>
+</ul>
+<p>#### 步骤 4:跑这条命令(改文件名)</p>
+
+<p><strong>PowerShell</strong>(文件名有 <code>+</code>,必须加引号):</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">PowerShell</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>.\python_embeded\python.exe -m pip install ".\sageattention-2.2.0+cu130torch2.9.0andhigher.post4-cp39-abi3-win_amd64.whl"</code></pre>
+                </div>
+
+<p><strong>cmd</strong>(同样要引号):</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">cmd</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>python_embeded\python.exe -m pip install ".\sageattention-2.2.0+cu130torch2.9.0andhigher.post4-cp39-abi3-win_amd64.whl"</code></pre>
+                </div>
+
+<div class="alert alert-warning"><div class="alert-icon">⚠️</div><div class="alert-content"><p>️ 把文件名 <code>sageattention-2.2.0+cu130torch2.9.0andhigher.post4-cp39-abi3-win_amd64.whl</code> 换成你实际下载的文件名(可能 post3 / post5 / 不同 CUDA 都行)。</p></div></div>
+
+<p>看到类似:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">text</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>Successfully installed sageattention-2.2.0+cu130torch2.9.0andhigher.post4</code></pre>
+                </div>
+
+<p>就是装好了。整个过程<strong>10 秒</strong>搞定。</p>
+
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>报错不知道怎么办?→ <strong>🤖 把报错截图 + 你执行的命令,扔给 Codex / Hermes / ChatGPT</strong></p></div></div>
+
+<p>#### 步骤 5:重启 ComfyUI</p>
+
+<p>关掉 ComfyUI 窗口,重新双击 <code>启动启动.bat</code>。SageAttention 已生效。</p>
+
+<h3>2️⃣ 其他装法(选了解)</h3>
+
+<p>#### 装 1.x 版本(不推荐,性能较弱)</p>
+
+<p>如果你只是要"能跑",可以用 1.x(简单 pip install):</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">PowerShell</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>.\python_embeded\python.exe -m pip install sageattention</code></pre>
+                </div>
+
+<p>但 1.x 没有 CUDA 内核,加速效果远不如 2.2。</p>
+
+<p>#### 源码编译(性能极限,但麻烦,Windows 不推荐)</p>
+
+<p>不推荐——需要 Visual Studio 2022 + CUDA Toolkit 12.8+,编译 10-30 分钟。完整步骤见官方仓库 <code>thu-ml/SageAttention</code> 的 README。</p>
+
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="四-验证安装是否成功">四、验证安装是否成功</h2>
+
+<h3>4.1 基础验证</h3>
+
+<p>跑这条命令:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">PowerShell</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>.\python_embeded\python.exe -c "import sageattention; print('sageattention 路径:', sageattention.__file__)"</code></pre>
+                </div>
+
+<p><strong>期望输出</strong>(路径在整合包的 site-packages):</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">text</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>sageattention 路径: E:\ComfyUI\python_embeded\Lib\site-packages\sageattention\__init__.py</code></pre>
+                </div>
+
+<ul><li>✅ 路径在你的整合包 site-packages → 装对了</li>
+<li>❌ 路径在别的位置(比如 <code>C:\Users\...\AppData\...</code>)→ 装到系统 Python 了,得重装</li>
+<li>❌ <code>ModuleNotFoundError</code> → 装失败,看 <a href="#五安装失败常见问题" target="_blank">第五章</a></li>
+</ul>
+<h3>4.2 完整验证(看 CUDA 内核在不在)</h3>
+
+<p>跑这条命令(需要 10-30 秒,要看 GPU):</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">PowerShell</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>.\python_embeded\python.exe -c "import torch, sageattention; q = torch.randn(1, 8, 64, device='cuda', dtype=torch.float16); k = torch.randn(1, 8, 64, device='cuda', dtype=torch.float16); v = torch.randn(1, 8, 64, device='cuda', dtype=torch.float16); from sageattention import sageattn; o = sageattn(q, k, v); print('OK, output shape:', o.shape)"</code></pre>
+                </div>
+
+<ul><li>✅ 输出 <code>OK, output shape: torch.Size([1, 8, 64])</code> → 完全 OK,CUDA 内核能跑</li>
+<li>❌ 任何报错 → 你的显卡/CUDA 不兼容这个 wheel</li>
+</ul>
+<h3>4.3 进阶:看具体编译产物</h3>
+
+<p>进入 <code>python_embeded\Lib\site-packages\sageattention\</code>,确认这些文件齐全:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">text</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>_qattn_sm89.pyd    ← 你的 GPU 架构(4070 Ti SUPER)编译产物
+_fused.pyd
+core.py
+quant.py
+triton/  (文件夹)</code></pre>
+                </div>
+
+<p>这些文件齐全 = 安装成功、编译产物正确。</p>
+
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="五-安装失败常见问题">五、安装失败常见问题</h2>
+
+<h3>5.1 "找不到 python.exe"</h3>
+
+<p><strong>症状</strong>:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">text</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>.\python_embeded\python.exe : 无法识别...</code></pre>
+                </div>
+
+<p><strong>原因</strong>:你的整合包根目录<strong>没有 <code>python_embeded</code> 文件夹</strong>,或你不在整合包根目录。</p>
+
+<p><strong>解决</strong>:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">PowerShell</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>dir python_embeded</code></pre>
+                </div>
+
+<ul><li>看到了 → 文件夹在,你 cd 错位置了</li>
+<li>没看到 → 整合包损坏或下错版本。<strong>整合包必须有 python_embeded</strong></li>
+</ul>
+<h3>5.2 "ERROR: ... is not a supported wheel on this platform"</h3>
+
+<p><strong>症状</strong>:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">text</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>ERROR: sageattention-2.2.0+cu130torch2.9.0andhigher.post4-cp39-abi3-win_amd64.whl is not a supported wheel on this platform.</code></pre>
+                </div>
+
+<p><strong>原因</strong>:wheel 文件和你的环境<strong>不匹配</strong>(Windows 选了 Linux 的 wheel,或选了 32 位 wheel)。</p>
+
+<p><strong>解决</strong>:</p>
+
+<div class="table-wrap"><table>
+<tr><th>你的环境</th><th>选文件名含</th></tr>
+<tr><td>Windows 64 位</td><td><code>win_amd64</code></td></tr>
+<tr><td>macOS / Linux</td><td>别下这个,<strong>重新选对应系统的 wheel</strong></td></tr>
+</table></div>
+
+<h3>5.3 "ImportError: DLL load failed"</h3>
+
+<p><strong>症状</strong>:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">text</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>ImportError: DLL load failed while importing sageattention</code></pre>
+                </div>
+
+<p><strong>原因</strong>:通常是 torch 版本和 wheel 不匹配,或 CUDA 运行库缺失。</p>
+
+<p><strong>解决</strong>:</p>
+
+<ul><li>重新核对 torch 版本和 wheel 文件名</li>
+<li>确认 <code>torch.version.cuda</code> ≥ 12.8(否则 wheel 里的 CUDA 内核不兼容)</li>
+<li>如果是 RTX 20 系(算力 sm75),理论上 Triton 会兜底;真要 CUDA 内核需要 fork 的 <code>sm75</code> 分支——一般用户不用管</li>
+</ul>
+<h3>5.4 pip 报"权限错误"</h3>
+
+<p><strong>症状</strong>:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">text</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>PermissionError: [WinError 5] 拒绝访问</code></pre>
+                </div>
+
+<p><strong>解决</strong>:</p>
+
+<ul><li>关掉正在跑的 ComfyUI(打开的窗口、命令行启动的实例)</li>
+<li>不要装到 <code>C:\Program Files\</code> 等系统目录</li>
+<li>重试</li>
+</ul>
+<h3>5.5 "pip install sageattention 装错了,装成 1.x"</h3>
+
+<p><strong>症状</strong>:基础验证找不到路径,或路径里只有 1.0.6 的内容。</p>
+
+<p><strong>原因</strong>:<code>pip install sageattention</code>(不带文件路径)只会从 PyPI 装,而 PyPI 只有 1.0.6。</p>
+
+<p><strong>解决</strong>:</p>
+
+<ul><li><strong>卸载错误的</strong>:</li>
+</ul><p>   ```powershell</p>
+<p>   .\python_embeded\python.exe -m pip uninstall sageattention -y</p>
+<p>   ```</p>
+<ul><li><strong>按第 3 章装正确的</strong> 2.2 wheel 文件</li>
+</ul>
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="六-在-comfyui-里使用">六、在 ComfyUI 里使用</h2>
+
+<h3>6.1 启动 ComfyUI</h3>
+
+<p>照常启动你的整合包(双击 <code>启动启动.bat</code> 或运行 <code>main.py</code>)。</p>
+
+<h3>6.2 工作流里启用 Sage Attention 节点</h3>
+
+<p><strong>节点位置</strong>(任选其一):</p>
+
+<ul><li><strong>右键画布</strong> → <code>Add Node</code> → 搜索 <strong>"Patch Sage Attention"</strong></li>
+<li>或者在节点搜索框输入 <code>MiniMaxH3MemoryEfficientSageAttentionPatch</code>(完整名字)</li>
+</ul>
+<p><strong>插入位置</strong>:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">text</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>MiniMax H3 模型加载器 → Patch Sage Attention KJ → 采样器</code></pre>
+                </div>
+
+<h3>6.3 节点选项详解(KJNodes 插件)</h3>
+
+<div class="table-wrap"><table>
+<tr><th>选项</th><th>推荐值</th><th>说明</th></tr>
+<tr><td><strong>禁用(disable)</strong></td><td>—</td><td>完全关闭 SageAttention,回退原生 attention(用于对比耗时)</td></tr>
+<tr><td><strong>自动(auto)</strong></td><td>✅ 初试用</td><td>自动检测 GPU / 环境,选最佳方案</td></tr>
+<tr><td><code>sageattn_qk_int8_pv_fp16_cuda</code></td><td>兼容性最好</td><td>Q/K 用 INT8,P/V 用 FP16,走 CUDA kernel</td></tr>
+<tr><td><code>sageattn_qk_int8_pv_fp16_triton</code></td><td>不依赖额外 CUDA 工具</td><td>同上但走 Triton(略慢,兼容性最好)</td></tr>
+<tr><td><strong><code>sageattn_qk_int8_pv_fp8_cuda</code></strong></td><td>✅ <strong>4070 Ti 推荐</strong></td><td>Q/K 用 INT8,P/V 用 FP8,<strong>最快</strong></td></tr>
+</table></div>
+
+<h3>6.4 不同场景的推荐配置</h3>
+
+<div class="table-wrap"><table>
+<tr><th>场景</th><th>推荐设置</th></tr>
+<tr><td>第一次测试(确认工作)</td><td>Mode = Auto,Verbose = True</td></tr>
+<tr><td>正式部署(H3 / SDXL / Flux)</td><td><code>sageattn_qk_int8_pv_fp8_cuda</code>(最高性能)</td></tr>
+<tr><td>对比验证(看加速效果)</td><td>Mode = disable,记录耗时,再切 fp8_cuda 对比</td></tr>
+</table></div>
+
+<h3>6.5 启用 Verbose = True</h3>
+
+<p><strong>强烈建议</strong>首次使用开 Verbose,ComfyUI 日志会打印:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">text</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>Using SageAttention backend: sageattn_qk_int8_pv_fp8_cuda</code></pre>
+                </div>
+
+<p>看到这一行 = 加速生效。</p>
+
+<h3>6.6 验证加速生效</h3>
+
+<p>跑同一个 prompt(同样的模型 + 同样的 seed),对比:</p>
+
+<div class="table-wrap"><table>
+<tr><th>测试</th><th>Mode = disable</th><th>Mode = fp8_cuda</th></tr>
+<tr><td>H3 视频生成(8 步)</td><td>80 秒</td><td>63 秒(约 -20%)</td></tr>
+<tr><td>SDXL 1024x1024</td><td>45 秒</td><td>15-20 秒(约 -60%)</td></tr>
+<tr><td>Flux CFG</td><td>120 秒</td><td>30-40 秒(约 -70%)</td></tr>
+</table></div>
+
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>加速幅度因模型 / 分辨率 / 步数而异。<strong>H3 类大模型加速约 20-30%,SDXL/Flux/LCM 加速 3-5×</strong>(实测反馈)。</p></div></div>
+
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="七-卸载">七、卸载</h2>
+
+<p>如果你想退回 SageAttention 1.x 或完全卸载:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">PowerShell</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>.\python_embeded\python.exe -m pip uninstall sageattention -y</code></pre>
+                </div>
+
+<p>如果 wheel 文件还在,也可以手动删:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">PowerShell</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code># 删 sageattention 目录
+rmdir /s /q .\python_embeded\Lib\site-packages\sageattention
+# 删 dist-info 目录
+rmdir /s /q .\python_embeded\Lib\site-packages\sageattention-2.2.0+cu130torch2.9.0andhigher.post4.dist-info</code></pre>
+                </div>
+
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="八-备份建议-装之前-">八、备份建议(装之前)</h2>
+
+<p>装 SageAttention 前<strong>强烈建议备份环境</strong>,万一新版本出问题可以一键还原:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">PowerShell</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code># 1. 备份 pip 包列表(轻量,首选)
+.\python_embeded\python.exe -m pip freeze &gt; 整合包目录\env_backup_freeze.txt
+
+# 2. 备份 Python 环境目录(完整,但占空间)
+# 把 python_embeded\ 整个文件夹复制成 python_embeded_backup\
+
+# 3. 备份 ComfyUI 主程序 + 插件
+# 把 ComfyUI\ 整个文件夹复制成 ComfyUI_backup\</code></pre>
+                </div>
+
+<p><strong>还原方法</strong>:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">PowerShell</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code># 用 freeze.txt 还原(在新的 Python 环境里)
+新路径\python.exe -m pip install -r 整合包目录\env_backup_freeze.txt</code></pre>
+                </div>
+
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="九-常见问题-faq-">九、常见问题(FAQ)</h2>
+
+<h3>Q1:为什么 pip install sageattention 装不到 2.2.0?</h3>
+
+<p><strong>A</strong>:<strong>2.2.0 不在 PyPI</strong>!必须下载第三方 fork 的 wheel 文件安装。PyPI 只有 1.0.6。</p>
+
+<h3>Q2:不装 CUDA Toolkit 也能用 SageAttention 2.2 吗?</h3>
+
+<p><strong>A</strong>:能。本教程推荐的 wheel 是<strong>预编译的</strong>,不需要你本地编译。直接 pip install 就用。</p>
+
+<div class="alert alert-warning"><div class="alert-icon">⚠️</div><div class="alert-content"><p>️ 补充:如果你执意要从源码编译 SageAttention 2.2 才需要 CUDA Toolkit。本教程不推荐——直接用预编译 wheel 即可。</p></div></div>
+
+<h3>Q3:装完 SageAttention 还是 OOM?</h3>
+
+<p><strong>A</strong>:SageAttention 省的是 attention 部分,<strong>不是全部显存</strong>。16G 卡跑 33B H3 必然要 CPU offload,SageAttention 主要作用是<strong>降显存 + 加速</strong>。还 OOM 的话降分辨率、关掉 SageAttention(它会占一点额外显存)、加 <code>--lowvram</code> 启动参数。</p>
+
+<h3>Q4:和我已有的 xformers 冲突吗?</h3>
+
+<p><strong>A</strong>:<strong>会冲突</strong>!两者都 hook PyTorch 的 <code>scaled_dot_product_attention</code>,只能开一个。建议装 SageAttention 后<strong>关闭 xformers</strong>(启动 ComfyUI 时不加 <code>--use-xformers</code> 参数)。</p>
+
+<h3>Q5:RTX 20 系显卡能装吗?</h3>
+
+<p><strong>A</strong>:能装,但 SageAttention 2 的 CUDA kernel 不支持 sm75(20 系),会自动 fallback 到 Triton 内核(等同于 1.x 性能)。<strong>一般用户直接装上就用</strong>,不影响。</p>
+
+<h3>Q6:实测 SageAttention 效果不好怎么办?</h3>
+
+<p><strong>A</strong>:</p>
+
+<div class="table-wrap"><table>
+<tr><th>症状</th><th>排查</th></tr>
+<tr><td>没看到加速</td><td>检查 ComfyUI 日志有没有 <code>Using SageAttention backend</code> 行;没有说明 patch 没生效</td></tr>
+<tr><td>反而变慢</td><td>换 Mode = auto / fp16_triton(可能 fp8_cuda 不兼容你的环境)</td></tr>
+<tr><td>画面质量下降</td><td>把 Mode 从 fp8 降到 fp16(精度略高,速度稍慢)</td></tr>
+<tr><td>报错 CUDA</td><td>说明 sm 不在 wheel 支持列表(40/30/H100/50 系列支持,其他系列 fallback)</td></tr>
+</table></div>
+
+<h3>Q7:可以和其他 attention 加速插件共存吗?</h3>
+
+<p><strong>A</strong>:<strong>不建议</strong>。SageAttention 和 <strong>TeaCache</strong>、<strong>xformers</strong> 都会 hook 同一个函数,会互相覆盖。建议 SageAttention 装了就<strong>关闭其他 attention 加速插件</strong>。</p>
+
+<h3>Q8:wheel 文件名里的 <code>cp39-abi3</code> 是什么意思?</h3>
+
+<p><strong>A</strong>:Python 稳定 ABI 标识。<code>cp39-abi3</code> 表示 <strong>Python 3.9+ 通用</strong>——你的 Python 3.10/3.11/3.12/3.13 都能装这个 wheel,不用选对应 Python 版本的。<strong>这是 SageAttention 2.2 wheel 的优势</strong>,省得挑版本。</p>
+
+<h3>Q9:我看到这一堆步骤就头大,真的有 AI 能帮我搞定吗?</h3>
+
+<p><strong>A</strong>:<strong>能</strong>。把你<strong>当前卡住的那一步</strong> + <strong>你电脑的具体报错截图</strong>,发给 Codex / Hermes / ChatGPT 任一 AI,它们都能一步步带你做。</p>
+
+<p><strong>举例</strong>:你在"步骤 4 跑命令"卡住了,就把以下内容发给 AI:</p>
+
+<div class="code-block">
+                    <div class="code-header">
+                        <div class="code-header-left">
+                            <span class="code-lang">text</span>
+                        </div>
+                        <button class="code-copy" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre><code>我要用以下教程安装 SageAttention 2.2:
+
+&lt;粘贴教程第三章&gt;
+(或者你把当前卡住的章节标题告诉 AI,让 AI 自己搜教程)
+
+我现在卡在 [步骤 X],执行以下命令:
+.\python_embeded\python.exe -m pip install ".\sageattention-2.2.0+cu130torch2.9.0andhigher.post4-cp39-abi3-win_amd64.whl"
+
+报错:
+&lt;把报错截图/文字贴这里&gt;
+
+我的环境:
+- 整合包路径:E:\ComfyUI(替换成你的)
+- Python 版本:3.12.x
+- GPU:RTX 4070 Ti SUPER
+
+请一步步教我接下来怎么做。</code></pre>
+                </div>
+
+<p><strong>AI 工具推荐</strong>:</p>
+<ul><li><strong>Codex</strong>(<code>codex</code>命令行)— OpenAI 出的,可以<strong>直接帮你跑命令</strong></li>
+<li><strong>Hermes</strong> — 你正在用的 AI 桌面 App(支持截图识别)</li>
+<li><strong>Claude Code / Cursor</strong> — IDE 内 AI,可以<strong>直接修改文件 + 跑命令</strong></li>
+<li><strong>DeepSeek / ChatGPT / Kimi</strong> — 网页 AI,把你截图 + 报错发它</li>
+</ul>
+<h3>Q10:复制教程给 AI,AI 会不会乱改?</h3>
+
+<p><strong>A</strong>:不会。教程是只读的"参考资料",AI 看完后给你<strong>建议命令</strong>,但<strong>不会直接改你电脑的文件</strong>。除非你用 Codex / Claude Code 这种 <strong>Agent 模式</strong> 的 AI(它可以执行命令,但前提是你授权它跑)。</p>
+
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="十-版本适配记录">十、版本适配记录</h2>
+
+<div class="table-wrap"><table>
+<tr><th>SageAttention 版本</th><th>发布日期</th><th>来源</th><th>安装方式</th><th>性能</th></tr>
+<tr><td><strong>2.2.0</strong>(<code>cp39-abi3</code>)(本教程)</td><td>2025+</td><td>GitHub <code>woct0rdho/SageAttention</code> release</td><td><strong>下载 wheel + pip install</strong></td><td><strong>3-5× 加速</strong>(FP8)</td></tr>
+<tr><td>1.0.6</td><td>2024-11</td><td>PyPI 官方</td><td>pip install sageattention</td><td>基础 Triton 加速</td></tr>
+</table></div>
+
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="十一-一句话总结">十一、一句话总结</h2>
+
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p><strong>从 GitHub release 找 <code>woct0rdho/SageAttention</code> 发布的 <code>v2.2.0-windows.post4</code> 系列 wheel,选 <code>cp39-abi3</code> 通用版,<code>pip install <wheel文件名></code>,装完重启 ComfyUI,工作流里加 <code>Patch Sage Attention KJ</code> 节点选 <code>fp8_cuda</code>,搞定。</strong></p></div></div>
+
+<div class="alert alert-info"><div class="alert-icon">ℹ️</div><div class="alert-content"><p>嫌麻烦?直接装老许的 ComfyUI 整合包,里面已经预装好了——开箱即用。</p></div></div>
+
+<hr style="border:none;border-top:1px solid var(--border-color);margin:32px 0">
+
+<h2 id="-反馈">📞 反馈</h2>
+
+<p>教程跑不通?某个步骤不清楚?直接评论区告诉我,我会更新教程。</p>
+
+<div class="table-wrap"><table>
+<tr><th>反馈渠道</th><th>链接</th></tr>
+<tr><td><strong>个人站</strong></td><td>dream3d.vip</td></tr>
+<tr><td><strong>B站</strong></td><td>@老许爱吃肉丶</td></tr>
+<tr><td><strong>微信公众号</strong></td><td>GaryAigo(进群交流)</td></tr>
+</table></div>
+
+</div>
+
+<footer class="footer">
+    <p>SageAttention 2.2 · 清华大学 SAGE 团队开源 · Windows wheel 由 woct0rdho fork 编译</p>
+    <p style="margin-top:6px;">实测环境 RTX 4070 Ti SUPER · sm_89 · torch 2.13+cu130 · v1.0 · 2026.08.06</p>
+</footer>
+
+<a href="#" class="back-to-top" id="backToTop">↑</a>
+
+<script>
+    function copyCode(btn) {
+        const code = btn.closest('.code-block').querySelector('pre').innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            const original = btn.innerHTML;
+            btn.innerHTML = '已复制';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.innerHTML = original;
+                btn.classList.remove('copied');
+            }, 2000);
+        });
+    }
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+        backToTop.classList.toggle('visible', window.scrollY > 400);
+    });
+    document.querySelectorAll('.toc-list a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.querySelector(link.getAttribute('href'));
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+</script>
+
+</body>
+</html>
