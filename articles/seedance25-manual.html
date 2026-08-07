@@ -141,5 +141,37 @@ footer a{color:var(--gold);text-decoration:none}
 </footer>
 </div>
 <a href="#" class="totop">↑</a>
+<!-- 打赏作者 -->
+<style>
+.donate-strip{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:90;writing-mode:vertical-rl;padding:14px 8px;font-size:14px;letter-spacing:.2em;color:var(--gold);background:var(--bg2);border:1px solid var(--line2);border-left:none;border-radius:0 10px 10px 0;cursor:pointer;transition:all .2s;user-select:none}
+.donate-strip:hover{color:var(--gold-l);padding-right:14px}
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-mask.show{opacity:1;pointer-events:auto}
+.modal-card{background:var(--bg1);border:1px solid var(--line2);border-radius:16px;padding:28px 32px;text-align:center;max-width:340px;width:90%}
+.modal-title{font-size:17px;color:var(--gold-l);font-weight:600;margin-bottom:8px}
+.modal-desc{font-size:13px;color:var(--text-dim);margin-bottom:16px;line-height:1.7}
+.modal-qr img{width:220px;height:220px;border-radius:10px;border:1px solid var(--line);display:block;margin:0 auto 16px}
+.modal-close{background:transparent;border:1px solid var(--line2);color:var(--text-dim);padding:8px 26px;border-radius:999px;cursor:pointer;font-size:13px}
+.modal-close:hover{color:var(--gold-l);border-color:var(--gold)}
+@media(max-width:700px){.donate-strip{display:none}}
+</style>
+<div class="donate-strip" id="donateBtn">打赏作者</div>
+<div class="modal-mask" id="donateModal">
+  <div class="modal-card">
+    <div class="modal-title">请作者喝杯咖啡</div>
+    <div class="modal-desc">如果你觉得本站对你有帮助，微信扫码支持一下，任意金额都是鼓励</div>
+    <div class="modal-qr"><img src="../wx-pay.jpg" alt="微信收款码"></div>
+    <button class="modal-close" id="donateClose">关闭</button>
+  </div>
+</div>
+<script>
+(function(){var b=document.getElementById('donateBtn'),m=document.getElementById('donateModal'),c=document.getElementById('donateClose');
+if(!b||!m)return;
+b.addEventListener('click',function(){m.classList.add('show')});
+c.addEventListener('click',function(){m.classList.remove('show')});
+m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('show')});
+})();
+</script>
+
 </body>
 </html>
