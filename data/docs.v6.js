@@ -15,8 +15,8 @@ const DOC_CATS = [
   {key:"briefing", name:"信息简报",  sub:"要点速览与版本动态"},
   /* AI 视频 - 官方手册整理版 2026-08-07 */
   {t:"即梦 Seedance 2.5 使用手册", file:"articles/seedance25-manual.html", cat:"ai-video", d:"官方最新提示词方法论：真人8维公式/30s与超长视频五段式/5类转场模板/27个官方案例，含完整参数表"},
-  {t:"即梦 Seedance 2.0 使用手册", file:"articles/seedance20-manual.html", cat:"ai-video", d:"四模态创作/9大能力实战案例(希区柯克变焦/一镜到底/情绪改写)/参数与交互形式"},
-  {t:"MiniMax H3 模型使用手册", file:"articles/minimax-h3-manual.html", cat:"ai-video", d:"8大商用场景/3大精准编辑/提示词公式与镜头拆解，含核心参数(24FPS/12文件上限/7000字符)"},
+  {t:"即梦 Seedance 2.0 使用手册", file:"articles/seedance20-manual.html", cat:"ai-video", d:"四模态创作/9大能力实战案例（希区柯克变焦/一镜到底/情绪改写）/参数与交互形式"},
+  {t:"MiniMax H3 模型使用手册", file:"articles/minimax-h3-manual.html", cat:"ai-video", d:"8大商用场景/3大精准编辑/提示词公式与镜头拆解，含核心参数（24FPS/12文件上限/7000字符）"},
   /* 信息简报 - 2026-08-07 */
   {t:"Seedance 2.5 手册信息简报", file:"articles/seedance25-manual.html", cat:"briefing", d:"2.5 全量上线：视频延长至60s/超长180s/时间戳控制/真人公式/转场模板/纯净无字幕BGM"},
   {t:"Seedance 2.0 手册信息简报", file:"articles/seedance20-manual.html", cat:"briefing", d:"2.0 四模态+参考万物：图9张/视频3段15s/时长4-15s/12文件上限/9大能力"},
@@ -35,9 +35,9 @@ const DOC_DB = [
   {t:"ComfyUI 进阶自学思路", file:"articles/comfyui-advanced.html", cat:"comfyui", d:"进阶工作流学习框架"},
   {t:"ComfyUI 插件安装与更新（简化版）", file:"articles/comfyui-plugins-quick.html", cat:"comfyui", d:"即学即用的简化流程"},
   {t:"ComfyUI 主程序与自定义插件更新（严谨完整版）", file:"articles/comfyui-update-full.html", cat:"comfyui", d:"完整更新流程与避坑"},
-  {t:"MiniMax H3 终极提示词指南", file:"articles/h3-prompt-guide.html", cat:"comfyui", d:"官方三字段/六字段语法 13 章完整版,含案例模板与翻车修复"},
+  {t:"MiniMax H3 终极提示词指南", file:"articles/h3-prompt-guide.html", cat:"comfyui", d:"官方三字段/六字段语法 13 章完整版，含案例模板与翻车修复"},
   /* 信息简报 */
-  {t:"H3 提示词指南 v1.2 信息简报", file:"articles/h3-prompt-guide.html", cat:"briefing", d:"H3 指南信息简报:30 秒版要点与改版记录"},
+  {t:"H3 提示词指南 v1.2 信息简报", file:"articles/h3-prompt-guide.html", cat:"briefing", d:"H3 指南信息简报：30 秒版要点与改版记录"},
   /* AI 绘画 */
   {t:"GPT Image 2 提示词库", file:"gpt2-gallery.html", cat:"ai-image", d:"1000 条精选提示词图库"},
   {t:"WAN 2.7 Image 提示词示例", file:"articles/wan27-prompts.html", cat:"ai-image", d:"官方示例与写法参考"},
