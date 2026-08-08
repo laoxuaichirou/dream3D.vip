@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 视频分镜图生成教程（双版本） - GaryAIGC</title>
+<style>
+:root{
+  --gold:#d4af37; --gold-l:#f2d98a; --gold-d:#a8842a;
+  --bg0:#0d0b08; --bg1:#15110b; --bg2:#1b1610; --bg3:#221c13;
+  --line:#2e2618; --line2:#3a3020;
+  --text:#e9e2d2; --text-dim:#a89f8a; --text-faint:#7d7562;
+  --serif:"Noto Serif SC","Source Han Serif SC","Songti SC",SimSun,serif;
+  --sans:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sans-serif;
+  --mono:Consolas,"JetBrains Mono","Courier New",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg0);color:var(--text);font-family:var(--sans);line-height:1.85;font-size:16px}
+body::before{content:"";position:fixed;inset:0;background:
+  radial-gradient(1200px 500px at 50% -10%,rgba(212,175,55,.06),transparent 60%),
+  radial-gradient(800px 400px at 90% 110%,rgba(212,175,55,.04),transparent 60%);
+  pointer-events:none;z-index:0}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+
+/* Hero */
+.hero{padding:56px 20px 40px;text-align:center;position:relative}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;padding:8px 18px;border:1px solid var(--line2);border-radius:999px;background:linear-gradient(180deg,rgba(212,175,55,.08),transparent)}
+.hero h1{font-family:var(--serif);font-size:clamp(28px,4.5vw,44px);font-weight:700;color:var(--gold-l);margin:22px 0 6px;letter-spacing:.04em;line-height:1.35}
+.hero .sub{color:var(--text-dim);font-size:15px;max-width:720px;margin:0 auto}
+.hero .meta{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;font-size:12.5px;color:var(--text-faint)}
+.hero .meta span{border:1px solid var(--line);border-radius:6px;padding:4px 10px;background:var(--bg1)}
+.hero .meta a{color:var(--gold);text-decoration:none}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.5;max-width:640px;margin:0 auto 8px}
+
+/* TOC */
+.toc{max-width:1080px;margin:26px auto 8px;padding:0 20px}
+.toc-inner{background:var(--bg1);border:1px solid var(--line);border-radius:14px;padding:20px 24px}
+.toc-title{font-size:14px;letter-spacing:.25em;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.toc-title::after{content:"";flex:1;height:1px;background:var(--line2)}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
+.toc a{color:var(--text-dim);text-decoration:none;font-size:13.5px;padding:7px 12px;border-radius:8px;transition:all .15s;display:block;border:1px solid transparent}
+.toc a:hover{color:var(--gold-l);background:var(--bg2);border-color:var(--line2)}
+.toc a.t2{padding-left:22px;font-size:12.5px;color:var(--text-faint)}
+
+/* Main */
+main{max-width:1080px;margin:20px auto 0;padding:0 20px 40px}
+section.sec{background:var(--bg1);border:1px solid var(--line);border-radius:16px;padding:30px 36px;margin-bottom:22px;box-shadow:0 1px 0 rgba(255,255,255,.02) inset}
+h2.sec-h{font-family:var(--serif);font-size:23px;color:var(--gold-l);margin:8px 0 18px;padding-bottom:12px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+h2.sec-h .num{font-family:var(--serif);font-size:15px;color:var(--gold-d);border:1px solid var(--line2);border-radius:8px;padding:2px 10px;white-space:nowrap}
+h3{font-family:var(--serif);font-size:18.5px;color:var(--gold-l);margin:26px 0 10px;padding-left:14px;border-left:3px solid var(--gold)}
+h4{font-size:15.5px;color:var(--text);margin:20px 0 8px;font-weight:600}
+p{margin:10px 0;color:var(--text);font-size:15.5px}
+p.dim{color:var(--text-dim);font-size:14px}
+
+/* Lists */
+ul,ol{margin:10px 0 10px 4px;padding-left:22px}
+li{margin:7px 0;font-size:15px;color:var(--text)}
+li::marker{color:var(--gold)}
+ul li ul,ol li ul{margin:6px 0}
+
+/* Quote */
+blockquote{background:linear-gradient(90deg,rgba(212,175,55,.07),transparent 70%);border-left:3px solid var(--gold);padding:14px 20px;margin:14px 0;border-radius:0 10px 10px 0;color:var(--text-dim);font-size:14px;line-height:1.8}
+blockquote strong{color:var(--gold-l)}
+
+/* Table */
+.table-wrap{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+thead th{background:linear-gradient(180deg,#241d10,#1e1810);color:var(--gold-l);font-weight:600;text-align:left;padding:12px 16px;border-bottom:2px solid var(--gold);white-space:nowrap;font-size:13.5px;letter-spacing:.03em}
+tbody td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--text)}
+tbody tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+tbody tr:hover td{background:rgba(212,175,55,.05)}
+tbody tr:last-child td{border-bottom:none}
+td strong{color:var(--gold-l)}
+td:first-child{color:var(--gold-l);font-weight:500;white-space:nowrap}
+
+/* Code */
+pre{background:#0a0806;border:1px solid var(--line);border-radius:10px;padding:16px 20px;overflow-x:auto;margin:14px 0;font-family:var(--mono);font-size:13px;line-height:1.7;color:#e6d9b8;white-space:pre-wrap}
+code.ic{font-family:var(--mono);font-size:13px;color:#e8c98a;background:rgba(212,175,55,.08);padding:1px 6px;border-radius:4px;border:1px solid rgba(212,175,55,.15)}
+
+/* Tags */
+.tag{display:inline-block;font-size:12px;padding:2px 10px;border-radius:999px;margin-right:6px;border:1px solid var(--line2)}
+.tag-gold{color:var(--gold-l);border-color:rgba(212,175,55,.4);background:rgba(212,175,55,.08)}
+.tag-dim{color:var(--text-dim)}
+
+/* Step flow */
+.steps{counter-reset:step;margin:16px 0}
+.step{display:flex;gap:16px;margin:14px 0;padding:14px 18px;background:var(--bg2);border:1px solid var(--line);border-radius:12px}
+.step .no{flex:0 0 34px;height:34px;border-radius:50%;background:linear-gradient(180deg,var(--gold),var(--gold-d));color:#1a140a;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px;font-family:var(--serif)}
+.step .body{flex:1}
+.step .body b{color:var(--gold-l)}
+.step .body p{margin:4px 0;font-size:14.5px;color:var(--text-dim)}
+
+
+/* Demo gallery */
+.demo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;margin:18px 0}
+.demo-grid figure{background:var(--bg2);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:0}
+.demo-grid img{width:100%;display:block;border-bottom:1px solid var(--line)}
+.demo-grid figcaption{padding:10px 14px;font-size:13.5px;color:var(--text-dim)}
+.demo-grid figcaption b{color:var(--gold-l)}
+
+.footer{max-width:1080px;margin:0 auto;padding:30px 20px 50px;text-align:center;color:var(--text-faint);font-size:13px;border-top:1px solid var(--line)}
+.footer a{color:var(--gold);text-decoration:none}
+@media(max-width:640px){
+  section.sec{padding:22px 18px}
+  .step{flex-direction:column;gap:8px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <div class="eyebrow">AI 视频创作 · 分镜图教程</div>
+  <h1>AI 视频分镜图（故事版）生成教程</h1>
+  <p class="sub">把剧情变成「模型看得懂」的分镜图：两套经实测迭代的提示词模板 —— 火柴人版与半写实人偶版，配合 AI 自动生成，复制即用。</p>
+  <div class="meta">
+    <span>适用：即梦 Seedance 2.5 多宫格分镜参考</span>
+    <span>默认规格：6 格 = 一段 30 秒</span>
+    <span>版本：2026-08-08</span>
+  </div>
+</div>
+<div class="divider"></div>
+
+<div class="toc">
+  <div class="toc-inner">
+    <div class="toc-title">目录</div>
+    <div class="toc-grid">
+      <a href="#s1">一、为什么需要分镜图</a>
+      <a href="#s2">二、两个版本怎么选</a>
+      <a href="#demo">三、实测效果展示</a>
+      <a href="#s3">四、快速上手（两种方式）</a>
+      <a href="#s4">五、完整模板（可直接复制）</a>
+      <a href="#s4a" class="t2">4.1 半写实人偶版（推荐）</a>
+      <a href="#s4b" class="t2">4.2 火柴人版（中文）</a>
+      <a href="#s5">六、操作流程与检查清单</a>
+      <a href="#s7">七、配套规则（必读）</a>
+      <a href="#s7">八、完整示例</a>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<section class="sec" id="s1">
+  <h2 class="sec-h"><span class="num">一</span>为什么需要分镜图</h2>
+  <p>AI 视频模型（如 Seedance 2.5）支持「多宫格分镜图」参考：输入一张分镜图，模型就能理解<strong>镜头顺序、人物站位、空间关系与动作方向</strong>，多镜头生成时人物和场景的一致性大幅提升。</p>
+  <p>分镜图不需要画得多好看，关键是<strong>让模型看得懂</strong>：谁在哪、干什么、镜头怎么走。本文的两套模板，就是把「剧情 → 分镜图」这个步骤交给 AI 完成——你只需要给剧情，剩下的由 AI 生成提示词，你复制到生图工具（ChatGPT Image V2 / 即梦）抽卡即可。</p>
+  <blockquote><strong>核心认知：</strong>分镜图是「锚点」不是「上限」。打斗的精彩程度由视频提示词决定，分镜图简略不会限制效果——就像真人电影的分镜也是简笔画。</blockquote>
+</section>
+
+<section class="sec" id="s2">
+  <h2 class="sec-h"><span class="num">二</span>两个版本怎么选</h2>
+  <p>同一套思路的两个画风版本，均经过实战迭代。效果对比测试中，当前<strong>主观推荐半写实人偶版</strong>，但两个都可使用：</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>对比项</th><th>火柴人版（中文）</th><th>半写实人偶版（英文，推荐）</th></tr></thead>
+      <tbody>
+        <tr><td>画风</td><td>极简火柴人 / 简笔画，中文提示词</td><td>无脸半写实人偶（有服装装备轮廓线），英文提示词</td></tr>
+        <tr><td>视觉专业度</td><td>人看着简陋（模型友好）</td><td>接近专业动画师分镜稿，零 AI 感</td></tr>
+        <tr><td>模型可读性</td><td>信息极简，可读性最好</td><td>信息密度足够，实测可读</td></tr>
+        <tr><td>颜色体系</td><td>红=角色A / 蓝=角色B / 金=特效</td><td>红=角色A / 蓝=角色B / 金=特效（同）</td></tr>
+        <tr><td>运动指示</td><td>方向箭头 / 弧线 / 速度线 / 冲击星</td><td>同左 + 运镜标注（PAN/TRACK/ZOOM/IMPACT)</td></tr>
+        <tr><td>适合人群</td><td>中文工作流、追求最大兼容性</td><td>想要专业观感、成品可直接展示</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>版本演进简史（为什么有两版）</h3>
+  <p>第一版极简火柴人：功能满分但视觉简陋；中间版加了服装轮廓和三层色；最终融合出半写实人偶版——参考了专业赛博朋克分镜模板的「无脸人偶 + 强调色分层 + 运动指示」体系。两版都在用，<strong>同一剧情分别生成后对比，再定最终版</strong>。</p>
+</section>
+
+<section class="sec" id="demo">
+  <h2 class="sec-h"><span class="num">三</span>实测效果展示</h2>
+  <p>以下为同一剧情（焚天令·受难与觉醒）用两个版本<strong>实测生成</strong>的效果，生图工具：<strong>ChatGPT Image V2</strong>（理解力更强，能准确执行分镜逻辑；即梦同样可用）。左列为火柴人版，右列为半写实人偶版——可直观对比两版的观感差异。</p>
+  <div class="demo-grid">
+    <figure><img src="storyboard-stick-1.jpg" alt="火柴人版第一段抽卡一" loading="lazy"><figcaption><b>火柴人版</b> · 第一段 · 抽卡 1（极简线条，动作叙事完整）</figcaption></figure>
+    <figure><img src="storyboard-semi-1.jpg" alt="半写实人偶版第一段" loading="lazy"><figcaption><b>半写实人偶版</b> · 第一段（古风建筑 + 运镜标注，近专业分镜稿）</figcaption></figure>
+    <figure><img src="storyboard-stick-2.jpg" alt="火柴人版第一段抽卡二" loading="lazy"><figcaption><b>火柴人版</b> · 第一段 · 抽卡 2（中式庭院，留白多，场景统一）</figcaption></figure>
+    <figure><img src="storyboard-semi-2.jpg" alt="半写实人偶版第二段" loading="lazy"><figcaption><b>半写实人偶版</b> · 第二段（对峙/剑斗/法术/跪伏，动作连贯）</figcaption></figure>
+  </div>
+  <p class="dim">两版观感差异：火柴人版信息极简、模型兼容性最好；半写实人偶版视觉专业、可直接展示。最终选型建议：同一剧情两版各出一张，对比「模型可读性 + 视觉专业度」后决定。</p>
+</section>
+
+<section class="sec" id="s3">
+  <h2 class="sec-h"><span class="num">四</span>快速上手（两种方式）</h2>
+  <div class="steps">
+    <div class="step"><div class="no">1</div><div class="body"><b>准备剧情</b><p>一句话到一段话都行，越清楚越好：角色（名字/服装/武器）+ 场景 + 剧情关键节点。示例：「天界神女被副手背叛，打入焚天炉，炉中觉醒，金焰炸炉归来」。</p></div></div>
+    <div class="step"><div class="no">2</div><div class="body"><b>让 AI 生成提示词（二选一）</b><p><span class="tag tag-gold">方式A</span>对 Hermes 说：「用半写实版（或火柴人版）生成 XX 剧情的分镜图提示词」<br><span class="tag tag-gold">方式B</span>把本文第五节「完整模板」发给 ChatGPT/Codex，附上剧情，让它按模板填好。</p></div></div>
+    <div class="step"><div class="no">3</div><div class="body"><b>复制提示词 → 生图抽卡</b><p>打开生图工具（ChatGPT Image V2，理解力更强；即梦亦可）→ 粘贴提示词 → 生成。多抽几张，选格子不串、颜色区分清晰、顺序正确的那张。</p></div></div>
+    <div class="step"><div class="no">4</div><div class="body"><b>检查清单</b><p>① 格子不串 ② 红蓝角色区分清晰 ③ 金色特效不突兀 ④ 所有格子是同一场景 ⑤ S01-S06 顺序正确。</p></div></div>
+  </div>
+</section>
+
+<section class="sec" id="s4">
+  <h2 class="sec-h"><span class="num">五</span>完整模板（可直接复制）</h2>
+  <p>两个模板的机制层（颜色/版式/运动指示/技术细节）都是固定的，<strong>只需要替换「角色轮廓 + 场景 + 逐格内容」三处</strong>。给 AI 用时直接复制全文，让它填内容。</p>
+
+  <h3 id="s4a">4.1 半写实人偶版（英文，推荐）</h3>
+  <pre>A single-page cinematic previs storyboard sheet featuring 6 sequential panels in a 2x3 grid.
+The visual style is semi-realistic storyboard sketches, using featureless mannequin figures
+with rough costume construction lines and dynamic motion indicators.
+
+Character color coding:
+- Red line figure: {角色A轮廓特征:服装/发型/武器,一行}
+- Blue line figure: {角色B轮廓特征:服装/发型/武器,一行}
+{如有角色C:Green line figure: 特征}
+- Gold accent lines: ONLY for fire, golden light and energy effects
+- Black-white-gray ink sketch on white background
+
+Panel 1 - {镜头类型 Wide/Medium/Close-up}: {位置+动作+运动指示}
+Panel 2 - {镜头类型}: {位置+动作+运动指示}
+Panel 3 - {镜头类型}: {位置+动作+运动指示}
+Panel 4 - {镜头类型}: {位置+动作+运动指示}
+Panel 5 - {镜头类型}: {位置+动作+运动指示}
+Panel 6 - {镜头类型}: {位置+动作+运动指示}
+
+Technical details: White background, black ink-style sketches, red and blue accent lines for
+character identification, gold accent lines for fire/energy effects, minimal storyboard
+annotations (PAN, TRACK, ZOOM, IMPACT), no facial features, no textures, focus entirely on
+momentum, framing and shot continuity.</pre>
+  <p class="dim">每格要素：镜头类型 + 人物位置 + 动作 + 运动指示（方向箭头/弧线/速度线/冲击星）。镜头节奏建议：开场远景建立空间 → 中段中近景聚焦冲突 → 高潮全景/低角度 → 收尾。</p>
+
+  <h3 id="s4b">4.2 火柴人版（中文）</h3>
+  <pre>专业影视预演用简笔画分镜故事板,黑白线稿,白色背景,黑色细线
+人物为简笔火柴人(圆形头部、线条躯干四肢),附带极简服装轮廓:
+角色A:{轮廓特征,一行}
+角色B:{轮廓特征,一行}
+{角色C:{轮廓特征}(如有)}
+场景道具用简笔结构线:{场景道具画法,如"宫殿=方形+飞檐翘角,巨鼎=梯形+三层横线"}
+动作运动指示:方向箭头表示移动方向,弧线表示跳跃/下落轨迹,
+速度线表示快速运动,冲击星表示碰撞命中
+画面干净低细节、高可读性,不进行写实渲染
+画面内不出现任何文字、数字、水印或装饰符号
+
+【角色标记】颜色仅用于区分角色身份:
+角色A = 红色线条,角色B = 蓝色线条{角色C = 绿色线条(如有)}
+金色线条仅用于火焰、金光等能量特效
+除红蓝{绿}金标记色外,画面全部保持黑白
+
+【版式】横向3列、纵向2行等分网格,六格尺寸一致、边框清晰、不串格
+按从左到右、从上到下排列,每格只表现该镜头最关键的一个瞬间
+
+【场景基准】{场景一句话,所有格子共享同一空间}
+
+S01 {镜头类型}:{位置+动作+运动指示}
+S02 {镜头类型}:{位置+动作+运动指示}
+S03 {镜头类型}:{位置+动作+运动指示}
+S04 {镜头类型}:{位置+动作+运动指示}
+S05 {镜头类型}:{位置+动作+运动指示}
+S06 {镜头类型}:{位置+动作+运动指示}
+
+【避免】彩色画面(标记色除外)、写实五官、阴影纹理、透视混乱、人物变形、
+额外人物、格子大小不一、串格、边框缺失、画面文字、对白气泡、水印、
+镜头顺序错误、角色左右方向反转</pre>
+  <p class="dim">火柴人没有脸，情绪靠姿态传达：低头=决绝，后仰=不屈，僵住=错愕。想要更极简时，删掉服装轮廓与运动指示两段即可。</p>
+</section>
+
+<section class="sec" id="s5">
+  <h2 class="sec-h"><span class="num">六</span>操作流程与检查清单</h2>
+  <div class="steps">
+    <div class="step"><div class="no">1</div><div class="body"><b>定规格</b><p>默认 6 格 2×3 = 一段 30 秒视频（每格约 5 秒戏份）。需要更多镜头可改 8 格（2×4)。</p></div></div>
+    <div class="step"><div class="no">2</div><div class="body"><b>给 AI 剧情</b><p>角色（每人一行特征）+ 场景一句话 + 剧情关键节点。AI 负责拆镜头、填模板、给中文核对表。</p></div></div>
+    <div class="step"><div class="no">3</div><div class="body"><b>生图生成</b><p>ChatGPT Image V2 或即梦 → 粘贴提示词 → 生成 → 多抽几张挑最佳。本文实测使用 ChatGPT Image V2（理解力更强）。</p></div></div>
+    <div class="step"><div class="no">4</div><div class="body"><b>验收</b><p>① 格子不串 ② 颜色区分清晰 ③ 金色特效不突兀 ④ 场景同一空间 ⑤ 顺序正确。</p></div></div>
+    <div class="step"><div class="no">5</div><div class="body"><b>用于视频生成</b><p>分镜图作为参考图之一，配合角色参考图（管长相）与场景参考图（管空间），三张分工使用。</p></div></div>
+  </div>
+</section>
+
+<section class="sec" id="s6">
+  <h2 class="sec-h"><span class="num">七</span>配套规则（必读）</h2>
+  <h3>视频生成时的防污染声明（必加）</h3>
+  <pre>@图片N(分镜图)仅用于镜头顺序、人物站位、空间构图参考;
+不要从此图生成箭头、指示线、标注或文字</pre>
+  <h3>人物一致性三层声明（多人参考时）</h3>
+  <pre>角色A面部特征严格参考@图片1(唯一面部参考);@图片2仅用于服饰与体态参考;
+画面中不出现面具、面纱或遮挡物</pre>
+  <h3>细节密度原则（避免画面脏）</h3>
+  <ul>
+    <li>主体精雕，背景简化（细节分层）</li>
+    <li>碎片/火星沿运动方向飞散（有秩序不杂乱）</li>
+    <li>数量克制：少量/数条，而不是无数/大量</li>
+    <li>配色收敛：金+红+黑灰，不堆杂色</li>
+  </ul>
+  <h3>对比测试建议</h3>
+  <p>同一剧情、同一角色设定，分别用两版模板生成，对比「模型可读性 + 视觉专业度」，再决定长期使用哪版。</p>
+</section>
+
+<section class="sec" id="s7">
+  <h2 class="sec-h"><span class="num">八</span>完整示例</h2>
+  <p><strong>输入剧情</strong>：天界神女云昭（红，金白长袍持玉简）被副手玄衡（蓝，朱红长袍佩剑）背叛，打入焚天炉，炉中觉醒，金焰炸炉归来。</p>
+  <h3>半写实人偶版（输出节选）</h3>
+  <pre>Panel 1 - Wide low-angle: Red figure stands before the celestial hall; blue figure emerges
+from the hall. Opposing stances, tension. Ground line suggests the plaza.
+
+Panel 2 - Medium shot: Blue figure raises one hand; chains (drawn as loop circles) fly from
+both sides toward the red figure's arms. Impact stars at contact points. Red figure leans
+forward, frozen mid-motion.
+
+Panel 4 - Medium shot: Red figure is pushed into the furnace mouth; jagged flame lines engulf
+the body, a downward motion arc traces the fall. Red figure's arms spread, body leaning back.
+
+Panel 5 - Close-up: Inside the furnace, red figure raises its head; a single gold point glows
+at the chest. Radial gold light rays burst through the furnace seams.
+
+Panel 6 - Wide low-angle: The furnace explodes; vertical gold speed lines shoot skyward.
+Red figure stands atop the furnace wreckage, right arm raised, radial gold glow overhead.</pre>
+  <h3>火柴人版（输出节选）</h3>
+  <pre>S04 中景平视:红色火柴人被推入炉口,锯齿火焰线条吞没身体,一条下坠弧线从炉口垂下,
+红色火柴人双臂张开后仰
+S05 特写平视:炉内红色火柴人抬头,胸口一点金色,金色光线从炉缝向外射出,光线用放射状金色直线
+S06 全景平视:炉体炸裂,金色火焰线条冲天(竖直速度线),红色火柴人立于炉顶,右手举向天空</pre>
+  <h3>中文核对表（AI 输出时附带）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>格</th><th>剧情节点</th><th>镜头</th></tr></thead>
+      <tbody>
+        <tr><td>Panel 1</td><td>对峙建立：云昭在殿前，玄衡出场</td><td>远景低角度</td></tr>
+        <tr><td>Panel 2</td><td>背叛：锁链缚住云昭，错愕僵住</td><td>中景</td></tr>
+        <tr><td>Panel 3</td><td>押送：走向焚天炉，决绝低头</td><td>全景</td></tr>
+        <tr><td>Panel 4</td><td>受刑：推入炉口，火焰吞没</td><td>中景</td></tr>
+        <tr><td>Panel 5</td><td>觉醒：胸口金点，金光泄出</td><td>特写</td></tr>
+        <tr><td>Panel 6</td><td>归来：炉体炸裂，踏焰而立</td><td>全景低角度</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<div class="footer">
+  <p>GaryAIGC · AI 视频创作系列教程 | 更多内容：<a href="https://dream3d.vip">dream3d.vip</a></p>
+</div>
+</div>
+</body>
+</html>
