@@ -46,6 +46,18 @@
   --hero-inner:radial-gradient(ellipse at 50% 30%,rgba(168,130,255,0.07) 0%,transparent 60%);
   --shadow:0 14px 40px rgba(0,0,0,0.4);
 }
+[data-theme="kimi"]{
+  --bg:#f4f6fc;--bg-card:#ffffff;--bg-panel:rgba(255,255,255,0.88);
+  --border:rgba(99,102,241,0.14);--border-hover:rgba(99,102,241,0.35);
+  --text:#1a1a2e;--text-dim:#5a5d7a;--text-muted:#9498b4;
+  --accent:#6366f1;--accent-strong:#4f46e5;--accent-glow:rgba(99,102,241,0.08);
+  --gradient:linear-gradient(135deg,#6366f1,#8b5cf6);
+  --nav-bg:rgba(244,246,252,0.88);--nav-border:rgba(0,0,0,0.07);
+  --live:#10b981;--soon:#9498b4;
+  --hero-veil:linear-gradient(180deg,rgba(244,246,252,0.74),rgba(244,246,252,0.56) 45%,rgba(244,246,252,0.96) 95%);
+  --hero-inner:radial-gradient(ellipse at 50% 30%,rgba(99,102,241,0.07) 0%,transparent 60%);
+  --shadow:0 14px 36px rgba(80,80,150,0.1);
+}
 [data-theme="light-warm"]{
   --bg:#faf7f2;--bg-card:#ffffff;--bg-panel:rgba(255,255,255,0.85);
   --border:rgba(150,110,55,0.18);--border-hover:rgba(150,110,55,0.42);
@@ -73,7 +85,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;
   -webkit-font-smoothing:antialiased;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-/* 桌面壳布局：html 也禁滚，锚点跳转只滚内部容器（修复子页带 #tools 到达时窗口错位卡住） */
+/* 桌面壳布局：html 也禁滚，内容用内部容器滚动 */
 @media (min-width:1024px){ html{overflow:hidden} }
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--accent-glow)}
@@ -117,27 +129,27 @@ body>*:not(.hero-bg):not(.nav){position:relative;z-index:1}
 .stage{flex:1;min-height:0;display:grid;grid-template-columns:minmax(270px,320px) minmax(0,1fr) 268px;gap:20px;padding:18px 24px 20px}
 
 /* ===== 左：5 个分类卡（含子分类） ===== */
-.cat-col{min-height:0;overflow:visible;display:flex;flex-direction:column;gap:8px;padding-right:2px}
-.panel-label{font-size:13px;font-weight:700;letter-spacing:1.5px;color:var(--text-muted);
-  text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:1px;flex:none}
+.cat-col{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding-right:2px}
+.panel-label{font-size:14px;font-weight:700;letter-spacing:1.5px;color:var(--text-muted);
+  text-transform:uppercase;display:flex;align-items:center;gap:8px;flex:none}
 .panel-label::after{content:"";flex:1;height:1px;background:var(--border)}
 .cat-card{background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius);
-  padding:11px 14px 10px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  transition:border-color var(--transition);flex:1 1 0;display:flex;flex-direction:column;
-  justify-content:center;overflow:hidden}
+  padding:18px 18px 16px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:border-color var(--transition);flex-shrink:0;
+  display:flex;flex-direction:column;justify-content:center}
 .cat-card:hover{border-color:var(--border-hover)}
-.cat-head{display:flex;align-items:center;gap:9px;padding-bottom:7px;margin-bottom:7px;
+.cat-head{display:flex;align-items:center;gap:11px;padding-bottom:10px;margin-bottom:10px;
   border-bottom:1px solid var(--border);flex:none}
-.cat-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+.cat-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;
   background:var(--accent-glow);border:1px solid var(--border);color:var(--accent-strong);flex-shrink:0}
-.cat-icon svg{width:17px;height:17px}
-.cat-title{font-size:15.5px;font-weight:800;letter-spacing:-0.2px}
-.cat-desc{font-size:11.5px;color:var(--text-muted)}
-.cat-go{margin-left:auto;font-size:13px;color:var(--text-muted);transition:all var(--transition)}
+.cat-icon svg{width:21px;height:21px}
+.cat-title{font-size:20px;font-weight:800;letter-spacing:-0.2px}
+.cat-desc{font-size:13px;color:var(--text-muted)}
+.cat-go{margin-left:auto;font-size:14px;color:var(--text-muted);transition:all var(--transition)}
 .cat-card:hover .cat-go{color:var(--accent);transform:translateX(3px)}
-.sub-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px 10px;align-content:center}
-.sub-link{font-size:13px;color:var(--text-dim);display:flex;align-items:center;gap:6px;
-  padding:2.5px 7px;border-radius:6px;transition:all var(--transition);flex:none}
+.sub-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;align-content:center}
+.sub-link{font-size:15px;color:var(--text-dim);display:flex;align-items:center;gap:7px;
+  padding:5px 8px;border-radius:7px;transition:all var(--transition);flex:none}
 .sub-link::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--accent);opacity:0.55;flex-shrink:0}
 .sub-link:hover{color:var(--accent-strong);background:var(--accent-glow)}
 
@@ -183,7 +195,7 @@ body>*:not(.hero-bg):not(.nav){position:relative;z-index:1}
 .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .sec-title{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--text-muted);white-space:nowrap}
 .sec-line{flex:1;height:1px;background:var(--border)}
-.tools-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .tool-card{background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius);
   padding:20px 20px 18px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   transition:transform var(--transition),border-color var(--transition),box-shadow var(--transition);
@@ -197,7 +209,7 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
   background:var(--accent-glow);border:1px solid var(--border);color:var(--accent-strong);flex-shrink:0}
 .tool-icon svg{width:22px;height:22px}
 .tool-name{font-size:19px;font-weight:800;letter-spacing:-0.2px}
-.tool-cn{font-size:13.5px;font-weight:600;color:var(--accent-strong)}
+.tool-cn{font-size:13.5px;font-weight:600;color:var(--accent-strong);display:block;white-space:nowrap}
 .tool-tag{font-size:14.5px;color:var(--text-muted);line-height:1.5;flex:1}
 .tool-status{font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:12px}
 .st{display:inline-flex;align-items:center;gap:5px}
@@ -264,54 +276,36 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
 .cat-card:nth-of-type(3){animation-delay:0.13s}.cat-card:nth-of-type(4){animation-delay:0.18s}
 .cat-card:nth-of-type(5){animation-delay:0.23s}
 .tool-card:nth-child(2){animation-delay:0.06s}.tool-card:nth-child(3){animation-delay:0.12s}
-.tool-card:nth-child(4){animation-delay:0.18s}
+.tool-card:nth-child(4){animation-delay:0.18s}.tool-card:nth-child(5){animation-delay:0.24s}
 .cat-card{position:relative;overflow:hidden}
 .cat-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
   background:var(--gradient);opacity:0;transition:opacity var(--transition)}
 .cat-card:hover::before{opacity:1}
 
-/* ===== 响应式 ===== */
 @media (max-width:1279px){
   .tools-grid{grid-template-columns:repeat(2,1fr)}
 }
 /* 中屏：简报栏收窄（1100-1279） */
 @media (max-width:1279px) and (min-width:1024px){
   .stage{grid-template-columns:minmax(230px,260px) minmax(0,1fr) 230px;gap:14px;padding:14px 16px 16px}
-  .cat-card{padding:10px 13px 9px}
-  .cat-icon{width:28px;height:28px}
-  .cat-title{font-size:14.5px}
-  .sub-link{font-size:12.5px}
+  .cat-card{padding:14px 16px 12px}
+  .cat-icon{width:36px;height:36px}
+  .cat-title{font-size:17px}
+  .sub-link{font-size:13px}
   .hero-panel{padding:32px 20px}
 }
-/* iPad 竖屏（768-1023）：两栏变一列，左栏卡片横排成 2 列网格节省空间 */
-@media (max-width:1023px) and (min-width:768px){
+@media (max-width:1023px){
   body{overflow:auto;height:auto}
-  .stage{grid-template-columns:1fr;padding:14px;overflow:visible}
-  .cat-col{overflow:visible;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .panel-label{grid-column:1 / -1}
+  .stage{grid-template-columns:1fr;padding:14px}
+  .cat-col{overflow:visible}
   .main-col{overflow:visible}
-  .hero-panel{min-height:48vh}
+  .hero-panel{min-height:52vh}
   .nav-links{display:none}
   .nav-slogan{display:none}
   .brief-col{overflow:visible;order:5}
   .brief-panel{position:static}
   .brief-list{display:grid;grid-template-columns:repeat(2,1fr);gap:0 16px}
   .tools-grid{grid-template-columns:repeat(2,1fr)}
-}
-/* 窄屏（≤767）：单列，左栏卡片全宽堆叠 */
-@media (max-width:767px){
-  body{overflow:auto;height:auto}
-  .stage{grid-template-columns:1fr;padding:12px;overflow:visible}
-  .cat-col{overflow:visible}
-  .main-col{overflow:visible}
-  .hero-panel{min-height:52vh;padding:26px 14px}
-  .hero-panel h1{font-size:clamp(34px,10vw,52px)}
-  .hero-panel .hero-stats{gap:10px;font-size:13px}
-  .nav-links{display:none}
-  .nav-slogan{display:none}
-  .brief-col{overflow:visible;order:5}
-  .brief-panel{position:static}
-  .brief-list{display:grid;grid-template-columns:1fr;gap:0}
 }
 @media (max-width:640px){
   .tools-grid{grid-template-columns:1fr}
@@ -326,7 +320,7 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
 }
 @media (prefers-reduced-motion:reduce){.hero-badge .dot{animation:none}.hero-panel::before{animation:none}}
 </style>
-<script>try{var t=localStorage.getItem("gary-theme");if(!t||["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(t)<0||t.indexOf("light-")===0)t="dark-gold";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark-gold")}</script>
+<script>try{var t=localStorage.getItem("gary-theme");if(!t||["dark-gold","dark-blue","dark-purple","kimi","light-warm","light-cool"].indexOf(t)<0||t.indexOf("light-")===0)t="dark-gold";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark-gold")}</script>
 </head>
 <body>
 
@@ -393,6 +387,7 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
         <a class="drop-link" onclick="setTheme('dark-gold')">暗金 Dark Gold</a>
         <a class="drop-link" onclick="setTheme('dark-blue')">暗蓝 Deep Blue</a>
         <a class="drop-link" onclick="setTheme('dark-purple')">暗紫 Violet</a>
+        <a class="drop-link" onclick="setTheme('kimi')">Kimi 蓝紫</a>
         <a class="drop-link" onclick="setTheme('light-warm')">暖白 Warm</a>
         <a class="drop-link" onclick="setTheme('light-cool')">冷白 Cool</a>
       </div>
@@ -536,7 +531,7 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
           <div class="tool-tag" data-i18n="tool_image_t">全能图片创作</div>
           <div class="tool-status"><span class="st live" data-i18n="status_cn_live">国内可用</span><span class="st-sep">/</span><span class="st soon" data-i18n="status_gl_soon">海外即将上线</span></div>
         </a>
-        <a class="tool-card" href="https://frameforge.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener">
+        <a class="tool-card" href="https://garyframe.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener">
           <span class="tool-num">02</span>
           <div class="tool-head">
             <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M7 5v4M17 5v4"/></svg></div>
@@ -545,15 +540,15 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
           <div class="tool-tag" data-i18n="tool_frame_t">好用的视频解析，一键生成分镜表格</div>
           <div class="tool-status"><span class="st live" data-i18n="status_cn_live">国内可用</span><span class="st-sep">/</span><span class="st soon" data-i18n="status_gl_soon">海外即将上线</span></div>
         </a>
-        <div class="tool-card soon">
+        <a class="tool-card" href="https://garyvideo.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener">
           <span class="tool-num">03</span>
           <div class="tool-head">
             <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3"/></svg></div>
-            <div class="tool-name">Gary Videos</div>
+            <div class="tool-name">Gary Video</div>
           </div>
           <div class="tool-tag" data-i18n="tool_videos_t">AI 视频创作平台</div>
-          <div class="tool-status"><span class="st soon" data-i18n="status_cn_soon">国内筹备中</span><span class="st-sep">/</span><span class="st soon" data-i18n="status_gl_soon">海外即将上线</span></div>
-        </div>
+          <div class="tool-status"><span class="st live" data-i18n="status_cn_live">国内可用</span><span class="st-sep">/</span><span class="st soon" data-i18n="status_gl_soon">海外即将上线</span></div>
+        </a>
         <a class="tool-card" href="https://123skills.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener">
           <span class="tool-num">04</span>
           <div class="tool-head">
@@ -561,6 +556,15 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
             <div class="tool-name">AIGC Skills</div>
           </div>
           <div class="tool-tag" data-i18n="tool_skills_t">AI 影视创作工作台 · 123 个分镜 Skill</div>
+          <div class="tool-status"><span class="st live" data-i18n="status_cn_live">国内可用</span><span class="st-sep">/</span><span class="st soon" data-i18n="status_gl_soon">海外即将上线</span></div>
+        </a>
+        <a class="tool-card" href="https://garyhair.apps.vibex.cn/?inviteCode=rh-v1394" target="_blank" rel="noopener">
+          <span class="tool-num">05</span>
+          <div class="tool-head">
+            <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M3 21v-2a7 7 0 017-7h4a7 7 0 017 7v2"/><path d="M8 2l2 3M16 2l-2 3"/></svg></div>
+            <div class="tool-name">GaryHair</div>
+          </div>
+          <div class="tool-tag" data-i18n="tool_hair_t">一键换发型 · 证件照生成</div>
           <div class="tool-status"><span class="st live" data-i18n="status_cn_live">国内可用</span><span class="st-sep">/</span><span class="st soon" data-i18n="status_gl_soon">海外即将上线</span></div>
         </a>
       </div>
@@ -624,8 +628,8 @@ sub_c1:"Skills",sub_c2:"绘画",sub_c3:"视频",sub_c4:"解析视频",
 sub_r1:"整合包",sub_r2:"模型",sub_r3:"资源合集",sub_r4:"信息简报",
 sub_m1:"微信群",sub_m2:"媒体号",sub_m3:"商务合作",
 tool_image_t:"全能图片创作台 · 文生图/图生图/反推/海报四合一",tool_frame_t:"好用的视频解析，一键生成分镜表格",frame_cn:"帧工厂",
-tool_videos_t:"AI 视频创作平台",tool_skills_t:"AI 影视创作工作台 · 123 个分镜 Skill",
-hs_1:"145 期教程",hs_2:"31 期精选",hs_3:"4 个自研工具",hs_4:"5 大板块",
+tool_videos_t:"AI 视频创作平台",tool_skills_t:"AI 影视创作工作台 · 123 个分镜 Skill",tool_hair_t:"一键换发型 · 证件照生成",
+hs_1:"145 期教程",hs_2:"31 期精选",hs_3:"5 个自研工具",hs_4:"5 大板块",
 media_wx_t:"微信",media_wx_d:"扫码交流 · 合作",
 media_group:"企业微信群<br>敬请期待"},
 en:{nav_create:"AI Studio",nav_benefits:"AI Deals",nav_knowledge:"Knowledge Docs",nav_resources:"Resources",nav_community:"Community",nav_contact:"Contact",
@@ -642,8 +646,8 @@ sub_c1:"Skills",sub_c2:"Image",sub_c3:"Video",sub_c4:"Video Insight",
 sub_r1:"Bundles",sub_r2:"Models",sub_r3:"Packs",sub_r4:"Briefings",
 sub_m1:"WeChat Group",sub_m2:"Media",sub_m3:"Business",
 tool_image_t:"All-in-one image studio · T2I/I2I/reverse/poster",tool_frame_t:"Easy video insight, instant storyboard sheets",frame_cn:"FrameForge",
-tool_videos_t:"AI video creation platform",tool_skills_t:"AI film studio · 123 storyboard skills",
-hs_1:"145 tutorials",hs_2:"31 curated episodes",hs_3:"4 self-built tools",hs_4:"5 sections",
+tool_videos_t:"AI video creation platform",tool_skills_t:"AI film studio · 123 storyboard skills",tool_hair_t:"One-click hairstyle change & ID photo",
+hs_1:"145 tutorials",hs_2:"31 curated episodes",hs_3:"5 self-built tools",hs_4:"5 sections",
 media_wx_t:"WeChat",media_wx_d:"Scan to connect",
 media_group:"Work WeChat group<br>Coming soon"},
 ja:{nav_create:"AI創作",nav_benefits:"AI特典",nav_knowledge:"ナレッジ文書",nav_resources:"リソース",nav_community:"コミュニティ",nav_contact:"連絡先",
@@ -660,8 +664,8 @@ sub_c1:"Skills",sub_c2:"画像",sub_c3:"動画",sub_c4:"動画解析",
 sub_r1:"統合パック",sub_r2:"モデル",sub_r3:"素材集",sub_r4:"情報",
 sub_m1:"WeChat 群",sub_m2:"メディア",sub_m3:"ビジネス",
 tool_image_t:"全能画像創作台 · 4 in 1",tool_frame_t:"使いやすい動画解析、分镜表を一键生成",frame_cn:"FrameForge",
-tool_videos_t:"AI 動画創作プラットフォーム",tool_skills_t:"AI 映像創作工作台 · 123 の分鏡 Skill",
-hs_1:"145 話の教程",hs_2:"厳選 31 話",hs_3:"自研ツール 4 つ",hs_4:"5 セクション",
+tool_videos_t:"AI 動画創作プラットフォーム",tool_skills_t:"AI 映像創作工作台 · 123 の分鏡 Skill",tool_hair_t:"ワンクリック髪型変更 ·証明写真",
+hs_1:"145 話の教程",hs_2:"厳選 31 話",hs_3:"自研ツール 5 つ",hs_4:"5 セクション",
 media_wx_t:"WeChat",media_wx_d:"スキャンして交流",
 media_group:"企業WeChat群<br>まもなく"},
 ko:{nav_create:"AI 창작",nav_benefits:"AI 혜택",nav_knowledge:"지식 문서",nav_resources:"리소스",nav_community:"커뮤니티",nav_contact:"문의",
@@ -678,8 +682,8 @@ sub_c1:"Skills",sub_c2:"이미지",sub_c3:"영상",sub_c4:"영상 분석",
 sub_r1:"통합 팩",sub_r2:"모델",sub_r3:"모음",sub_r4:"브리핑",
 sub_m1:"WeChat 그룹",sub_m2:"미디어",sub_m3:"비즈니스",
 tool_image_t:"올인원 이미지 스튜디오 · 4 in 1",tool_frame_t:"편한 영상 분석, 스토리보드 표 자동 생성",frame_cn:"FrameForge",
-tool_videos_t:"AI 영상 창작 플랫폼",tool_skills_t:"AI 영상 제작 워크벤치 · 123개 스토리보드 Skill",
-hs_1:"145편 강의",hs_2:"엄선 31편",hs_3:"자체 도구 4개",hs_4:"5개 섹션",
+tool_videos_t:"AI 영상 창작 플랫폼",tool_skills_t:"AI 영상 제작 워크벤치 · 123개 스토리보드 Skill",tool_hair_t:"원클릭 헤어스타일 변경 · 증명사진",
+hs_1:"145편 강의",hs_2:"엄선 31편",hs_3:"자체 도구 5개",hs_4:"5개 섹션",
 media_wx_t:"WeChat",media_wx_d:"스캔하여 소통",
 media_group:"기업 WeChat 그룹<br>곧 공개"},
 ru:{nav_create:"AI-студия",nav_benefits:"AI-бонусы",nav_knowledge:"Документы знаний",nav_resources:"Ресурсы",nav_community:"Сообщество",nav_contact:"Контакты",
@@ -696,8 +700,8 @@ sub_c1:"Skills",sub_c2:"Изображения",sub_c3:"Видео",sub_c4:"Ан
 sub_r1:"Сборки",sub_r2:"Модели",sub_r3:"Пакеты",sub_r4:"Брифы",
 sub_m1:"Группа WeChat",sub_m2:"Соцсети",sub_m3:"Сотрудничество",
 tool_image_t:"Студия изображений 4-в-1",tool_frame_t:"Удобный анализ видео, раскадровка в один клик",frame_cn:"FrameForge",
-tool_videos_t:"Платформа ИИ-видео",tool_skills_t:"ИИ-студия видео · 123 скилла раскадровки",
-hs_1:"145 уроков",hs_2:"31 выпуск",hs_3:"4 своих инструмента",hs_4:"5 разделов",
+tool_videos_t:"Платформа ИИ-видео",tool_skills_t:"ИИ-студия видео · 123 скилла раскадровки",tool_hair_t:"Смена причёски в 1 клик · фото на документы",
+hs_1:"145 уроков",hs_2:"31 выпуск",hs_3:"5 своих инструментов",hs_4:"5 разделов",
 media_wx_t:"WeChat",media_wx_d:"Сканируйте для связи",
 media_group:"Рабочая группа WeChat<br>Скоро"}
 };
@@ -717,7 +721,7 @@ function setLang(l){
   document.querySelectorAll("[data-i18n]").forEach(el => { el.innerHTML = T(el.dataset.i18n); });
   closeDrops();
 }
-var THEMES=["dark-gold","dark-blue","dark-purple","light-warm","light-cool"];
+var THEMES=["dark-gold","dark-blue","dark-purple","kimi","light-warm","light-cool"];
 function setTheme(t){
   if(THEMES.indexOf(t)<0) t="dark-gold"; /* 无效主题值回退暗金，防旧缓存值导致无样式 */
   document.documentElement.setAttribute("data-theme", t);
@@ -796,8 +800,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
   });
 });
 
-/* 滚轮转发（2026-08-01 修复"卡在下半页无法上滑"）：桌面壳布局 html/body 不可滚动，
-   鼠标不在 .main-col 上时滚轮无反应，把滚动量转发给 .main-col，全视口都能滚 */
+/* 滚轮转发：桌面壳布局 html/body 不可滚动，鼠标不在 .main-col 上时转发滚轮量 */
 window.addEventListener("wheel", function(e){
   if (!window.matchMedia("(min-width:1024px)").matches) return;
   var col = document.querySelector(".main-col");
@@ -821,8 +824,8 @@ window.addEventListener("load", function(){
 
 (function(){
   var saved = localStorage.getItem("gary-theme");
-  /* 进入即暗金（用户 2026-08-01 要求）：浅色主题不跨会话记忆，刷新回退黑金 */
-  if (saved && THEMES.indexOf(saved) >= 0 && saved.indexOf("light-") !== 0) setTheme(saved);
+  /* 进入即暗金（用户要求）：仅暗色主题跨会话记忆，浅色/kimi 刷新回退黑金 */
+  if (saved && THEMES.indexOf(saved) >= 0 && saved.indexOf("dark-") === 0) setTheme(saved);
   else setTheme("dark-gold");
   setLang(LANG);
 })();
