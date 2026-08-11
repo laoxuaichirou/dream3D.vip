@@ -124,6 +124,9 @@ body>*:not(.hero-bg):not(.nav){position:relative;z-index:1}
 .drop-link{display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:9px 12px;border-radius:9px;font-size:13px;color:var(--text-dim);cursor:pointer;transition:all var(--transition)}
 .drop-link:hover{background:var(--accent-glow);color:var(--text)}
+.drop-link.hot{background:linear-gradient(135deg,var(--accent-glow),rgba(168,130,255,0.04));border:1px solid var(--border-hover);color:var(--accent-strong);font-weight:600}
+.drop-link.hot:hover{background:var(--accent-glow);color:var(--accent)}
+.hot-badge{font-size:10px;font-weight:700;line-height:1;padding:3px 7px;border-radius:999px;background:var(--gradient);color:#fff;letter-spacing:0.3px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.18)}
 
 /* ===== 主体三栏（窄边栏 + 大舞台 + 信息简报） ===== */
 .stage{flex:1;min-height:0;display:grid;grid-template-columns:minmax(270px,320px) minmax(0,1fr) 268px;gap:20px;padding:18px 24px 20px}
@@ -151,6 +154,10 @@ body>*:not(.hero-bg):not(.nav){position:relative;z-index:1}
 .sub-link{font-size:15px;color:var(--text-dim);display:flex;align-items:center;gap:7px;
   padding:5px 8px;border-radius:7px;transition:all var(--transition);flex:none}
 .sub-link::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--accent);opacity:0.55;flex-shrink:0}
+.sub-link.hot{color:var(--accent-strong);font-weight:700;background:var(--accent-glow);border:1px solid var(--border-hover)}
+.sub-link.hot::before{content:"🔥";width:auto;height:auto;border-radius:0;background:none;opacity:1;font-size:12px;animation:pulse-hot 2s ease-in-out infinite}
+@keyframes pulse-hot{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+.sub-link.hot .hot-badge{margin-left:auto;font-size:9px;font-weight:700;line-height:1;padding:2px 6px;border-radius:999px;background:var(--gradient);color:#fff;letter-spacing:0.3px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.18)}
 .sub-link:hover{color:var(--accent-strong);background:var(--accent-glow)}
 
 /* ===== 右：超大 hero 面板 + 底部工具条 ===== */
@@ -346,7 +353,7 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
       <a href="benefits.html" class="nav-link" data-i18n="nav_benefits">AI福利</a>
       <div class="drop-panel">
         <a class="drop-link" href="benefits.html" data-i18n="sub_b1">无限画布</a>
-        <a class="drop-link" href="benefits.html" data-i18n="sub_b2">API 平台</a>
+        <a class="drop-link hot" href="benefits.html"><span data-i18n="sub_b2">API 平台</span><span class="hot-badge" data-i18n="tag_hot">热门</span></a>
         <a class="drop-link" href="benefits.html" data-i18n="sub_b3">云端算力</a>
         <a class="drop-link" href="benefits.html" data-i18n="sub_b4">AI 音乐</a>
         <a class="drop-link" href="benefits.html" data-i18n="sub_b5">海外镜像</a>
@@ -420,7 +427,7 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
       </a>
       <div class="sub-grid">
         <a class="sub-link" href="benefits.html" data-i18n="sub_b1">无限画布</a>
-        <a class="sub-link" href="benefits.html" data-i18n="sub_b2">API 平台</a>
+        <a class="sub-link hot" href="benefits.html"><span data-i18n="sub_b2">API 平台</span><span class="hot-badge" data-i18n="tag_hot">热门</span></a>
         <a class="sub-link" href="benefits.html" data-i18n="sub_b3">云端算力</a>
         <a class="sub-link" href="benefits.html" data-i18n="sub_b4">AI 音乐</a>
         <a class="sub-link" href="benefits.html" data-i18n="sub_b5">海外镜像</a>
@@ -622,7 +629,7 @@ status_cn_live:"国内可用",status_cn_soon:"国内筹备中",status_gl_soon:"�
 cat_bene_t:"AI 福利",cat_bene_d:"邀请码与免费额度",cat_know_t:"知识库文档",cat_know_d:"教程、实战、避坑指南",
 cat_create_t:"AI 创作",cat_create_d:"自研工具，免部署在线用",cat_res_t:"资源库",cat_res_d:"整合包、模型、资源合集",
 cat_com_t:"社区",cat_com_d:"交流群、作品与合作",
-sub_b1:"无限画布",sub_b2:"API 平台",sub_b3:"云端算力",sub_b4:"AI 音乐",sub_b5:"海外镜像",sub_b6:"副业赚钱",
+sub_b1:"无限画布",sub_b2:"API 平台",sub_b3:"云端算力",sub_b4:"AI 音乐",sub_b5:"海外镜像",sub_b6:"副业赚钱",tag_hot:"热门",
 sub_k1:"AI 绘画",sub_k2:"AI 视频",sub_k4:"AI Coding",
 sub_c1:"Skills",sub_c2:"绘画",sub_c3:"视频",sub_c4:"解析视频",
 sub_r1:"整合包",sub_r2:"模型",sub_r3:"资源合集",sub_r4:"信息简报",
@@ -640,7 +647,7 @@ status_cn_live:"CN · Live",status_cn_soon:"CN · Soon",status_gl_soon:"Global �
 cat_bene_t:"AI Deals",cat_bene_d:"Invite codes, free credits",cat_know_t:"Knowledge Docs",cat_know_d:"Tutorials and pitfalls",
 cat_create_t:"AI Studio",cat_create_d:"Self-built tools, no setup",cat_res_t:"Resources",cat_res_d:"Bundles, models, packs",
 cat_com_t:"Community",cat_com_d:"Groups and collabs",
-sub_b1:"Infinite Canvas",sub_b2:"API Platforms",sub_b3:"Cloud GPU",sub_b4:"AI Music",sub_b5:"Mirror Sites",sub_b6:"Side Hustles",
+sub_b1:"Infinite Canvas",sub_b2:"API Platforms",sub_b3:"Cloud GPU",sub_b4:"AI Music",sub_b5:"Mirror Sites",sub_b6:"Side Hustles",tag_hot:"HOT",
 sub_k1:"AI Image",sub_k2:"AI Video",sub_k4:"AI Coding",
 sub_c1:"Skills",sub_c2:"Image",sub_c3:"Video",sub_c4:"Video Insight",
 sub_r1:"Bundles",sub_r2:"Models",sub_r3:"Packs",sub_r4:"Briefings",
@@ -658,7 +665,7 @@ status_cn_live:"中国版公開中",status_cn_soon:"中国版準備中",status_g
 cat_bene_t:"AI 特典",cat_bene_d:"招待コードと無料枠",cat_know_t:"ナレッジ文書",cat_know_d:"チュートリアルと落とし穴",
 cat_create_t:"AI 創作",cat_create_d:"自研ツール、すぐ使える",cat_res_t:"リソース",cat_res_d:"パック・モデル・素材集",
 cat_com_t:"コミュニティ",cat_com_d:"グループとコラボ",
-sub_b1:"無限キャンバス",sub_b2:"API プラットフォーム",sub_b3:"クラウド算力",sub_b4:"AI 音楽",sub_b5:"海外ミラー",sub_b6:"副業で稼ぐ",
+sub_b1:"無限キャンバス",sub_b2:"API プラットフォーム",sub_b3:"クラウド算力",sub_b4:"AI 音楽",sub_b5:"海外ミラー",sub_b6:"副業で稼ぐ",tag_hot:"人気",
 sub_k1:"AI 画像",sub_k2:"AI 動画",sub_k4:"AI Coding",
 sub_c1:"Skills",sub_c2:"画像",sub_c3:"動画",sub_c4:"動画解析",
 sub_r1:"統合パック",sub_r2:"モデル",sub_r3:"素材集",sub_r4:"情報",
@@ -676,7 +683,7 @@ status_cn_live:"중국판 이용 가능",status_cn_soon:"중국판 준비 중",s
 cat_bene_t:"AI 혜택",cat_bene_d:"초대 코드와 물료 크레딧",cat_know_t:"지식 문서",cat_know_d:"튜토리얼과 주의사항",
 cat_create_t:"AI 창작",cat_create_d:"자체 개발 도구, 설치 불필요",cat_res_t:"리소스",cat_res_d:"통합 팩, 모델, 모음",
 cat_com_t:"커뮤니티",cat_com_d:"그룹과 협업",
-sub_b1:"무한 캔버스",sub_b2:"API 플랫폼",sub_b3:"클우드 연산",sub_b4:"AI 음악",sub_b5:"해외 미러",sub_b6:"부업 수익",
+sub_b1:"무한 캔버스",sub_b2:"API 플랫폼",sub_b3:"클우드 연산",sub_b4:"AI 음악",sub_b5:"해외 미러",sub_b6:"부업 수익",tag_hot:"인기",
 sub_k1:"AI 이미지",sub_k2:"AI 영상",sub_k4:"AI Coding",
 sub_c1:"Skills",sub_c2:"이미지",sub_c3:"영상",sub_c4:"영상 분석",
 sub_r1:"통합 팩",sub_r2:"모델",sub_r3:"모음",sub_r4:"브리핑",
@@ -694,7 +701,7 @@ status_cn_live:"CN · доступно",status_cn_soon:"CN · скоро",status
 cat_bene_t:"AI-бонусы",cat_bene_d:"Инвайт-коды и кредиты",cat_know_t:"Документы знаний",cat_know_d:"Уроки и подводные камни",
 cat_create_t:"AI-студия",cat_create_d:"Свои инструменты, без установки",cat_res_t:"Ресурсы",cat_res_d:"Сборки и модели",
 cat_com_t:"Сообщество",cat_com_d:"Группы и сотрудничество",
-sub_b1:"Бесконечный холст",sub_b2:"API-платформы",sub_b3:"Облачные мощности",sub_b4:"AI-музыка",sub_b5:"Зеркала",sub_b6:"Подработка",
+sub_b1:"Бесконечный холст",sub_b2:"API-платформы",sub_b3:"Облачные мощности",sub_b4:"AI-музыка",sub_b5:"Зеркала",sub_b6:"Подработка",tag_hot:"ХИТ",
 sub_k1:"ИИ-изображения",sub_k2:"ИИ-видео",sub_k4:"AI Coding",
 sub_c1:"Skills",sub_c2:"Изображения",sub_c3:"Видео",sub_c4:"Анализ видео",
 sub_r1:"Сборки",sub_r2:"Модели",sub_r3:"Пакеты",sub_r4:"Брифы",

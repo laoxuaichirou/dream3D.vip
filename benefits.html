@@ -43,6 +43,17 @@
   --green:#2ea043;--green-bg:rgba(46,160,67,0.1);
   --header-gradient:radial-gradient(ellipse at 50% 0%,rgba(168,130,255,0.1) 0%,transparent 60%);
 }
+[data-theme="kimi"]{
+  --bg:#f4f6fc;--bg-card:#ffffff;--bg-card-hover:#eef0f8;
+  --border:rgba(99,102,241,0.14);--border-hover:rgba(99,102,241,0.35);
+  --text:#1a1a2e;--text-dim:#5a5d7a;--text-muted:#9498b4;
+  --accent:#6366f1;--accent-glow:rgba(99,102,241,0.08);
+  --gradient:linear-gradient(135deg,#6366f1,#8b5cf6);
+  --badge-bg:rgba(99,102,241,0.08);--badge-text:#6366f1;
+  --nav-bg:rgba(244,246,252,0.88);--nav-border:rgba(0,0,0,0.07);
+  --green:#10b981;--green-bg:rgba(16,185,129,0.1);
+  --header-gradient:radial-gradient(ellipse at 50% 0%,rgba(99,102,241,0.07) 0%,transparent 60%);
+}
 [data-theme="light-warm"]{
   --bg:#faf7f2;--bg-card:#ffffff;--bg-card-hover:#f4efe6;
   --border:rgba(150,110,55,0.2);--border-hover:rgba(150,110,55,0.4);
@@ -132,7 +143,7 @@ a{color:inherit;text-decoration:none}
 .featured-top .btn.primary{background:var(--accent);color:var(--bg)}
 .featured-top .btn.primary:hover{opacity:0.85}
 
-.featured-bottom{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.featured-bottom{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .featured-card{
   background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
   padding:24px;transition:all var(--transition);position:relative;overflow:hidden;
@@ -244,7 +255,7 @@ a{color:inherit;text-decoration:none}
 .modal-close:hover{border-color:var(--border-hover);color:var(--text)}
 @media (max-width:767px){.donate-strip{display:none}}
 </style>
-<script>try{var t=localStorage.getItem("gary-theme");if(!t||["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(t)<0||t.indexOf("light-")===0)t="dark-gold";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark-gold")}</script>
+<script>try{var t=localStorage.getItem("gary-theme");if(!t||["dark-gold","dark-blue","dark-purple","kimi","light-warm","light-cool"].indexOf(t)<0||t.indexOf("light-")===0)t="dark-gold";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark-gold")}</script>
 </head>
 <body>
 
@@ -266,6 +277,7 @@ a{color:inherit;text-decoration:none}
         <a class="unav-link" onclick="setTheme('dark-gold')">暗金 Dark Gold</a>
         <a class="unav-link" onclick="setTheme('dark-blue')">暗蓝 Deep Blue</a>
         <a class="unav-link" onclick="setTheme('dark-purple')">暗紫 Violet</a>
+        <a class="unav-link" onclick="setTheme('kimi')">Kimi 蓝紫</a>
         <a class="unav-link" onclick="setTheme('light-warm')">暖白 Warm</a>
         <a class="unav-link" onclick="setTheme('light-cool')">冷白 Cool</a>
       </div>
@@ -343,6 +355,15 @@ a{color:inherit;text-decoration:none}
         <div class="bonus">🎁 实名送 16 元</div>
         <br>
         <a class="btn" href="https://cloud.siliconflow.cn/i/AXWHlns5" target="_blank" rel="noopener">立即注册 →</a>
+      </div>
+
+      <div class="featured-card">
+        <div class="rank">5</div>
+        <h3>贞贞的AI工坊</h3>
+        <div class="desc">即梦 Seedance API 中转平台，视频生成接口稳定可靠，按量计费，即开即用。</div>
+        <div class="bonus">🎁 注册即享 API 额度</div>
+        <br>
+        <a class="btn" href="https://api.seedance.nz/sign-up?aff=TW7X" target="_blank" rel="noopener">立即注册 →</a>
       </div>
     </div>
   </div>
@@ -446,6 +467,12 @@ a{color:inherit;text-decoration:none}
         <span class="bonus">最高7折</span>
         <a class="btn" href="https://www.bigmodel.cn/glm-coding?ic=XDQMCFMIEY" target="_blank" rel="noopener">进入</a>
       </div>
+      <div class="list-card">
+        <div class="rank">6</div>
+        <div class="info"><h3>贞贞的AI工坊</h3><div class="desc">即梦 Seedance API 中转平台，视频生成接口稳定可靠，按量计费，即开即用。</div></div>
+        <span class="bonus">注册即享额度</span>
+        <a class="btn" href="https://api.seedance.nz/sign-up?aff=TW7X" target="_blank" rel="noopener">进入</a>
+      </div>
     </div>
   </div>
 
@@ -537,7 +564,7 @@ function goHome() { location.href='index.html' }
 
 /* ===== 主题切换 ===== */
 function setTheme(t){
-  if (["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(t) < 0) t = "dark-gold";
+  if (["dark-gold","dark-blue","dark-purple","kimi","light-warm","light-cool"].indexOf(t) < 0) t = "dark-gold";
   document.documentElement.setAttribute("data-theme", t);
   localStorage.setItem("gary-theme", t);
   closeUnavDrops();
@@ -617,7 +644,7 @@ document.querySelectorAll(".list-card a.btn[href^='http'], .featured-card a.btn[
 
 (function(){
   var theme = localStorage.getItem("gary-theme");
-  if (["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(theme) < 0 || theme.indexOf("light-") === 0) theme = "dark-gold";
+  if (["dark-gold","dark-blue","dark-purple","kimi","light-warm","light-cool"].indexOf(theme) < 0 || theme.indexOf("light-") === 0) theme = "dark-gold";
   document.documentElement.setAttribute("data-theme", theme);
 })();
 </script>
