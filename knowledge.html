@@ -170,6 +170,7 @@ a{color:inherit;text-decoration:none}
 @media (max-width:767px){.donate-strip{display:none}}
 </style>
 <script>try{var t=localStorage.getItem("gary-theme");if(!t||["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(t)<0||t.indexOf("light-")===0)t="dark-gold";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark-gold")}</script>
+  <link rel="stylesheet" href="site-design.css">
 </head>
 <body>
 
@@ -256,6 +257,7 @@ a{color:inherit;text-decoration:none}
 
 <script src="data/videos.v2.js"></script>
 <script src="data/docs.v9.js"></script>
+<script src="data/site-additions.v1.js"></script>
 <script>
 /* 视频教学专栏：从视频数据库生成分类入口 */
 (function(){
@@ -272,8 +274,9 @@ a{color:inherit;text-decoration:none}
 
 /* 文档区：从文档数据库按分类生成标题直达列表 */
 (function(){
+  var docs = (typeof SITE_DOC_ADDITIONS !== "undefined" ? SITE_DOC_ADDITIONS : []).concat(DOC_DB);
   var html = DOC_CATS.map(function(c){
-    var list = DOC_DB.filter(function(d){return d.cat === c.key});
+    var list = docs.filter(function(d){return d.cat === c.key});
     if (!list.length) return "";
     var rows = list.map(function(d){
       return '<a class="doc-row" href="' + d.file + '">'
@@ -332,5 +335,6 @@ function closeUnavDrops(){
   document.addEventListener("keydown",function(e){if(e.key==="Escape")modal.classList.remove("show")});
 })();
 </script>
+  <script src="site-shell.js"></script>
 </body>
 </html>

@@ -257,6 +257,7 @@ a{color:inherit;text-decoration:none}
 @media (max-width:767px){.donate-strip{display:none}}
 </style>
 <script>try{var t=localStorage.getItem("gary-theme");if(!t||["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(t)<0||t.indexOf("light-")===0)t="dark-gold";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark-gold")}</script>
+  <link rel="stylesheet" href="site-design.css">
 </head>
 <body>
 
@@ -307,6 +308,15 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="brief-empty" id="briefEmpty">🔍 没有匹配的信息简报。试试其他关键词?</div>
     <div class="brief-grid" id="briefGrid">
+      <a class="brief-card" href="articles/deepseek-harness-intro.html">
+        <span class="brief-badge">NEW</span>
+        <span class="brief-main">
+          <span class="brief-name">🧠 DeepSeek Harness：不只是 Agent，而是一套可组合的运行时</span>
+          <span class="brief-desc">DeepSeek Agent 执行栈速览：架构、核心能力、安全机制、适用场景与项目成熟度</span>
+        </span>
+        <span class="brief-date">2026-08-13</span>
+        <span class="brief-go">查看 →</span>
+      </a>
       <a class="brief-card" href="articles/storyboard-tutorial.html">
         <span class="brief-badge">NEW</span>
         <span class="brief-main">
@@ -651,5 +661,6 @@ function closeUnavDrops(){
   if(m){input.value=decodeURIComponent(m[1]);doSearch();}
 })();
 </script>
+  <script src="site-shell.js"></script>
 </body>
 </html>

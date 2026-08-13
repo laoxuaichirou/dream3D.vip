@@ -328,6 +328,7 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
 @media (prefers-reduced-motion:reduce){.hero-badge .dot{animation:none}.hero-panel::before{animation:none}}
 </style>
 <script>try{var t=localStorage.getItem("gary-theme");if(!t||["dark-gold","dark-blue","dark-purple","kimi","light-warm","light-cool"].indexOf(t)<0||t.indexOf("light-")===0)t="dark-gold";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark-gold")}</script>
+  <link rel="stylesheet" href="site-design.css">
 </head>
 <body>
 
@@ -521,7 +522,7 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
       <div class="hero-stats">
         <span data-i18n="hs_1">145 期教程</span><i></i>
         <span data-i18n="hs_2">31 期精选</span><i></i>
-        <span data-i18n="hs_3">4 个自研工具</span><i></i>
+        <span data-i18n="hs_3">7 个自研工具</span><i></i>
         <span data-i18n="hs_4">5 大板块</span>
       </div>
     </div>
@@ -574,6 +575,24 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
           <div class="tool-tag" data-i18n="tool_hair_t">一键换发型 · 证件照生成</div>
           <div class="tool-status"><span class="st live" data-i18n="status_cn_live">国内可用</span><span class="st-sep">/</span><span class="st soon" data-i18n="status_gl_soon">海外即将上线</span></div>
         </a>
+        <a class="tool-card" href="gary-prompt/">
+          <span class="tool-num">06</span>
+          <div class="tool-head">
+            <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5H5a2 2 0 00-2 2v10a2 2 0 002 2h3M16 5h3a2 2 0 012 2v10a2 2 0 01-2 2h-3M9 9l-2 3 2 3M15 9l2 3-2 3"/><path d="M12 3v3M10.5 4.5h3"/></svg></div>
+            <div class="tool-name">Gary Prompt</div>
+          </div>
+          <div class="tool-tag" data-i18n="tool_prompt_t">AI 视频提示词浏览器侧边栏</div>
+          <div class="tool-status"><span class="st live" data-i18n="tool_prompt_status">v1.8.0 · 免费下载</span></div>
+        </a>
+        <div class="tool-card soon is-building">
+          <span class="tool-num">07</span>
+          <div class="tool-head">
+            <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/><path d="M10 6.5h4a3.5 3.5 0 013.5 3.5v4M6.5 10v4A3.5 3.5 0 0010 17.5h4"/></svg></div>
+            <div class="tool-name">Infinite Canvas</div>
+          </div>
+          <div class="tool-tag" data-i18n="tool_canvas_t">自动化 AI 影视创作无限画布工作台</div>
+          <div class="tool-status"><span class="st soon" data-i18n="tool_canvas_status">开发中 · 敬请期待</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -618,6 +637,7 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
 </div>
 
 <script src="data/docs.v9.js"></script>
+<script src="data/site-additions.v1.js"></script>
 <script>
 /* ================= i18n ================= */
 const I18N = {
@@ -635,8 +655,8 @@ sub_c1:"Skills",sub_c2:"绘画",sub_c3:"视频",sub_c4:"解析视频",
 sub_r1:"整合包",sub_r2:"模型",sub_r3:"资源合集",sub_r4:"信息简报",
 sub_m1:"微信群",sub_m2:"媒体号",sub_m3:"商务合作",
 tool_image_t:"全能图片创作台 · 文生图/图生图/反推/海报四合一",tool_frame_t:"好用的视频解析，一键生成分镜表格",frame_cn:"帧工厂",
-tool_videos_t:"AI 视频创作平台",tool_skills_t:"AI 影视创作工作台 · 123 个分镜 Skill",tool_hair_t:"一键换发型 · 证件照生成",
-hs_1:"145 期教程",hs_2:"31 期精选",hs_3:"5 个自研工具",hs_4:"5 大板块",
+tool_videos_t:"AI 视频创作平台",tool_skills_t:"AI 影视创作工作台 · 123 个分镜 Skill",tool_hair_t:"一键换发型 · 证件照生成",tool_prompt_t:"AI 视频提示词浏览器侧边栏",tool_prompt_status:"v1.8.0 · 免费下载",tool_canvas_t:"自动化 AI 影视创作无限画布工作台",tool_canvas_status:"开发中 · 敬请期待",
+hs_1:"145 期教程",hs_2:"31 期精选",hs_3:"7 个自研工具",hs_4:"5 大板块",
 media_wx_t:"微信",media_wx_d:"扫码交流 · 合作",
 media_group:"企业微信群<br>敬请期待"},
 en:{nav_create:"AI Studio",nav_benefits:"AI Deals",nav_knowledge:"Knowledge Docs",nav_resources:"Resources",nav_community:"Community",nav_contact:"Contact",
@@ -653,8 +673,8 @@ sub_c1:"Skills",sub_c2:"Image",sub_c3:"Video",sub_c4:"Video Insight",
 sub_r1:"Bundles",sub_r2:"Models",sub_r3:"Packs",sub_r4:"Briefings",
 sub_m1:"WeChat Group",sub_m2:"Media",sub_m3:"Business",
 tool_image_t:"All-in-one image studio · T2I/I2I/reverse/poster",tool_frame_t:"Easy video insight, instant storyboard sheets",frame_cn:"FrameForge",
-tool_videos_t:"AI video creation platform",tool_skills_t:"AI film studio · 123 storyboard skills",tool_hair_t:"One-click hairstyle change & ID photo",
-hs_1:"145 tutorials",hs_2:"31 curated episodes",hs_3:"5 self-built tools",hs_4:"5 sections",
+tool_videos_t:"AI video creation platform",tool_skills_t:"AI film studio · 123 storyboard skills",tool_hair_t:"One-click hairstyle change & ID photo",tool_prompt_t:"AI video prompt browser sidebar",tool_prompt_status:"v1.8.0 · Free download",tool_canvas_t:"Infinite-canvas workspace for automated AI filmmaking",tool_canvas_status:"In development · Coming soon",
+hs_1:"145 tutorials",hs_2:"31 curated episodes",hs_3:"7 self-built tools",hs_4:"5 sections",
 media_wx_t:"WeChat",media_wx_d:"Scan to connect",
 media_group:"Work WeChat group<br>Coming soon"},
 ja:{nav_create:"AI創作",nav_benefits:"AI特典",nav_knowledge:"ナレッジ文書",nav_resources:"リソース",nav_community:"コミュニティ",nav_contact:"連絡先",
@@ -671,8 +691,8 @@ sub_c1:"Skills",sub_c2:"画像",sub_c3:"動画",sub_c4:"動画解析",
 sub_r1:"統合パック",sub_r2:"モデル",sub_r3:"素材集",sub_r4:"情報",
 sub_m1:"WeChat 群",sub_m2:"メディア",sub_m3:"ビジネス",
 tool_image_t:"全能画像創作台 · 4 in 1",tool_frame_t:"使いやすい動画解析、分镜表を一键生成",frame_cn:"FrameForge",
-tool_videos_t:"AI 動画創作プラットフォーム",tool_skills_t:"AI 映像創作工作台 · 123 の分鏡 Skill",tool_hair_t:"ワンクリック髪型変更 ·証明写真",
-hs_1:"145 話の教程",hs_2:"厳選 31 話",hs_3:"自研ツール 5 つ",hs_4:"5 セクション",
+tool_videos_t:"AI 動画創作プラットフォーム",tool_skills_t:"AI 映像創作工作台 · 123 の分鏡 Skill",tool_hair_t:"ワンクリック髪型変更 ·証明写真",tool_prompt_t:"AI動画プロンプト用ブラウザサイドバー",tool_prompt_status:"v1.8.0 · 無料ダウンロード",tool_canvas_t:"AI映像制作を自動化する無限キャンバス",tool_canvas_status:"開発中 · 近日公開",
+hs_1:"145 話の教程",hs_2:"厳選 31 話",hs_3:"自研ツール 7 つ",hs_4:"5 セクション",
 media_wx_t:"WeChat",media_wx_d:"スキャンして交流",
 media_group:"企業WeChat群<br>まもなく"},
 ko:{nav_create:"AI 창작",nav_benefits:"AI 혜택",nav_knowledge:"지식 문서",nav_resources:"리소스",nav_community:"커뮤니티",nav_contact:"문의",
@@ -689,8 +709,8 @@ sub_c1:"Skills",sub_c2:"이미지",sub_c3:"영상",sub_c4:"영상 분석",
 sub_r1:"통합 팩",sub_r2:"모델",sub_r3:"모음",sub_r4:"브리핑",
 sub_m1:"WeChat 그룹",sub_m2:"미디어",sub_m3:"비즈니스",
 tool_image_t:"올인원 이미지 스튜디오 · 4 in 1",tool_frame_t:"편한 영상 분석, 스토리보드 표 자동 생성",frame_cn:"FrameForge",
-tool_videos_t:"AI 영상 창작 플랫폼",tool_skills_t:"AI 영상 제작 워크벤치 · 123개 스토리보드 Skill",tool_hair_t:"원클릭 헤어스타일 변경 · 증명사진",
-hs_1:"145편 강의",hs_2:"엄선 31편",hs_3:"자체 도구 5개",hs_4:"5개 섹션",
+tool_videos_t:"AI 영상 창작 플랫폼",tool_skills_t:"AI 영상 제작 워크벤치 · 123개 스토리보드 Skill",tool_hair_t:"원클릭 헤어스타일 변경 · 증명사진",tool_prompt_t:"AI 영상 프롬프트 브라우저 사이드바",tool_prompt_status:"v1.8.0 · 무료 다운로드",tool_canvas_t:"AI 영상 제작 자동화 무한 캔버스",tool_canvas_status:"개발 중 · 출시 예정",
+hs_1:"145편 강의",hs_2:"엄선 31편",hs_3:"자체 도구 7개",hs_4:"5개 섹션",
 media_wx_t:"WeChat",media_wx_d:"스캔하여 소통",
 media_group:"기업 WeChat 그룹<br>곧 공개"},
 ru:{nav_create:"AI-студия",nav_benefits:"AI-бонусы",nav_knowledge:"Документы знаний",nav_resources:"Ресурсы",nav_community:"Сообщество",nav_contact:"Контакты",
@@ -707,8 +727,8 @@ sub_c1:"Skills",sub_c2:"Изображения",sub_c3:"Видео",sub_c4:"Ан
 sub_r1:"Сборки",sub_r2:"Модели",sub_r3:"Пакеты",sub_r4:"Брифы",
 sub_m1:"Группа WeChat",sub_m2:"Соцсети",sub_m3:"Сотрудничество",
 tool_image_t:"Студия изображений 4-в-1",tool_frame_t:"Удобный анализ видео, раскадровка в один клик",frame_cn:"FrameForge",
-tool_videos_t:"Платформа ИИ-видео",tool_skills_t:"ИИ-студия видео · 123 скилла раскадровки",tool_hair_t:"Смена причёски в 1 клик · фото на документы",
-hs_1:"145 уроков",hs_2:"31 выпуск",hs_3:"5 своих инструментов",hs_4:"5 разделов",
+tool_videos_t:"Платформа ИИ-видео",tool_skills_t:"ИИ-студия видео · 123 скилла раскадровки",tool_hair_t:"Смена причёски в 1 клик · фото на документы",tool_prompt_t:"Боковая панель браузера для видеопромптов",tool_prompt_status:"v1.8.0 · Скачать бесплатно",tool_canvas_t:"Бесконечный холст для автоматизации ИИ-кинопроизводства",tool_canvas_status:"В разработке · Скоро",
+hs_1:"145 уроков",hs_2:"31 выпуск",hs_3:"7 своих инструментов",hs_4:"5 разделов",
 media_wx_t:"WeChat",media_wx_d:"Сканируйте для связи",
 media_group:"Рабочая группа WeChat<br>Скоро"}
 };
@@ -764,10 +784,11 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") document.que
     box.innerHTML = '<div class="brief-loading">暂无简报</div>';
     return;
   }
+  var docs = (typeof SITE_DOC_ADDITIONS !== "undefined" ? SITE_DOC_ADDITIONS : []).concat(DOC_DB);
   /* 1. briefing 分类（有日期，时间倒序维护） */
-  var briefs = DOC_DB.filter(function(x){ return x.cat === "briefing"; });
+  var briefs = docs.filter(function(x){ return x.cat === "briefing"; });
   /* 2. 补充其他分类的最新条目（按数组顺序，取未出现在 briefing 的） */
-  var others = DOC_DB.filter(function(x){ return x.cat !== "briefing"; });
+  var others = docs.filter(function(x){ return x.cat !== "briefing"; });
   var items = [];
   briefs.forEach(function(it){ items.push(it); });
   others.forEach(function(it){
@@ -838,5 +859,6 @@ window.addEventListener("load", function(){
 })();
 </script>
 
+  <script src="site-shell.js"></script>
 </body>
 </html>

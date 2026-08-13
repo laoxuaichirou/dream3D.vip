@@ -269,6 +269,7 @@ body>*{position:relative;z-index:1}
 @media (max-width:767px){.donate-strip{display:none}}
 </style>
 <script>try{var t=localStorage.getItem("gary-theme");if(!t||["dark-gold","dark-blue","dark-purple","light-warm","light-cool"].indexOf(t)<0||t.indexOf("light-")===0)t="dark-gold";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","dark-gold")}</script>
+  <link rel="stylesheet" href="site-design.css">
 </head>
 <body>
 
@@ -514,5 +515,6 @@ function toggleNav(){document.getElementById('navLinks').classList.toggle('open'
   document.addEventListener("keydown",function(e){if(e.key==="Escape")modal.classList.remove("show")});
 })();
 </script>
+  <script src="site-shell.js"></script>
 </body>
 </html>

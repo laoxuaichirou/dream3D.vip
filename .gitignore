@@ -5,3 +5,4 @@ nebula.html
 视频素材/
 gpt2_prompts.json
 .hermes/
+*.bak_*
