@@ -368,7 +368,7 @@ body.ds-home .stage {
 body.ds-home .main-col { display: contents; }
 body.ds-home .hero-panel { grid-area: main; }
 body.ds-home .tools-strip { grid-area: tools; min-width: 0; }
-body.ds-home .brief-col { grid-area: brief; position: sticky; top: 103px; min-height: 0; overflow: visible; }
+body.ds-home .brief-col { grid-area: brief; min-height: 0; overflow: visible; }
 body.ds-home .tool-card.is-building { opacity: .74; border-style: dashed; }
 body.ds-home .tool-card.is-building:hover { transform: none; box-shadow: none; }
 body.ds-home .cat-col {
