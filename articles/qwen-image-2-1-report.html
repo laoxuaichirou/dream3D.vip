@@ -1,447 +1,161 @@
-<!DOCTYPE html>
-<html lang="zh-CN" data-theme="dark-gold">
+<!doctype html>
+<html lang="zh-CN" data-theme="ink">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <meta name="description" content="Qwen Image 2.1 社区问答式本地实测：提示词增强器速度、多图生成成本、图片编辑能力、T8 GGUF 与外部 Skill 对比。">
-  <meta name="theme-color" content="#090a10">
-  <title>Qwen Image 2.1 深度实测：PE、速度与能力边界 · GaryAIGC</title>
-  <link rel="icon" href="../favicon.ico">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Qwen Image 2.1 本地实测：官方 PE、Skill、多参考图、精确文字、肢体修复、连续编辑、商品资产与新生态测试计划。">
+  <title>Qwen Image 2.1 深度实测｜GaryAIGC</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0d13'/%3E%3Cpath d='M15 16h34v32H15z' fill='none' stroke='%23ffb454' stroke-width='4'/%3E%3Cpath d='M23 39l8-15 10 17M20 46h24' fill='none' stroke='%23f5f7fb' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
   <style>
-    :root{
-      --font:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-      --serif:"Noto Serif SC","Source Han Serif SC","Songti SC",serif;
-      --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
-      --radius-xl:28px;--radius-lg:20px;--radius:14px;
-      --ease:cubic-bezier(.16,1,.3,1);
-    }
-    [data-theme="dark-gold"]{
-      --bg:#090a10;--bg-2:#0d1018;--panel:rgba(18,20,30,.88);--panel-2:#151824;
-      --text:#f3f1eb;--dim:#a9a9b7;--muted:#747688;--line:rgba(232,201,122,.17);
-      --accent:#e8c97a;--accent-2:#7dd3fc;--good:#62d6a5;--warn:#f4bd67;--bad:#ff7d8f;
-      --glow:rgba(232,201,122,.12);--nav:rgba(9,10,16,.84);
-    }
-    [data-theme="dark-blue"]{
-      --bg:#050a13;--bg-2:#08111f;--panel:rgba(10,21,37,.9);--panel-2:#0d1929;
-      --text:#edf5ff;--dim:#9ab0ca;--muted:#647c99;--line:rgba(105,180,255,.18);
-      --accent:#79c0ff;--accent-2:#8cf0d2;--good:#6ee7b7;--warn:#f6c86e;--bad:#ff8298;
-      --glow:rgba(56,139,253,.13);--nav:rgba(5,10,19,.84);
-    }
-    [data-theme="dark-purple"]{
-      --bg:#0d0814;--bg-2:#130b20;--panel:rgba(24,16,36,.9);--panel-2:#1a1128;
-      --text:#f6efff;--dim:#b7a5ca;--muted:#7b698f;--line:rgba(192,145,255,.18);
-      --accent:#d4b8ff;--accent-2:#75e6df;--good:#6ee7b7;--warn:#f3c46d;--bad:#ff83a4;
-      --glow:rgba(168,130,255,.13);--nav:rgba(13,8,20,.86);
-    }
-    [data-theme="light-warm"]{
-      --bg:#f6f2e9;--bg-2:#eee7da;--panel:rgba(255,255,255,.88);--panel-2:#fffaf1;
-      --text:#25231f;--dim:#635f56;--muted:#8f8779;--line:rgba(128,91,35,.2);
-      --accent:#8d662e;--accent-2:#0b7285;--good:#16835f;--warn:#a86515;--bad:#c73d55;
-      --glow:rgba(168,124,62,.1);--nav:rgba(246,242,233,.88);
-    }
-    [data-theme="light-cool"]{
-      --bg:#f2f6fb;--bg-2:#e6edf6;--panel:rgba(255,255,255,.9);--panel-2:#f8fbff;
-      --text:#172235;--dim:#53657c;--muted:#8190a4;--line:rgba(47,108,189,.18);
-      --accent:#255fa8;--accent-2:#087f8c;--good:#137a59;--warn:#a56615;--bad:#c73955;
-      --glow:rgba(47,108,189,.09);--nav:rgba(242,246,251,.9);
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth;scroll-padding-top:100px}
-    body{margin:0;font-family:var(--font);font-size:16px;line-height:1.8;color:var(--text);background:
-      radial-gradient(circle at 12% -5%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 34rem),
-      radial-gradient(circle at 92% 18%,color-mix(in srgb,var(--accent-2) 12%,transparent),transparent 30rem),
-      var(--bg);-webkit-font-smoothing:antialiased}
-    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;background-image:
-      linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
-      background-size:52px 52px;mask-image:linear-gradient(to bottom,#000,transparent 70%);z-index:-1}
-    a{color:inherit;text-decoration:none}
-    button{font:inherit}
-    ::selection{background:color-mix(in srgb,var(--accent) 28%,transparent)}
-    .reading-progress{position:fixed;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:999;box-shadow:0 0 16px var(--accent)}
-    .unav-wrap{position:sticky;top:0;z-index:100;padding:14px 16px;display:flex;justify-content:center;background:linear-gradient(to bottom,var(--bg),transparent)}
-    .unav{display:flex;align-items:center;gap:4px;max-width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:var(--nav);backdrop-filter:blur(20px) saturate(150%);box-shadow:0 16px 44px rgba(0,0,0,.24)}
-    .unav-logo{font-weight:900;padding:6px 12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));background-clip:text;-webkit-background-clip:text;color:transparent;white-space:nowrap}
-    .unav-link,.theme-btn{padding:7px 12px;border:0;border-radius:999px;background:transparent;color:var(--dim);font-size:.84rem;cursor:pointer;white-space:nowrap;transition:.25s var(--ease)}
-    .unav-link:hover,.unav-link.active,.theme-btn:hover{color:var(--text);background:var(--glow)}
-    .theme-wrap{position:relative}
-    .theme-menu{position:absolute;right:0;top:calc(100% + 10px);width:168px;padding:8px;border:1px solid var(--line);border-radius:14px;background:var(--panel-2);box-shadow:0 20px 60px rgba(0,0,0,.35);opacity:0;visibility:hidden;transform:translateY(-4px);transition:.2s var(--ease)}
-    .theme-wrap.open .theme-menu{opacity:1;visibility:visible;transform:none}
-    .theme-option{display:block;width:100%;border:0;background:transparent;color:var(--dim);text-align:left;padding:9px 10px;border-radius:9px;cursor:pointer;font-size:.82rem}
-    .theme-option:hover{color:var(--text);background:var(--glow)}
-    .hero{width:min(1180px,calc(100% - 32px));margin:42px auto 28px;padding:clamp(28px,6vw,70px);position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius-xl);background:linear-gradient(145deg,color-mix(in srgb,var(--panel) 92%,transparent),color-mix(in srgb,var(--bg-2) 82%,transparent));box-shadow:0 30px 100px rgba(0,0,0,.28)}
-    .hero:after{content:"2.1";position:absolute;right:-.03em;bottom:-.34em;font:900 clamp(11rem,28vw,24rem)/1 var(--serif);color:transparent;-webkit-text-stroke:1px color-mix(in srgb,var(--accent) 18%,transparent);pointer-events:none}
-    .eyebrow{display:inline-flex;align-items:center;gap:9px;padding:7px 12px;border:1px solid var(--line);border-radius:999px;color:var(--accent);font-size:.78rem;font-weight:750;letter-spacing:.08em;text-transform:uppercase;background:var(--glow)}
-    .eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--good);box-shadow:0 0 12px var(--good)}
-    .hero h1{position:relative;z-index:1;max-width:900px;margin:24px 0 18px;font:900 clamp(2.35rem,7vw,5.6rem)/1.06 var(--serif);letter-spacing:-.045em}
-    .hero h1 span{background:linear-gradient(105deg,var(--accent),var(--accent-2));background-clip:text;-webkit-background-clip:text;color:transparent}
-    .hero-lead{position:relative;z-index:1;max-width:780px;margin:0;color:var(--dim);font-size:clamp(1rem,2vw,1.2rem)}
-    .hero-meta{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
-    .meta-pill{padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:color-mix(in srgb,var(--panel-2) 78%,transparent);font-size:.82rem;color:var(--dim)}
-    .hero-verdict{position:relative;z-index:1;margin-top:28px;max-width:780px;padding:18px 20px;border-left:3px solid var(--good);border-radius:0 14px 14px 0;background:linear-gradient(90deg,color-mix(in srgb,var(--good) 12%,transparent),transparent);font-size:1.06rem}
-    .layout{width:min(1720px,calc(100% - 32px));margin:0 auto 90px;display:grid;grid-template-columns:minmax(170px,1fr) minmax(0,1180px) minmax(170px,1fr);gap:20px;align-items:start}
-    .toc{grid-column:1;width:min(210px,100%);justify-self:end;position:sticky;top:96px;padding:18px;border:1px solid var(--line);border-radius:var(--radius-lg);background:color-mix(in srgb,var(--panel) 92%,transparent);backdrop-filter:blur(12px)}
-    .toc-title{margin-bottom:10px;color:var(--accent);font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
-    .toc a{display:block;padding:7px 9px;border-left:1px solid var(--line);color:var(--muted);font-size:.82rem;line-height:1.45;transition:.2s}
-    .toc a:hover,.toc a.current{color:var(--text);border-left-color:var(--accent);background:linear-gradient(90deg,var(--glow),transparent)}
-    .content{grid-column:2;min-width:0}
-    .section{margin-bottom:26px;padding:clamp(22px,4vw,38px);border:1px solid var(--line);border-radius:var(--radius-xl);background:linear-gradient(150deg,color-mix(in srgb,var(--panel) 94%,transparent),color-mix(in srgb,var(--panel-2) 86%,transparent));box-shadow:0 16px 54px rgba(0,0,0,.12)}
-    .section-kicker{color:var(--accent);font-size:.75rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
-    h2{margin:7px 0 12px;font:850 clamp(1.65rem,3vw,2.45rem)/1.25 var(--serif);letter-spacing:-.02em}
-    h3{margin:28px 0 10px;font-size:1.13rem}
-    p{margin:10px 0;color:var(--dim)}
-    .section-intro{max-width:780px;margin-bottom:24px;font-size:1.02rem}
-    .question-title{display:flex;align-items:flex-start;gap:13px}
-    .q-index{flex:none;margin-top:.18em;padding:6px 9px;border:1px solid var(--line);border-radius:10px;background:var(--glow);color:var(--accent);font:800 .72rem/1 var(--mono);letter-spacing:.08em}
-    .qa-answer{display:grid;grid-template-columns:72px minmax(0,1fr);gap:16px;align-items:start;margin:18px 0 24px;padding:18px 20px;border:1px solid color-mix(in srgb,var(--good) 34%,var(--line));border-radius:18px;background:linear-gradient(120deg,color-mix(in srgb,var(--good) 11%,transparent),transparent)}
-    .qa-answer .answer-label{padding-top:3px;color:var(--good);font:900 .72rem/1.4 var(--mono);letter-spacing:.08em}
-    .qa-answer p{margin:0;color:var(--text);font-size:1.03rem;line-height:1.75}
-    .qa-split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
-    .qa-item{padding:20px;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--bg-2) 68%,transparent)}
-    .qa-item .question{display:block;margin-bottom:8px;color:var(--text);font-weight:850;line-height:1.55}
-    .qa-item .answer{margin:0;color:var(--dim);font-size:.91rem;line-height:1.75}
-    .verdict-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-    .verdict-card{padding:20px;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--bg-2) 68%,transparent)}
-    .verdict-card .num{font:800 .78rem/1 var(--mono);color:var(--accent)}
-    .verdict-card h3{margin:10px 0 6px;font-size:1.05rem}
-    .verdict-card p{margin:0;font-size:.9rem}
-    .status{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:5px 9px;border-radius:999px;font-size:.72rem;font-weight:800}
-    .status:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
-    .status.good{color:var(--good);background:color-mix(in srgb,var(--good) 12%,transparent)}
-    .status.warn{color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,transparent)}
-    .status.bad{color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent)}
-    .metric-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
-    .metric{padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--glow)}
-    .metric strong{display:block;font:900 clamp(1.7rem,4vw,2.7rem)/1 var(--serif);color:var(--text)}
-    .metric span{display:block;margin-top:8px;color:var(--muted);font-size:.8rem}
-    .chart{margin:22px 0;padding:18px;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--bg) 44%,transparent)}
-    .bar-row{display:grid;grid-template-columns:minmax(150px,1.3fr) 4fr 78px;gap:12px;align-items:center;margin:13px 0}
-    .bar-label{font-size:.84rem;color:var(--dim)}
-    .bar-track{height:13px;overflow:hidden;border-radius:999px;background:color-mix(in srgb,var(--line) 70%,transparent)}
-    .bar-fill{height:100%;width:var(--w);border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 0 18px color-mix(in srgb,var(--accent) 28%,transparent)}
-    .bar-fill.good{background:linear-gradient(90deg,var(--good),var(--accent-2))}
-    .bar-fill.bad{background:linear-gradient(90deg,var(--bad),var(--warn))}
-    .bar-value{text-align:right;font:750 .82rem/1 var(--mono);color:var(--text)}
-    .callout{margin:22px 0;padding:20px 22px;border:1px solid color-mix(in srgb,var(--accent-2) 35%,var(--line));border-radius:18px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent-2) 10%,transparent),transparent)}
-    .callout strong{color:var(--accent-2)}
-    .callout p{margin:5px 0 0}
-    .table-wrap{margin:18px 0;overflow:auto;border:1px solid var(--line);border-radius:16px}
-    table{width:100%;border-collapse:collapse;min-width:660px;font-size:.88rem}
-    th,td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-    th{color:var(--accent);font-weight:800;background:var(--glow)}
-    td{color:var(--dim)}
-    tr:last-child td{border-bottom:0}
-    tbody tr:hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}
-    .gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-    .case{overflow:hidden;border:1px solid var(--line);border-radius:20px;background:color-mix(in srgb,var(--bg-2) 72%,transparent)}
-    .case.wide{grid-column:1/-1}
-    .case-media{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));min-height:220px;background:#08090d}
-    .case-media.triple{grid-template-columns:repeat(3,minmax(0,1fr))}
-    .case-media figure{position:relative;margin:0;min-width:0;overflow:hidden;border-right:1px solid rgba(255,255,255,.1)}
-    .case-media figure:last-child{border-right:0}
-    .case-media img{display:block;width:100%;height:100%;min-height:220px;object-fit:cover;cursor:zoom-in;transition:transform .55s var(--ease)}
-    .case-media img:hover{transform:scale(1.025)}
-    .case-media .checker{background-color:#d6d6d6;background-image:linear-gradient(45deg,#aaa 25%,transparent 25%),linear-gradient(-45deg,#aaa 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#aaa 75%),linear-gradient(-45deg,transparent 75%,#aaa 75%);background-size:22px 22px;background-position:0 0,0 11px,11px -11px,-11px 0}
-    .case-label{position:absolute;left:10px;top:10px;padding:5px 9px;border-radius:999px;background:rgba(7,8,12,.76);backdrop-filter:blur(8px);color:#fff;font-size:.7rem;font-weight:800;letter-spacing:.04em}
-    .case-body{padding:18px}
-    .case-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-    .case h3{margin:0;font-size:1rem}
-    .case p{margin:8px 0 0;font-size:.88rem}
-    .check-list{display:grid;gap:10px;margin:18px 0 0;padding:0;list-style:none}
-    .check-list li{position:relative;padding-left:27px;color:var(--dim)}
-    .check-list li:before{content:"✓";position:absolute;left:0;top:1px;color:var(--good);font-weight:900}
-    .check-list li.no:before{content:"×";color:var(--bad)}
-    .comparison{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
-    .compare-card{padding:20px;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--bg-2) 70%,transparent)}
-    .compare-card.recommended{border-color:color-mix(in srgb,var(--good) 42%,var(--line));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--good) 8%,transparent)}
-    .compare-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-    .compare-title strong{font-size:1.02rem}
-    .compare-card ul{margin:0;padding-left:1.15rem;color:var(--dim);font-size:.88rem}
-    .compare-card li{margin:6px 0}
-    .delivery{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .delivery-step{padding:22px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,var(--glow),transparent)}
-    .delivery-step .version{font:800 .76rem/1 var(--mono);color:var(--accent)}
-    .delivery-step h3{margin:10px 0 6px}
-    details{margin-top:14px;border:1px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--bg-2) 60%,transparent)}
-    summary{padding:14px 16px;cursor:pointer;color:var(--text);font-weight:750}
-    details>div{padding:0 16px 16px;color:var(--dim);font-size:.88rem}
-    code{font-family:var(--mono);font-size:.82em;color:var(--accent-2);background:color-mix(in srgb,var(--accent-2) 9%,transparent);border:1px solid color-mix(in srgb,var(--accent-2) 18%,transparent);padding:2px 6px;border-radius:6px}
-    .sources{display:grid;gap:9px;margin-top:18px}
-    .source-link{display:flex;justify-content:space-between;gap:16px;padding:13px 14px;border:1px solid var(--line);border-radius:12px;color:var(--dim);transition:.2s}
-    .source-link:hover{color:var(--text);border-color:color-mix(in srgb,var(--accent) 42%,var(--line));background:var(--glow)}
-    .source-link span:last-child{color:var(--accent);font-family:var(--mono)}
-    .article-note{margin-top:20px;padding:16px 18px;border:1px dashed var(--line);border-radius:14px;color:var(--muted);font-size:.82rem}
-    .footer{padding:34px 20px 48px;text-align:center;color:var(--muted);font-size:.8rem;border-top:1px solid var(--line)}
-    .totop{position:fixed;right:22px;bottom:22px;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;background:var(--nav);backdrop-filter:blur(16px);color:var(--accent);cursor:pointer;opacity:0;transform:translateY(10px);pointer-events:none;transition:.25s var(--ease);z-index:80}
-    .totop.show{opacity:1;transform:none;pointer-events:auto}
-    .donate-strip{position:fixed;right:0;top:50%;z-index:80;transform:translateY(-50%);writing-mode:vertical-rl;padding:14px 8px;border:1px solid var(--line);border-right:0;border-radius:12px 0 0 12px;background:var(--nav);color:var(--accent);font-size:.78rem;letter-spacing:.2em;cursor:pointer}
-    body.presentation-mode .unav-wrap,body.presentation-mode .toc,body.presentation-mode .donate-strip,body.presentation-mode .totop{display:none!important}
-    body.presentation-mode .hero{margin-top:24px}
-    body.presentation-mode .layout{width:min(1180px,calc(100% - 32px));grid-template-columns:minmax(0,1fr)}
-    body.presentation-mode .content{grid-column:1}
-    .modal-mask,.lightbox{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(2,3,7,.82);backdrop-filter:blur(9px);opacity:0;visibility:hidden;transition:.24s var(--ease)}
-    .modal-mask.show,.lightbox.show{opacity:1;visibility:visible}
-    .modal-card{max-width:360px;width:100%;padding:26px;border:1px solid var(--line);border-radius:20px;background:var(--panel-2);text-align:center}
-    .modal-card img{width:210px;max-width:100%;border-radius:14px;background:#fff;padding:8px}
-    .modal-card h3{margin:0 0 6px}
-    .modal-card p{font-size:.86rem}
-    .modal-close{margin-top:14px;padding:8px 22px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--dim);cursor:pointer}
-    .lightbox img{max-width:min(1200px,94vw);max-height:88vh;border-radius:14px;box-shadow:0 30px 100px rgba(0,0,0,.5)}
-    .lightbox-close{position:fixed;right:22px;top:22px;width:44px;height:44px;border:1px solid rgba(255,255,255,.2);border-radius:50%;background:rgba(0,0,0,.45);color:#fff;font-size:1.35rem;cursor:pointer}
-    @media(max-width:1560px){
-      .layout{width:min(1180px,calc(100% - 32px));grid-template-columns:1fr;gap:20px}.content{grid-column:1}.toc{grid-column:1;width:100%;justify-self:stretch;position:relative;top:auto;display:flex;gap:4px;overflow:auto;padding:10px}.toc-title{display:none}.toc a{flex:none;border-left:0;border-bottom:1px solid var(--line);white-space:nowrap}.toc a:hover,.toc a.current{border-bottom-color:var(--accent)}
-    }
-    @media(max-width:760px){
-      .unav{overflow:auto;justify-content:flex-start}.unav-link.hide-mobile{display:none}.hero{margin-top:18px;padding:28px 22px}.hero:after{font-size:12rem;opacity:.7}.hero h1,h2,.question-title span:last-child,.hero-verdict{overflow-wrap:anywhere;word-break:break-word}.layout{width:min(100% - 20px,1180px);gap:16px}.section{min-width:0;padding:22px 17px}.verdict-grid,.gallery,.comparison,.delivery,.qa-split{grid-template-columns:1fr}.qa-answer{grid-template-columns:1fr;gap:8px;padding:16px}.question-title{gap:9px;min-width:0}.q-index{margin-top:.3em}.metric-strip{grid-template-columns:1fr}.bar-row{grid-template-columns:1fr 62px}.bar-track{grid-column:1/-1;grid-row:2}.bar-value{grid-column:2;grid-row:1}.case.wide{grid-column:auto}.case-media,.case-media.triple{grid-template-columns:1fr}.case-media figure{border-right:0;border-bottom:1px solid rgba(255,255,255,.1)}.case-media img{min-height:210px;max-height:360px}.donate-strip{display:none}.totop{right:14px;bottom:14px}table{font-size:.8rem}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+    :root{--bg:#090b10;--bg2:#10131b;--panel:#131824;--panel2:#191f2d;--ink:#f3f5f9;--muted:#a7afbf;--dim:#737d91;--line:rgba(255,255,255,.105);--accent:#ffb454;--accent2:#73d7ff;--good:#69dda8;--warn:#ffd26b;--bad:#ff7c87;--shadow:0 24px 70px rgba(0,0,0,.28);--radius:22px;--max:1500px;--ease:cubic-bezier(.2,.8,.2,1)}
+    [data-theme="paper"]{--bg:#eef1f5;--bg2:#f8fafc;--panel:#fff;--panel2:#f3f6fa;--ink:#17202f;--muted:#4e5c70;--dim:#748096;--line:rgba(27,39,58,.13);--accent:#a75d00;--accent2:#006b9e;--good:#087d55;--warn:#9b6400;--bad:#b72e3e;--shadow:0 22px 60px rgba(33,48,72,.12)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:82px}
+    body{margin:0;background:radial-gradient(circle at 16% 8%,rgba(255,180,84,.10),transparent 27rem),radial-gradient(circle at 84% 14%,rgba(115,215,255,.085),transparent 30rem),var(--bg);color:var(--ink);font:16px/1.72 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+    a{color:inherit;text-decoration:none}button{font:inherit}img{max-width:100%;display:block}
+    .progress{position:fixed;z-index:1000;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+    .topbar{position:sticky;top:0;z-index:90;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(16px)}
+    .nav{width:min(100% - 32px,1380px);height:64px;margin:auto;display:flex;align-items:center;gap:26px}.brand{font-weight:900;letter-spacing:.03em}.brand i{color:var(--accent);font-style:normal}.navlink{color:var(--muted);font-size:.92rem}.navlink:hover,.navlink.active{color:var(--ink)}.nav-actions{margin-left:auto;display:flex;gap:8px}
+    .chip-button{border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--muted);padding:7px 13px;cursor:pointer}.chip-button:hover{color:var(--ink);border-color:color-mix(in srgb,var(--accent) 55%,var(--line))}
+    .hero{width:min(100% - 32px,1220px);margin:42px auto 28px;padding:48px 52px;border:1px solid var(--line);border-radius:30px;background:linear-gradient(135deg,color-mix(in srgb,var(--panel) 94%,transparent),color-mix(in srgb,var(--bg2) 92%,transparent));box-shadow:var(--shadow);position:relative;overflow:hidden}
+    .hero:after{content:"2.1";position:absolute;right:28px;bottom:-66px;font:900 13rem/1 system-ui;color:color-mix(in srgb,var(--accent) 8%,transparent);pointer-events:none}
+    .eyebrow,.kicker{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;font-weight:800;color:var(--accent)}
+    h1{max-width:900px;margin:10px 0 18px;font-size:clamp(2.45rem,6vw,5.8rem);line-height:.95;letter-spacing:-.055em}h1 span{color:var(--accent)}
+    .lead{max-width:820px;color:var(--muted);font-size:1.08rem}.hero-meta{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0}.pill,.status{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:5px 10px;font-size:.78rem;color:var(--muted);background:color-mix(in srgb,var(--panel2) 86%,transparent)}
+    .hero-verdict{max-width:910px;padding:16px 18px;border-left:3px solid var(--accent);border-radius:0 14px 14px 0;background:color-mix(in srgb,var(--accent) 8%,var(--panel))}
+    .layout{width:min(100% - 32px,var(--max));margin:0 auto 80px;display:grid;grid-template-columns:210px minmax(0,980px) 210px;gap:34px;align-items:start}.toc,.rail{position:sticky;top:86px}.toc{justify-self:end;width:100%;padding:16px 0}.toc strong,.rail-title{display:block;margin:0 0 12px;color:var(--dim);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}.toc a{display:block;padding:8px 12px;border-left:2px solid var(--line);color:var(--muted);font-size:.88rem}.toc a:hover,.toc a.current{color:var(--ink);border-color:var(--accent);background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 8%,transparent),transparent)}
+    .rail{padding:17px;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--panel) 84%,transparent)}.rail-stat{padding:12px 0;border-top:1px solid var(--line)}.rail-stat:first-of-type{border-top:0}.rail-stat b{display:block;font-size:1.35rem;color:var(--accent)}.rail-stat span{font-size:.78rem;color:var(--muted)}
+    main{min-width:0}.section{margin-bottom:22px;padding:34px;border:1px solid var(--line);border-radius:var(--radius);background:color-mix(in srgb,var(--panel) 94%,transparent);box-shadow:0 12px 36px rgba(0,0,0,.09)}.section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:22px}
+    h2{margin:4px 0 0;font-size:clamp(1.55rem,3vw,2.35rem);line-height:1.18;letter-spacing:-.025em}h3{margin:0 0 8px;font-size:1.08rem}.section-note{max-width:430px;text-align:right;color:var(--muted);font-size:.88rem}p{margin:.55em 0;color:var(--muted)}
+    .qa-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.qa{padding:19px;border:1px solid var(--line);border-radius:17px;background:var(--panel2)}.qa .q{display:flex;gap:10px;color:var(--ink);font-weight:750;line-height:1.4}.qnum{flex:none;color:var(--accent);font-variant-numeric:tabular-nums}.qa p{font-size:.92rem}.status{margin-top:8px}.status.good{color:var(--good);border-color:color-mix(in srgb,var(--good) 35%,var(--line))}.status.warn{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 35%,var(--line))}.status.bad{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 35%,var(--line))}
+    .callout{padding:18px 20px;border:1px solid color-mix(in srgb,var(--accent) 32%,var(--line));border-radius:16px;background:color-mix(in srgb,var(--accent) 6%,var(--panel2))}.callout strong{color:var(--ink)}.callout p{margin:0}
+    .timeline{display:grid;gap:0}.time{display:grid;grid-template-columns:120px 22px 1fr;gap:12px;min-height:105px}.time-label{font-size:.82rem;color:var(--accent);padding-top:2px}.time-line{position:relative}.time-line:before{content:"";position:absolute;left:9px;top:9px;bottom:-9px;width:1px;background:var(--line)}.time:last-child .time-line:before{display:none}.time-line:after{content:"";position:absolute;left:5px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 14%,transparent)}.time-copy b{display:block;color:var(--ink);margin-bottom:4px}.time-copy p{margin:0;font-size:.92rem}
+    .metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.metric{padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--panel2)}.metric b{display:block;font-size:1.72rem;color:var(--accent)}.metric span{font-size:.8rem;color:var(--muted)}.bars{display:grid;gap:12px}.bar{display:grid;grid-template-columns:150px 1fr 78px;align-items:center;gap:12px;font-size:.86rem;color:var(--muted)}.track{height:9px;border-radius:99px;background:color-mix(in srgb,var(--ink) 8%,transparent);overflow:hidden}.fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--accent2))}.fineprint{font-size:.82rem;color:var(--dim)}
+    table{width:100%;border-collapse:collapse;margin-top:16px;font-size:.91rem}th,td{padding:13px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}th{color:var(--ink);font-size:.78rem;letter-spacing:.04em}td{color:var(--muted)}td strong{color:var(--ink)}.recommended{color:var(--good)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 20px}.filter{border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);padding:7px 13px;cursor:pointer}.filter:hover,.filter.active{color:#111;background:var(--accent);border-color:var(--accent)}
+    .gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.case{overflow:hidden;border:1px solid var(--line);border-radius:18px;background:var(--panel2);transition:transform .22s var(--ease),opacity .2s}.case:hover{transform:translateY(-3px)}.case.hidden{display:none}.case-media{aspect-ratio:16/10;overflow:hidden;background:#080a0f;cursor:zoom-in}.case-media.portrait{aspect-ratio:4/5}.case-media img{width:100%;height:100%;object-fit:cover;transition:transform .45s var(--ease)}.case:hover img{transform:scale(1.025)}.case-body{padding:16px}.case-top{display:flex;align-items:start;justify-content:space-between;gap:10px}.case h3{font-size:.99rem}.case p{font-size:.84rem;line-height:1.58;margin:.35em 0 0}.tag{flex:none;color:var(--accent);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}
+    .ecosystem{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.eco{padding:19px;border:1px solid var(--line);border-radius:17px;background:var(--panel2)}.priority{display:inline-block;margin-bottom:10px;color:var(--accent);font-size:.72rem;font-weight:800;letter-spacing:.12em}.eco p{font-size:.88rem}
+    .source-list{display:grid;gap:8px}.source-list a{padding:11px 13px;border:1px solid var(--line);border-radius:12px;color:var(--muted);overflow-wrap:anywhere}.source-list a:hover{color:var(--ink);border-color:var(--accent)}.footer{width:min(100% - 32px,980px);margin:-48px auto 42px;color:var(--dim);font-size:.8rem;text-align:center}
+    .lightbox{position:fixed;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(3,5,9,.88);backdrop-filter:blur(10px);opacity:0;visibility:hidden;transition:.2s}.lightbox.show{opacity:1;visibility:visible}.lightbox img{max-width:min(1280px,94vw);max-height:90vh;border-radius:16px;box-shadow:0 30px 100px #000}.lightbox button{position:fixed;right:22px;top:22px;width:46px;height:46px;border:1px solid rgba(255,255,255,.2);border-radius:50%;background:#111a;color:#fff;font-size:1.4rem;cursor:pointer}.to-top{position:fixed;z-index:80;right:20px;bottom:20px;width:42px;height:42px;border:1px solid var(--line);border-radius:50%;background:var(--panel);color:var(--muted);cursor:pointer;opacity:0;pointer-events:none;transition:.2s}.to-top.show{opacity:1;pointer-events:auto}
+    body.presenter .topbar,body.presenter .toc,body.presenter .rail,body.presenter .footer,body.presenter .to-top{display:none}body.presenter .layout{display:block;width:min(100% - 36px,1120px)}body.presenter .hero{width:min(100% - 36px,1120px)}body.presenter .section{min-height:76vh;display:flex;flex-direction:column;justify-content:center;margin:28px 0;padding:48px}
+    @media(max-width:1320px){.layout{grid-template-columns:190px minmax(0,1fr);max-width:1210px}.rail{display:none}}@media(max-width:980px){.layout{grid-template-columns:1fr;width:min(100% - 24px,900px)}.toc{position:relative;top:auto;justify-self:stretch;display:flex;overflow:auto;padding:8px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}.toc strong{display:none}.toc a{flex:none;border-left:0;border-bottom:2px solid var(--line);white-space:nowrap}.hero{width:min(100% - 24px,900px);padding:38px 30px}.hero:after{font-size:9rem}.section-note{text-align:left}.section-head{align-items:start;flex-direction:column}.qa-grid,.ecosystem{grid-template-columns:1fr}}
+    @media(max-width:680px){.nav{gap:14px}.navlink{display:none}.hero{margin-top:20px;padding:28px 20px}.hero:after{display:none}.section{padding:23px 17px}.gallery,.metric-grid{grid-template-columns:1fr}.bar{grid-template-columns:1fr 65px}.track{grid-column:1/-1;grid-row:2}.time{grid-template-columns:88px 18px 1fr;gap:8px}.case-media,.case-media.portrait{aspect-ratio:4/3}table{font-size:.8rem}.nav-actions .chip-button:first-child{display:none}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}@media print{.topbar,.toc,.rail,.filters,.to-top{display:none!important}.hero,.layout{width:100%;margin:0}.layout{display:block}.section{break-inside:avoid;box-shadow:none}.case.hidden{display:block}}
   </style>
-  <script>
-    try{var savedTheme=localStorage.getItem("gary-theme");if(savedTheme)document.documentElement.setAttribute("data-theme",savedTheme)}catch(e){}
-  </script>
 </head>
 <body>
-  <div class="reading-progress" id="readingProgress"></div>
-  <div class="unav-wrap">
-    <nav class="unav" aria-label="主导航">
-      <a class="unav-logo" href="../index.html">GaryAIGC</a>
-      <a class="unav-link hide-mobile" href="../index.html">AI创作</a>
-      <a class="unav-link active" href="../knowledge.html">知识库文档</a>
-      <a class="unav-link hide-mobile" href="../resources.html">资源库</a>
-      <a class="unav-link hide-mobile" href="../videos.html">视频教程</a>
-      <div class="theme-wrap" id="themeWrap">
-        <button class="theme-btn" id="themeBtn" type="button" aria-haspopup="true" aria-expanded="false">主题 ▾</button>
-        <div class="theme-menu" id="themeMenu">
-          <button class="theme-option" data-theme="dark-gold" type="button">暗金</button>
-          <button class="theme-option" data-theme="dark-blue" type="button">暗蓝</button>
-          <button class="theme-option" data-theme="dark-purple" type="button">暗紫</button>
-          <button class="theme-option" data-theme="light-warm" type="button">暖白</button>
-          <button class="theme-option" data-theme="light-cool" type="button">冷白</button>
-        </div>
-      </div>
-    </nav>
-  </div>
-
+  <div class="progress" id="progress"></div>
+  <header class="topbar"><nav class="nav" aria-label="主导航"><a class="brand" href="../index.html">Gary<i>AIGC</i></a><a class="navlink active" href="../knowledge.html">知识库</a><a class="navlink" href="../resources.html">资源库</a><a class="navlink" href="../videos.html">视频教程</a><div class="nav-actions"><button class="chip-button" id="presenter" type="button">演示模式</button><button class="chip-button" id="theme" type="button">切换明暗</button></div></nav></header>
   <header class="hero">
-    <div class="eyebrow">本地 GPU 实测 · 第一版交付报告</div>
-    <h1>Qwen Image 2.1<br><span>到底快不快、强不强？</span></h1>
-    <p class="hero-lead">社区最近几天反复讨论的问题，我们逐项跑了一遍。下面按“问题—答案—证据”展开，成功与失败结果都保留，方便阅读，也方便录制解说。</p>
-    <div class="hero-meta">
-      <span class="meta-pill">RTX 4070 Ti SUPER 16GB</span>
-      <span class="meta-pill">ComfyUI 0.37.0</span>
-      <span class="meta-pill">多轮本机运行记录</span>
-      <span class="meta-pill">2026年9月23日</span>
-    </div>
-    <div class="hero-verdict"><strong>一句话结论：</strong>轻量四路提示词优化器可以交付第一版；官方 PE 已经能用，但更适合作为后续可选增强。</div>
+    <div class="eyebrow">本地 GPU 实测 · 不是模型宣传稿</div>
+    <h1>Qwen Image 2.1<br><span>现在到底怎么用？</span></h1>
+    <p class="lead">从“文字和手脚容易崩”，到官方 PE、Skill、第三方节点和 4 步 LoRA 接连出现，我们用同一套本地环境把社区争论拆成了可复现的问题。这里保留成功，也保留翻车。</p>
+    <div class="hero-meta"><span class="pill">RTX 4070 Ti SUPER 16GB</span><span class="pill">ComfyUI 0.37.0</span><span class="pill">新增 38 张重点证据</span><span class="pill">更新于 2026-09-25</span></div>
+    <div class="hero-verdict"><strong>当前结论：</strong>没有一种提示词方案包打天下。精确、可验收的任务优先结构化提示词；一句话创意需求适合官方 PE；多参考图先划分每张图的职责，再决定是否 PE。所谓“Skill 更快”目前只在提示词已准备好的生图阶段成立，普通用户的端到端时间与费用仍需补测。</div>
   </header>
-
   <div class="layout">
-    <aside class="toc" aria-label="文章目录">
-      <div class="toc-title">目录</div>
-      <a href="#verdict">社区六问速答</a>
-      <a href="#pe-speed">PE 为什么变成 6 秒</a>
-      <a href="#generation-speed">多一张图慢多少</a>
-      <a href="#capabilities">最强与最弱能力</a>
-      <a href="#tools">三套方案怎么选</a>
-      <a href="#delivery">第一版交付什么</a>
-      <a href="#method">参数与证据</a>
-    </aside>
-
-    <main class="content">
-      <section class="section" id="verdict">
-        <div class="section-kicker">Community Q&A</div>
-        <h2>社区最近在问什么？先用六句话回答</h2>
-        <p class="section-intro">这些不是模型宣传点，而是本轮测试直接回答的问题。后面每一节再展开证据。</p>
-        <div class="verdict-grid">
-<article class="verdict-card"><span class="num">Q1</span><h3>I2I PE 真的变快了吗？</h3><p>是。日常 4096 上限、官方 system prompt、关闭思考，本机 12.83 秒输出合法 JSON。</p><span class="status good">同条件 A/B 印证</span></article>
-          <article class="verdict-card"><span class="num">Q2</span><h3>图片能不能不接 TextGenerator？</h3><p>不能。虽然快到 4.03 秒，却会凭空虚构原图细节。</p><span class="status bad">错误用法</span></article>
-          <article class="verdict-card"><span class="num">Q3</span><h3>T2I 也适合关闭思考吗？</h3><p>可作快速模式，但密集文字在 1024 / 4096 下都出现遗漏，不能当精确排版保证。</p><span class="status warn">需要校验</span></article>
-          <article class="verdict-card"><span class="num">Q4</span><h3>参考图越多越好吗？</h3><p>不是。1440² 下从 1 图到 5 图，耗时由 48 秒升至 394 秒。</p><span class="status warn">控制图数</span></article>
-          <article class="verdict-card"><span class="num">Q5</span><h3>哪些能力最值得用？</h3><p>Mask 局部编辑、画风迁移和透明抠图最稳定。</p><span class="status good">表现突出</span></article>
-          <article class="verdict-card"><span class="num">Q6</span><h3>哪里最容易翻车？</h3><p>精确改机位和保留包装中文，目前仍不可靠。</p><span class="status bad">明确边界</span></article>
+    <aside class="toc" aria-label="文章目录"><strong>讲解目录</strong><a href="#quick">八问速答</a><a href="#timeline">三天发生了什么</a><a href="#speed">速度账怎么算</a><a href="#routing">PE / Skill 怎么选</a><a href="#evidence">案例证据</a><a href="#ecosystem">新生态值不值得测</a><a href="#next">下一轮计划</a><a href="#license">协议与来源</a></aside>
+    <main>
+      <section class="section" id="quick">
+        <div class="section-head"><div><div class="kicker">Community Q&A</div><h2>社区八问，先说人话</h2></div><div class="section-note">每个答案都对应本机运行或明确标注的来源宣称。</div></div>
+        <div class="qa-grid">
+          <article class="qa"><div class="q"><span class="qnum">Q1</span><span>现在最主流的方案还是官方 PE 吗？</span></div><p>是，它仍是最省脑的一体化本地方案。但固定格数、精确换字、局部修复等任务，PE 可能扩写过头。</p><span class="status good">主流，但不是全局默认</span></article>
+          <article class="qa"><div class="q"><span class="qnum">Q2</span><span>Skill 是否全面比 PE 好？</span></div><p>不是。Skill 擅长把约束写清楚；PE 擅长把模糊想法补成完整画面。多图任务常常要先结构化，再选择是否 PE。</p><span class="status warn">按任务路由</span></article>
+          <article class="qa"><div class="q"><span class="qnum">Q3</span><span>Skill 一定更快、更便宜吗？</span></div><p>还不能这样说。25 秒对 43 秒只比较提示词已就绪后的生成阶段，未计算 API、本地语言模型、人工选择预设和返工。</p><span class="status bad">端到端待补测</span></article>
+          <article class="qa"><div class="q"><span class="qnum">Q4</span><span>密集中文真的能做了吗？</span></div><p>两档信息图中，直写和 PE 都做到指定字符串 3/3 正确；但 PE 会加装饰符号，节日海报仍可能出现伪小字。</p><span class="status good">明显进步，仍需逐字验收</span></article>
+          <article class="qa"><div class="q"><span class="qnum">Q5</span><span>手脚崩坏能靠提示词救吗？</span></div><p>泛泛写“修复手脚”是 0/3；指出具体错误、正确关节关系和必须保持项后，直写与 PE 都达到 3/3。</p><span class="status good">精确诊断有效</span></article>
+          <article class="qa"><div class="q"><span class="qnum">Q6</span><span>多轮编辑会不会越改越坏？</span></div><p>不是必然。两条链前五轮都稳定；第六轮直写 3/3 保住盘发，PE 3/3 把盘发改成长发，说明局部任务要少扩写。</p><span class="status warn">单轮只改一项</span></article>
+          <article class="qa"><div class="q"><span class="qnum">Q7</span><span>人物转面、商品四视图可靠吗？</span></div><p>人物、水墨、机甲、皮包、玻璃和金属均能生成稳定视图；但看不见的侧面和背面是推断，不是工程还原。</p><span class="status good">资产初稿可用</span></article>
+          <article class="qa"><div class="q"><span class="qnum">Q8</span><span>4–5 张参考图是不是最稳？</span></div><p>作为小白工作流默认值是合理的。6 图通过“编号 + 单一职责”也能稳定，但图数和分辨率会显著增加等待与职责冲突。</p><span class="status warn">少而明确优先</span></article>
         </div>
       </section>
-
-      <section class="section" id="pe-speed">
-        <div class="section-kicker">Prompt enhancer</div>
-<h2 class="question-title"><span class="q-index">Q1</span><span>I2I PE 为什么从几百秒降到了十几秒？</span></h2>
-<div class="qa-answer"><span class="answer-label">答案</span><p>不是模型突然快了几十倍，而是部署链变了。17,708 字的官方 system prompt 会增加预填充成本，thinking 会进一步放大耗时。日常推荐“官方 system prompt + thinking=false + 4096”；完整思考模式能完成，但要等一分多钟。</p></div>
-        <div class="metric-strip">
-<div class="metric"><strong>12.83s</strong><span>4096 · 官方 system prompt + thinking off</span></div>
-<div class="metric"><strong>82.02s</strong><span>4096 · thinking on 中位数；3/3 完整</span></div>
-          <div class="metric"><strong>339.99s</strong><span>旧 Transformers + bitsandbytes 8-bit</span></div>
+      <section class="section" id="timeline">
+        <div class="section-head"><div><div class="kicker">Release Timeline</div><h2>开源后的三段变化</h2></div><div class="section-note">这是对社区现象与本轮实测的归纳，不把群聊观点当官方结论。</div></div>
+        <div class="timeline">
+          <div class="time"><div class="time-label">第一阶段</div><div class="time-line"></div><div class="time-copy"><b>能力很强，但“文字、手指、脚”先翻车</b><p>早期印象集中在文生图不稳、局部肢体和小字容易崩；与此同时，编辑、人物身份和商品参考能力已经显出优势。</p></div></div>
+          <div class="time"><div class="time-label">第二阶段</div><div class="time-line"></div><div class="time-copy"><b>大家发现它对提示词异常敏感</b><p>角度、参考图职责、逐字文字清单和保持项写得越具体，成功率越高。问题从“模型不行”变成“提示词结构和任务拆分很关键”。</p></div></div>
+          <div class="time"><div class="time-label">第三阶段</div><div class="time-line"></div><div class="time-copy"><b>官方 PE、Skill、插件和加速 LoRA 同时补生态</b><p>PE 解决不会写提示词的问题；Skill 和节点追求更快、更可控；4 步 LoRA 与 ControlNet 则开始解决速度和结构控制。现在真正的问题是：每种方案该用在哪里。</p></div></div>
         </div>
-<div class="chart" role="img" aria-label="不同 I2I PE 部署、思考开关和 token 上限的耗时对比">
-          <div class="bar-row"><span class="bar-label">旧 Transformers，thinking on</span><div class="bar-track"><div class="bar-fill bad" style="--w:100%"></div></div><span class="bar-value">339.99s</span></div>
-<div class="bar-row"><span class="bar-label">4096 · 官方 system prompt，thinking on</span><div class="bar-track"><div class="bar-fill" style="--w:24.12%"></div></div><span class="bar-value">82.02s</span></div>
-          <div class="bar-row"><span class="bar-label">T8 GGUF，冷启动 + thinking</span><div class="bar-track"><div class="bar-fill" style="--w:7.73%"></div></div><span class="bar-value">26.27s</span></div>
-<div class="bar-row"><span class="bar-label">4096 · 官方 system prompt，thinking off</span><div class="bar-track"><div class="bar-fill good" style="--w:3.77%"></div></div><span class="bar-value">12.83s</span></div>
-<div class="bar-row"><span class="bar-label">无官方 system prompt，thinking off</span><div class="bar-track"><div class="bar-fill" style="--w:1.95%"></div></div><span class="bar-value">6.63s</span></div>
-          <div class="bar-row"><span class="bar-label">I2I 模型断图，错误对照</span><div class="bar-track"><div class="bar-fill bad" style="--w:1.19%"></div></div><span class="bar-value">4.03s</span></div>
-        </div>
-        <div class="qa-split">
-          <article class="qa-item"><span class="question">Q2：I2I PE 时，图片该不该连接 TextGenerator？</span><p class="answer">应该。断开后虽然只需 4.03 秒，但模型失去视觉依据，会虚构项链、玫瑰等原图不存在的内容。</p></article>
-<article class="qa-item"><span class="question">Q3：T2I 和 I2I 都适合关闭思考吗？</span><p class="answer">可作为日常快速模式，但仍要做字段校验。I2I 官方模板关闭思考可稳定输出合法 JSON；T2I 官方模板的密集文字任务能完整结束，却仍遗漏精确文字。关闭 thinking 解决速度，不等于解决忠实度。</p></article>
-        </div>
-<div class="callout"><strong>追问：为什么日常也建议 4096？</strong><p>最大长度是上限，不是固定生成量。密集文字任务在 1024 与 4096 下都约 22 秒，正常结束不会因为上限变大而自动慢四倍；4096 提供的是防截断余量。但它不能保证精确文字，两个上限的单次对照都出现了遗漏。</p></div>
-<details><summary>展开看 PE 运行明细</summary><div><div class="table-wrap"><table><thead><tr><th>任务</th><th>上限</th><th>思考</th><th>耗时</th><th>结果</th></tr></thead><tbody><tr><td>I2I，无官方 system prompt × 3</td><td>1024</td><td>关闭</td><td>中位 6.63s</td><td>有可用短输出，但 0/3 官方 JSON</td></tr><tr><td>I2I，官方 system prompt × 3</td><td>1024</td><td>关闭</td><td>中位 11.78s</td><td>3/3 合法 JSON</td></tr><tr><td>I2I，官方 system prompt</td><td>4096</td><td>关闭</td><td>12.83s</td><td>合法 JSON；日常推荐</td></tr><tr><td>I2I，官方 system prompt × 3</td><td>1024</td><td>开启</td><td>中位 35.42s</td><td>3/3 被截在思考阶段</td></tr><tr><td>I2I，官方 system prompt × 3</td><td>4096</td><td>开启</td><td>中位 82.02s</td><td>3/3 完整合法 JSON</td></tr><tr><td>T2I 密集文字</td><td>1024 / 4096</td><td>关闭</td><td>22.83 / 22.38s</td><td>均完整结束，也均有精确文字遗漏</td></tr><tr><td>I2I 模型断图</td><td>1024</td><td>关闭</td><td>4.03s</td><td>虚构原图细节，结果无效</td></tr></tbody></table></div></div></details>
       </section>
-
-      <section class="section" id="generation-speed">
-        <div class="section-kicker">Generation speed</div>
-        <h2 class="question-title"><span class="q-index">Q4</span><span>4–5 张参考图，到底要等多久？</span></h2>
-        <div class="qa-answer"><span class="answer-label">答案</span><p>1440² 下，1 图约 48 秒，4 图约 293 秒，5 图约 394 秒。多一张图的代价不是线性增加，5 图比 4 图又多等约 100 秒。</p></div>
-        <div class="chart" role="img" aria-label="1440 乘 1440 生成速度随参考图数量上升">
-          <div class="bar-row"><span class="bar-label">1 张参考图 · 1440²</span><div class="bar-track"><div class="bar-fill good" style="--w:12.23%"></div></div><span class="bar-value">48.19s</span></div>
-          <div class="bar-row"><span class="bar-label">4 张参考图 · 1440²</span><div class="bar-track"><div class="bar-fill" style="--w:74.48%"></div></div><span class="bar-value">293.45s</span></div>
-          <div class="bar-row"><span class="bar-label">5 张参考图 · 1440²</span><div class="bar-track"><div class="bar-fill bad" style="--w:100%"></div></div><span class="bar-value">394.00s</span></div>
-        </div>
-        <div class="metric-strip">
-          <div class="metric"><strong>6.1×</strong><span>1440² 下，4 图相对 1 图耗时</span></div>
-          <div class="metric"><strong>+34.3%</strong><span>从 4 图增加到 5 图的额外耗时</span></div>
-          <div class="metric"><strong>0.03s</strong><span>4 图自动缓存与关闭缓存的差值</span></div>
-        </div>
-        <div class="callout"><strong>怎么用更划算？</strong><p>日常工作流控制在 4–5 张参考图以内。模型能接更多，不代表速度、角色分配和一致性仍然划算。</p></div>
+      <section class="section" id="speed">
+        <div class="section-head"><div><div class="kicker">Time & Cost</div><h2>“快”必须分两本账</h2></div><div class="section-note">生成阶段数据已测；普通用户端到端数据尚未完成。</div></div>
+        <div class="metric-grid"><div class="metric"><b>24.89s</b><span>信息图直写：提示词已准备好的生图阶段均值</span></div><div class="metric"><b>43.13s</b><span>信息图官方 PE + 生图阶段均值</span></div><div class="metric"><b>95.9%</b><span>本页 20 张案例从 38.7MB 压至 1.57MB</span></div></div>
+        <div class="bars"><div class="bar"><span>信息图·直写</span><div class="track"><div class="fill" style="width:57.7%"></div></div><b>24.89s</b></div><div class="bar"><span>信息图·官方 PE</span><div class="track"><div class="fill" style="width:100%"></div></div><b>43.13s</b></div><div class="bar"><span>连续编辑·直写</span><div class="track"><div class="fill" style="width:59.4%"></div></div><b>25.91s</b></div><div class="bar"><span>连续编辑·官方 PE</span><div class="track"><div class="fill" style="width:100%"></div></div><b>43.64s</b></div></div>
+        <div class="callout" style="margin-top:20px"><p><strong>不能据此说 Skill 全流程更快。</strong>普通用户还要选择预设，再由在线 API 或本地语言模型生成提示词。完整比较必须加上冷启动、提示词推理、网络/API 费用、图像生成和返工次数。专家手写也要计算人工时间。</p></div>
       </section>
-
-      <section class="section" id="capabilities">
-        <div class="section-kicker">Visual capability</div>
-        <h2 class="question-title"><span class="q-index">Q5</span><span>它最擅长什么，最容易在哪里翻车？</span></h2>
-        <div class="qa-answer"><span class="answer-label">答案</span><p>局部 Mask、透明抠图和深度画风迁移表现突出；精确改变机位和保留真实包装文字仍是明显短板。</p></div>
-        <p class="section-intro">点击图片可查看大图。成功与失败样本都保留，便于直接用于视频讲解。</p>
+      <section class="section" id="routing">
+        <div class="section-head"><div><div class="kicker">Method Router</div><h2>PE、Skill、混合路线怎么选</h2></div><div class="section-note">不是比较谁“高级”，而是把错误的方法从任务里拿掉。</div></div>
+        <table><thead><tr><th>输入情况</th><th>默认方法</th><th>为什么</th></tr></thead><tbody>
+          <tr><td><strong>一句话创意</strong><br>“做一张高级秋季海报”</td><td class="recommended">官方 PE</td><td>补构图、材质、光线和空间层次，减少用户学习门槛。</td></tr>
+          <tr><td><strong>精确编辑</strong><br>改色、换字、修手脚、移除物体</td><td class="recommended">结构化 Skill / 模板</td><td>把目标、位置、保持项和禁止项写死，避免 PE 擅自重绘。</td></tr>
+          <tr><td><strong>固定结构</strong><br>六格分镜、九宫格、四视图</td><td class="recommended">Skill 直写</td><td>PE 可能扩成更多格或改动布局；已测六格同种子被扩成十二格。</td></tr>
+          <tr><td><strong>多参考图组合</strong><br>角色 + 服装 + 包 + 姿势</td><td class="recommended">先编号职责，再按需 PE</td><td>每张图只承担一个角色，先防止职责漂移，再决定是否需要创意融合。</td></tr>
+          <tr><td><strong>透明图 / 抠图</strong></td><td class="recommended">固定 RGBA 模板</td><td>透明输出有严格后缀和结果检查，不需要额外创意扩写。</td></tr>
+        </tbody></table><p class="fineprint">4096 是实用输出上限，不是目标长度。日常复杂任务与多文字提示词可以保留 4096 余量，但不应鼓励模型无意义写满。</p>
+      </section>
+      <section class="section" id="evidence">
+        <div class="section-head"><div><div class="kicker">Visual Evidence</div><h2>按场景看案例</h2></div><div class="section-note">点击图片可放大。筛选既可用于阅读，也适合录屏逐段讲解。</div></div>
+        <div class="filters" role="group" aria-label="案例筛选"><button class="filter active" data-filter="all" type="button">全部</button><button class="filter" data-filter="story" type="button">分镜与人物</button><button class="filter" data-filter="text" type="button">文字与海报</button><button class="filter" data-filter="product" type="button">商品资产</button><button class="filter" data-filter="edit" type="button">连续编辑</button><button class="filter" data-filter="compare" type="button">失败对照</button></div>
         <div class="gallery">
-          <article class="case">
-            <div class="case-media">
-              <figure><img class="zoomable" src="../assets/qwen-image-2-1-report/fashion-before.png" alt="红色礼服原图" loading="lazy"><span class="case-label">原图</span></figure>
-              <figure><img class="zoomable" src="../assets/qwen-image-2-1-report/mask-after.png" alt="祖母绿天鹅绒礼服编辑结果" loading="lazy"><span class="case-label">Mask 编辑结果</span></figure>
-            </div>
-            <div class="case-body"><div class="case-head"><h3>独立 Mask 局部换材质</h3><span class="status good">通过</span></div><p>红色缎面礼服改为祖母绿天鹅绒，面部、姿态、耳环、玫瑰、桌面和背景基本保持，是本轮最稳定的编辑案例。</p></div>
-          </article>
-
-          <article class="case">
-            <div class="case-media">
-              <figure><img class="zoomable" src="../assets/qwen-image-2-1-report/comic-before.png" alt="复古漫画原图" loading="lazy"><span class="case-label">原图</span></figure>
-              <figure class="checker"><img class="zoomable" src="../assets/qwen-image-2-1-report/transparent-after.png" alt="人物与汽车透明背景抠图结果" loading="lazy"><span class="case-label">RGBA 结果</span></figure>
-            </div>
-            <div class="case-body"><div class="case-head"><h3>透明抠图并保留漫画风</h3><span class="status good">通过</span></div><p>人物与可见车辆组成一个前景组，保留墨线和网点质感。结果包含 228,971 个全透明像素。</p></div>
-          </article>
-
-          <article class="case wide">
-            <div class="case-media triple">
-              <figure><img class="zoomable" src="../assets/qwen-image-2-1-report/style-content-before.png" alt="雨窗人物内容参考图" loading="lazy"><span class="case-label">内容参考</span></figure>
-              <figure><img class="zoomable" src="../assets/qwen-image-2-1-report/comic-before.png" alt="复古漫画风格参考图" loading="lazy"><span class="case-label">风格参考</span></figure>
-              <figure><img class="zoomable" src="../assets/qwen-image-2-1-report/style-after.png" alt="雨窗人物复古漫画风迁移结果" loading="lazy"><span class="case-label">迁移结果</span></figure>
-            </div>
-            <div class="case-body"><div class="case-head"><h3>画风迁移不只是换颜色</h3><span class="status good">通过</span></div><p>结果明确获得粗墨线、印刷网点和受限色板，同时保留雨窗人物的场景结构。人物细节有轻微漂移，但风格迁移深度明显。</p></div>
-          </article>
-
-          <article class="case">
-            <div class="case-media">
-              <figure><img class="zoomable" src="../assets/qwen-image-2-1-report/viewpoint-before.png" alt="仙侠人物原始机位" loading="lazy"><span class="case-label">原始机位</span></figure>
-              <figure><img class="zoomable" src="../assets/qwen-image-2-1-report/viewpoint-after.png" alt="要求低机位后的生成结果" loading="lazy"><span class="case-label">视角变化结果</span></figure>
-            </div>
-            <div class="case-body"><div class="case-head"><h3>自然语言指定视角</h3><span class="status bad">未通过</span></div><p>人物姿态和裁切略有变化，但仍接近原来的平视回眸构图，没有形成明确的低机位三分之四正面。</p></div>
-          </article>
-
-          <article class="case">
-            <div class="case-media">
-              <figure><img class="zoomable" src="../assets/qwen-image-2-1-report/product-before.webp" alt="RIO 商品包装原图" loading="lazy"><span class="case-label">原包装</span></figure>
-              <figure><img class="zoomable" src="../assets/qwen-image-2-1-report/product-after.png" alt="高级酒吧环境中的 RIO 包装编辑结果" loading="lazy"><span class="case-label">广告环境结果</span></figure>
-            </div>
-            <div class="case-body"><div class="case-head"><h3>商品包装与精确文字</h3><span class="status bad">未通过</span></div><p>罐体结构和广告氛围成立，但多处中文被替换或乱码。涉及真实包装、菜单、合同和品牌物料时不能依赖一次生成。</p></div>
-          </article>
+          <article class="case" data-tags="story compare"><div class="case-media"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/01_六格分镜_直写成功.webp" alt="结构化提示词生成的六格视频分镜"></div><div class="case-body"><div class="case-top"><h3>六格分镜：直写 3/3</h3><span class="tag">PASS</span></div><p>严格三列两行，身份、服装、书店和道具连续。</p></div></article>
+          <article class="case" data-tags="story compare"><div class="case-media"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/02_六格分镜_PE扩成12格_失败对照.webp" alt="官方 PE 将六格分镜扩成十二格"></div><div class="case-body"><div class="case-top"><h3>同任务 PE：扩成 12 格</h3><span class="tag">FAIL</span></div><p>画面漂亮，但固定结构失守，说明 PE 不等于更听话。</p></div></article>
+          <article class="case" data-tags="story"><div class="case-media"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/03_真人九宫格表情.webp" alt="真人九宫格表情资产"></div><div class="case-body"><div class="case-top"><h3>真人九宫格表情</h3><span class="tag">ASSET</span></div><p>身份与服装稳定；细微情绪仍需检查逐格强度。</p></div></article>
+          <article class="case" data-tags="story"><div class="case-media"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/07_动漫九宫格表情.webp" alt="动漫角色九宫格表情资产"></div><div class="case-body"><div class="case-top"><h3>动漫九宫格表情</h3><span class="tag">CROSS STYLE</span></div><p>同一预设跨真人与动漫，角色发型、发饰和画风保持。</p></div></article>
+          <article class="case" data-tags="story product"><div class="case-media"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/08_水墨人物四视图.webp" alt="水墨人物四视图"></div><div class="case-body"><div class="case-top"><h3>水墨人物四视图</h3><span class="tag">VIEW</span></div><p>正侧背面与佩剑清楚；隐藏面依然是模型推断。</p></div></article>
+          <article class="case" data-tags="product"><div class="case-media"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/09_机甲四视图.webp" alt="科幻机甲四视图"></div><div class="case-body"><div class="case-top"><h3>复杂机甲四视图</h3><span class="tag">HARD SURFACE</span></div><p>装甲、骨架、肩甲和背翼一致，适合概念与建模参考。</p></div></article>
+          <article class="case" data-tags="product"><div class="case-media"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/04_商品四视图.webp" alt="皮革手提包商品四视图"></div><div class="case-body"><div class="case-top"><h3>皮革商品四视图 3/3</h3><span class="tag">PRODUCT</span></div><p>四栏顺序和核心结构稳定；真实生产仍需补侧背参考。</p></div></article>
+          <article class="case" data-tags="product"><div class="case-media portrait"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/05_商品生活方式.webp" alt="商品生活方式广告"></div><div class="case-body"><div class="case-top"><h3>商品生活方式广告</h3><span class="tag">LIFESTYLE</span></div><p>从白底参考进入真实场景，产品身份与金属件保持良好。</p></div></article>
+          <article class="case" data-tags="product text"><div class="case-media portrait"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/06_商品节庆海报.webp" alt="商品节庆礼赠海报"></div><div class="case-body"><div class="case-top"><h3>商品节庆礼赠</h3><span class="tag">CAMPAIGN</span></div><p>产品结构、场景包装和节庆氛围可以在同一次生成中兼顾。</p></div></article>
+          <article class="case" data-tags="text"><div class="case-media portrait"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/10_时尚杂志封面_文字正确.webp" alt="中英文文字正确的时尚杂志封面"></div><div class="case-body"><div class="case-top"><h3>中英文封面文字正确</h3><span class="tag">TYPOGRAPHY</span></div><p>“RED LINE”与“秋冬高定特辑”逐字正确，无额外小字。</p></div></article>
+          <article class="case" data-tags="text compare"><div class="case-media portrait"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/11_春节竖版海报_干净文字.webp" alt="文字干净的春节竖版海报"></div><div class="case-body"><div class="case-top"><h3>春节海报：干净文字</h3><span class="tag">CLEAN</span></div><p>标题与副标题 3/3 正确，未出现额外伪文字。</p></div></article>
+          <article class="case" data-tags="text compare"><div class="case-media portrait"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/12_中秋竖版海报_额外伪小字.webp" alt="出现额外伪小字的中秋海报"></div><div class="case-body"><div class="case-top"><h3>中秋海报：指定文字对，额外小字错</h3><span class="tag">CHECK</span></div><p>证明“指定文字正确”和“没有其他文字”必须分开验收。</p></div></article>
+          <article class="case" data-tags="text"><div class="case-media"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/13_信息卡_直写_全部文字正确.webp" alt="直写提示词生成的正确文字信息卡"></div><div class="case-body"><div class="case-top"><h3>信息卡：直写全部正确</h3><span class="tag">DIRECT</span></div><p>八项指定字符串完整，版式克制，适合严格文字清单。</p></div></article>
+          <article class="case" data-tags="text"><div class="case-media"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/14_密集信息图_PE_全部文字正确.webp" alt="官方 PE 生成的密集信息图"></div><div class="case-body"><div class="case-top"><h3>密集信息图：PE 全部正确</h3><span class="tag">PE</span></div><p>版式更丰富，但会加入装饰性标点，需要二次检查。</p></div></article>
+          <article class="case" data-tags="edit compare"><div class="case-media portrait"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/15_连续编辑第6轮_直写保住发型.webp" alt="连续编辑第六轮直写保住发型"></div><div class="case-body"><div class="case-top"><h3>第六轮直写：只改微笑</h3><span class="tag">3/3</span></div><p>完成表情变化，同时保持盘发、文字、姿势和已有编辑。</p></div></article>
+          <article class="case" data-tags="edit compare"><div class="case-media portrait"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/16_连续编辑第6轮_PE发型漂移.webp" alt="连续编辑第六轮 PE 导致发型漂移"></div><div class="case-body"><div class="case-top"><h3>第六轮 PE：发型漂移</h3><span class="tag">3/3 DRIFT</span></div><p>三个种子都将盘发改成长发，属于任务外重绘。</p></div></article>
+          <article class="case" data-tags="product"><div class="case-media portrait"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/17_玻璃香水瓶_文生图源图.webp" alt="透明玻璃香水瓶源图"></div><div class="case-body"><div class="case-top"><h3>透明玻璃香水瓶源图</h3><span class="tag">GLASS</span></div><p>厚玻璃、琥珀液体、银盖与标签为跨材质测试基准。</p></div></article>
+          <article class="case" data-tags="product text"><div class="case-media"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/18_玻璃香水瓶_四视图.webp" alt="透明玻璃香水瓶四视图"></div><div class="case-body"><div class="case-top"><h3>玻璃香水瓶四视图 3/3</h3><span class="tag">AURA 07</span></div><p>可见正面标签准确，侧面和背面没有乱加文字。</p></div></article>
+          <article class="case" data-tags="product"><div class="case-media"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/19_金属耳机_四视图.webp" alt="镜面金属耳机四视图"></div><div class="case-body"><div class="case-top"><h3>镜面金属耳机四视图 3/3</h3><span class="tag">METAL</span></div><p>镀铬头梁、银色耳罩、蓝色耳垫与铰链结构保持。</p></div></article>
+          <article class="case" data-tags="product"><div class="case-media"><img loading="lazy" src="../assets/qwen-image-2-1-report/v2/20_金属耳机_生活方式.webp" alt="镜面金属耳机生活方式广告"></div><div class="case-body"><div class="case-top"><h3>镜面金属生活方式广告</h3><span class="tag">LIGHTING</span></div><p>高光未明显过曝，材质没有塑料化，场景图可直接做提案。</p></div></article>
         </div>
       </section>
-
-      <section class="section" id="tools">
-        <div class="section-kicker">Tooling comparison</div>
-        <h2 class="question-title"><span class="q-index">Q6</span><span>官方 PE、T8 节点和四路 Skill，应该怎么选？</span></h2>
-        <div class="qa-answer"><span class="answer-label">答案</span><p>普通用户默认用轻量四路 Skill；需要离线官方 PE、结构校验或教程研究时，再选 T8 或官方 PE。</p></div>
-        <div class="metric-strip">
-          <div class="metric"><strong>23.24s</strong><span>T2I Q4_K_M 冷启动总耗时</span></div>
-          <div class="metric"><strong>26.27s</strong><span>I2I Q4_K_M + mmproj 冷启动总耗时</span></div>
-          <div class="metric"><strong>37/37</strong><span>正式单元测试通过</span></div>
+      <section class="section" id="ecosystem">
+        <div class="section-head"><div><div class="kicker">New Ecosystem</div><h2>新模型与节点，哪些值得测</h2></div><div class="section-note">下面是资料核实后的测试优先级，不是已完成结果。</div></div>
+        <div class="ecosystem">
+          <article class="eco"><span class="priority">P0 · HIGH</span><h3>阿里 4 步 Acc LoRA</h3><p>官方卡确认文生图与编辑可降到 4 NFE，但也明确小字可能变差、编辑结果可能更糊更暗。最值得先测，必须同时验文字、手脚和材质。</p></article>
+          <article class="eco"><span class="priority">P0 · HIGH</span><h3>Qwen Image 2.1 Fix LoRA</h3><p>作者宣称需配合推荐工作流，但没有公开训练细节。要拆开比较 LoRA、采样参数与提示词，避免把“工作流调参”误当成 LoRA 能力。</p></article>
+          <article class="eco"><span class="priority">P1 · CONDITIONAL</span><h3>ControlNet Union</h3><p>约 7GB，一个模型覆盖 8 类结构控制和修补。仅当姿态、深度、线稿或蒙版必须严格锁定时才有必要，不适合塞进所有小白工作流。</p></article>
+          <article class="eco"><span class="priority">P1 · RESEARCH</span><h3>MiMo-V2.6-Distill-Qwen-9B</h3><p>它是 9B 多模态 Agent 模型，不是 Qwen Image 专用 PE。可测作本地提示词助手，但必须先确认量化、节点兼容、纯提示词输出与端到端速度。</p></article>
+          <article class="eco"><span class="priority">P2 · LOW</span><h3>Natural Exposure LoRA</h3><p>实验预览，只用 38 对图训练。若普通曝光/曲线调整就能达到同等效果，就没有必要增加 LoRA 和身份漂移风险。</p></article>
+          <article class="eco"><span class="priority">REFERENCE ONLY</span><h3>公众号“12 大应用场景”</h3><p>可借鉴工作流交互和场景清单；其中“4 步几乎无损”“本地 Qwen3.5 最差”等判断，仍需本机同种子 A/B 后才能采用。</p></article>
         </div>
-        <h3>四路 Skill 与外部 Skill 的差别</h3>
-        <div class="comparison">
-          <article class="compare-card recommended">
-            <div class="compare-title"><strong>Gary 四路 Skill</strong><span class="status good">生产默认</span></div>
-            <ul><li>四路任务自动判断，默认只返回可复制提示词。</li><li>按需求展开，不强制固定篇幅。</li><li>透明图有专门规则，并做过真实生成回归。</li></ul>
-          </article>
-          <article class="compare-card">
-            <div class="compare-title"><strong>iamyoki Skill</strong><span class="status warn">择优借鉴</span></div>
-            <ul><li>只分文生图和编辑两路，默认输出较长。</li><li>短需求也会补到约 400–500 英文词。</li><li>属性解耦、比例互斥和离线校验值得借鉴。</li></ul>
-          </article>
-        </div>
-        <div class="callout"><strong>校验器通过不等于出图通过。</strong><p>iamyoki 自带的 6 个测试只检查字段、换行、引号、比例格式和少量禁词，不检查 400–500 词、20 句、参考图职责、精确文字遗漏和透明包装。它适合做格式冒烟，不能替代 GPU 评测。</p></div>
       </section>
-
-      <section class="section" id="delivery">
-        <div class="section-kicker">Delivery plan</div>
-        <h2 class="question-title"><span class="q-index">Q7</span><span>现在能不能交付第一版？</span></h2>
-        <div class="qa-answer"><span class="answer-label">答案</span><p>可以。第一版先解决“普通人一句话得到可复制提示词”，官方 PE 作为下一版的实验增强，不拖慢当前交付。</p></div>
-        <div class="delivery">
-          <article class="delivery-step"><span class="version">V1.0 BETA · NOW</span><h3>轻量四路提示词优化器</h3><p>默认交付。支持文生图、图片编辑、参考图创作、透明图抠图；普通模式只返回提示词，不要求下载 9B PE。</p><span class="status good">可以发布</span></article>
-          <article class="delivery-step"><span class="version">V1.1 · NEXT</span><h3>本地官方 PE 实验节点</h3><p>日常 4096、极简快速、官方完整质量和自动降级；记录耗时、截断与降级状态。</p><span class="status warn">补测后加入</span></article>
-        </div>
-        <details><summary>展开看第一版刻意不做的四件事</summary><div><ul class="check-list"><li class="no">不把两个 9B PE 权重打入插件包。</li><li class="no">不在普通提示词里塞入步数、采样器、硬件和复杂风险说明。</li><li class="no">不把 6–10 图、4K 压力和长思考包装成日常稳定能力。</li><li>保留模型边界，让用户知道何时需要 Mask、人工排版或二次修复。</li></ul></div></details>
+      <section class="section" id="next">
+        <div class="section-head"><div><div class="kicker">Next Test</div><h2>下一轮怎么跑</h2></div><div class="section-note">当前只完成方案，未启动 GPU、未下载模型。</div></div>
+        <table><thead><tr><th>阶段</th><th>内容</th><th>预计时间</th><th>交付判断</th></tr></thead><tbody>
+          <tr><td>01</td><td><strong>端到端四路线</strong><br>官方 PE、Skill+API、Skill+本地模型、专家手写</td><td>3–4 小时</td><td>回答真实速度、费用和一次成功率</td></tr>
+          <tr><td>02</td><td><strong>4 步 Acc LoRA</strong><br>对照 40 步、人物、文字、多图、材质</td><td>2–3 小时</td><td>决定是否进入 RH 快速版</td></tr>
+          <tr><td>03</td><td><strong>Fix LoRA</strong><br>拆工作流，分离 LoRA 与参数贡献</td><td>约 2 小时</td><td>判断是否真能降低肢体/文字翻车</td></tr>
+          <tr><td>04</td><td><strong>ControlNet Union</strong><br>Pose、Depth、Canny、Inpaint+Pose</td><td>3–4 小时</td><td>只在明显优于普通参考图时保留</td></tr>
+          <tr><td>05</td><td><strong>MiMo 提示词助手</strong><br>格式、忠实度、冷/热启动、显存</td><td>2–4 小时</td><td>决定是否值得进插件</td></tr>
+        </tbody></table>
+        <div class="callout" style="margin-top:20px"><p><strong>优先顺序：</strong>先完成端到端比较，再测 4 步与 Fix。ControlNet 和 MiMo 都会增加部署复杂度，只有能解决现有工作流解决不了的问题，才值得进入公开产品线。</p></div>
       </section>
-
-      <section class="section" id="method">
-        <div class="section-kicker">Method & sources</div>
-        <h2>需要复现？参数和来源放在这里</h2>
-        <p class="section-intro">正文只保留结论，技术细节按需展开，录制视频时可以直接略过。</p>
-        <details><summary>Qwen Image 2.1 生成参数</summary><div>扩散模型为 Qwen Image 2.1 INT8 ConvRot；视觉编码器为 Qwen3-VL 8B INT8 ConvRot；Euler / simple、25 步、CFG 1、denoise 1、固定 seed 260923、负面提示词为空。速度组使用 1024×1024 与 1440×1440。</div></details>
-        <details><summary>Comfy 原生 PE 参数</summary><div>Qwen3.5 9B Qwen Image 2.1 PE T2I/I2I INT8 ConvRot。社区采样组使用 temperature 0.7、Top K 20、Top P 0.8、Min P 0.05、repetition penalty 1.05，并对比 1024 / 4096 与思考开关。日常预设建议 4096；官方仓库当前完整模式默认则是 T2I 16,256、Edit/I2I 24,000，且均要求 thinking on。</div></details>
-        <details><summary>录屏演示模式</summary><div>在页面地址后加 <code>?present=1</code>，或加载页面后按 <code>P</code>，可隐藏站点导航、目录和打赏条，让正文居中铺满；再次按 <code>P</code> 恢复普通阅读模式。</div></details>
-        <details><summary>证据等级</summary><div>提示词协议与许可证来自官方仓库文件检查；速度、PE、T8 和图片能力来自本机 GPU 实测；画面结论为人工视觉检查；外部 Skill 结论来自冻结源码和自测，不把 README 宣传当作实证。</div></details>
-        <div class="sources">
-          <a class="source-link" href="https://github.com/QwenLM/Qwen-Image-2.1/tree/main/prompt_rewrite" target="_blank" rel="noopener"><span>Qwen Image 2.1 官方 Prompt Rewrite</span><span>GitHub ↗</span></a>
-          <a class="source-link" href="https://github.com/Comfy-Org/ComfyUI/commit/9498c42b" target="_blank" rel="noopener"><span>ComfyUI TextGenerate：system prompt 与 thinking 分离</span><span>GitHub ↗</span></a>
-          <a class="source-link" href="https://github.com/T8mars/Comfyui-Qwen-Image-Prompt-Rewrite-T8" target="_blank" rel="noopener"><span>T8 Qwen Image Prompt Rewrite 节点</span><span>GitHub ↗</span></a>
-          <a class="source-link" href="https://huggingface.co/t8star/qwen-image-2.1-comfy/tree/main" target="_blank" rel="noopener"><span>T8 GGUF 模型文件</span><span>Hugging Face ↗</span></a>
-          <a class="source-link" href="https://github.com/iamyoki/qwen-image-2.1-skill" target="_blank" rel="noopener"><span>iamyoki Qwen Image 2.1 Skill</span><span>GitHub ↗</span></a>
-        </div>
-        <div class="article-note">说明：不同 GPU、量化、ComfyUI 版本、图片尺寸、参考图数量和 token 上限会显著改变速度。本文数字用于复现本机决策，不是所有硬件的统一基准。</div>
+      <section class="section" id="license">
+        <div class="section-head"><div><div class="kicker">License & Sources</div><h2>发布前必须知道的事</h2></div><div class="section-note">模型不是 Apache 2.0，而是 Qwen Research License。</div></div>
+        <div class="callout"><p><strong>商业使用需要单独授权。</strong>官方协议将 Non-Commercial 定义为仅研究或评估用途，并写明商业用途应联系 model-business@notice.qwencloud.com。做电商、接商单或把工作流用于收费服务前，应先确认授权。</p></div>
+        <div class="source-list" style="margin-top:18px"><a href="https://huggingface.co/Qwen/Qwen-Image-2.1" target="_blank" rel="noopener">官方模型卡：统一文生图/编辑、最多 10 张参考图、RGBA 与局部编辑</a><a href="https://huggingface.co/Qwen/Qwen-Image-2.1/blob/main/LICENSE" target="_blank" rel="noopener">官方 Qwen Research License</a><a href="https://huggingface.co/alibaba-pai/Qwen-Image-2.1-Fun-Acc-LoRAs" target="_blank" rel="noopener">阿里 4 步 Acc LoRA</a><a href="https://huggingface.co/alibaba-pai/Qwen-Image-2.1-Fun-Controlnet-Union" target="_blank" rel="noopener">阿里 ControlNet Union</a><a href="https://huggingface.co/e-n-v-y/Qwen-Image-2.1-Fix" target="_blank" rel="noopener">Qwen Image 2.1 Fix LoRA</a><a href="https://huggingface.co/prithivMLmods/Qwen-Image-2.1-Natural-Exposure-LoRA" target="_blank" rel="noopener">Natural Exposure LoRA</a><a href="https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Distill-Qwen-9B" target="_blank" rel="noopener">MiMo-V2.6-Distill-Qwen-9B</a></div>
       </section>
     </main>
+    <aside class="rail" aria-label="证据摘要"><span class="rail-title">Evidence</span><div class="rail-stat"><b>12 / 12</b><span>两档信息图指定字符串正确</span></div><div class="rail-stat"><b>3 / 3</b><span>精确手脚修复通过</span></div><div class="rail-stat"><b>6 rounds</b><span>连续编辑链完成</span></div><div class="rail-stat"><b>10 images</b><span>玻璃与金属跨材质复测</span></div><div class="rail-stat"><b>16GB</b><span>本机显存环境</span></div></aside>
   </div>
-
-  <div class="donate-strip" id="donateBtn">打赏作者</div>
-  <div class="modal-mask" id="donateModal" role="dialog" aria-modal="true" aria-labelledby="donateTitle">
-    <div class="modal-card"><h3 id="donateTitle">请作者喝杯咖啡</h3><p>如果这份实测帮你少走了一点弯路，欢迎扫码支持。</p><img src="../wx-pay.jpg" alt="微信收款码"><br><button class="modal-close" id="donateClose" type="button">关闭</button></div>
-  </div>
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="图片大图预览"><button class="lightbox-close" id="lightboxClose" type="button" aria-label="关闭图片预览">×</button><img id="lightboxImage" alt="大图预览"></div>
-  <button class="totop" id="toTop" type="button" aria-label="返回顶部">↑</button>
-  <footer class="footer">© 2026 GaryAIGC · 真实测试，保留边界，让 AI 创作更简单</footer>
-
+  <footer class="footer">本页结论区分“官方宣称、第三方宣称、本机 GPU 实测与人工目测”。生成结果仍需逐字、逐肢体和逐参考图验收。</footer>
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="案例大图"><button id="closeLightbox" type="button" aria-label="关闭">×</button><img id="lightboxImage" alt=""></div><button class="to-top" id="toTop" type="button" aria-label="返回顶部">↑</button>
   <script>
-    (function(){
-      var presentParam=new URLSearchParams(location.search).get('present');
-      if(presentParam==='1')document.body.classList.add('presentation-mode');
-      var progress=document.getElementById('readingProgress'),toTop=document.getElementById('toTop');
-      function onScroll(){var h=document.documentElement.scrollHeight-window.innerHeight;var p=h>0?window.scrollY/h*100:0;progress.style.width=p+'%';toTop.classList.toggle('show',window.scrollY>700)}
-      addEventListener('scroll',onScroll,{passive:true});onScroll();
-      toTop.addEventListener('click',function(){scrollTo({top:0,behavior:'smooth'})});
-
-      var wrap=document.getElementById('themeWrap'),themeBtn=document.getElementById('themeBtn');
-      themeBtn.addEventListener('click',function(e){e.stopPropagation();var open=wrap.classList.toggle('open');themeBtn.setAttribute('aria-expanded',String(open))});
-      document.querySelectorAll('.theme-option').forEach(function(btn){btn.addEventListener('click',function(){var t=btn.dataset.theme;document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('gary-theme',t)}catch(e){}wrap.classList.remove('open');themeBtn.setAttribute('aria-expanded','false')})});
-      document.addEventListener('click',function(){wrap.classList.remove('open');themeBtn.setAttribute('aria-expanded','false')});
-
-      var modal=document.getElementById('donateModal'),donateBtn=document.getElementById('donateBtn'),donateClose=document.getElementById('donateClose');
-      function closeDonate(){modal.classList.remove('show')}
-      donateBtn.addEventListener('click',function(){modal.classList.add('show');donateClose.focus()});donateClose.addEventListener('click',closeDonate);modal.addEventListener('click',function(e){if(e.target===modal)closeDonate()});
-
-      var lightbox=document.getElementById('lightbox'),lightboxImage=document.getElementById('lightboxImage'),lightboxClose=document.getElementById('lightboxClose');
-      function closeLightbox(){lightbox.classList.remove('show');lightboxImage.removeAttribute('src')}
-      document.querySelectorAll('.zoomable').forEach(function(img){img.addEventListener('click',function(){lightboxImage.src=img.src;lightboxImage.alt=img.alt;lightbox.classList.add('show');lightboxClose.focus()})});
-      lightboxClose.addEventListener('click',closeLightbox);lightbox.addEventListener('click',function(e){if(e.target===lightbox)closeLightbox()});
-      document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeLightbox();closeDonate();wrap.classList.remove('open')}});
-      document.addEventListener('keydown',function(e){var tag=(e.target&&e.target.tagName)||'';if((tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT')||e.ctrlKey||e.metaKey||e.altKey)return;if(e.key.toLowerCase()==='p')document.body.classList.toggle('presentation-mode')});
-
-      var tocLinks=[].slice.call(document.querySelectorAll('.toc a')),sections=tocLinks.map(function(a){return document.querySelector(a.getAttribute('href'))}).filter(Boolean);
-      var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){tocLinks.forEach(function(a){a.classList.toggle('current',a.getAttribute('href')==='#'+entry.target.id)})}})},{rootMargin:'-18% 0px -72% 0px'});
-      sections.forEach(function(section){observer.observe(section)});
-    })();
+    const root=document.documentElement,saved=localStorage.getItem("qwen-report-theme");if(saved)root.dataset.theme=saved;
+    document.getElementById("theme").addEventListener("click",()=>{root.dataset.theme=root.dataset.theme==="paper"?"ink":"paper";localStorage.setItem("qwen-report-theme",root.dataset.theme)});
+    document.getElementById("presenter").addEventListener("click",e=>{document.body.classList.toggle("presenter");e.currentTarget.textContent=document.body.classList.contains("presenter")?"退出演示":"演示模式"});
+    const filters=[...document.querySelectorAll(".filter")],cases=[...document.querySelectorAll(".case")];filters.forEach(button=>button.addEventListener("click",()=>{filters.forEach(x=>x.classList.remove("active"));button.classList.add("active");const key=button.dataset.filter;cases.forEach(card=>card.classList.toggle("hidden",key!=="all"&&!card.dataset.tags.split(" ").includes(key)))}));
+    const lightbox=document.getElementById("lightbox"),lightboxImage=document.getElementById("lightboxImage");document.querySelectorAll(".case-media img").forEach(img=>img.addEventListener("click",()=>{lightboxImage.src=img.src;lightboxImage.alt=img.alt;lightbox.classList.add("show");document.body.style.overflow="hidden"}));function closeLightbox(){lightbox.classList.remove("show");document.body.style.overflow=""}document.getElementById("closeLightbox").addEventListener("click",closeLightbox);lightbox.addEventListener("click",e=>{if(e.target===lightbox)closeLightbox()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeLightbox()});
+    const links=[...document.querySelectorAll(".toc a")],sections=[...document.querySelectorAll("main section")],toTop=document.getElementById("toTop"),progress=document.getElementById("progress");function onScroll(){const max=document.documentElement.scrollHeight-innerHeight;progress.style.width=(max?scrollY/max*100:0)+"%";toTop.classList.toggle("show",scrollY>700);let current=sections[0]?.id;sections.forEach(s=>{if(s.getBoundingClientRect().top<150)current=s.id});links.forEach(a=>a.classList.toggle("current",a.getAttribute("href")==="#"+current))}addEventListener("scroll",onScroll,{passive:true});onScroll();toTop.addEventListener("click",()=>scrollTo({top:0,behavior:"smooth"}));
   </script>
 </body>
 </html>

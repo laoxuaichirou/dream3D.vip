@@ -5,8 +5,8 @@ const SITE_DOC_ADDITIONS = [
     t: "Qwen Image 2.1 实测信息简报",
     file: "articles/qwen-image-2-1-report.html",
     cat: "briefing",
-    date: "09-23",
-    d: "社区六问逐项实测：I2I PE 12.83s 出合法 JSON、1→5 图耗时 48s→394s、Mask 编辑/画风迁移/透明抠图最稳、改机位与保留包装中文仍不可靠"
+    date: "09-25",
+    d: "第二轮补测（新增 38 张证据）：八问速答 + PE／Skill／混合三路线选型 + 商品四视图·海报·连续编辑案例；结论是没有一种提示词方案包打天下，按任务路由"
   },
   {
     t: "DeepSeek Harness：不只是 Agent，而是一套可组合的运行时",
@@ -25,6 +25,6 @@ const SITE_DOC_ADDITIONS = [
     t: "Qwen Image 2.1 深度实测：PE、速度与能力边界",
     file: "articles/qwen-image-2-1-report.html",
     cat: "ai-image",
-    d: "本机 RTX 4070 Ti SUPER 多轮运行记录：提示词增强器提速验证、多图生成耗时曲线、编辑能力对比（含成功与失败样例），附三套方案选型建议"
+    d: "本机 RTX 4070 Ti SUPER 多轮运行记录：PE 与 Skill 路由、多参考图职责划分、精确文字与连续编辑、商品资产初稿，新增 38 张重点证据（更新于 2026-09-25）"
   }
 ];
