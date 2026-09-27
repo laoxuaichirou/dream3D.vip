@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Qwen Image 2.1 两期 14 问实测：文字、肢体、视角、多参考、透明图、PE、Skill、LoRA 与 ControlNet 的实际边界和生产路线。">
+<meta property="og:title" content="Qwen Image 2.1 · 两期 14 问实测">
+<meta property="og:description" content="用 14 个问题讲清 Qwen Image 2.1 能做什么、哪里会翻车，以及如何进入实际生产。">
+<title>Qwen Image 2.1 · 两期 14 问录制版</title>
+<style>
+  :root {
+    --ink:#2c2825; --muted:#766d65; --paper:#fbf8f3; --card:#fffdf9;
+    --brown:#5a3827; --orange:#c8793e; --gold:#e8b36e; --line:#eadfd2;
+    --green:#2f7662; --red:#9c4e45; --blue:#446d91;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; color:var(--ink); background:var(--paper); font-family:"Microsoft YaHei","PingFang SC",sans-serif; }
+  header { color:#fffaf4; background:linear-gradient(135deg,#3b271f 0%,#68412b 62%,#a8663c 100%); padding:54px 7vw 42px; position:relative; overflow:hidden; }
+  header::after { content:"2.1"; position:absolute; right:7vw; top:-30px; color:rgba(255,255,255,.08); font:900 190px/1 Georgia,serif; }
+  .eyebrow { text-transform:uppercase; letter-spacing:.18em; color:#f3c783; font-size:12px; font-weight:700; }
+  h1 { margin:12px 0 10px; font:700 clamp(30px,4vw,52px)/1.12 Georgia,"Microsoft YaHei",serif; letter-spacing:-.03em; }
+  .lead { max-width:760px; margin:0; color:#f7e9d8; font-size:17px; line-height:1.8; }
+  .notice { max-width:900px; margin:25px 0 0; padding:13px 17px; border:1px solid rgba(255,255,255,.24); border-radius:12px; background:rgba(255,255,255,.09); line-height:1.7; font-size:14px; }
+  .episode-nav { position:sticky; top:0; z-index:10; display:flex; gap:10px; flex-wrap:wrap; padding:13px 7vw; background:rgba(251,248,243,.94); border-bottom:1px solid var(--line); backdrop-filter:blur(12px); }
+  .episode-nav a { color:var(--brown); text-decoration:none; font-size:14px; font-weight:700; padding:9px 14px; border:1px solid var(--line); border-radius:99px; background:#fffdf9; }
+  .episode-nav a:hover { border-color:var(--orange); color:var(--orange); }
+  main { max-width:1080px; margin:auto; padding:28px 22px 80px; }
+  .episode { margin:45px 0 18px; display:flex; align-items:end; justify-content:space-between; gap:18px; border-bottom:2px solid var(--ink); padding-bottom:12px; }
+  .episode h2 { margin:0; font-size:28px; letter-spacing:-.04em; }
+  .episode p { margin:0; color:var(--muted); font-size:14px; }
+  .qa { scroll-margin-top:80px; margin:18px 0; padding:25px 27px 27px; background:var(--card); border:1px solid var(--line); border-radius:18px; box-shadow:0 8px 24px rgba(72,44,25,.055); }
+  .qline { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+  .number { display:inline-flex; width:32px; height:32px; align-items:center; justify-content:center; border-radius:10px; background:var(--brown); color:white; font-weight:800; }
+  .q { margin:0; font-size:21px; font-weight:800; letter-spacing:-.02em; }
+  .badge { border-radius:99px; padding:4px 10px; font-size:12px; font-weight:700; background:#eee4d6; color:#745a42; }
+  .badge.good { background:#e0f0e8; color:var(--green); }
+  .badge.fix { background:#fae2de; color:var(--red); }
+  .answer { margin:0; padding:14px 17px; border-left:4px solid var(--orange); border-radius:0 10px 10px 0; background:#fff3e5; font-size:17px; line-height:1.75; }
+  .answer strong { color:#8a4e28; }
+  .evidence { display:grid; grid-template-columns:1fr 1fr; gap:8px 26px; margin:16px 0 0; padding-left:20px; color:#554b44; line-height:1.75; }
+  .evidence li::marker { color:var(--orange); }
+  .cases { display:flex; flex-wrap:wrap; gap:14px; margin-top:17px; }
+  figure { width:190px; margin:0; }
+  figure.wide { width:396px; }
+  figure img { display:block; width:100%; aspect-ratio:1 / 1; object-fit:cover; border-radius:11px; border:1px solid var(--line); background:#eee; }
+  figure.wide img { aspect-ratio:2 / 1; }
+  figcaption { margin-top:6px; color:var(--muted); font-size:12px; line-height:1.45; }
+  .talk { margin-top:17px; padding:11px 14px; color:#67584d; background:#f6f0e8; border-radius:10px; font-size:14px; line-height:1.7; }
+  .talk::before { content:"录制提示  "; color:var(--blue); font-weight:800; }
+  .correction { margin:28px 0 10px; padding:18px 20px; border:2px solid #d48779; border-radius:16px; background:#fff1ee; }
+  .correction h3 { margin:0 0 7px; color:var(--red); font-size:18px; }
+  .correction p { margin:0; line-height:1.8; }
+  .route { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:15px; }
+  .route div { padding:13px; border-radius:12px; background:#f4eee5; line-height:1.6; font-size:14px; }
+  .route b { display:block; color:var(--brown); margin-bottom:4px; }
+  footer { max-width:1080px; margin:auto; padding:0 22px 60px; color:#93877c; font-size:12px; line-height:1.8; }
+  footer a { color:#806044; }
+  @media (max-width:720px) {
+    header { padding:40px 22px 32px; } header::after { right:-8px; font-size:120px; }
+    nav { padding:10px 16px; } main { padding:16px 12px 55px; }
+    .episode { display:block; } .episode p { margin-top:7px; }
+    .qa { padding:20px 17px; border-radius:14px; } .q { font-size:18px; }
+    .answer { font-size:16px; } .evidence { display:block; }
+    figure, figure.wide { width:calc(50% - 7px); } figure.wide img { aspect-ratio:1 / 1; }
+    .route { grid-template-columns:1fr 1fr; }
+  }
+</style>
+<link rel="stylesheet" href="../site-design.css?v=2">
+<style>
+  /* dream3d.vip shared shell integration */
+  body.ds-enhanced.episode-page { padding-top:96px; background:var(--ds-ink); color:var(--ds-text); }
+  body.ds-enhanced.episode-page::before { opacity:.26; }
+  body.ds-enhanced.episode-page header { background:linear-gradient(135deg,#0b1218 0%,#17252b 58%,#30483d 100%); }
+  body.ds-enhanced.episode-page .episode-nav { top:82px; background:color-mix(in srgb,var(--ds-ink-2) 90%,transparent); border-color:var(--ds-line); }
+  body.ds-enhanced.episode-page .episode-nav a { color:var(--ds-copy); background:var(--ds-panel); border-color:var(--ds-line); }
+  body.ds-enhanced.episode-page .episode-nav a:hover { color:var(--ds-signal); border-color:var(--ds-line-hi); }
+  body.ds-enhanced.episode-page > main { width:min(1080px,calc(100% - 36px)); max-width:1080px; margin-inline:auto; }
+  body.ds-enhanced.episode-page .episode { border-color:var(--ds-signal); }
+  body.ds-enhanced.episode-page .episode h2 { color:var(--ds-text); }
+  body.ds-enhanced.episode-page .episode p { color:var(--ds-muted); }
+  body.ds-enhanced.episode-page .qa { background:var(--ds-panel); border-color:var(--ds-line); box-shadow:var(--ds-shadow); }
+  body.ds-enhanced.episode-page .q { color:var(--ds-text); }
+  body.ds-enhanced.episode-page .number { color:var(--ds-on-signal); background:var(--ds-signal); }
+  body.ds-enhanced.episode-page .answer { color:var(--ds-copy); background:color-mix(in srgb,var(--ds-signal) 8%,var(--ds-panel-solid)); border-color:var(--ds-signal); }
+  body.ds-enhanced.episode-page .answer strong { color:var(--ds-signal); }
+  body.ds-enhanced.episode-page .evidence { color:var(--ds-copy); }
+  body.ds-enhanced.episode-page .talk { color:var(--ds-copy); background:color-mix(in srgb,var(--ds-signal) 7%,var(--ds-panel-solid)); }
+  body.ds-enhanced.episode-page .correction { background:color-mix(in srgb,var(--ds-hot) 10%,var(--ds-panel-solid)); border-color:var(--ds-hot); }
+  body.ds-enhanced.episode-page .correction h3 { color:var(--ds-hot); }
+  body.ds-enhanced.episode-page .route div { color:var(--ds-copy); background:var(--ds-panel-hi); }
+  body.ds-enhanced.episode-page .route b { color:var(--ds-signal); }
+  body.ds-enhanced.episode-page figcaption, body.ds-enhanced.episode-page footer { color:var(--ds-muted); }
+  body.ds-enhanced.episode-page a { color:var(--ds-signal-2); }
+  html[lang^="en"] .talk::before { content:"Recording note  "; }
+</style>
+</head>
+<body class="episode-page">
+<header>
+  <div class="eyebrow">QWEN IMAGE 2.1 · RECORDING EDITION</div>
+  <h1>上下两期，14 个问题<br>把 2.1 讲明白</h1>
+  <p class="lead">这不是模型宣传页，而是一份可以边讲边看的测试结论卡：它能做什么、哪里会翻车，以及 Skill、PE、插件、LoRA 和 ControlNet 到底应该怎么分工。</p>
+  <div class="notice"><strong>使用方式：</strong>录制时优先看每题的橙色结论和“录制提示”；图片是代表性证据，不代表每次生成都能稳定复现。</div>
+</header>
+
+<nav class="episode-nav" aria-label="Episode navigation">
+  <a href="#part1">第一期：能力与边界</a>
+  <a href="#part2">第二期：工具与路线</a>
+  <a href="#final">最终生产链</a>
+  <a href="qwen-image-2-1-allrounds.html">打开完整测试档案</a>
+</nav>
+
+<main>
+<section id="part1" class="episode">
+  <div><h2>第一期：能力与边界</h2><p>先回答“2.1 到底能不能用”，再讲最常见的文字、肢体和参考图问题。</p></div>
+  <p>01—07</p>
+</section>
+
+<section id="q1" class="qa">
+  <div class="qline"><span class="number">01</span><p class="q">带很多字的海报，应该走哪条路线？</p><span class="badge good">已实测</span></div>
+  <p class="answer"><strong>专家结构化提示词最稳，Skill+API 更省事，PE 审美最强但会主动扩写。</strong>密集文字不是必然失败，但标题、时间、footer 和图标二维码必须分开验收。</p>
+  <ul class="evidence"><li>菜单 8 条、14 条精确字符串都能逐字正确。</li><li>真实场景海报中，PE 会主动加图标、二维码或拆标题。</li><li>版式条件比“不要改变字距”的禁令更有效。</li></ul>
+  <div class="cases">
+    <figure><img src="../assets/qwen-image-2-1-video/POSTER-02A_raw_00001_.webp"><figcaption>原始直写：场景好，但装饰文字有风险</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/POSTER-02B_skill_gen_00001_.webp"><figcaption>Skill：更干净，但可能丢字段</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/POSTER-02C_pe_gen_00001_.webp"><figcaption>PE：审美强，但会主动扩写</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/POSTER-02D_expert_00001_.webp"><figcaption>专家规则：文字版式最清晰</figcaption></figure>
+  </div>
+  <div class="talk">这一题不要先讲模型多强，先用四张对照图让观众看出：提示词路线会改变结果。</div>
+</section>
+
+<section id="q2" class="qa">
+  <div class="qline"><span class="number">02</span><p class="q">商品包装小字总崩，是模型不行吗？</p><span class="badge good">边界已确认</span></div>
+  <p class="answer"><strong>先看源图，再决定走 VOSR、Qwen 重建还是文字层。</strong>模糊但字形仍在，用 VOSR；已经是错字或不可辨，用准确文字库存让 Qwen 整图重建；必须 100% 正确，就交给文字层插件。</p>
+  <ul class="evidence"><li>模糊标签中的“净含量”可由 VOSR 恢复到可读。</li><li>降质源图无文字库存时，小字 3/3 崩坏；加库存后 3/3 救回。</li><li>营养成分表这类多栏小字仍是明确高风险场景。</li></ul>
+  <div class="cases">
+    <figure><img src="../assets/qwen-image-2-1-video/VOSR-01A_degraded_label_00001_.webp"><figcaption>VOSR：适合模糊修复，不负责改语义</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/TEXT-OVERLAY-01B_fixed_footer_v2_00001_.webp"><figcaption>文字层：适合必须逐字正确的内容</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/PACK-REAL-01_lifestyle_dense_text_00001_.webp"><figcaption>真实包装：单行文字可靠，表格小字风险高</figcaption></figure>
+  </div>
+  <div class="talk">这一题的核心不是“2.1 文字行不行”，而是先区分像素修复、语义重建和确定性排版。</div>
+</section>
+
+<section id="q3" class="qa">
+  <div class="qline"><span class="number">03</span><p class="q">手脚崩了怎么修？一定要画 Mask 吗？</p><span class="badge">需要人工验收</span></div>
+  <p class="answer"><strong>不一定需要 Mask，逐轮缩小范围的整图编辑也能修。</strong>但极端姿势和手部特写不能盲信，必须放大到指甲级逐根检查。</p>
+  <ul class="evidence"><li>双人击掌、盘腿等常规动作可通过。</li><li>微距捏钥匙案例回放确认有 6 根手指。</li><li>极端姿势容易被模型改写成更常见的动作。</li></ul>
+  <div class="cases">
+    <figure><img src="../assets/qwen-image-2-1-video/LIMB-05B_two_people_highfive_structured_00001_.webp"><figcaption>双人互动：常规姿势表现较好</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/LIMB-05C_hand_macro_key_00001_.webp"><figcaption>手部微距：必须逐根数指</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/LIMB-05E_yoga_lotus_eagle_structured_00001_.webp"><figcaption>极端姿势：服从度仍是短板</figcaption></figure>
+  </div>
+  <div class="talk">把“能修”与“能稳定修好”分开说，观众会更容易理解模型的真实边界。</div>
+</section>
+
+<section id="q4" class="qa">
+  <div class="qline"><span class="number">04</span><p class="q">人物参考图能不能切换到侧面、背面？</p><span class="badge good">提示词有效</span></div>
+  <p class="answer"><strong>可以，但不能只写“换个角度”。</strong>要明确方位角、身体朝向、可见部位、镜头景别和新的构图关系。</p>
+  <ul class="evidence"><li>正面到 90° 侧面、135° 后三分之二均有成功案例。</li><li>必须声明“新构图”，否则模型容易继续沿用参考图正面角度。</li><li>身份一致性仍需多 seed 筛选。</li></ul>
+  <div class="cases">
+    <figure><img src="../assets/qwen-image-2-1-video/ANGLE-01A_ordinary_90_side_00001_.webp"><figcaption>90° 侧面：明确方位后成立</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/ANGLE-02_rear_three_quarter_135_00001_.webp"><figcaption>135° 后三分之二：可见性锚点有效</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/ANGLE-03_side_dusk_street_00001_.webp"><figcaption>真实场景侧面：新背景与新构图</figcaption></figure>
+  </div>
+  <div class="talk">这题适合用“原参考图 → 侧面结果 → 背面结果”的连续画面讲，不要只展示最终图。</div>
+</section>
+
+<section id="q5" class="qa">
+  <div class="qline"><span class="number">05</span><p class="q">多张参考图能不能各司其职？</p><span class="badge">组合有边界</span></div>
+  <p class="answer"><strong>可以，但参考图必须明确分工。</strong>人物身份、骨架、服装、产品和背景不要混在同一张图里；人物姿态优先使用骨架图或 Pose 控制。</p>
+  <ul class="evidence"><li>六张参考图一次合成成功：身份、骨架、服装、包、背景、风格分别落地。</li><li>含真人参考图时，身份串扰仍可能发生。</li><li>骨架 + 平铺服装通常比“直接拿人物照片当姿势图”更稳定。</li></ul>
+  <div class="cases">
+    <figure><img src="../assets/qwen-image-2-1-video/MULTIREF-03A_six_ref_00001_.webp"><figcaption>六职责参考：一次合成案例</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/MULTIREF-02C_skeleton_flatlay_seed25092530_00001_.webp"><figcaption>骨架 + 平铺：降低身份串扰</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/MULTIREF-02B_seed25092530_00001_.webp"><figcaption>失败例：身份被另一张人像带走</figcaption></figure>
+  </div>
+  <div class="talk">把“多图不是越多越好”作为本题结论，给观众一个可直接复用的参考图组织方法。</div>
+</section>
+
+<section id="q6" class="qa">
+  <div class="qline"><span class="number">06</span><p class="q">局部编辑、圈选、涂抹、Mask 有什么区别？</p><span class="badge good">官方路线</span></div>
+  <p class="answer"><strong>三者本质都是告诉模型“哪里可以改”，区别在于标记是否永久画进图里。</strong>临时圈选和涂抹适合快速试验，独立 Mask 最适合可重复生产。</p>
+  <ul class="evidence"><li>原图 + Mask + 自然语言指令，可以把编辑范围从全图缩到局部。</li><li>局部修小字仍不可靠，Mask 不能自动解决文字识别问题。</li><li>Mask 应与目标画布对齐，编辑内容越明确越稳定。</li></ul>
+  <div class="cases">
+    <figure class="wide"><img src="../assets/qwen-image-2-1-video/LOC-COLOR-A_00001_.webp"><figcaption>局部编辑示例：限定区域后再改色或换装</figcaption></figure>
+  </div>
+  <div class="talk">这里讲清“Mask 解决位置，不解决内容质量”，避免观众把 Mask 当成万能修复工具。</div>
+</section>
+
+<section id="q7" class="qa">
+  <div class="qline"><span class="number">07</span><p class="q">能不能直接生成透明底和抠图素材？</p><span class="badge good">已实测</span></div>
+  <p class="answer"><strong>可以，透明图和主体抠图是 2.1 比较适合的生产场景。</strong>但交付前仍要检查发丝、遮挡、半透明边缘和动态模糊。</p>
+  <ul class="evidence"><li>真人全身、发丝近景、复杂遮挡、三人合影、动态模糊均完成过实测。</li><li>透明输出要检查真实 alpha，不要只看黑色预览背景。</li><li>产品资产再编辑前，最好保留透明原图和白底检查图。</li></ul>
+  <div class="cases">
+    <figure><img src="../assets/qwen-image-2-1-video/RGBA-03_hair_extraction_00001_.webp"><figcaption>发丝级抠图</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/RGBA-04X_occlusion_extract_00001_.webp"><figcaption>复杂遮挡：不编造被挡部分</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/RGBA-05X_group_extract_00001_.webp"><figcaption>三人合影：空隙与透明边界</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/RGBA-06X_motion_blur_extract_00001_.webp"><figcaption>动态模糊：保留软边</figcaption></figure>
+  </div>
+  <div class="talk">第一期到这里完成能力闭环：文字、肢体、视角、多参考、局部编辑和透明资产。</div>
+</section>
+
+<section id="part2" class="episode">
+  <div><h2>第二期：工具与生产路线</h2><p>从单项能力转到实际工作流：修复、提示词、加速、插件和 ControlNet 怎么分工。</p></div>
+  <p>08—14</p>
+</section>
+
+<section id="q8" class="qa">
+  <div class="qline"><span class="number">08</span><p class="q">高清放大和模糊修复应该用什么？</p><span class="badge good">路线已分流</span></div>
+  <p class="answer"><strong>纯修复默认 VOSR 2.0；边修边改才用 Qwen Image 2.1。</strong>不要为了放大一张图，让 Qwen 重新重绘整张画面。</p>
+  <ul class="evidence"><li>VOSR 更快、更保真、显存更低，适合不改内容的纯修复。</li><li>Qwen 适合换背景、换色、修手等“放大同时改变内容”的任务。</li><li>Detail Enhancer LoRA 不是必装，必须按真人、插画分别判断。</li></ul>
+  <div class="cases">
+    <figure><img src="../assets/qwen-image-2-1-video/VOSR-02A_portrait_restore_00001_.webp"><figcaption>真人纯修复：VOSR 更接近原图</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/VOSR-02B_illustration_restore_00001_.webp"><figcaption>插画纯修复：减少重绘</figcaption></figure>
+    <figure class="wide"><img src="../assets/qwen-image-2-1-video/UPSCALE-02_contact_sheet_input_noLora_Lora.webp"><figcaption>同素材对照：无 LoRA 与 LoRA 没有普遍性胜负</figcaption></figure>
+  </div>
+  <div class="talk">这一题用“速度、保真、是否改变内容”三个维度讲，比单纯说谁更清晰更有说服力。</div>
+</section>
+
+<section id="q9" class="qa">
+  <div class="qline"><span class="number">09</span><p class="q">Skill、官方 PE、手写提示词，日常到底用哪个？</p><span class="badge">按任务选择</span></div>
+  <p class="answer"><strong>日常优先 Skill；复杂策划可以用 PE；确定性任务用结构化手写提示词。</strong>PE 不是质量开关，它会增加思考和扩写，尤其要防止海报中自动新增文字。</p>
+  <div class="route">
+    <div><b>Skill</b>日常快速、输出干净，适合固定场景。</div>
+    <div><b>官方 PE</b>视觉策划强，必须检查扩写内容。</div>
+    <div><b>结构化直写</b>文字、职责、视角最可控。</div>
+    <div><b>插件</b>解决确定性文字，不替代画面生成。</div>
+  </div>
+  <div class="talk">这题建议用一句话收口：PE 帮你想，Skill 帮你写，结构化提示词帮你守住要求。</div>
+</section>
+
+<section id="q10" class="qa">
+  <div class="qline"><span class="number">10</span><p class="q">加速 LoRA 到底能不能用？</p><span class="badge fix">重要结论更正</span></div>
+  <div class="correction"><h3>先纠正一个关键结论</h3><p><strong>Edit-2511 Lightning LoRA 不能直接接到 Qwen Image 2.1。</strong>2.1 基座对应维度为 4096，2511 LoRA 与 Edit-2511 基座对应维度为 3072。日志出现 reshape error 后，ComfyUI 仍会继续出图，但 LoRA 实际没有成功注入。</p></div>
+  <p class="answer"><strong>当前不要把旧的 2511 工作流当作 2.1 加速工作流分享。</strong>2.1 的低步数方案必须重新使用结构匹配的 2.1 加速权重做 A/B；2511 LoRA 应放回 Edit-2511 基座单独验证。</p>
+  <ul class="evidence"><li>之前的 5.672 秒、6.641 秒不能证明 2511 LoRA 生效。</li><li>旧成图保留为历史记录，但应标为“LoRA 注入失败后的基座输出”。</li><li>以后先查维度，再看日志，再做同 seed 无 LoRA/有 LoRA 对照。</li></ul>
+  <div class="cases">
+    <figure><img src="../assets/qwen-image-2-1-video/SPEED-01B_lightning8_8steps_00001_.webp"><figcaption>8-step Lightning：仍需按 2.1 兼容性单独验证</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/SPEED-02D_edit2511_i2i_hand_repair_00001_.webp"><figcaption>旧案例：不是 2511 生效证据</figcaption></figure>
+  </div>
+  <div class="talk">这一题必须明确说“之前的结论错了”，这反而会增强整期测试的可信度。</div>
+</section>
+
+<section id="q11" class="qa">
+  <div class="qline"><span class="number">11</span><p class="q">文字插件为什么还要再接一次 2.1 编辑？</p><span class="badge good">两段式方案</span></div>
+  <p class="answer"><strong>插件负责把字写对，2.1 负责把纯色覆盖区域融回背景。</strong>这是“确定性文字层 + 语义融合”的组合，不是让模型重新猜一遍文字。</p>
+  <ul class="evidence"><li>插件单独写字准确，但可能留下纯色矩形。</li><li>2.1 原生二次编辑可以消除色块并恢复纹理。</li><li>旧的 02B 不能拿来证明 2511 加速；有效融合证据来自原生 2.1 路线。</li></ul>
+  <div class="cases">
+    <figure><img src="../assets/qwen-image-2-1-video/TEXT-OVERLAY-01B_fixed_footer_v2_00001_.webp"><figcaption>插件：先保证文字逐字正确</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/TEXT-OVERLAY-02A_qwen_blend_30_00001_.webp"><figcaption>2.1 原生编辑：融合背景</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/TEXT-OVERLAY-02C_qwen_second_edit_00001_.webp"><figcaption>连续二次编辑：仍需人工验收</figcaption></figure>
+  </div>
+  <div class="talk">这题很适合展示工作流：文字层 → Qwen 编辑 → 检查文字和边界。</div>
+</section>
+
+<section id="q12" class="qa">
+  <div class="qline"><span class="number">12</span><p class="q">Fun-ControlNet Union 和 T8 节点到底解决什么？</p><span class="badge">结构控制</span></div>
+  <p class="answer"><strong>提示词负责“说什么”，ControlNet 负责“结构长什么样”。</strong>Pose 锁骨架，Depth 锁空间层次，Canny/Lineart 锁轮廓，Scribble 适合草图构想。</p>
+  <ul class="evidence"><li>人物资产图优先 Pose；产品轮廓优先 Canny/Lineart；空间关系可试 Depth。</li><li>控制图尺寸、比例和目标画布必须保持一致或严格对齐。</li><li>T8 是社区适配路线，使用前要区分节点兼容性和模型能力。</li></ul>
+  <div class="cases">
+    <figure><img src="../assets/qwen-image-2-1-video/Qwen21_Union_Pose_00001_.webp"><figcaption>Pose：锁定人物骨架</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/Qwen21_Union_Canny_T8_00001_.webp"><figcaption>Canny：锁定轮廓与构图</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/Qwen21_Union_Pose_SameRatio_00001_.webp"><figcaption>比例对齐：控制稳定性的基础</figcaption></figure>
+  </div>
+  <div class="talk">不要把 Union 讲成“更强的提示词”，它的价值是增加空间结构约束。</div>
+</section>
+
+<section id="q13" class="qa">
+  <div class="qline"><span class="number">13</span><p class="q">参考图编辑不好，究竟是提示词问题还是模型问题？</p><span class="badge good">对照已完成</span></div>
+  <p class="answer"><strong>两者都有，但原工作流中的泛化提示词是主要问题之一。</strong>把参考图职责、Pose 职责、服装职责和必须执行的动作写清楚，姿态跟随会明显改善；但背景漂移和脚部问题仍可能存在。</p>
+  <ul class="evidence"><li>泛化提示词容易保留服装，却不执行抬手、屈膝等动作。</li><li>明确职责提示词能提高 Pose 跟随度。</li><li>提示词优化不能替代脚部修复、背景保持和局部编辑。</li></ul>
+  <div class="cases">
+    <figure><img src="../assets/qwen-image-2-1-video/Qwen21_Union_RefPrompt_Generic_00001_.webp"><figcaption>泛化提示词：姿态跟随弱</figcaption></figure>
+    <figure><img src="../assets/qwen-image-2-1-video/Qwen21_Union_RefPrompt_ExplicitPose_00001_.webp"><figcaption>明确职责：姿态明显改善</figcaption></figure>
+  </div>
+  <div class="talk">这题承担“为什么有工作流还不好用”的解释，能把前面的提示词、参考图和 ControlNet 串起来。</div>
+</section>
+
+<section id="q14" class="qa">
+  <div class="qline"><span class="number">14</span><p class="q">Qwen Image 2.1 最终应该怎么进入实际生产？</p><span class="badge good">最终路线</span></div>
+  <p class="answer"><strong>不要让一个模型承担所有确定性工作。</strong>2.1 负责生成和语义编辑，Skill/PE 负责提示词辅助，文字层负责精确文字，VOSR 负责纯修复，ControlNet 负责结构约束，最后人工验收。</p>
+  <div id="final" class="route">
+    <div><b>画面</b>Qwen Image 2.1 生成或编辑。</div>
+    <div><b>提示词</b>日常 Skill，复杂策划 PE，精确任务结构化直写。</div>
+    <div><b>确定性</b>文字层、Mask、ControlNet 分担硬约束。</div>
+    <div><b>收尾</b>VOSR 纯修复，最后逐字、逐指、逐边界验收。</div>
+  </div>
+  <div class="talk">最后不要再堆模型名，用一条生产链收尾：素材准备 → 提示词 → 生成/编辑 → 文字校正 → 修复增强 → 人工验收。</div>
+</section>
+</main>
+
+<footer>
+  本页面为两期视频录制版，仅保留 14 个核心问题；完整参数、日志和历史案例请查看
+  <a href="qwen-image-2-1-allrounds.html">全量测试档案</a> 与
+  <a href="qwen-image-2-1.html">三份报告总览</a>。<br>
+  状态：本机 GPU 实测与用户回放证据混合整理；RunningHub 在线回放、部分 Skill 独立复核仍按原报告标注。
+</footer>
+<script>
+(function () {
+  "use strict";
+  var qs = function (selector, root) { return Array.prototype.slice.call((root || document).querySelectorAll(selector)); };
+  var q = function (selector, root) { return (root || document).querySelector(selector); };
+  var cards = qs(".qa");
+  var episodes = qs(".episode");
+  var original = {
+    eyebrow: q(".eyebrow").textContent,
+    title: q("header h1").innerHTML,
+    lead: q(".lead").textContent,
+    notice: q(".notice").innerHTML,
+    episodeNav: qs(".episode-nav a").map(function (el) { return el.textContent; }),
+    episodes: episodes.map(function (el) { return { h: q("h2", el).textContent, p: q("div p", el).textContent }; }),
+    cards: cards.map(function (el) { return {
+      q: q(".q", el).textContent,
+      answer: q(".answer", el).innerHTML,
+      badge: q(".badge", el) ? q(".badge", el).textContent : "",
+      evidence: qs(".evidence li", el).map(function (x) { return x.textContent; }),
+      captions: qs("figcaption", el).map(function (x) { return x.textContent; }),
+      talk: q(".talk", el) ? q(".talk", el).textContent : "",
+      correctionTitle: q(".correction h3", el) ? q(".correction h3", el).textContent : "",
+      correction: q(".correction p", el) ? q(".correction p", el).innerHTML : "",
+      routes: qs(".route div", el).map(function (x) { return x.innerHTML; })
+    }; }),
+    footer: q("footer").innerHTML
+  };
+  var en = {
+    eyebrow: "QWEN IMAGE 2.1 · RECORDING EDITION",
+    title: "Two episodes, 14 questions<br>to understand 2.1",
+    lead: "This is not a model advertisement. It is a compact evidence guide for recording: what Qwen Image 2.1 can do, where it fails, and how Skill, PE, plugins, LoRAs and ControlNet should work together.",
+    notice: "<strong>How to use it:</strong> During recording, focus on the orange conclusion and the recording note. The images are representative evidence, not a promise that every generation will reproduce the same result.",
+    episodeNav: ["Episode 1: Ability & limits", "Episode 2: Tools & workflow", "Final production chain", "Open full test archive"],
+    episodes: [
+      { h: "Episode 1: Ability & limits", p: "Start with what 2.1 can actually do, then explain its common text, anatomy and reference-image failures." },
+      { h: "Episode 2: Tools & production workflow", p: "Move from isolated abilities to a usable pipeline: repair, prompting, acceleration, plugins and ControlNet." }
+    ],
+    cards: [
+      { q: "What route should we use for a poster with lots of text?", badge: "Tested", answer: "<strong>Structured expert prompting is the most controllable; Skill + API is more convenient; PE has the strongest visual planning but may expand the brief.</strong> Dense text is not an automatic failure, but titles, times, footers and icons must be checked separately.", evidence: ["Menus with 8 and 14 exact strings were reproduced correctly.", "PE may add icons, QR codes or split a title in a real-scene poster.", "Layout conditions work better than simply saying ‘do not change tracking’."], captions: ["Raw prompt: strong scene, decorative text risk", "Skill: cleaner, but fields may disappear", "PE: visually strong, but may expand the brief", "Expert layout: clearest text structure"], talk: "Do not start by saying the model is powerful. Show the four comparisons first, so viewers can see how the prompting route changes the result." },
+      { q: "Why do small words on product packaging break?", badge: "Boundary confirmed", answer: "<strong>Check the source image first, then choose VOSR, Qwen reconstruction or a deterministic text layer.</strong> Use VOSR when the glyphs are blurry but still present; use Qwen with an exact text inventory when the glyphs are already wrong; use the text layer when the wording must be 100% exact.", evidence: ["VOSR recovered the blurred label text ‘净含量’ to a readable result.", "Degraded source + no text inventory failed 3/3; adding the inventory recovered 3/3.", "Dense multi-column nutrition tables remain a high-risk case."], captions: ["VOSR: pixel restoration, not semantic rewriting", "Text layer: deterministic exact wording", "Real packaging: single-line text is safer than tables"], talk: "The key distinction is pixel restoration versus semantic reconstruction versus deterministic typesetting." },
+      { q: "How do we repair broken hands and feet? Do we need a mask?", badge: "Manual review required", answer: "<strong>A mask is not always necessary: a whole-image repair chain with a shrinking target area can work.</strong> Extreme poses and hand close-ups still require a finger-by-finger inspection at high zoom.", evidence: ["Two-person high-five and seated poses worked in ordinary cases.", "The key-holding macro case was confirmed by replay to contain six fingers.", "Extreme poses may be rewritten into more familiar actions."], captions: ["Two-person interaction: ordinary pose", "Hand macro: count every finger", "Extreme pose: pose obedience remains weak"], talk: "Separate ‘can repair’ from ‘can repair reliably’. That distinction makes the model boundary clear." },
+      { q: "Can a character reference switch to a side or rear view?", badge: "Prompting works", answer: "<strong>Yes, but ‘change the angle’ is not enough.</strong> Specify the azimuth, body orientation, visible parts, shot size and the new composition relationship.", evidence: ["A front-to-90-degree side view and a 135-degree rear three-quarter view were achieved.", "Declare a new composition, or the model may keep the reference image’s front view.", "Identity consistency still needs multiple seeds and human selection."], captions: ["90-degree side view: explicit azimuth", "135-degree rear three-quarter view", "Real scene side view: new background and composition"], talk: "Show the reference, then the side and rear results as a sequence rather than presenting only the final image." },
+      { q: "Can multiple reference images each keep their own role?", badge: "Works with boundaries", answer: "<strong>Yes, if every image has an explicit job.</strong> Separate identity, pose, clothing, product, background and style. For human poses, a skeleton or Pose control is usually safer than using another person photo directly.", evidence: ["A six-reference composite successfully assigned identity, pose, clothing, bag, background and style.", "Human references can still cause identity cross-talk.", "Skeleton + flat-lay clothing is usually more stable than a second human photo as a pose reference."], captions: ["Six roles in one composite", "Skeleton + flat-lay reduces identity cross-talk", "Failure case: identity came from the wrong person"], talk: "The takeaway is not ‘use as many references as possible’, but ‘assign each reference one responsibility’." },
+      { q: "What is the difference between a circle, brush mark and a mask?", badge: "Official editing route", answer: "<strong>All three tell the model where editing is allowed; the difference is whether the mark is temporary or reusable.</strong> Quick circles and brush marks are good for experiments. A separate mask is better for repeatable production.", evidence: ["Image + mask + natural-language instruction can reduce a full-image edit to a local edit.", "A mask does not solve text recognition; local small-text repair remains unreliable.", "The mask must align with the target canvas and the requested edit must be explicit."], captions: ["Local edit: constrain the editable area"], talk: "Explain that a mask solves location, not content quality. It is not a universal repair tool." },
+      { q: "Can 2.1 generate transparent assets and cutouts directly?", badge: "Tested", answer: "<strong>Yes. Transparent assets and subject cutouts are among 2.1’s more practical production cases.</strong> Still check hair, occlusion, semi-transparent edges and motion blur before delivery.", evidence: ["Full-body people, hair close-ups, occlusion, group portraits and motion blur were tested.", "Verify real alpha instead of trusting a black preview background.", "Keep both the transparent original and a white-background inspection copy."], captions: ["Hair-level cutout", "Occlusion: do not invent hidden parts", "Group cutout: gaps and transparent boundaries", "Motion blur: preserve soft edges"], talk: "This closes episode one: text, anatomy, viewpoints, references, local edits and transparent assets." },
+      { q: "Which tool should handle upscaling and blurry restoration?", badge: "Routes separated", answer: "<strong>Use VOSR 2.0 by default for pure restoration; use Qwen Image 2.1 when enlargement also needs a semantic edit.</strong> Do not make Qwen redraw a whole image when the goal is only to restore pixels.", evidence: ["VOSR is faster, more faithful and uses less VRAM for unchanged-content restoration.", "Qwen is appropriate for changing a background, recoloring or repairing a hand while enlarging.", "Detail Enhancer LoRA is optional and must be judged separately for portraits and illustrations."], captions: ["Portrait restoration: VOSR stays closer to input", "Illustration restoration: less redraw", "Same-source comparison: no universal LoRA winner"], talk: "Use three criteria: speed, fidelity and whether the content is allowed to change." },
+      { q: "Skill, official PE or hand-written prompting: which one for daily use?", badge: "Choose by task", answer: "<strong>Use Skill for daily work, PE for complex visual planning, and structured hand-written prompts for deterministic tasks.</strong> PE is not a quality switch: it can add reasoning and new content, especially new text in posters.", routes: ["<b>Skill</b>Fast and clean for recurring scenes.", "<b>Official PE</b>Strong visual planning; inspect expansions.", "<b>Structured prompt</b>Most control over text, roles and views.", "<b>Plugin</b>Deterministic text; not a replacement for image generation."], talk: "A simple summary: PE helps you think, Skill helps you write, and structured prompting protects the requirements." },
+      { q: "Do acceleration LoRAs actually work?", badge: "Important correction", answer: "<strong>Do not connect Edit-2511 Lightning directly to Qwen Image 2.1.</strong> The 2.1 base uses a 4096-dimensional attention layer, while the 2511 LoRA and Edit-2511 base use 3072. After a reshape error, ComfyUI can continue sampling with the original base weights, so an image is not proof that the LoRA worked.", evidence: ["The earlier 5.672 s and 6.641 s results do not prove 2511 LoRA acceleration.", "Those old images remain historical records, not evidence of a successful injection.", "Check dimensions and logs before running the same-seed no-LoRA/LoRA comparison."], captions: ["8-step Lightning: verify separately for the 2.1 structure", "Old case: not evidence that 2511 was active"], talk: "Say clearly that the earlier conclusion was wrong. Correcting the record makes the overall test more credible.", correctionTitle: "Important correction", correction: "<strong>Edit-2511 Lightning cannot be connected directly to the Qwen Image 2.1 base.</strong> The dimensions do not match. A reshape error may be logged while sampling continues, which creates a convincing but false impression that the LoRA is active." },
+      { q: "Why does the text plugin need another 2.1 edit pass?", badge: "Two-stage workflow", answer: "<strong>The plugin writes the exact words; Qwen Image 2.1 blends the solid cover area back into the scene.</strong> This is deterministic text plus semantic background integration, not asking the model to guess the wording again.", evidence: ["The plugin is accurate but may leave a solid rectangle to cover old text.", "A native 2.1 edit can restore texture, light and continuity around the new text.", "The old 02B result cannot prove 2511 acceleration; the valid blending evidence comes from the native 2.1 route."], captions: ["Plugin: lock the exact wording first", "Native 2.1 edit: blend the background", "Second edit pass: still inspect text and edges"], talk: "Show the pipeline: text layer → Qwen edit → text and edge inspection." },
+      { q: "What do Fun-ControlNet Union and the T8 nodes actually solve?", badge: "Structural control", answer: "<strong>Prompting says what the image should contain; ControlNet constrains its spatial structure.</strong> Pose locks a skeleton, Depth locks spatial layers, Canny/Lineart locks contours, and Scribble is useful for sketches.", evidence: ["Use Pose for character assets, Canny/Lineart for product contours, and Depth for spatial relationships.", "Control images must be aligned with the target canvas in size and aspect ratio.", "T8 is a community adapter; distinguish node compatibility from model capability."], captions: ["Pose: lock the body skeleton", "Canny: lock contour and composition", "Ratio alignment: basic control stability"], talk: "Do not describe Union as a stronger prompt. Its value is harder spatial structure control." },
+      { q: "Is poor reference editing caused by the prompt or by the model?", badge: "A/B tested", answer: "<strong>Both matter, but the generic prompt in the original workflow was a major cause.</strong> Explicitly assign identity, pose, clothing and required actions to each reference. Pose following improves, although background drift and foot errors can remain.", evidence: ["Generic prompts often preserve clothing but ignore raised hands or bent knees.", "Explicit role assignments improve pose following.", "Prompt optimization cannot replace foot repair, background preservation or local editing."], captions: ["Generic prompt: weak pose following", "Explicit roles: visibly better pose following"], talk: "This explains why a workflow can be technically complete yet still produce weak results: the prompt contract was underspecified." },
+      { q: "What is the final production route for Qwen Image 2.1?", badge: "Final route", answer: "<strong>Do not make one model handle every deterministic task.</strong> Let 2.1 generate and edit; let Skill or PE assist prompting; let a text layer handle exact wording; let VOSR handle pure restoration; let ControlNet handle structure; then inspect the result manually.", routes: ["<b>Image</b>Qwen Image 2.1 for generation and editing.", "<b>Prompt</b>Skill for daily work, PE for planning, structured prompts for precision.", "<b>Determinism</b>Text layers, masks and ControlNet for hard constraints.", "<b>Finishing</b>VOSR for pure restoration; inspect text, fingers and edges."], talk: "End with the production chain: prepare assets → write prompts → generate or edit → correct text → restore and enhance → human acceptance." }
+    ]
+  };
+  function applyCard(el, data, index) {
+    q(".q", el).textContent = data.q;
+    q(".answer", el).innerHTML = data.answer;
+    if (q(".badge", el) && data.badge) q(".badge", el).textContent = data.badge;
+    qs(".evidence li", el).forEach(function (node, i) { if (data.evidence && data.evidence[i]) node.textContent = data.evidence[i]; });
+    qs("figcaption", el).forEach(function (node, i) { if (data.captions && data.captions[i]) node.textContent = data.captions[i]; });
+    if (q(".talk", el) && data.talk) q(".talk", el).textContent = data.talk;
+    if (q(".correction h3", el) && data.correctionTitle) q(".correction h3", el).textContent = data.correctionTitle;
+    if (q(".correction p", el) && data.correction) q(".correction p", el).innerHTML = data.correction;
+    if (data.routes) qs(".route div", el).forEach(function (node, i) { if (data.routes[i]) node.innerHTML = data.routes[i]; });
+  }
+  function restoreCard(el, data) {
+    q(".q", el).textContent = data.q; q(".answer", el).innerHTML = data.answer;
+    if (q(".badge", el)) q(".badge", el).textContent = data.badge;
+    qs(".evidence li", el).forEach(function (node, i) { if (data.evidence[i]) node.textContent = data.evidence[i]; });
+    qs("figcaption", el).forEach(function (node, i) { if (data.captions[i]) node.textContent = data.captions[i]; });
+    if (q(".talk", el)) q(".talk", el).textContent = data.talk;
+    if (q(".correction h3", el)) q(".correction h3", el).textContent = data.correctionTitle;
+    if (q(".correction p", el)) q(".correction p", el).innerHTML = data.correction;
+    if (data.routes.length) qs(".route div", el).forEach(function (node, i) { if (data.routes[i]) node.innerHTML = data.routes[i]; });
+  }
+  window.setLang = function (lang) {
+    var useEnglish = lang !== "zh";
+    document.documentElement.classList.toggle("episode-page-en", useEnglish);
+    document.querySelector(".eyebrow").textContent = useEnglish ? en.eyebrow : original.eyebrow;
+    document.querySelector("header h1").innerHTML = useEnglish ? en.title : original.title;
+    document.querySelector(".lead").textContent = useEnglish ? en.lead : original.lead;
+    document.querySelector(".notice").innerHTML = useEnglish ? en.notice : original.notice;
+    qs(".episode-nav a").forEach(function (node, i) { node.textContent = useEnglish ? en.episodeNav[i] : original.episodeNav[i]; });
+    episodes.forEach(function (el, i) {
+      q("h2", el).textContent = useEnglish ? en.episodes[i].h : original.episodes[i].h;
+      q("div p", el).textContent = useEnglish ? en.episodes[i].p : original.episodes[i].p;
+    });
+    cards.forEach(function (el, i) { useEnglish ? applyCard(el, en.cards[i], i) : restoreCard(el, original.cards[i]); });
+    document.querySelector("footer").innerHTML = useEnglish
+      ? "This page is the recording edition with 14 core questions. For full parameters, logs and historical cases, open the <a href=\"qwen-image-2-1-allrounds.html\">full test archive</a> or the <a href=\"qwen-image-2-1.html\">all three reports</a>.<br>Evidence combines local GPU tests and user replay; RunningHub replay and some independent Skill reviews remain marked in the archive."
+      : original.footer;
+  };
+})();
+</script>
+<script src="../site-shell.js?v=2"></script>
+</body>
+</html>
