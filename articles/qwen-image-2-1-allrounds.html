@@ -284,11 +284,11 @@
   <ul>
     <li>它与“直接在提示词里说 OpenPose”不是一回事：提示词是语义约束，Union 是更硬的空间结构约束，适合需要重复姿态、轮廓或空间关系的任务。</li>
     <li>官方模型卡称控制图应使用目标画布，样本尺寸保持 16 的倍数；它没有把“必须与原图像素尺寸完全相同”写成硬性规则。</li>
-    <li>官方核心仍未合入 2.1 Union，但 T8 社区节点已内置兼容实现；本机使用 T8 转换权重完成了 Pose、Canny、参考图编辑和尺寸对照。</li>
+    <li>官方已经提交了 2.1 Union 的实现 PR #16519；本次核查时 PR 页面仍为 Open、等待 code-owner review，不能等同于已经合入当前 master。T8 社区节点已内置这套兼容实现，本机使用转换权重完成了 Pose、Canny、参考图编辑和尺寸对照。</li>
     <li>本机结果：Pose 54.203 秒、Canny 42.313 秒、参考图编辑 81.125 秒；同宽高比下 1472×1152 与 1152×896 都成功。</li>
     <li>不同宽高比的 512×768 控制图也能运行，但输出变为 832×1248，结构会随比例变化。因此正确规则是“保持目标画布宽高比，避免拉伸”，不是“必须像素级完全同尺寸”。</li>
   </ul>
-  <p class="edge">官方参考：<a href="https://huggingface.co/alibaba-pai/Qwen-Image-2.1-Fun-Controlnet-Union">Qwen-Image-2.1-Fun-Controlnet-Union 模型卡</a>；社区适配：<a href="https://github.com/T8mars/Comfyui-Qwen-Image-2.1-Fun-Controlnet-Union-T8">T8 Union 节点</a>。当前结论是“官方核心未合入，T8 社区适配已本机 GPU 通过，仍需用户回放”。</p>
+  <p class="edge">官方参考：<a href="https://huggingface.co/alibaba-pai/Qwen-Image-2.1-Fun-Controlnet-Union">Qwen-Image-2.1-Fun-Controlnet-Union 模型卡</a>；<a href="https://github.com/Comfy-Org/ComfyUI/pull/16519">ComfyUI 官方 PR #16519</a>；社区适配：<a href="https://github.com/T8mars/Comfyui-Qwen-Image-2.1-Fun-Controlnet-Union-T8">T8 Union 节点</a>。当前结论是“官方实现 PR 已提交但尚未确认合入 master，T8 社区适配已本机 GPU 通过，仍需用户回放”。</p>
   <div class="imgs">
     <figure><a href="../assets/qwen-image-2-1-allrounds/set-0927/Qwen21_Union_Pose_00001_.webp"><img src="../assets/qwen-image-2-1-allrounds/set-0927/Qwen21_Union_Pose_00001_.webp"></a><figcaption>T8 Pose：结构控制成功</figcaption></figure>
     <figure><a href="../assets/qwen-image-2-1-allrounds/set-0927/Qwen21_Union_Canny_T8_00001_.webp"><img src="../assets/qwen-image-2-1-allrounds/set-0927/Qwen21_Union_Canny_T8_00001_.webp"></a><figcaption>T8 Canny：轮廓控制成功</figcaption></figure>
@@ -306,6 +306,21 @@
     <li>本机已整理 Pose、Canny、参考图编辑三个 UI 工作流，可直接在 ComfyUI 打开；它们属于 T8 社区适配路线，不是官方核心工作流。</li>
   </ul>
   <p class="edge">本轮证据：本机 RTX 4070 Ti SUPER GPU 实测；RunningHub 在线回放尚未验证。</p>
+</section>
+
+<section class="qa">
+  <p class="q">Q18：参考图编辑效果不好，主要是提示词还是模型问题？</p>
+  <p class="a-one"><b>这次对照证明：原工作流的泛化提示词是主要问题之一，但不是唯一问题。</b></p>
+  <p>同一人物参考图、同一 Pose 控制图、同一种子和参数，只替换提示词：</p>
+  <ul>
+    <li>“让参考图跟随姿态并保留主体和风格”——角色与服装保留，但抬手、屈膝没有稳定执行。</li>
+    <li>明确分工——参考图负责身份、头发、服装、风格；Pose 图负责目标骨架，并逐项描述抬手、张手、屈膝——姿态明显跟随。</li>
+  </ul>
+  <p>但明确提示词仍不能保证背景不漂移，也不能彻底修好脚部。因此，工作流默认提示词已经换成明确职责版；脚部修复、背景保持和局部编辑仍应拆开测试。</p>
+  <div class="imgs">
+    <figure><a href="../assets/qwen-image-2-1-allrounds/set-0927/Qwen21_Union_RefPrompt_Generic_00001_.webp"><img src="../assets/qwen-image-2-1-allrounds/set-0927/Qwen21_Union_RefPrompt_Generic_00001_.webp"></a><figcaption>泛化提示词：姿态跟随弱</figcaption></figure>
+    <figure><a href="../assets/qwen-image-2-1-allrounds/set-0927/Qwen21_Union_RefPrompt_ExplicitPose_00001_.webp"><img src="../assets/qwen-image-2-1-allrounds/set-0927/Qwen21_Union_RefPrompt_ExplicitPose_00001_.webp"></a><figcaption>明确职责提示词：姿态跟随明显改善</figcaption></figure>
+  </div>
 </section>
 
 <section class="qa">
