@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Qwen Image 2.1 本地实测专题：四轮报告全量收录（快不快强不强 / 怎么用 / 场景化问答 / 全轮汇总），含精确文字、肢体修复、局部编辑、高清修复与 LoRA 加速的实测结论。">
+  <meta name="description" content="Qwen Image 2.1 本地实测专题：三份报告全量收录（第一份快不快强不强 / 第二份怎么用 / 第三份全轮汇总收口版，已含前两份全部内容），含精确文字、肢体修复、局部编辑、VOSR 高清修复与 LoRA 加速的实测结论。">
   <title>Qwen Image 2.1 实测专题｜GaryAIGC</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0d13'/%3E%3Cpath d='M15 16h34v32H15z' fill='none' stroke='%23ffb454' stroke-width='4'/%3E%3Cpath d='M23 39l8-15 10 17M20 46h24' fill='none' stroke='%23f5f7fb' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
   <style>
@@ -72,15 +72,15 @@
   <header class="topbar"><nav class="nav" aria-label="主导航"><a class="brand" href="../index.html">Gary<i>AIGC</i></a><a class="navlink active" href="../knowledge.html">知识库</a><a class="navlink" href="../resources.html">资源库</a><a class="navlink" href="../videos.html">视频教程</a><div class="nav-actions"><button class="chip-button" id="presenter" type="button">演示模式</button><button class="chip-button" id="theme" type="button">切换明暗</button></div></nav></header>
 
   <header class="hero">
-    <div class="eyebrow">实测专题 · 四轮完整记录，一份都不删</div>
+    <div class="eyebrow">实测专题 · 三份报告逐个进入</div>
     <h1>Qwen Image 2.1<br><span>本地实测专题</span></h1>
-    <p class="lead">同一个模型，我们跑了四轮、留了四份不同的报告：第一轮只回答「快不快、强不强」，第二轮回答「到底怎么用」，第三轮按场景把案例铺开，第四轮把全部轮次汇总收口。<b>四份内容各不相同，按你的需要挑一份读。</b></p>
-    <div class="hero-meta"><span class="pill">RTX 4070 Ti SUPER 16GB</span><span class="pill">ComfyUI 0.37.0 · INT8 栈</span><span class="pill">四份报告 · 200+ 张证据</span><span class="pill">成功与翻车都保留</span></div>
+    <p class="lead">同一个模型，我们留了三份报告：第一份只回答「快不快、强不强」，第二份回答「到底怎么用」，第三份把全部轮次收口成一份问答——<b>它已经包含前两份的全部问题，并补齐了后续轮次</b>。时间紧，直接读第三份。</p>
+    <div class="hero-meta"><span class="pill">RTX 4070 Ti SUPER 16GB</span><span class="pill">ComfyUI 0.37.0 · INT8 栈</span><span class="pill">三份报告 · 200+ 张证据</span><span class="pill">成功与翻车都保留</span></div>
   </header>
 
   <main class="hub-wrap">
     <section id="rounds">
-      <div class="section-head"><h2>四轮实测 · 逐份进入</h2><p class="section-note">按时间顺序排列。四份讲的不是同一件事，先看右边那句「这份回答什么」再决定进哪一份。</p></div>
+      <div class="section-head"><h2>三份报告 · 逐份进入</h2><p class="section-note">按时间顺序排列。<b>第三份是收口版，前两份的全部问答都已包含其中</b>——时间紧就只读第三份。</p></div>
       <div class="rounds">
         <article class="rc">
           <div class="rc-top"><span class="rc-num">第 1 份 · 首轮</span><span class="rc-date">2026-09-23</span></div>
@@ -97,34 +97,24 @@
           <div class="rc-meta"><span class="pill">8 节</span><span class="pill">20 张证据（含第 6 轮连续编辑对照）</span></div>
           <a class="rc-go" href="qwen-image-2-1-report.html">进入阅读 →</a>
         </article>
-
         <article class="rc">
-          <div class="rc-top"><span class="rc-num">第 3 份 · 场景化</span><span class="rc-date">2026-09-27</span></div>
-          <h3 class="rc-title">Qwen Image 2.1 · 场景化测试问答</h3>
-          <p class="rc-desc">完全按「你要做什么」组织的版本：做海报、修手脚、换视角、多参考图、抠图、放大——每个场景直接给路线和案例图，缩略图点开看大图。看图最多的一份。</p>
-          <div class="rc-meta"><span class="pill">按场景组织</span><span class="pill">82 张图（可点开看大图）</span></div>
-          <a class="rc-go" href="qwen-image-2-1-scenes.html">进入阅读 →</a>
-        </article>
-
-        <article class="rc">
-          <div class="rc-top"><span class="rc-num">第 4 份 · 收口</span><span class="rc-date">2026-09-27</span></div>
+          <div class="rc-top"><span class="rc-num">第 3 份 · 收口</span><span class="rc-date">2026-09-27</span></div>
           <h3 class="rc-title">Qwen Image 2.1 · 全轮测试汇总问答</h3>
-          <p class="rc-desc">收口版：把十一轮实测全部汇总成一份问答，附场景决策速查矩阵、性能与显存基准、生态 LoRA／ControlNet 清单、以及自研工具套件的工程结论。<b>想一次看全，读这份。</b></p>
-          <div class="rc-meta"><span class="pill">十一轮汇总</span><span class="pill">88 张图</span></div>
+          <p class="rc-desc">收口版，也是唯一一份完整的：把十一轮实测汇总成 19 个问答，<b>包含前两份的全部问题</b>，并补齐场景决策速查矩阵、性能与显存基准、生态 LoRA／ControlNet 清单、T8 Union 与自研工具套件的工程结论。<b>想一次看全，读这份。</b></p>
+          <div class="rc-meta"><span class="pill">十一轮汇总</span><span class="pill">19 问答 · 90 张图</span></div>
           <a class="rc-go" href="qwen-image-2-1-allrounds.html">进入阅读 →</a>
         </article>
       </div>
     </section>
 
     <section id="howto">
-      <div class="section-head"><h2>从哪一份看起</h2><p class="section-note">四份都来自同一套本机实测，结论一致，只是组织方式和详略不同。</p></div>
+      <div class="section-head"><h2>从哪一份看起</h2><p class="section-note">三份都来自同一套本机实测，结论一致，只是组织方式和详略不同；第三份是收口版，内容最全。</p></div>
       <table class="howto">
         <thead><tr><th>你的需求</th><th>看这份</th><th>为什么</th></tr></thead>
         <tbody>
           <tr><td>第一次了解这个模型</td><td><a href="qwen-image-2-1-round1.html">第一轮</a></td><td>7 个问题覆盖最常被问的点，最短。</td></tr>
           <tr><td>想知道实际怎么选路线</td><td><a href="qwen-image-2-1-report.html">第二轮</a></td><td>PE／Skill／混合三路线 + 速度两本账 + 按场景案例。</td></tr>
-          <tr><td>我要做具体某个活儿</td><td><a href="qwen-image-2-1-scenes.html">场景化问答</a></td><td>按任务类型直接给路线，图最多、可点开看大图。</td></tr>
-          <tr><td>要一次性看全结论</td><td><a href="qwen-image-2-1-allrounds.html">全轮汇总</a></td><td>十一轮 + 速查矩阵 + 性能基准 + 生态清单，收口版。</td></tr>
+          <tr><td>要一次性看全结论</td><td><a href="qwen-image-2-1-allrounds.html">全轮汇总（收口版）</a></td><td>19 个问答 + 速查矩阵 + 性能基准 + 生态清单；已含前两份全部内容。</td></tr>
         </tbody>
       </table>
     </section>
