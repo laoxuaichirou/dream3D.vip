@@ -2,11 +2,11 @@
 /* briefing 条目按日期倒序维护（最新的排最前），与 docs.v*.js 约定一致。 */
 const SITE_DOC_ADDITIONS = [
   {
-    t: "Qwen Image 2.1 实测信息简报",
-    file: "articles/qwen-image-2-1-report.html",
+    t: "Qwen Image 2.1 实测专题（四份报告全量收录）",
+    file: "articles/qwen-image-2-1.html",
     cat: "briefing",
-    date: "09-25",
-    d: "第二轮补测（新增 38 张证据）：八问速答 + PE／Skill／混合三路线选型 + 商品四视图·海报·连续编辑案例；结论是没有一种提示词方案包打天下，按任务路由"
+    date: "09-27",
+    d: "本地 GPU 四轮实测一份都不删：首轮「快不快、强不强」+ 第二轮「到底怎么用」+ 场景化测试问答（82 图）+ 全轮汇总问答（88 图）；含精确文字、肢体修复、局部编辑、VOSR 2.0 高清修复与 LoRA 加速的实测结论"
   },
   {
     t: "DeepSeek Harness：不只是 Agent，而是一套可组合的运行时",
