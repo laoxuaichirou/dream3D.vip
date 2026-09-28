@@ -25,9 +25,16 @@
   .tag { display:inline-block; font-size:12px; background:#e8dfd3; color:#6b5636; border-radius:10px; padding:2px 10px; margin-left:8px; vertical-align:middle; }
   .unverified { background:#efe3e3; color:#8a4a4a; }
   footer { text-align:center; color:#999; font-size:12px; padding:30px; }
+  /* 返回录制版：fixed，保证从任意 #archive-qN 中段落入都能看到 */
+  .back-video { position:fixed; right:16px; bottom:16px; z-index:99; display:inline-flex; align-items:center; gap:6px;
+    padding:10px 16px; background:#3a2e26; color:#f6f4f0; font-size:13px; font-weight:700; text-decoration:none;
+    border-radius:22px; box-shadow:0 4px 16px rgba(0,0,0,.28); transition:background .2s, color .2s; }
+  .back-video:hover { background:#c98b4b; color:#2b2b2b; }
+  @media (max-width:520px) { .back-video { right:10px; bottom:10px; padding:9px 13px; font-size:12px; } }
 </style>
 </head>
 <body>
+<a class="back-video" href="qwen-image-2-1-video.html" title="回到录制版 14 问">← 返回录制版</a>
 <header>
   <h1>Qwen Image 2.1 · 全轮测试汇总问答</h1>
   <p>全量收口：2026-09-27 ｜ 覆盖文字、肢体、视角、多参考、透明图、PE、Skill、LoRA、插件与 ControlNet ｜ 点击图片看原图</p>
