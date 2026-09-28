@@ -157,6 +157,7 @@ body>*{position:relative;z-index:1}
 
 /* Chips + scrollspy */
 .chip-nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:26px 0 4px}
+.new-badge{position:absolute;top:12px;right:12px;z-index:2;padding:3px 9px;border-radius:7px;background:var(--gradient);color:#0c0c12;font-size:11px;font-weight:800;letter-spacing:.5px;box-shadow:0 2px 10px rgba(0,0,0,.35)}
 .chip{padding:9px 18px;border-radius:22px;font-size:13px;font-weight:600;
   background:var(--bg-card);border:1px solid var(--border);color:var(--text-dim);
   cursor:pointer;transition:all var(--transition)}
@@ -305,6 +306,7 @@ body>*{position:relative;z-index:1}
     <span class="note">48 期精选 · 持续补充</span>
   </div>
   <div class="container chip-nav">
+    <a class="chip" href="#newest" data-spy="newest">🆕 最新更新</a>
     <a class="chip" href="#runninghub" data-spy="runninghub">🚀 RunningHub</a>
     <a class="chip" href="#ai-video" data-spy="ai-video">🎬 AI 视频</a>
     <a class="chip" href="#ai-tools" data-spy="ai-tools">🧰 AI 工具与项目</a>
@@ -316,6 +318,15 @@ body>*{position:relative;z-index:1}
 </section>
 
 <main class="container" style="padding-top:44px;padding-bottom:70px">
+
+<!-- 最新更新：按发布日期倒序，自动维护，不依赖手工排序 -->
+<section class="section" id="newest">
+  <div class="section-title">
+    <span class="icon">🆕</span><h2>最新更新</h2><span class="count" id="newestCount"></span>
+  </div>
+  <p class="section-desc">最近发布的视频，按发布日期倒序自动排列；每个分类内仍按推荐观看顺序保留。</p>
+  <div class="video-grid" data-section="__newest"></div>
+</section>
 
 <section class="section" id="runninghub">
   <div class="section-title">
@@ -420,30 +431,46 @@ body>*{position:relative;z-index:1}
   <p>© 2025 Gary AIGC · 视频托管于 B 站，点击封面加载播放</p>
 </footer>
 
-<script src="data/videos.v2.js?v=20260928b"></script>
+<script src="data/videos.v2.js?v=20260928c"></script>
 <script>
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
-function renderSection(cat){
-  const grid = document.querySelector(`[data-section="${cat.key}"]`);
-  if(!grid) return;
-  const list = VIDEO_DB.filter(v => v.cat === cat.key);
-  const countEl = document.querySelector(`#${cat.key} .count`);
-  if (countEl) countEl.textContent = list.length + " 期";
-  grid.innerHTML = list.map(v => `
+const RECENT_DAYS = 45;                     /* 🆕 徽标窗口：发布 45 天内 */
+function isNew(d){ return !!d && (Date.now() - Date.parse(d + "T00:00:00")) < RECENT_DAYS*864e5; }
+function cardHTML(v){ return `
     <div class="video-item">
       <div class="video-facade" data-id="${v.bv}" onclick="loadVideo(this)">
         <img class="cover" src="${v.cover}" alt="${esc(v.t)}" loading="lazy">
         <span class="platform-badge">B站</span>
         ${v.dur ? `<span class="dur-badge">${v.dur}</span>` : ""}
+        ${isNew(v.date) ? `<span class="new-badge">🆕 新</span>` : ""}
         <div class="play-btn">▶</div>
       </div>
       <div class="video-info">
         <h3>${esc(v.t)}</h3>
         <a class="ext" href="https://www.bilibili.com/video/${v.bv}" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ 在 B 站打开</a>
       </div>
-    </div>`).join("");
+    </div>`; }
+function renderSection(cat){
+  const grid = document.querySelector(`[data-section="${cat.key}"]`);
+  if(!grid) return;
+  const list = VIDEO_DB.filter(v => v.cat === cat.key);
+  const countEl = document.querySelector(`#${cat.key} .count`);
+  if (countEl) countEl.textContent = list.length + " 期";
+  grid.innerHTML = list.map(cardHTML).join("");
+}
+/* 最新更新：跨分类按 date 倒序取前 n 条（自维护；分类内策展顺序不受影响） */
+function renderNewest(n){
+  const grid = document.querySelector('[data-section="__newest"]');
+  if(!grid) return;
+  const list = VIDEO_DB.filter(v => v.date)
+                       .sort((a,b) => String(b.date).localeCompare(String(a.date)))
+                       .slice(0, n);
+  const c = document.getElementById("newestCount");
+  if (c) c.textContent = "最近 " + list.length + " 期";
+  grid.innerHTML = list.map(cardHTML).join("");
 }
 VIDEO_CATS.forEach(renderSection);
+renderNewest(6);
 
 /* 点击加载 iframe（站内播放，流量走 B 站 CDN） */
 function loadVideo(el){

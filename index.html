@@ -643,6 +643,7 @@ a.tool-card:hover{border-color:var(--border-hover);transform:translateY(-3px);bo
 
 <script src="data/docs.v10.js?v=20260928a"></script>
 <script src="data/site-additions.v1.js?v=20260928a"></script>
+<script src="data/videos.v2.js?v=20260928c"></script>
 <script>
 /* ================= i18n ================= */
 const I18N = {
@@ -792,19 +793,24 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") document.que
   var additions = typeof SITE_DOC_ADDITIONS !== "undefined" ? SITE_DOC_ADDITIONS : [];
   var byFile = {};
   additions.concat(DOC_DB).forEach(function(it){ if (it && it.file) byFile[it.file] = it; });
-  var items = Object.keys(byFile).map(function(k){ return byFile[k]; })
+  var arts = Object.keys(byFile).map(function(k){ return byFile[k]; })
     .filter(function(it){ return it.date; })
+    .map(function(it){ return {date: it.date, t: (it.t || "").replace(/信息简报$/, ""),
+                                d: it.d || "", url: it.file || "#"}; });
+  /* 最新视频：跨分类按 date 倒序取前 3 条并入（封顶，避免视频把小字文章挤掉） */
+  var vids = (typeof VIDEO_DB !== "undefined" ? VIDEO_DB.filter(function(v){ return v.date; }) : [])
+    .sort(function(a,b){ return String(b.date).localeCompare(String(a.date)); })
+    .slice(0, 3)
+    .map(function(v){ return {date: v.date, t: "🎬 " + v.t, d: "视频",
+                              url: "https://www.bilibili.com/video/" + v.bv, ext: true}; });
+  var items = arts.concat(vids)
     .sort(function(a,b){ return String(b.date).localeCompare(String(a.date)); })
     .slice(0, 8);
   var html = "";
   items.forEach(function(it){
-    var d = it.d || "";
-    var title = (it.t || "").replace(/信息简报$/, "");
-    var file = it.file || "#";
-    var date = it.date || "—";
-    html += '<a class="brief-item" href="' + file + '">'
-      + '<span class="date">' + date + '</span>'
-      + '<span class="txt"><b>' + title + '</b>' + (d ? ' — ' + d : '') + '</span>'
+    html += '<a class="brief-item"' + (it.ext ? ' href="' + it.url + '" target="_blank" rel="noopener"' : ' href="' + it.url + '"') + '>'
+      + '<span class="date">' + it.date + '</span>'
+      + '<span class="txt"><b>' + it.t + '</b>' + (it.d ? ' — ' + it.d : '') + '</span>'
       + '</a>';
   });
   box.innerHTML = html;
