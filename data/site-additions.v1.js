@@ -2,6 +2,13 @@
 /* briefing 条目按日期倒序维护（最新的排最前），与 docs.v*.js 约定一致。 */
 const SITE_DOC_ADDITIONS = [
   {
+    t: "Qwen Image 2.1 两期视频·录制版（14 问）",
+    file: "articles/qwen-image-2-1-video.html",
+    cat: "briefing",
+    date: "09-27",
+    d: "上下两期讲清 14 个常见问题：路线怎么选、文字为什么崩、手脚与局部修复、多图参考、透明抠图、材质与连续编辑；含 34 张案例图、2511 LoRA 结论更正与最终生产链总结"
+  },
+  {
     t: "Qwen Image 2.1 实测专题（三份报告全量收录）",
     file: "articles/qwen-image-2-1.html",
     cat: "briefing",
