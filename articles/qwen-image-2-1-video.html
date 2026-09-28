@@ -46,8 +46,12 @@
   figure img { display:block; width:100%; aspect-ratio:1 / 1; object-fit:cover; border-radius:11px; border:1px solid var(--line); background:#eee; }
   figure.wide img { aspect-ratio:2 / 1; }
   figcaption { margin-top:6px; color:var(--muted); font-size:12px; line-height:1.45; }
-  .talk { margin-top:17px; padding:11px 14px; color:#67584d; background:#f6f0e8; border-radius:10px; font-size:14px; line-height:1.7; }
-  .talk::before { content:"录制提示  "; color:var(--blue); font-weight:800; }
+  .talk { display:none; }
+  .archive-jump { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:18px; padding:12px 15px; border:1px solid var(--line); border-radius:11px; background:#fff8ef; }
+  .archive-jump a { color:var(--brown); text-decoration:none; font-size:14px; font-weight:800; }
+  .archive-jump a:hover { color:var(--orange); text-decoration:underline; }
+  .archive-jump span { color:var(--muted); font-size:12px; }
+  .cases figure img { cursor:zoom-in; }
   .correction { margin:28px 0 10px; padding:18px 20px; border:2px solid #d48779; border-radius:16px; background:#fff1ee; }
   .correction h3 { margin:0 0 7px; color:var(--red); font-size:18px; }
   .correction p { margin:0; line-height:1.8; }
@@ -85,7 +89,10 @@
   body.ds-enhanced.episode-page .answer { color:var(--ds-copy); background:color-mix(in srgb,var(--ds-signal) 8%,var(--ds-panel-solid)); border-color:var(--ds-signal); }
   body.ds-enhanced.episode-page .answer strong { color:var(--ds-signal); }
   body.ds-enhanced.episode-page .evidence { color:var(--ds-copy); }
-  body.ds-enhanced.episode-page .talk { color:var(--ds-copy); background:color-mix(in srgb,var(--ds-signal) 7%,var(--ds-panel-solid)); }
+  body.ds-enhanced.episode-page .talk { display:none; }
+  body.ds-enhanced.episode-page .archive-jump { background:color-mix(in srgb,var(--ds-signal) 7%,var(--ds-panel-solid)); border-color:var(--ds-line); }
+  body.ds-enhanced.episode-page .archive-jump a { color:var(--ds-signal); }
+  body.ds-enhanced.episode-page .archive-jump span { color:var(--ds-muted); }
   body.ds-enhanced.episode-page .correction { background:color-mix(in srgb,var(--ds-hot) 10%,var(--ds-panel-solid)); border-color:var(--ds-hot); }
   body.ds-enhanced.episode-page .correction h3 { color:var(--ds-hot); }
   body.ds-enhanced.episode-page .route div { color:var(--ds-copy); background:var(--ds-panel-hi); }
@@ -100,7 +107,7 @@
   <div class="eyebrow">QWEN IMAGE 2.1 · RECORDING EDITION</div>
   <h1>上下两期，14 个问题<br>把 2.1 讲明白</h1>
   <p class="lead">这不是模型宣传页，而是一份可以边讲边看的测试结论卡：它能做什么、哪里会翻车，以及 Skill、PE、插件、LoRA 和 ControlNet 到底应该怎么分工。</p>
-  <div class="notice"><strong>使用方式：</strong>录制时优先看每题的橙色结论和“录制提示”；图片是代表性证据，不代表每次生成都能稳定复现。</div>
+  <div class="notice"><strong>使用方式：</strong>按问题顺序查看橙色结论、证据和案例；点击图片可打开原图，点击每题下方的测试档案链接可直达完整参数与高清证据。</div>
 </header>
 
 <nav class="episode-nav" aria-label="Episode navigation">
@@ -126,6 +133,7 @@
     <figure><img src="../assets/qwen-image-2-1-video/POSTER-02C_pe_gen_00001_.webp"><figcaption>PE：审美强，但会主动扩写</figcaption></figure>
     <figure><img src="../assets/qwen-image-2-1-video/POSTER-02D_expert_00001_.webp"><figcaption>专家规则：文字版式最清晰</figcaption></figure>
   </div>
+  <div class="archive-jump"><a href="qwen-image-2-1-allrounds.html#archive-q1">打开 Q1 测试档案：高清原图、参数与四路线对照 ↗</a><span>适合录制时展开细节</span></div>
   <div class="talk">这一题不要先讲模型多强，先用四张对照图让观众看出：提示词路线会改变结果。</div>
 </section>
 
@@ -138,6 +146,7 @@
     <figure><img src="../assets/qwen-image-2-1-video/TEXT-OVERLAY-01B_fixed_footer_v2_00001_.webp"><figcaption>文字层：适合必须逐字正确的内容</figcaption></figure>
     <figure><img src="../assets/qwen-image-2-1-video/PACK-REAL-01_lifestyle_dense_text_00001_.webp"><figcaption>真实包装：单行文字可靠，表格小字风险高</figcaption></figure>
   </div>
+  <div class="archive-jump"><a href="qwen-image-2-1-allrounds.html#archive-q2">打开 Q2 测试档案：包装小字、VOSR 与文字层证据 ↗</a><span>适合录制时展开细节</span></div>
   <div class="talk">这一题的核心不是“2.1 文字行不行”，而是先区分像素修复、语义重建和确定性排版。</div>
 </section>
 
@@ -150,6 +159,7 @@
     <figure><img src="../assets/qwen-image-2-1-video/LIMB-05C_hand_macro_key_00001_.webp"><figcaption>手部微距：必须逐根数指</figcaption></figure>
     <figure><img src="../assets/qwen-image-2-1-video/LIMB-05E_yoga_lotus_eagle_structured_00001_.webp"><figcaption>极端姿势：服从度仍是短板</figcaption></figure>
   </div>
+  <div class="archive-jump"><a href="qwen-image-2-1-allrounds.html#archive-q3">打开 Q3 测试档案：手脚、极端姿势与逐轮修复证据 ↗</a><span>适合录制时展开细节</span></div>
   <div class="talk">把“能修”与“能稳定修好”分开说，观众会更容易理解模型的真实边界。</div>
 </section>
 
@@ -162,6 +172,7 @@
     <figure><img src="../assets/qwen-image-2-1-video/ANGLE-02_rear_three_quarter_135_00001_.webp"><figcaption>135° 后三分之二：可见性锚点有效</figcaption></figure>
     <figure><img src="../assets/qwen-image-2-1-video/ANGLE-03_side_dusk_street_00001_.webp"><figcaption>真实场景侧面：新背景与新构图</figcaption></figure>
   </div>
+  <div class="archive-jump"><a href="qwen-image-2-1-allrounds.html#archive-q4">打开 Q4 测试档案：90° / 135° 视角切换对照 ↗</a><span>适合录制时展开细节</span></div>
   <div class="talk">这题适合用“原参考图 → 侧面结果 → 背面结果”的连续画面讲，不要只展示最终图。</div>
 </section>
 
@@ -174,6 +185,7 @@
     <figure><img src="../assets/qwen-image-2-1-video/MULTIREF-02C_skeleton_flatlay_seed25092530_00001_.webp"><figcaption>骨架 + 平铺：降低身份串扰</figcaption></figure>
     <figure><img src="../assets/qwen-image-2-1-video/MULTIREF-02B_seed25092530_00001_.webp"><figcaption>失败例：身份被另一张人像带走</figcaption></figure>
   </div>
+  <div class="archive-jump"><a href="qwen-image-2-1-allrounds.html#archive-q5">打开 Q5 测试档案：多参考图职责分工与失败 seed ↗</a><span>适合录制时展开细节</span></div>
   <div class="talk">把“多图不是越多越好”作为本题结论，给观众一个可直接复用的参考图组织方法。</div>
 </section>
 
@@ -184,6 +196,7 @@
   <div class="cases">
     <figure class="wide"><img src="../assets/qwen-image-2-1-video/LOC-COLOR-A_00001_.webp"><figcaption>局部编辑示例：限定区域后再改色或换装</figcaption></figure>
   </div>
+  <div class="archive-jump"><a href="qwen-image-2-1-allrounds.html#archive-q6">打开 Q6 测试档案：圈选、涂抹与 mask 对照 ↗</a><span>适合录制时展开细节</span></div>
   <div class="talk">这里讲清“Mask 解决位置，不解决内容质量”，避免观众把 Mask 当成万能修复工具。</div>
 </section>
 
@@ -197,6 +210,7 @@
     <figure><img src="../assets/qwen-image-2-1-video/RGBA-05X_group_extract_00001_.webp"><figcaption>三人合影：空隙与透明边界</figcaption></figure>
     <figure><img src="../assets/qwen-image-2-1-video/RGBA-06X_motion_blur_extract_00001_.webp"><figcaption>动态模糊：保留软边</figcaption></figure>
   </div>
+  <div class="archive-jump"><a href="qwen-image-2-1-allrounds.html#archive-q8">打开 Q8 测试档案：透明底、发丝与动态模糊证据 ↗</a><span>适合录制时展开细节</span></div>
   <div class="talk">第一期到这里完成能力闭环：文字、肢体、视角、多参考、局部编辑和透明资产。</div>
 </section>
 
@@ -214,6 +228,7 @@
     <figure><img src="../assets/qwen-image-2-1-video/VOSR-02B_illustration_restore_00001_.webp"><figcaption>插画纯修复：减少重绘</figcaption></figure>
     <figure class="wide"><img src="../assets/qwen-image-2-1-video/UPSCALE-02_contact_sheet_input_noLora_Lora.webp"><figcaption>同素材对照：无 LoRA 与 LoRA 没有普遍性胜负</figcaption></figure>
   </div>
+  <div class="archive-jump"><a href="qwen-image-2-1-allrounds.html#archive-q7">打开 Q7 测试档案：VOSR、Qwen 放大与 LoRA 对照 ↗</a><span>适合录制时展开细节</span></div>
   <div class="talk">这一题用“速度、保真、是否改变内容”三个维度讲，比单纯说谁更清晰更有说服力。</div>
 </section>
 
@@ -226,6 +241,7 @@
     <div><b>结构化直写</b>文字、职责、视角最可控。</div>
     <div><b>插件</b>解决确定性文字，不替代画面生成。</div>
   </div>
+  <div class="archive-jump"><a href="qwen-image-2-1-allrounds.html#archive-q9">打开 Q9 测试档案：Skill、PE 与结构化提示词路线 ↗</a><span>适合录制时展开细节</span></div>
   <div class="talk">这题建议用一句话收口：PE 帮你想，Skill 帮你写，结构化提示词帮你守住要求。</div>
 </section>
 
@@ -238,6 +254,7 @@
     <figure><img src="../assets/qwen-image-2-1-video/SPEED-01B_lightning8_8steps_00001_.webp"><figcaption>8-step Lightning：仍需按 2.1 兼容性单独验证</figcaption></figure>
     <figure><img src="../assets/qwen-image-2-1-video/SPEED-02D_edit2511_i2i_hand_repair_00001_.webp"><figcaption>旧案例：不是 2511 生效证据</figcaption></figure>
   </div>
+  <div class="archive-jump"><a href="qwen-image-2-1-allrounds.html#archive-q10">打开 Q10 测试档案：加速 LoRA 的历史结果与兼容性说明 ↗</a><span>适合录制时展开细节</span></div>
   <div class="talk">这一题必须明确说“之前的结论错了”，这反而会增强整期测试的可信度。</div>
 </section>
 
@@ -250,6 +267,7 @@
     <figure><img src="../assets/qwen-image-2-1-video/TEXT-OVERLAY-02A_qwen_blend_30_00001_.webp"><figcaption>2.1 原生编辑：融合背景</figcaption></figure>
     <figure><img src="../assets/qwen-image-2-1-video/TEXT-OVERLAY-02C_qwen_second_edit_00001_.webp"><figcaption>连续二次编辑：仍需人工验收</figcaption></figure>
   </div>
+  <div class="archive-jump"><a href="qwen-image-2-1-allrounds.html#archive-q11">打开 Q11 测试档案：文字层插件与 2.1 融合工具 ↗</a><span>适合录制时展开细节</span></div>
   <div class="talk">这题很适合展示工作流：文字层 → Qwen 编辑 → 检查文字和边界。</div>
 </section>
 
@@ -262,6 +280,7 @@
     <figure><img src="../assets/qwen-image-2-1-video/Qwen21_Union_Canny_T8_00001_.webp"><figcaption>Canny：锁定轮廓与构图</figcaption></figure>
     <figure><img src="../assets/qwen-image-2-1-video/Qwen21_Union_Pose_SameRatio_00001_.webp"><figcaption>比例对齐：控制稳定性的基础</figcaption></figure>
   </div>
+  <div class="archive-jump"><a href="qwen-image-2-1-allrounds.html#archive-q15">打开 Q15 测试档案：Fun-ControlNet Union 的 Pose / Canny 证据 ↗</a><span>适合录制时展开细节</span></div>
   <div class="talk">不要把 Union 讲成“更强的提示词”，它的价值是增加空间结构约束。</div>
 </section>
 
@@ -273,6 +292,7 @@
     <figure><img src="../assets/qwen-image-2-1-video/Qwen21_Union_RefPrompt_Generic_00001_.webp"><figcaption>泛化提示词：姿态跟随弱</figcaption></figure>
     <figure><img src="../assets/qwen-image-2-1-video/Qwen21_Union_RefPrompt_ExplicitPose_00001_.webp"><figcaption>明确职责：姿态明显改善</figcaption></figure>
   </div>
+  <div class="archive-jump"><a href="qwen-image-2-1-allrounds.html#archive-q18">打开 Q18 测试档案：泛化提示词与明确职责 A/B 对照 ↗</a><span>适合录制时展开细节</span></div>
   <div class="talk">这题承担“为什么有工作流还不好用”的解释，能把前面的提示词、参考图和 ControlNet 串起来。</div>
 </section>
 
@@ -285,6 +305,7 @@
     <div><b>确定性</b>文字层、Mask、ControlNet 分担硬约束。</div>
     <div><b>收尾</b>VOSR 纯修复，最后逐字、逐指、逐边界验收。</div>
   </div>
+  <div class="archive-jump"><a href="qwen-image-2-1-allrounds.html#archive-q16">打开 Q16 测试档案：全量结论与最终生产链 ↗</a><span>适合录制时展开细节</span></div>
   <div class="talk">最后不要再堆模型名，用一条生产链收尾：素材准备 → 提示词 → 生成/编辑 → 文字校正 → 修复增强 → 人工验收。</div>
 </section>
 </main>
@@ -302,6 +323,18 @@
   var q = function (selector, root) { return (root || document).querySelector(selector); };
   var cards = qs(".qa");
   var episodes = qs(".episode");
+  qs(".cases figure img").forEach(function (img) {
+    var src = img.getAttribute("src");
+    if (!src || img.parentElement && img.parentElement.tagName === "A") return;
+    var link = document.createElement("a");
+    link.href = src;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.title = "打开高清原图";
+    link.className = "case-image-link";
+    img.parentNode.insertBefore(link, img);
+    link.appendChild(img);
+  });
   var original = {
     eyebrow: q(".eyebrow").textContent,
     title: q("header h1").innerHTML,
@@ -326,7 +359,7 @@
     eyebrow: "QWEN IMAGE 2.1 · RECORDING EDITION",
     title: "Two episodes, 14 questions<br>to understand 2.1",
     lead: "This is not a model advertisement. It is a compact evidence guide for recording: what Qwen Image 2.1 can do, where it fails, and how Skill, PE, plugins, LoRAs and ControlNet should work together.",
-    notice: "<strong>How to use it:</strong> During recording, focus on the orange conclusion and the recording note. The images are representative evidence, not a promise that every generation will reproduce the same result.",
+    notice: "<strong>How to use it:</strong> Follow the questions in order. Click any image to open the original, or use the archive link below each question to jump to full parameters and evidence.",
     episodeNav: ["Episode 1: Ability & limits", "Episode 2: Tools & workflow", "Final production chain", "Open full test archive"],
     episodes: [
       { h: "Episode 1: Ability & limits", p: "Start with what 2.1 can actually do, then explain its common text, anatomy and reference-image failures." },

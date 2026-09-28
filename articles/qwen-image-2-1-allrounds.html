@@ -11,6 +11,7 @@
   header p { margin:0; opacity:.8; font-size:14px; }
   main { max-width:960px; margin:0 auto; padding:24px 20px 80px; }
   .qa { background:#fff; border-radius:14px; padding:26px 30px; margin:26px 0; box-shadow:0 2px 10px rgba(0,0,0,.06); }
+  section[id^="archive-q"] { scroll-margin-top:20px; }
   .q { font-size:19px; font-weight:700; color:#7a4a21; margin:0 0 12px; }
   .a-one { font-size:16px; line-height:1.8; background:#fbf3e8; border-left:4px solid #c98b4b; padding:12px 16px; border-radius:0 8px 8px 0; }
   ul { line-height:1.9; padding-left:22px; }
@@ -33,7 +34,7 @@
 </header>
 <main>
 
-<section class="qa">
+<section id="archive-q0" class="qa">
   <p class="q">Q0：一页速查——什么时候用 2.1、怎么用、哪里会翻车？</p>
   <p class="a-one">强项：精确文字、编辑保字、视角切换、多参考合成、透明抠图和场景化编辑。高清纯修复优先用 VOSR 2.0；必须 100% 正确的文字交给 QwenTextOverlay。翻车点：局部修小字、参考图含人脸、极端姿势、PE 在海报任务上发明文字。</p>
   <ul>
@@ -45,7 +46,7 @@
   <p class="edge">所有结论来自 2026-09-25 本机 50+ 次实测，证据见逐案例日志；未实测项均标“候选/未验证”。</p>
 </section>
 
-<section class="qa">
+<section id="archive-q1" class="qa">
   <p class="q">Q1：做一张带很多字的海报，该走哪条路线？</p>
   <p class="a-one">真实场景密集小字海报实测（夕阳市集 + 8 条文字，四路线同 seed）：<b>Skill+API 版面最干净但丢了时间字段；PE 审美最强但拆标题、加图标和二维码；专家版式最清晰</b>。三条路线都在最密的小字行犯了同一个“位→在”错。</p>
   <ul>
@@ -63,7 +64,7 @@
   <p class="edge">边界：PE 的“扩写”是实际可见污染；中文装饰性字距靠禁令解决不了，要版式条件或后期。</p>
 </section>
 
-<section class="qa">
+<section id="archive-q2" class="qa">
   <p class="q">Q2：商品包装上的小字总崩，是模型不行吗？</p>
   <p class="a-one">不是。先分三种情况：<b>模糊但字形还在 → VOSR 2.0 一步超分</b>（实测 `净含量` 从不可辨恢复正确）；<b>字形已不可辨/已是错字 → Qwen 整图重建 + 逐字库存</b>（3/3 seed 救回）；清晰源图短指令即可。</p>
   <ul>
@@ -82,7 +83,7 @@
   <p class="edge">边界：用户给不出准确原文时，不要承诺小字保真——先 OCR 核对，或把文字层留给后期排版。</p>
 </section>
 
-<section class="qa">
+<section id="archive-q3" class="qa">
   <p class="q">Q3：手脚崩了怎么修？一定要画 mask 吗？</p>
   <p class="a-one">不用。<b>逐轮缩小范围的整图修复链</b>即可：第一轮修脚、第二轮修双手、第三轮只修提包手，三轮 63 秒收敛。压力实测中双人互动和盘腿动作通过，但微距捏钥匙被回放确认是 6 指，肢体解剖实际为 <b>4/5</b>；真正短板还包括极端姿势服从。</p>
   <ul>
@@ -101,7 +102,7 @@
   <p class="edge">边界：多次编辑人工成本高，脸部每轮有轻微重绘，不是“一键完美修复”；极端姿势服从需多抽 seed。</p>
 </section>
 
-<section class="qa">
+<section id="archive-q4" class="qa">
   <p class="q">Q4：同一个人物，能换成侧面、背面视角吗？</p>
   <p class="a-one">能。关键是<b>写明方位角 + 可见性锚点 + “这是新构图，不复制原机位和姿势”</b>；只说“换个角度”会被原图锚定。</p>
   <ul>
@@ -117,7 +118,7 @@
   <p class="edge">边界：身份是否“像本人”需要你回放确认；不同人物、多 seed 复验仍是候选/未验证。</p>
 </section>
 
-<section class="qa">
+<section id="archive-q5" class="qa">
   <p class="q">Q5：三张参考图（人、姿势、衣服）能各司其职吗？</p>
   <p class="a-one">能，最稳组合是：<b>图2 用 DWPose 骨架 + 图3 用无人像平铺图</b>。两个串扰向量分别是“姿势图里的人”和“服装图里的人”，都要消掉。</p>
   <ul>
@@ -136,7 +137,7 @@
   <p class="edge">边界：6 图为单 seed；复杂多层服装、必须用人穿图的场景、7 图以上仍是候选/未验证。</p>
 </section>
 
-<section class="qa">
+<section id="archive-q6" class="qa">
   <p class="q">Q6：只想改图里的一小块，圈选、涂抹、mask 有区别吗？</p>
   <p class="a-one">有。圈选/涂抹是<b>软提示</b>（模型会越区顺带改别处）；<b>mask 合成才是硬约束</b>（mask 外像素级不变），但 mask 画漏了就残留。</p>
   <ul>
@@ -153,7 +154,7 @@
   <p class="edge">边界（同 seed 对照实测）：标记类编辑<b>默认不写“XXX 保持不变”</b>——保留项里的期望状态会被当成目标执行；只有“已存在且绝不能动”的内容才写，且用“现有的/已是”措辞。mask 的绘制精度就是结果精度。</p>
 </section>
 
-<section class="qa">
+<section id="archive-q7" class="qa">
   <p class="q">Q7：高清放大/模糊修复用什么？</p>
   <p class="a-one">默认 <b>VOSR 2.0 一步超分</b>：保真更高、快 10 倍、显存不到一半、不用写提示词。只有“边修边改”或“字形已不可辨要按库存重建”时才用 Qwen 增强。</p>
   <ul>
@@ -169,7 +170,7 @@
   </div>
 </section>
 
-<section class="qa">
+<section id="archive-q8" class="qa">
   <p class="q">Q8：能直接出透明底素材（贴纸、抠图）吗？</p>
   <p class="a-one">能。用 Skill 的 <b>RGBA 固定包装</b>（首尾两句逐字固定），七个入口全部实测成功：文生图素材、照片全身抠图、发丝级近景、资产再编辑、复杂遮挡、多人合影、动态模糊。</p>
   <ul>
@@ -187,7 +188,7 @@
   <p class="edge">边界：极端密集人群、透明/反光材质主体未测，标候选/未验证。</p>
 </section>
 
-<section class="qa">
+<section id="archive-q9" class="qa">
   <p class="q">Q9：Skill、官方 PE、手写提示词，日常到底用哪个？</p>
   <p class="a-one">文字类任务用 <b>Skill+API</b>（质量与 PE 打平、快 3–4 倍）；多参考图职责任务<b>手写结构化提示词</b>；PE 留给追求视觉策划上限的场景。</p>
   <ul>
@@ -204,7 +205,7 @@
   </div>
 </section>
 
-<section class="qa">
+<section id="archive-q10" class="qa">
   <p class="q">Q10：那些加速 LoRA、Fix LoRA 能用吗？<span class="tag unverified">含未验证项</span></p>
   <p class="a-one">实测四款：<b>Wuli 4-step Turbo 崩坏不可用；8-step Lightning 文生图/编辑都可用；Edit-2511 4-step 只在编辑任务可用（T2I 崩坏）；Fix LoRA 已下载实测，无增益无损害</b>。</p>
   <ul>
@@ -221,7 +222,7 @@
   </div>
 </section>
 
-<section class="qa">
+<section id="archive-q11" class="qa">
   <p class="q">Q11：测试结果有没有变成真正能用的 ComfyUI 工具？</p>
   <p class="a-one">有，但要区分“模型能力”和“工程工具”。本轮把最难保证的文字与人工定位拆了出来，形成 <b>qwen_text_overlay 工具套件</b>：生成模型负责画面，文字层负责必须 100% 正确的内容。</p>
   <ul>
@@ -238,7 +239,7 @@
   </div>
 </section>
 
-<section class="qa">
+<section id="archive-q12" class="qa">
   <p class="q">Q12：最后应该怎样选路线？</p>
   <p class="a-one"><b>画面生成用 Qwen，纯高清修复用 VOSR，严格文字用文字层，复杂多参考用骨架和平铺，PE 只在愿意接受主动创意扩写时使用。</b></p>
   <ul>
@@ -250,7 +251,7 @@
   <p class="edge">最终状态：producer-validated，待用户回放与 Hermes 独立复核，尚未标记为 accepted。</p>
 </section>
 
-<section class="qa">
+<section id="archive-q13" class="qa">
   <p class="q">Q13：KimiCode 的文字插件为什么还要再接一次 2.1 编辑？</p>
   <p class="a-one">因为插件当前做的是确定性文字层：它能把文字准确写上去，但为了遮住原错字，会留下一个纯色矩形。最佳组合变成“插件负责逐字正确，2.1 负责把矩形融回场景”。</p>
   <ul>
@@ -267,7 +268,7 @@
   <p class="edge">证据等级：本机 GPU 实测 + 目视检查；插件在 RunningHub 自定义前端的在线回放仍未验证。</p>
 </section>
 
-<section class="qa">
+<section id="archive-q14" class="qa">
   <p class="q">Q14：2511 Lightning LoRA 真的能放到 2.1 编辑里吗？</p>
   <p class="a-one">可以作为实验性跨版本加速组合使用：本轮同一 Qwen 2.1 基座、同一输入、同一 seed 下，4 步 Edit-2511 结果可用；既有 SPEED-02A/B/D 也支持编辑场景可用。但它不是官方兼容保证，不能拿去做 2.1 文生图。</p>
   <ul>
@@ -278,7 +279,7 @@
   <p class="edge">工作流是“2.1 基座 + 2511 编辑 LoRA”的实验版，已通过 JSON 节点/link 机械检查；先用海报、局部改字等低风险素材回放，再扩大到人物和多参考。</p>
 </section>
 
-<section class="qa">
+<section id="archive-q15" class="qa">
   <p class="q">Q15：2.1 专用 Fun-Controlnet-Union 到底解决什么？</p>
   <p class="a-one">它不是只强化 OpenPose，而是把八种结构控制统一在一个 2.1 控制分支：Pose、Depth、Canny、Grayscale、HED、Lineart、MLSD、Scribble，并能与 inpainting 共用控制分支。对人物资产图，Pose 更适合锁骨架；对视角和空间关系，Depth；对产品轮廓和构图，Canny/Lineart；对草图构想，Scribble；对局部重绘，则是 mask + 控制图联合。</p>
   <ul>
@@ -296,7 +297,7 @@
   </div>
 </section>
 
-<section class="qa">
+<section id="archive-q17" class="qa">
   <p class="q">Q17：T8 适配节点应该怎么用？</p>
   <p class="a-one"><b>ComfyUI 不必先升级；安装 T8 自定义节点，并使用它要求的 ComfyUI 转换版 Union 权重。</b></p>
   <ul>
@@ -308,7 +309,7 @@
   <p class="edge">本轮证据：本机 RTX 4070 Ti SUPER GPU 实测；RunningHub 在线回放尚未验证。</p>
 </section>
 
-<section class="qa">
+<section id="archive-q18" class="qa">
   <p class="q">Q18：参考图编辑效果不好，主要是提示词还是模型问题？</p>
   <p class="a-one"><b>这次对照证明：原工作流的泛化提示词是主要问题之一，但不是唯一问题。</b></p>
   <p>同一人物参考图、同一 Pose 控制图、同一种子和参数，只替换提示词：</p>
@@ -323,7 +324,7 @@
   </div>
 </section>
 
-<section class="qa">
+<section id="archive-q16" class="qa">
   <p class="q">Q16：这三天的全量结论，能不能一句话讲清？</p>
   <p class="a-one"><b>Qwen Image 2.1 的上限很高，但它不是“输入一句话就全自动交付”的模型：画面交给 2.1，提示词用 Skill 或 PE 辅助，严格文字交给文字层，纯修复交给 VOSR，结构复现再考虑 T8 Union 的 Pose / Depth / Canny 控制。</b></p>
   <ul>
