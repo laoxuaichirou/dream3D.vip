@@ -116,11 +116,42 @@ a{color:inherit;text-decoration:none}
   border-bottom:1px solid var(--border);transition:all var(--transition)}
 .doc-row:last-child{border-bottom:none}
 .doc-row:hover{background:var(--accent-glow)}
-.doc-title{font-size:15px;font-weight:700;flex-shrink:0}
+.doc-title{font-size:15px;font-weight:700;flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .doc-row:hover .doc-title{color:var(--accent)}
 .doc-desc{font-size:13px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
 .doc-arrow{font-size:15px;color:var(--text-muted);transition:all var(--transition);flex-shrink:0}
 .doc-row:hover .doc-arrow{color:var(--accent);transform:translateX(4px)}
+
+/* 内容中心：推广入口 + 自动最新流 */
+.hub-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:46px}
+.hub-card{display:flex;flex-direction:column;gap:6px;padding:18px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-card);transition:all var(--transition)}
+.hub-card:hover{background:var(--bg-card-hover);border-color:var(--border-hover);transform:translateY(-2px)}
+.hub-card .hub-kicker{font-size:12px;color:var(--badge-text);letter-spacing:.04em}
+.hub-card strong{font-size:16px}.hub-card span:last-child{font-size:13px;color:var(--text-dim)}
+.latest-list{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--bg-card)}
+.latest-row{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);transition:all var(--transition)}
+.latest-row:last-child{border-bottom:none}.latest-row:hover{background:var(--accent-glow)}
+.latest-date{width:86px;flex-shrink:0;color:var(--badge-text);font-size:12px;font-variant-numeric:tabular-nums}
+.latest-title{font-size:15px;font-weight:700;flex:1}.latest-row:hover .latest-title{color:var(--accent)}
+.latest-topic{font-size:12px;color:var(--text-muted);padding:3px 9px;border:1px solid var(--border);border-radius:999px;white-space:nowrap}
+.latest-desc{font-size:13px;color:var(--text-muted);max-width:38%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:767px){.hub-grid{grid-template-columns:1fr;margin-bottom:34px}.latest-desc{display:none}.latest-date{width:72px}.latest-title{font-size:14px}.latest-topic{font-size:11px}}
+
+/* 重点推广：让用户在进入知识库时就能看懂福利、平台和使用路径 */
+.promo-section{margin-bottom:48px}
+.promo-hero{position:relative;overflow:hidden;padding:28px;border:1px solid var(--accent);border-radius:var(--radius);background:var(--bg-card);transition:all var(--transition)}
+.promo-hero:hover{border-color:var(--border-hover);box-shadow:0 0 28px var(--accent-glow)}
+.promo-hero::after{content:"";position:absolute;right:-44px;top:-44px;width:140px;height:140px;border-radius:50%;background:var(--gradient);opacity:.07;pointer-events:none}
+.promo-badge{display:inline-block;padding:4px 12px;border-radius:10px;font-size:11px;font-weight:700;background:var(--gradient);color:var(--bg);margin-bottom:14px}
+.promo-hero h3{font-size:24px;font-weight:800;margin-bottom:8px}.promo-hero p{font-size:14px;color:var(--text-dim);line-height:1.7;margin-bottom:12px}
+.promo-highlights{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}.promo-highlights span{padding:6px 12px;border-radius:14px;font-size:12px;font-weight:600;background:var(--badge-bg);color:var(--badge-text);border:1px solid var(--border)}
+.promo-info{display:flex;flex-wrap:wrap;gap:8px 18px;margin-bottom:8px;font-size:13px;color:var(--text-dim)}.promo-info strong{color:var(--text)}
+.promo-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.promo-actions a,.promo-actions button{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:20px;font:600 13px var(--font);cursor:pointer;border:1px solid var(--accent);background:var(--accent-glow);color:var(--accent)}
+.promo-actions a:first-child{background:var(--accent);color:var(--bg)}.promo-actions a:hover,.promo-actions button:hover{background:var(--accent);color:var(--bg)}
+.promo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}.promo-card{position:relative;overflow:hidden;padding:20px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-card);transition:all var(--transition)}
+.promo-card:hover{border-color:var(--border-hover);transform:translateY(-2px)}.promo-card .rank{position:absolute;right:14px;top:10px;font-size:26px;font-weight:900;opacity:.08}.promo-card h4{font-size:16px;margin-bottom:6px}.promo-card p{font-size:13px;color:var(--text-dim);line-height:1.55;min-height:60px}.promo-card .promo-bonus{display:inline-block;margin:8px 0 12px;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:600;background:var(--badge-bg);color:var(--badge-text)}.promo-card a{display:inline-flex;padding:7px 15px;border:1px solid var(--accent);border-radius:18px;color:var(--accent);font-size:12px;font-weight:600}.promo-card a:hover{background:var(--accent);color:var(--bg)}
+@media (max-width:850px){.promo-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.promo-hero{padding:20px}.promo-grid{grid-template-columns:1fr}.promo-card p{min-height:0}}
 
 /* 视频专栏行 */
 .video-row{display:flex;align-items:center;gap:14px;padding:16px 18px;
@@ -184,13 +215,14 @@ a{color:inherit;text-decoration:none}
     <div class="unav-item">
       <a class="unav-btn active" href="knowledge.html">知识库文档</a>
       <div class="unav-drop" style="left:0;right:auto">
+        <a class="unav-link" href="knowledge.html#latest">最新内容</a>
         <a class="unav-link" href="knowledge.html#comfyui">ComfyUI</a>
         <a class="unav-link" href="knowledge.html#ai-image">AI 绘画</a>
         <a class="unav-link" href="knowledge.html#ai-video">AI 视频</a>
         <a class="unav-link" href="knowledge.html#ai-coding">AI Coding</a>
         <a class="unav-link" href="knowledge.html#runninghub">RunningHub</a>
         <a class="unav-link" href="knowledge.html#storyboard">分镜镜头</a>
-        <a class="unav-link" href="resources.html#briefing">📢 信息简报</a>
+        <a class="unav-link" href="benefits.html">🎁 推广福利</a>
       </div>
     </div>
     <div class="unav-item"><a class="unav-btn" href="resources.html">资源库</a></div>
@@ -213,11 +245,53 @@ a{color:inherit;text-decoration:none}
 <section class="page-header">
   <div class="container">
     <h1><span>知识库文档</span></h1>
-    <p>教程文档的知识体系，标题直达。视频教学集中在视频专栏，文档区只放文档。</p>
+    <p>最新更新先看，推广福利集中入口，下面按主题浏览全部教程与资料。</p>
   </div>
 </section>
 
 <main class="container" style="padding-top:36px;padding-bottom:60px">
+
+<!-- 快速入口：推广内容与站内主路径集中到一个导航层 -->
+<section class="hub-grid" aria-label="快速入口">
+  <a class="hub-card" href="benefits.html">
+    <span class="hub-kicker">推广福利</span><strong>RunningHub、API 与无限画布</strong>
+    <span>邀请码、免费额度与平台入口</span>
+  </a>
+  <a class="hub-card" href="benefits.html#api">
+    <span class="hub-kicker">API 平台</span><strong>模型调用与视频生成接口</strong>
+    <span>硅基流动、Token Plan、Seedance API</span>
+  </a>
+  <a class="hub-card" href="resources.html">
+    <span class="hub-kicker">资源库</span><strong>整合包、模型与资源合集</strong>
+    <span>下载说明与可直接使用的素材</span>
+  </a>
+</section>
+
+<!-- 最新内容：由 date 自动排序，不再维护 briefing 副本 -->
+<section class="section" id="latest">
+  <div class="section-title"><h2>最新内容</h2><span class="sub">按发布日期 / 最近更新自动排序</span><span class="count" id="latestCount"></span></div>
+  <div class="latest-list" id="latestList"></div>
+</section>
+
+<!-- 重点推广：完整展示 RunningHub / 无限画布 / API 入口，方便理解和转化 -->
+<section class="promo-section" id="promotions">
+  <div class="section-title"><span class="icon">🌟</span><h2>重磅推荐</h2><span class="sub">平台福利、使用场景与注册入口</span></div>
+  <div class="promo-hero">
+    <span class="promo-badge">🏆 全能创作平台</span>
+    <h3>RunningHub</h3>
+    <p>模型接入速度、性价比、功能都很强。主推 <strong>RHTV 无限画布</strong>与 <strong>VibeX 云端 Coding</strong>（一句话生成项目，内置 Hermes），也支持 ComfyUI 在线工作流和 AI 应用，覆盖 GPT-Image-2、Nano Banana Pro、Seedance 等上百个模型。</p>
+    <div class="promo-highlights"><span>🎨 RHTV 无限画布</span><span>🚀 VibeX 云端 Coding</span><span>⚡ 模型最多</span><span>💰 性价比高</span><span>🔧 ComfyUI 在线</span><span>🔄 工作流社区</span></div>
+    <div class="promo-info"><span>🎁 <strong>专属福利：1000 RH币</strong> + 每日登录送 100 币（长期）</span><span>❌ 自己注册仅 500 点</span></div>
+    <div class="promo-info"><span>📌 邀请码：国内站 <strong>cn-v1085</strong> <button class="promo-copy" type="button" data-copy="cn-v1085">复制邀请码</button> · 海外站 <strong>rh-v1394</strong></span><span>📌 两站独立，均可注册领福利</span></div>
+    <div class="promo-actions"><a href="https://www.runninghub.cn/?inviteCode=cn-v1085" target="_blank" rel="noopener">🇨🇳 国内站</a><a href="https://www.runninghub.ai/?inviteCode=rh-v1394" target="_blank" rel="noopener">🌍 海外站（审核宽松）</a><a href="benefits.html">查看全部福利 →</a></div>
+  </div>
+  <div class="promo-grid">
+    <div class="promo-card"><span class="rank">2</span><h4>AIX 无限画布</h4><p>AI 原生创作画布，无限图层自由排版，功能更新快，也支持邀请推广收益。</p><span class="promo-bonus">🎁 注册送 300 点</span><br><a href="https://aix.studio?partnerCode=15121" target="_blank" rel="noopener">立即注册 →</a></div>
+    <div class="promo-card"><span class="rank">3</span><h4>优云智算 CompShare</h4><p>老牌云平台，提供 GPU 算力共享，支持训练、推理、渲染，按量计费。</p><span class="promo-bonus">🎁 注册送 10 元算力</span><br><a href="https://passport.compshare.cn/register?referral_code=Da50tAe48HxG8Eqq8R6yEz&amp;ytag=GPU_YY_YX_bl_laoxuchirou1223" target="_blank" rel="noopener">立即注册 →</a></div>
+    <div class="promo-card"><span class="rank">4</span><h4>硅基流动 SiliconFlow</h4><p>模型齐全、价格友好，大模型 API 聚合平台，认证即可领取体验金。</p><span class="promo-bonus">🎁 实名送 16 元</span><br><a href="https://cloud.siliconflow.cn/i/AXWHlns5" target="_blank" rel="noopener">立即注册 →</a></div>
+    <div class="promo-card"><span class="rank">5</span><h4>贞贞的 AI 工坊</h4><p>即梦 Seedance API 中转平台，视频生成接口稳定，按量计费，即开即用。</p><span class="promo-bonus">🎁 注册即享 API 额度</span><br><a href="https://api.seedance.nz/sign-up?aff=TW7X" target="_blank" rel="noopener">立即注册 →</a></div>
+  </div>
+</section>
 
 <!-- 视频教学专栏：视频只放这里，分类直达视频页 -->
 <section class="section">
@@ -255,9 +329,9 @@ a{color:inherit;text-decoration:none}
   <p>© 2025 GaryAIGC · 让 AI 创作更简单</p>
 </footer>
 
-<script src="data/videos.v2.js"></script>
-<script src="data/docs.v9.js"></script>
-<script src="data/site-additions.v1.js?v=20260927c"></script>
+<script src="data/videos.v2.js?v=20260928b"></script>
+<script src="data/docs.v10.js?v=20260928a"></script>
+<script src="data/site-additions.v1.js?v=20260928a"></script>
 <script>
 /* 视频教学专栏：从视频数据库生成分类入口 */
 (function(){
@@ -274,7 +348,21 @@ a{color:inherit;text-decoration:none}
 
 /* 文档区：从文档数据库按分类生成标题直达列表 */
 (function(){
-  var docs = (typeof SITE_DOC_ADDITIONS !== "undefined" ? SITE_DOC_ADDITIONS : []).concat(DOC_DB);
+  var additions = typeof SITE_DOC_ADDITIONS !== "undefined" ? SITE_DOC_ADDITIONS : [];
+  var byFile = {};
+  additions.concat(DOC_DB).forEach(function(d){ if (d && d.file) byFile[d.file] = d; });
+  var docs = Object.keys(byFile).map(function(k){ return byFile[k]; });
+  var topicNames = {}; DOC_CATS.forEach(function(c){ topicNames[c.key] = c.name; });
+  var latest = docs.filter(function(d){ return d.date; }).sort(function(a,b){ return String(b.date).localeCompare(String(a.date)); });
+  document.getElementById("latestCount").textContent = latest.length + " 篇";
+  document.getElementById("latestList").innerHTML = latest.slice(0,10).map(function(d){
+    return '<a class="latest-row" href="' + d.file + '">'
+      + '<span class="latest-date">' + d.date + '</span>'
+      + '<span class="latest-title">' + d.t + '</span>'
+      + '<span class="latest-desc">' + (d.d || '') + '</span>'
+      + '<span class="latest-topic">' + (topicNames[d.cat] || d.cat) + '</span>'
+      + '<span class="doc-arrow">→</span></a>';
+  }).join("") || '<div class="doc-row"><span class="doc-title">暂无带日期的更新</span></div>';
   var html = DOC_CATS.map(function(c){
     var list = docs.filter(function(d){return d.cat === c.key});
     if (!list.length) return "";
@@ -292,6 +380,16 @@ a{color:inherit;text-decoration:none}
   }).join("");
   document.getElementById("docSections").innerHTML = html;
 })();
+
+/* 推广区邀请码复制 */
+document.querySelectorAll(".promo-copy").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    var value = btn.getAttribute("data-copy") || "";
+    var done = function(){ var old = btn.textContent; btn.textContent = "已复制"; setTimeout(function(){ btn.textContent = old; }, 1400); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(value).then(done);
+    else { var ta = document.createElement("textarea"); ta.value = value; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); done(); }
+  });
+});
 
 /* Theme */
 function setTheme(t){

@@ -456,13 +456,16 @@ body.ds-home .brief-panel {
   backdrop-filter: blur(16px);
   box-shadow: none;
 }
-body.ds-home .cat-card { min-height: 236px; justify-content: space-between; padding: 20px; border-radius: 20px; transition: transform .3s var(--ds-ease), border-color .3s, box-shadow .3s; }
+body.ds-home .cat-card { min-height: 258px; justify-content: flex-start; gap: 13px; padding: 20px; border-radius: 20px; transition: transform .3s var(--ds-ease), border-color .3s, box-shadow .3s; }
 body.ds-home .cat-card:hover { border-color: var(--ds-line-hi); transform: translateY(-4px); box-shadow: var(--ds-shadow); }
 body.ds-home .cat-head { align-items: flex-start; padding-bottom: 15px; border-color: var(--ds-line); }
 body.ds-home .cat-icon { width: 38px; height: 38px; border: 0; border-radius: 11px; color: var(--ds-on-signal); background: var(--ds-signal); }
 body.ds-home .cat-title { font-size: 16px; letter-spacing: -.02em; }
 body.ds-home .cat-desc { display: inline-block; margin-top: 3px; font-size: 11px; }
 body.ds-home .cat-go { color: var(--ds-signal); }
+body.ds-home .cat-feature { display: flex; flex-direction: column; gap: 4px; min-height: 48px; padding: 10px 11px; border: 1px solid var(--ds-line); border-radius: 12px; background: color-mix(in srgb, var(--ds-signal) 5%, transparent); }
+body.ds-home .cat-feature strong { color: var(--ds-signal); font-size: 12px; letter-spacing: .01em; }
+body.ds-home .cat-feature span { color: var(--ds-muted); font-size: 11px; line-height: 1.45; }
 body.ds-home .sub-grid { grid-template-columns: 1fr; gap: 2px; }
 body.ds-home .sub-link { min-width: 0; padding: 5px 4px; color: var(--ds-copy); font-size: 12px; }
 
