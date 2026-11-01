@@ -2,6 +2,20 @@
 /* 新条目使用真实主题分类；通过校验后再合并到下一版 docs.v*.js。 */
 const SITE_DOC_ADDITIONS = [
   {
+    t: "Hermes 自动巡航指南：10 个无人值守配置（已逐条核对）",
+    file: "articles/hermes-autopilot.html",
+    cat: "briefing",
+    date: "2026-11-02",
+    d: "把 Hermes 从聊天软件变成自动员工：网页监控、零模型费健康检查、降级链、多 Key 池、批量审批放行，全部命令在 v0.22.5 实测"
+  },
+  {
+    t: "Hermes 自动巡航指南：10 个无人值守配置（已逐条核对）",
+    file: "articles/hermes-autopilot.html",
+    cat: "ai-coding",
+    date: "2026-11-02",
+    d: "把 Hermes 从聊天软件变成自动员工：网页监控、零模型费健康检查、降级链、多 Key 池、批量审批放行，全部命令在 v0.22.5 实测"
+  },
+  {
     t: "Grok Bot 产品与工程分析：能力、边界、价格与试用建议",
     file: "articles/grok-bot-analysis.html",
     cat: "briefing",

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="10 个让 Hermes Agent 无人值守自动运行的配置：网页监控、手机晨报、零模型费健康检查、夜间备份、周一邮件催办、任务连续性、便宜模型绑定、备用模型降级链、多 Key 池、批量审批放行。全部命令已在 Hermes v0.22.5 逐条核对。">
+<title>Hermes 自动巡航指南 · 10 个无人值守配置</title>
+<style>
+  :root{
+    --bg:#070b16;
+    --bg2:#0b1122;
+    --card:rgba(17,25,46,.72);
+    --card-border:rgba(120,160,255,.14);
+    --ink:#e8eefc;
+    --ink-dim:#9fb0d0;
+    --ink-faint:#6b7ca0;
+    --cyan:#57e6d4;
+    --amber:#ffb45e;
+    --accent:#6ea8ff;
+    --code-bg:#0a0f1f;
+    --radius:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+    line-height:1.85;
+    overflow-x:hidden;
+  }
+  /* ===== 背景底图 ===== */
+  .bg-layer{
+    position:fixed;inset:0;z-index:-2;
+    background:url('../assets/hermes-autopilot/bg.png') center/cover no-repeat;
+    opacity:.62;
+  }
+  .bg-veil{
+    position:fixed;inset:0;z-index:-1;
+    background:
+      linear-gradient(180deg, rgba(7,11,22,.42) 0%, rgba(7,11,22,.68) 40%, rgba(7,11,22,.88) 75%, #070b16 100%);
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px}
+
+  /* ===== Hero ===== */
+  header.hero{
+    min-height:88vh;display:flex;flex-direction:column;justify-content:center;
+    text-align:center;position:relative;
+  }
+  .hero .tag{
+    display:inline-block;margin:0 auto 22px;padding:6px 18px;
+    border:1px solid rgba(87,230,212,.35);border-radius:999px;
+    color:var(--cyan);font-size:13px;letter-spacing:.35em;text-indent:.35em;
+    background:rgba(87,230,212,.06);
+  }
+  .hero h1{
+    font-size:clamp(34px,6vw,58px);font-weight:800;line-height:1.3;
+    background:linear-gradient(120deg,#fff 30%,#a8c6ff 60%,#57e6d4 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    margin-bottom:20px;
+  }
+  .hero .sub{
+    color:var(--ink-dim);font-size:clamp(15px,2.2vw,18px);
+    max-width:640px;margin:0 auto 34px;
+  }
+  .hero .meta{
+    display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+    font-size:13px;color:var(--ink-faint);
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:5px 14px;border-radius:999px;
+    background:rgba(110,168,255,.08);border:1px solid rgba(110,168,255,.25);
+    color:#9dc0ff;
+  }
+  .badge.verified{color:var(--cyan);border-color:rgba(87,230,212,.3);background:rgba(87,230,212,.07)}
+  .badge.verified::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+  .scroll-hint{
+    position:absolute;bottom:34px;left:50%;transform:translateX(-50%);
+    color:var(--ink-faint);font-size:12px;letter-spacing:.3em;text-indent:.3em;
+    animation:float 2.4s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+
+  /* ===== 引言 ===== */
+  .intro{margin:40px 0 70px}
+  .intro-card{
+    background:var(--card);border:1px solid var(--card-border);
+    border-radius:var(--radius);padding:34px 38px;
+    backdrop-filter:blur(14px);
+  }
+  .intro-card h2{font-size:22px;margin-bottom:16px;color:#fff}
+  .intro-card p{color:var(--ink-dim);margin-bottom:14px;font-size:15.5px}
+  .intro-card p strong{color:var(--ink)}
+  .key-idea{
+    margin-top:20px;padding:18px 22px;border-radius:12px;
+    background:linear-gradient(120deg,rgba(87,230,212,.08),rgba(255,180,94,.06));
+    border:1px solid rgba(87,230,212,.22);
+    color:#cfeeda;font-size:15px;
+  }
+  .key-idea b{color:var(--cyan)}
+
+  /* ===== cron 小课堂 ===== */
+  .cron-class{
+    margin-top:22px;padding:22px 24px;border-radius:12px;
+    background:rgba(10,15,31,.7);border:1px dashed rgba(120,160,255,.3);
+  }
+  .cron-class h3{font-size:15px;color:var(--amber);margin-bottom:10px}
+  .cron-class p{font-size:14px;color:var(--ink-dim);margin-bottom:8px}
+  .cron-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0}
+  .cron-grid div{
+    text-align:center;padding:10px 4px;border-radius:8px;
+    background:rgba(110,168,255,.07);border:1px solid rgba(110,168,255,.15);
+    font-size:12.5px;color:var(--ink-dim);
+  }
+  .cron-grid b{display:block;color:#fff;font-size:13px;margin-bottom:2px}
+  .cron-example{font-family:Consolas,monospace;font-size:13.5px;color:var(--cyan);background:var(--code-bg);padding:12px 16px;border-radius:8px;margin-top:6px;overflow-x:auto;white-space:nowrap}
+
+  /* ===== 配置卡片 ===== */
+  .section-title{
+    text-align:center;font-size:clamp(24px,4vw,32px);font-weight:700;color:#fff;
+    margin:80px 0 10px;
+  }
+  .section-sub{text-align:center;color:var(--ink-faint);font-size:14px;margin-bottom:44px}
+  .card{
+    background:var(--card);border:1px solid var(--card-border);
+    border-radius:var(--radius);padding:32px 36px;margin-bottom:26px;
+    backdrop-filter:blur(14px);position:relative;overflow:hidden;
+    opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;
+  }
+  .card.show{opacity:1;transform:none}
+  .card::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--cyan),var(--accent),transparent 80%);
+    opacity:.7;
+  }
+  .card-head{display:flex;align-items:baseline;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+  .card-num{
+    font-size:15px;font-weight:700;color:var(--cyan);letter-spacing:.1em;
+    font-family:Consolas,monospace;
+  }
+  .card h3{font-size:20px;color:#fff}
+  .pill{
+    margin-left:auto;font-size:12px;padding:3px 12px;border-radius:999px;
+    background:rgba(110,168,255,.1);color:#9dc0ff;border:1px solid rgba(110,168,255,.2);
+    white-space:nowrap;
+  }
+  .pill.free{background:rgba(87,230,212,.08);color:var(--cyan);border-color:rgba(87,230,212,.25)}
+  .pill.warn{background:rgba(255,180,94,.08);color:var(--amber);border-color:rgba(255,180,94,.25)}
+  .field{margin-bottom:12px;font-size:15px;color:var(--ink-dim)}
+  .field b{color:#dfe8fa;font-weight:600}
+  .field .lbl{
+    display:inline-block;min-width:74px;color:var(--accent);
+    font-size:13px;font-weight:600;margin-right:6px;
+  }
+  .tryfor{font-size:14px;color:var(--ink-faint)}
+  .tryfor i{color:var(--amber);font-style:normal;font-weight:600}
+
+  /* ===== 代码块 ===== */
+  .code{
+    position:relative;background:var(--code-bg);border:1px solid rgba(120,160,255,.16);
+    border-radius:12px;margin:16px 0 6px;overflow:hidden;
+  }
+  .code pre{
+    padding:18px 20px;overflow-x:auto;
+    font-family:Consolas,"Courier New",monospace;font-size:13.5px;line-height:1.7;
+    color:#b8e6d9;
+  }
+  .code .cm{color:#5a6b8c}
+  .code .fl{color:#8fb8ff}
+  .copy-btn{
+    position:absolute;top:10px;right:10px;
+    padding:5px 14px;font-size:12px;border-radius:8px;cursor:pointer;
+    background:rgba(110,168,255,.12);color:#9dc0ff;border:1px solid rgba(110,168,255,.25);
+    transition:all .2s;font-family:inherit;
+  }
+  .copy-btn:hover{background:rgba(110,168,255,.25);color:#fff}
+  .copy-btn.done{background:rgba(87,230,212,.15);color:var(--cyan);border-color:rgba(87,230,212,.35)}
+  .watchout{
+    margin-top:14px;padding:14px 18px;border-radius:10px;font-size:14px;
+    background:rgba(255,180,94,.06);border:1px solid rgba(255,180,94,.2);color:#e8cfa8;
+  }
+  .watchout b{color:var(--amber)}
+
+  /* ===== 新手三件套 ===== */
+  .top3{
+    margin:70px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+  }
+  .top3-item{
+    background:linear-gradient(160deg,rgba(87,230,212,.1),rgba(110,168,255,.05));
+    border:1px solid rgba(87,230,212,.25);border-radius:var(--radius);
+    padding:26px 24px;text-align:center;
+  }
+  .top3-item .n{font-size:26px;font-weight:800;color:var(--cyan);font-family:Consolas,monospace}
+  .top3-item h4{color:#fff;font-size:16px;margin:10px 0 8px}
+  .top3-item p{font-size:13.5px;color:var(--ink-dim)}
+
+  /* ===== 页脚 ===== */
+  footer{
+    text-align:center;padding:56px 24px 70px;color:var(--ink-faint);font-size:13px;
+    border-top:1px solid rgba(120,160,255,.08);margin-top:60px;
+  }
+  footer a{color:var(--accent);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+
+  @media (max-width:640px){
+    .cron-grid{grid-template-columns:repeat(2,1fr)}
+    .top3{grid-template-columns:1fr}
+    .card{padding:24px 20px}
+    .intro-card{padding:26px 20px}
+  }
+</style>
+</head>
+<body>
+<div class="bg-layer"></div>
+<div class="bg-veil"></div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">HERMES AGENT · 无人值守实战</span>
+    <h1>让 Hermes 自动巡航的<br>10 个配置</h1>
+    <p class="sub">别再把它当聊天软件用了。你睡觉的时候，它本可以帮你盯着网页、查健康、做备份、写周报——而且大多数活儿<b style="color:#fff">根本不花一分钱模型费</b>。</p>
+    <div class="meta">
+      <span class="badge">原文：@BkashJosi · X 长文</span>
+      <span class="badge verified">已在本机 Hermes v0.22.5 逐条核对</span>
+    </div>
+  </div>
+  <div class="scroll-hint">↓ 向下滑动开始</div>
+</header>
+
+<div class="wrap">
+
+  <!-- 引言 -->
+  <section class="intro">
+    <div class="intro-card">
+      <h2>📖 先搞懂一件事</h2>
+      <p>大多数人的用法是：<strong>打开聊天 → 提问 → 等回答 → 关闭</strong>。但 Hermes 真正的威力在于<strong>定时任务（cron）</strong>——你可以让它每天固定时间自动干一件事，做完把结果发给你。</p>
+      <p>关键在于：<strong>很多任务根本不需要 AI 动脑</strong>。比如"检查磁盘是不是快满了"，一段 5 行的小脚本就能判断，完全不用调用模型——也就意味着<strong>零成本</strong>。只有真的需要动脑的环节，才值得花模型费。</p>
+      <div class="key-idea">
+        💡 全文最贵的坑，记住这一条就够了：<b>脚本输出里千万别带时间戳</b>。哪怕内容没变，时间戳一变，系统就以为"页面变了"，每次都白白调用模型。
+      </div>
+      <div class="cron-class">
+        <h3>🕐 小白必修课： cron 时间表怎么看</h3>
+        <p>定时任务的第一段是 5 个数字，代表"什么时候执行"：</p>
+        <div class="cron-grid">
+          <div><b>分钟</b>0–59</div>
+          <div><b>小时</b>0–23</div>
+          <div><b>几号</b>1–31</div>
+          <div><b>几月</b>1–12</div>
+          <div><b>周几</b>0–6</div>
+        </div>
+        <div class="cron-example">"0 8 * * *"  = 每天 8:00</div>
+        <div class="cron-example">"0 9 * * 1"  = 每周一 9:00</div>
+        <div class="cron-example">"0 */6 * * *" = 每 6 小时一次</div>
+        <p style="margin-top:10px">💡 新版 Hermes 还支持更人性化的写法：<span style="color:var(--cyan);font-family:monospace">"30m"</span>（每30分钟）、<span style="color:var(--cyan);font-family:monospace">"every 2h"</span>（每2小时）。</p>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="section-title">10 个自动巡航配置</h2>
+  <p class="section-sub">每个都附带：干什么 · 为什么 · 怎么工作 · 一条命令 · 一个坑</p>
+
+  <!-- 01 -->
+  <article class="card">
+    <div class="card-head">
+      <span class="card-num">01</span><h3>网页监控 · 变了才叫醒 AI</h3><span class="pill free">有变化才花模型费</span>
+    </div>
+    <p class="field"><span class="lbl">干什么</span>定时检查一个网页，<b>只有内容真的变了</b>才通知你：价格、更新日志、招聘信息、签证放号……</p>
+    <p class="field"><span class="lbl">为什么</span>普通监控每次都要问一遍模型"有没有变化？"——为了 1 次有用的提醒，你先付了 28 次"没变化"的钱。</p>
+    <p class="field"><span class="lbl">怎么工作</span>每次先抓取网页原文，跟上次做逐字节比对。完全一样 → 直接结束，<b>不调用模型</b>；不一样了 → 才把差异交给模型分析。</p>
+    <div class="code"><button class="copy-btn">复制</button><pre>hermes cron create "0 */6 * * *" <span class="cm">"告诉我变了什么"</span> \
+  --name <span class="cm">watch-price</span> \
+  --monitor-url https://example.com/pricing \
+  --deliver telegram</pre></div>
+    <p class="field tryfor"><span class="lbl">试试</span>商品价格页 · GitHub releases 页 · 签证/预约放号页 · 竞对定价页</p>
+    <div class="watchout"><b>⚠️ 坑：</b>有些页面每次打开都会变（时钟、"最后更新于"时间、轮播广告），系统会认为"每次都变了"。这种页面要用 <b>--monitor-script</b> 写个小脚本，只提取你关心的那一小块内容，输出里绝不能含时间戳。</div>
+  </article>
+
+  <!-- 02 -->
+  <article class="card">
+    <div class="card-head">
+      <span class="card-num">02</span><h3>手机晨报 · 每天一条消息看全天</h3><span class="pill">轻量模型即可</span>
+    </div>
+    <p class="field"><span class="lbl">干什么</span>每天早上，Hermes 看一遍你的日程、邮件和天气，<b>浓缩成一条短消息</b>发到你的聊天软件。</p>
+    <p class="field"><span class="lbl">为什么</span>替代"起床后连开四个 App 花掉的 15 分钟"。</p>
+    <p class="field"><span class="lbl">怎么工作</span>到点后自动开始一次新任务，挂载 <b>google-workspace</b> 技能就能读你的日历和 Gmail，结果像普通消息一样发到 Telegram。</p>
+    <div class="code"><button class="copy-btn">复制</button><pre>hermes cron create "0 8 * * *" \
+  <span class="cm">"用3条要点、80字以内总结：今天的日程、需要回复的邮件、天气"</span> \
+  --name <span class="cm">morning-brief</span> \
+  --skill google-workspace \
+  --deliver telegram</pre></div>
+    <p class="field tryfor"><span class="lbl">试试</span>早晨简报 · 晚间"明天有什么" · 周五"这周我错过了什么"</p>
+    <div class="watchout"><b>⚠️ 坑：</b>提示词一定要写具体（"3条要点、80字以内"）。提示词模糊，早上 8 点你会收到一篇小作文。</div>
+  </article>
+
+  <!-- 03 -->
+  <article class="card">
+    <div class="card-head">
+      <span class="card-num">03</span><h3>健康检查 · 零模型费，出事才说话</h3><span class="pill free">完全不花模型费</span>
+    </div>
+    <p class="field"><span class="lbl">干什么</span>定时运行你自己的检查脚本，<b>只有出问题时才发消息</b>。</p>
+    <p class="field"><span class="lbl">为什么</span>"磁盘满了吗？""Key 过期了吗？""网站还活着吗？"——这些判断不需要 AI，每天为此调用模型纯属浪费。</p>
+    <p class="field"><span class="lbl">怎么工作</span>加上 <b>--no-agent</b> 后，脚本本身就是全部任务：脚本的输出原样发给你。<b>输出为空 = 不发消息</b>。所以脚本平时保持沉默，出问题才打印一行。</p>
+    <div class="code"><button class="copy-btn">复制</button><pre>hermes cron create "0 9 * * *" \
+  --name <span class="cm">health-check</span> \
+  --script check_keys.py \
+  --no-agent \
+  --deliver telegram</pre></div>
+    <p class="field tryfor"><span class="lbl">试试</span>API Key 到期提醒 · 磁盘空间 · 网站是否正常返回 200 · 夜间任务是否产出了文件</p>
+    <div class="watchout"><b>⚠️ 坑：</b>脚本成功时<b>一个字都别打印</b>。多打一行 "OK"，你就每天收到一条废话消息。脚本放在 <b>~/.hermes/scripts/</b> 目录下，.sh 用 bash 跑，其他按 Python 跑。</div>
+  </article>
+
+  <!-- 04 -->
+  <article class="card">
+    <div class="card-head">
+      <span class="card-num">04</span><h3>夜间备份 · 纯调度，无模型</h3><span class="pill free">完全不花模型费</span>
+    </div>
+    <p class="field"><span class="lbl">干什么</span>每天深夜自动运行你的备份脚本。</p>
+    <p class="field"><span class="lbl">为什么</span>备份这种事，永远是"需要它的那天"才想起从来没做过。它不需要 AI，只需要可靠的闹钟。</p>
+    <p class="field"><span class="lbl">怎么工作</span>和 03 号一样的无模型模式：Hermes 只当闹钟。不加 --deliver 的话结果只存在本地，随时用 <b>hermes cron list</b> 查看每次运行记录。</p>
+    <div class="code"><button class="copy-btn">复制</button><pre>hermes cron create "0 3 * * *" \
+  --name <span class="cm">nightly-backup</span> \
+  --script backup.py \
+  --no-agent</pre></div>
+    <p class="field tryfor"><span class="lbl">试试</span>日备 + 周备 + 月备，建三个任务、三个时间表即可</p>
+    <div class="watchout"><b>⚠️ 坑：</b>先手动跑一遍脚本确认它能正常工作。一个"默默复制了个空文件夹"的备份任务，比没有备份更害人——它给了你虚假的安全感。</div>
+  </article>
+
+  <!-- 05 -->
+  <article class="card">
+    <div class="card-head">
+      <span class="card-num">05</span><h3>周一催办 · 谁还在等你回复</h3><span class="pill">只起草，不代发</span>
+    </div>
+    <p class="field"><span class="lbl">干什么</span>每周一，Hermes 读你最近的邮件往来，列出"你该回的"和"你在等对方回的"，并把回复草稿写好。</p>
+    <p class="field"><span class="lbl">为什么</span>别人周二问的问题，到周五早被三封新邮件埋得找不到了。这个任务就是把它挖出来。</p>
+    <p class="field"><span class="lbl">怎么工作</span>内置的 <b>email-inbox-triage</b> 技能会读完整对话（不只是最新一封），区分"我欠谁的"和"谁在欠我"，每条结论都附上原文引用方便你核对。草稿留在聊天里，<b>它永远不会替你发送</b>。</p>
+    <div class="code"><button class="copy-btn">复制</button><pre>hermes cron create "0 9 * * 1" \
+  <span class="cm">"列出我欠的回复和我在等的回复，并起草回复。只起草，不发送。"</span> \
+  --name <span class="cm">monday-inbox</span> \
+  --skill email-inbox-triage \
+  --deliver telegram</pre></div>
+    <p class="field tryfor"><span class="lbl">试试</span>客户跟进 · 团队里没人答的问题 · 还没付的账单</p>
+    <div class="watchout"><b>⚠️ 坑：</b>需要先配好邮箱（Himalaya 或 Google Workspace）；你的邮件内容会发给模型服务商。<b>每封草稿发送前必须自己读一遍。</b></div>
+  </article>
+
+  <!-- 06 -->
+  <article class="card">
+    <div class="card-head">
+      <span class="card-num">06</span><h3>任务记性好 · 本次看得到上次</h3><span class="pill">防重复汇报</span>
+    </div>
+    <p class="field"><span class="lbl">干什么</span>让定时任务<b>记住自己上一次的输出</b>。</p>
+    <p class="field"><span class="lbl">为什么</span>没有记忆的话，每次运行都从零开始：今天报一遍"新发现的链接"，明天同一批又当新的报一遍。</p>
+    <p class="field"><span class="lbl">怎么工作</span>加上 <b>--continuity</b> 后，每次运行时，上一次的输出会自动加进这次的提示里。任务就能跳过已经汇报过的内容，接着上次的往下做。第一次运行不受任何影响。</p>
+    <div class="code"><button class="copy-btn">复制</button><pre>hermes cron create "0 18 * * *" \
+  <span class="cm">"汇总今天的新进展，跳过上次已汇报的内容"</span> \
+  --name <span class="cm">daily-digest</span> \
+  --continuity \
+  --deliver telegram</pre></div>
+    <p class="field tryfor"><span class="lbl">试试</span>持续更新的项目日志 · "自上次以来"的增量摘要 · 不再重复推同一个链接的情报收集</p>
+    <div class="watchout"><b>⚠️ 坑：</b>它只记住<b>这个任务自己</b>的上一次输出，不是你的全部历史。要记长期事实，用 Hermes 记忆，或让任务自己写到一个文件里。</div>
+  </article>
+
+  <!-- 07 -->
+  <article class="card">
+    <div class="card-head">
+      <span class="card-num">07</span><h3>例行任务绑便宜模型</h3><span class="pill warn">高频任务省钱关键</span>
+    </div>
+    <p class="field"><span class="lbl">干什么</span>给某个定时任务<b>单独指定一个更便宜的模型</b>。</p>
+    <p class="field"><span class="lbl">为什么</span>默认情况下，定时任务用"运行那一刻你的主模型"。如果主模型是贵的旗舰款，那每篇例行摘要都在按旗舰价计费。</p>
+    <p class="field"><span class="lbl">怎么工作</span><b>--model</b> 把这一个任务锁定到指定模型（必要时配 --provider 指定服务商）；你日常聊天仍用主模型。<b>--pin</b> 是另一种锁法：把"当前主模型"钉死在这个任务上——以后你换主模型，也影响不到它。</p>
+    <div class="code"><button class="copy-btn">复制</button><pre>hermes cron create "0 * * * *" \
+  <span class="cm">"总结过去一小时的监控记录"</span> \
+  --name <span class="cm">hourly-summary</span> \
+  <span class="fl">--model</span> glm-4.5-air <span class="fl">--provider</span> zhipu</pre></div>
+    <p class="field tryfor"><span class="lbl">试试</span>每小时摘要 · 日报周报 · 监控类任务——所有"跑得多但不难"的活</p>
+    <div class="watchout"><b>⚠️ 坑：</b>太小的模型在难任务上会漏事。便宜模型留给例行走量任务，真正烧脑的活还是用旗舰。另外这个参数<b>只能你自己在命令行设</b>，Agent 会话里的 cronjob 工具改不了它。</div>
+  </article>
+
+  <!-- 08 -->
+  <article class="card">
+    <div class="card-head">
+      <span class="card-num">08</span><h3>主模型挂了 · 自动切换备用</h3><span class="pill warn">无人值守的保险</span>
+    </div>
+    <p class="field"><span class="lbl">干什么</span>给 Hermes 配一串<b>备用服务商/模型</b>，主模型失败时按顺序自动切换。</p>
+    <p class="field"><span class="lbl">为什么</span>凌晨 3 点跑的任务，没有任何人会帮它重试。一次限流或故障，这个任务就悄悄蒸发了。</p>
+    <p class="field"><span class="lbl">怎么工作</span>主模型遇到限流、过载或连接错误时，自动尝试降级链里的下一个。<b>hermes fallback add</b> 会打开和 <b>hermes model</b> 一样的选择器，挑一个服务商+模型即可。</p>
+    <div class="code"><button class="copy-btn">复制</button><pre>hermes fallback add     <span class="cm"># 挑一个备用服务商+模型，追加到链尾</span>
+hermes fallback list    <span class="cm"># 查看整条降级链</span>
+hermes fallback remove  <span class="cm"># 删掉某个备用</span></pre></div>
+    <p class="field tryfor"><span class="lbl">试试</span>所有"你睡觉/出门时运行"的任务</p>
+    <div class="watchout"><b>⚠️ 坑：</b>备用模型是<b>另一个服务商</b>，回答风格会有点不一样。链上第二位放一个你<b>信任</b>的模型，而不是单纯最便宜的。</div>
+  </article>
+
+  <!-- 09 -->
+  <article class="card">
+    <div class="card-head">
+      <span class="card-num">09</span><h3>多 Key 池 · 限流了自动换一把钥匙</h3><span class="pill warn">按 Key 计费才需要</span>
+    </div>
+    <p class="field"><span class="lbl">干什么</span>同一个服务商下可以<b>添加多把 API Key</b>，组成钥匙池。</p>
+    <p class="field"><span class="lbl">为什么</span>一把 Key 撞上限流或额度上限，任务就停了——哪怕你的服务商本身一切正常。</p>
+    <p class="field"><span class="lbl">怎么工作</span>同服务商的 Key 组成一个池：一把不健康了自动轮转到下一把。池子先试；池里全部用尽了，才轮到 08 号的跨服务商降级链接手。</p>
+    <div class="code"><button class="copy-btn">复制</button><pre>hermes auth add         <span class="cm"># 给当前服务商再加一把 Key（可重复添加）</span>
+hermes auth list        <span class="cm"># 查看每个池里有哪些 Key</span></pre></div>
+    <p class="field tryfor"><span class="lbl">试试</span>OpenRouter、Anthropic 这类<b>按 Key 计费</b>的服务商。如果你用的是 Nous Portal，一次登录覆盖 300+ 模型，大部分人不需要建池。</p>
+    <div class="watchout"><b>⚠️ 坑：</b>提示词缓存是<b>跟着 Key 走的</b>。池中切换 Key 后，下一次请求要把整个对话历史按全价重新读一遍。轮转保证你不中断，但不保证免费。</div>
+  </article>
+
+  <!-- 10 -->
+  <article class="card">
+    <div class="card-head">
+      <span class="card-num">10</span><h3>别再反复点"同意"了</h3><span class="pill">一次配置，长期省事</span>
+    </div>
+    <p class="field"><span class="lbl">干什么</span>扫描你的历史记录，找出那些<b>你批准过一次又一次</b>的命令，提议以后别再问你了。</p>
+    <p class="field"><span class="lbl">为什么</span>自动化的天敌是：每次运行都卡在等你对一个"已经批准过 20 次"的命令点"同意"。</p>
+    <p class="field"><span class="lbl">怎么工作</span>扫描会话历史（默认最近 90 天），把"至少批准过 2 次"的高频命令排成编号列表。在你用 <b>--apply</b> 挑选之前，什么都不会改。破坏类命令（递归删除、sudo、写磁盘、改凭证）<b>永远不会</b>被提议。</p>
+    <div class="code"><button class="copy-btn">复制</button><pre>hermes approvals suggest              <span class="cm"># 先只看列表</span>
+hermes approvals suggest --apply 1,3  <span class="cm"># 确认后合并进白名单</span>
+hermes approvals suggest --days 30    <span class="cm"># 只看最近30天</span></pre></div>
+    <p class="field tryfor"><span class="lbl">试试</span>每天自动任务里反复出现的 build / test / git 命令</p>
+    <div class="watchout"><b>⚠️ 坑：</b>只放行那些<b>闭着眼也会同意</b>的命令。其他继续让它问——问你，是它的职责，不是缺点。</div>
+  </article>
+
+  <!-- 新手三件套 -->
+  <h2 class="section-title">🚀 新手先做这 3 个</h2>
+  <p class="section-sub">投入最小、回报最快、几乎零风险</p>
+  <div class="top3">
+    <div class="top3-item">
+      <div class="n">01</div>
+      <h4>网页监控</h4>
+      <p>最便宜的上手方式。<br>没变化不花一分钱，<br>有变化第一时间知道。</p>
+    </div>
+    <div class="top3-item">
+      <div class="n">03</div>
+      <h4>健康检查</h4>
+      <p>完全不用模型。<br>一切正常时沉默，<br>出问题才喊你。</p>
+    </div>
+    <div class="top3-item">
+      <div class="n">08</div>
+      <h4>备用模型链</h4>
+      <p>给所有自动任务<br>买一份"不间断保险"，<br>凌晨限流也不怕。</p>
+    </div>
+  </div>
+
+  <div class="intro-card" style="margin-bottom:20px">
+    <h2>🛠️ 日常管理三句话</h2>
+    <div class="code" style="margin-top:14px"><button class="copy-btn">复制</button><pre>hermes cron list       <span class="cm"># 随时查看所有定时任务的状态</span>
+hermes cron doctor     <span class="cm"># 每周跑一次"体检"，揪出有毛病的任务</span>
+hermes cron runs       <span class="cm"># 看每次运行的详细记录</span></pre></div>
+  </div>
+
+</div>
+
+<footer>
+  <p>整理自 X 文章 <a href="https://x.com/BkashJosi/status/2116923767893192707" target="_blank">《10 setups that put Hermes Agent on autopilot》</a>（@BkashJosi）</p>
+  <p style="margin-top:8px">所有命令已在本机 Hermes Agent v0.22.5 上逐条核对 · 页面背景由 Agnes 生成 · 官方文档 hermes-agent.nousresearch.com</p>
+</footer>
+
+<script>
+  // 滚动渐显
+  const cards = document.querySelectorAll('.card');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{
+      if(e.isIntersecting){
+        setTimeout(()=>e.target.classList.add('show'), 60);
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.12});
+  cards.forEach(c=>io.observe(c));
+
+  // 复制按钮
+  document.querySelectorAll('.copy-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const pre = btn.parentElement.querySelector('pre');
+      const text = pre.innerText;
+      navigator.clipboard.writeText(text).then(()=>{
+        btn.textContent='✓ 已复制';
+        btn.classList.add('done');
+        setTimeout(()=>{btn.textContent='复制';btn.classList.remove('done')},1800);
+      });
+    });
+  });
+</script>
+</body>
+</html>
