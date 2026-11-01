@@ -12,6 +12,7 @@ const SITE_DOC_ADDITIONS = [
     t: "读懂 DeepSeek Superagent：工作原理、授权与真实边界",
     file: "articles/deepseek-superagent.html",
     cat: "ai-coding",
+    date: "2026-11-01",
     d: "从官方文档与源码拆解 dsh-superagent：任务分工、授权机制、真实边界与小白使用门槛"
   },
   {
