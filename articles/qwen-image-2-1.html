@@ -66,6 +66,7 @@
     .vnote{color:var(--muted);font-size:14px;display:block;margin-top:5px}
     @media(max-width:760px){.rounds{grid-template-columns:1fr}}
 </style>
+  <link rel="stylesheet" href="../site-design.css?v=2">
 </head>
 <body>
   <div class="progress" id="progress"></div>
@@ -140,5 +141,6 @@
     addEventListener("scroll",onScroll,{passive:true});onScroll();
     toTop.addEventListener("click",()=>scrollTo({top:0,behavior:"smooth"}));
   </script>
+  <script src="../site-shell.js?v=2"></script>
 </body>
 </html>
