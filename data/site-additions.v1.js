@@ -2,6 +2,20 @@
 /* 新条目使用真实主题分类；通过校验后再合并到下一版 docs.v*.js。 */
 const SITE_DOC_ADDITIONS = [
   {
+    t: "Hermes 配置优先级：先配什么，后配什么？",
+    file: "articles/hermes-configuration-priorities.html",
+    cat: "briefing",
+    date: "2026-11-03",
+    d: "从模型、安全和记忆到备份与扩展，梳理 Hermes 的配置顺序与三个常见风险"
+  },
+  {
+    t: "Hermes 配置优先级：先配什么，后配什么？",
+    file: "articles/hermes-configuration-priorities.html",
+    cat: "ai-coding",
+    date: "2026-11-03",
+    d: "从模型、安全和记忆到备份与扩展，梳理 Hermes 的配置顺序与三个常见风险"
+  },
+  {
     t: "Hermes 自动巡航指南：10 个无人值守配置（已逐条核对）",
     file: "articles/hermes-autopilot.html",
     cat: "briefing",
