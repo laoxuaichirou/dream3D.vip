@@ -185,6 +185,20 @@ a{color:inherit;text-decoration:none}
 }
 .list-card .btn:hover{background:var(--accent);color:var(--bg)}
 .list-card .actions{display:flex;gap:10px}
+#ark-agent-plan{align-items:flex-start;scroll-margin-top:110px}
+.ark-card .info h3{font-size:19px;color:var(--ds-text,var(--text))}
+#ark-agent-plan .info .desc{font-size:16px;line-height:1.7;color:var(--ds-text-secondary,var(--text-dim))}
+.ark-card .desc p{margin-top:8px}
+.ark-card .desc strong{color:var(--ds-text,var(--text))}
+.ark-card .ark-rules{font-size:16px;display:flex;flex-wrap:wrap;gap:6px 16px}
+.ark-card .ark-rules a{text-decoration:underline;text-underline-offset:3px;color:var(--accent)}
+.ark-card .ark-code{font-weight:700;overflow-wrap:anywhere}
+@media(max-width:767px){
+  #ark-agent-plan{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;padding:20px}
+  #ark-agent-plan .info{grid-column:2}
+  #ark-agent-plan .bonus{grid-column:2;margin-left:0;justify-self:start;white-space:normal}
+  #ark-agent-plan>a.btn,#ark-agent-plan>.btn-copy{grid-column:1/-1;justify-self:stretch;text-align:center}
+}
 /* ===== 统一胶囊导航 ===== */
 .unav-wrap{position:sticky;top:14px;z-index:200;display:flex;justify-content:center;padding:14px 16px 0}
 .unav{display:flex;align-items:center;gap:3px;background:var(--nav-bg);
@@ -475,6 +489,24 @@ a{color:inherit;text-decoration:none}
         <span class="bonus">注册即享额度</span>
         <a class="btn" href="https://api.seedance.nz/?s=TW7X" target="_blank" rel="noopener">进入</a>
       </div>
+      <div class="list-card ark-card" id="ark-agent-plan">
+        <div class="rank">7</div>
+        <div class="info">
+          <h3 data-i18n="ark_title">火山方舟 Agent Plan</h3>
+          <div class="desc">
+            <p data-i18n="ark_intro">多模态模型与 Harness 订阅套餐，适合 AI 编程和 Agent 应用。</p>
+            <p><strong data-i18n="ark_invitee">被邀请人：符合条件、首次订阅 Small 或 Medium 套餐享9.5折。</strong></p>
+            <p data-i18n="ark_inviter">邀请人：获得好友首单实际现金支付金额5%的代金券，多邀多得，上不封顶，不可提现。</p>
+            <p><span data-i18n="ark_code_label">邀请码：</span><span class="ark-code notranslate" translate="no">JYSG4LSA</span> <span data-i18n="ark_code_note">（链接会自动带码；未带入时请手动填写）</span></p>
+            <p data-i18n="ark_collaboration">另有协作奖励计划（需自愿授权数据）：指定模型与接入点按实际采集量次日返等量免费资源包，文档所列每模型每日最高500万 tokens、30天有效，实际资格和上限以活动页为准。用于按 Token 后付费在线推理，不是 Agent Plan 套餐赠额，也不是所有模型都参与。</p>
+            <p data-i18n="ark_privacy">授权输入与输出可能用于模型优化；涉及隐私、客户或保密资料时不要贸然参与。可撤回后续采集，已授权且已使用的数据使用不能撤回。</p>
+            <p data-i18n="ark_checked">核对日期：2026-11-04。邀请活动目前截至2026-12-31，资格及实际价格以官方规则和结算页为准。</p>
+            <p class="ark-rules"><a href="https://docs.volcengine.com/docs/ark/agent-plan-personal-small-medium-invitation?lang=zh" target="_blank" rel="noopener" data-i18n="ark_invite_rules">邀请活动规则</a><a href="https://docs.volcengine.com/docs/ark/collaboration-reward-program?lang=zh" target="_blank" rel="noopener" data-i18n="ark_collaboration_rules">协作奖励规则</a></p>
+          </div>
+        </div>
+        <span class="bonus" data-i18n="ark_badge">首单9.5折</span>
+        <a class="btn" href="https://volcengine.com/L/cHiu33bzXlg/" target="_blank" rel="noopener" data-i18n="ark_visit">注册／订阅</a>
+      </div>
     </div>
   </div>
 
@@ -588,6 +620,22 @@ function closeUnavDrops(){
   document.querySelectorAll(".unav-item.open").forEach(function(el){ el.classList.remove("open"); });
 }
 
+/* 新增方舟区块沿用共享壳的五语言切换；不覆盖旧页面内容。 */
+var ARK_I18N={
+  zh:{ark_title:"火山方舟 Agent Plan",ark_intro:"多模态模型与 Harness 订阅套餐，适合 AI 编程和 Agent 应用。",ark_invitee:"被邀请人：符合条件、首次订阅 Small 或 Medium 套餐享9.5折。",ark_inviter:"邀请人：获得好友首单实际现金支付金额5%的代金券，多邀多得，上不封顶，不可提现。",ark_code_label:"邀请码：",ark_code_note:"（链接会自动带码；未带入时请手动填写）",ark_collaboration:"另有协作奖励计划（需自愿授权数据）：指定模型与接入点按实际采集量次日返等量免费资源包，文档所列每模型每日最高500万 tokens、30天有效，实际资格和上限以活动页为准。用于按 Token 后付费在线推理，不是 Agent Plan 套餐赠额，也不是所有模型都参与。",ark_privacy:"授权输入与输出可能用于模型优化；涉及隐私、客户或保密资料时不要贸然参与。可撤回后续采集，已授权且已使用的数据使用不能撤回。",ark_checked:"核对日期：2026-11-04。邀请活动目前截至2026-12-31，资格及实际价格以官方规则和结算页为准。",ark_invite_rules:"邀请活动规则",ark_collaboration_rules:"协作奖励规则",ark_badge:"首单9.5折",ark_visit:"注册／订阅",copy:"复制链接",copied:"已复制 ✓"},
+  en:{ark_title:"Volcengine Ark Agent Plan",ark_intro:"A subscription combining multimodal models and Harness capabilities for AI coding and Agent applications.",ark_invitee:"Invitee: eligible first-time Small or Medium subscribers receive an additional 5% off their first order.",ark_inviter:"Inviter: coupons worth 5% of a friend's first actual cash payment. No overall invitation reward cap; not withdrawable as cash.",ark_code_label:"Invitation code: ",ark_code_note:"(automatically included in the link; enter manually if missing)",ark_collaboration:"Separate collaboration reward program (voluntary data authorization required): supported models and endpoints earn an equivalent free resource pack the following day, based on data actually collected. The documentation lists up to 5 million tokens per model per day, valid for 30 days; current eligibility and limits depend on the activity page. These packs offset token-based pay-as-you-go online inference, not Agent Plan subscription quota. Not all models participate.",ark_privacy:"Authorized inputs and outputs may be used to improve models. Do not authorize private, client or confidential data without careful consideration. Withdrawal stops future collection; use of already authorized and used data cannot be reversed.",ark_checked:"Checked: 2026-11-04. Invitation activity currently ends 2026-12-31. Eligibility and final prices follow the official rules and checkout page.",ark_invite_rules:"Invitation rules",ark_collaboration_rules:"Collaboration reward rules",ark_badge:"Extra 5% off first order",ark_visit:"Register / subscribe",copy:"Copy link",copied:"Copied ✓"},
+  ja:{ark_title:"火山方舟 Agent Plan",ark_intro:"AIコーディングとAgentアプリ向けの、マルチモーダルモデルとHarnessのサブスクリプション。",ark_invitee:"招待された方：条件を満たすSmall／Mediumの初回購読は、初回注文がさらに5％割引。",ark_inviter:"招待者：友人の初回現金支払額の5％分のクーポン。招待報酬の総額上限なし、現金化不可。",ark_code_label:"招待コード：",ark_code_note:"（リンクに自動設定。未入力の場合は手動で入力）",ark_collaboration:"別途、協力報酬プログラムがあります（データ利用への任意の同意が必要）。対象モデルとエンドポイントの実際の収集量に応じ、翌日に同量の無料リソースパックを付与。文書上は1モデル1日最大500万tokens、30日間有効。現在の対象・上限は活動ページに従います。トークン従量課金のオンライン推論に使用でき、Agent Planの購読枠ではありません。全モデルが対象ではありません。",ark_privacy:"同意した入力・出力はモデル改善に使われる場合があります。個人・顧客・機密データは慎重に判断してください。撤回で今後の収集は停止できますが、既に許諾・使用されたデータの使用は取り消せません。",ark_checked:"確認日：2026-11-04。招待活動は現時点で2026-12-31まで。条件・最終価格は公式規則と決済画面をご確認ください。",ark_invite_rules:"招待活動規則",ark_collaboration_rules:"協力報酬規則",ark_badge:"初回さらに5％割引",ark_visit:"登録／購読",copy:"リンクをコピー",copied:"コピー済み ✓"},
+  ko:{ark_title:"Volcengine Ark Agent Plan",ark_intro:"AI 코딩과 Agent 앱을 위한 멀티모달 모델 및 Harness 구독 상품입니다.",ark_invitee:"초대받은 사용자: 조건을 충족하는 Small 또는 Medium 첫 구독 주문에 추가 5% 할인.",ark_inviter:"초대한 사용자: 친구의 첫 주문 실제 현금 결제액의 5%를 쿠폰으로 지급. 초대 보상 총액 상한 없음, 현금 인출 불가.",ark_code_label:"초대 코드: ",ark_code_note:"(링크로 자동 입력되며, 누락되면 직접 입력)",ark_collaboration:"별도의 협력 보상 프로그램도 있습니다(자발적인 데이터 이용 동의 필요). 지원 모델과 엔드포인트에서 실제 수집된 양에 따라 다음 날 같은 양의 무료 리소스 팩을 지급합니다. 문서상 모델당 하루 최대 500만 tokens, 30일간 유효하며 현재 자격과 한도는 행사 페이지 기준입니다. 토큰 종량제 온라인 추론에 적용되며 Agent Plan 구독 할당량이 아닙니다. 모든 모델이 참여하지는 않습니다.",ark_privacy:"동의한 입력과 출력은 모델 개선에 사용될 수 있습니다. 개인정보, 고객 자료, 기밀 자료는 신중하게 판단하세요. 철회하면 향후 수집은 중단되지만 이미 동의하고 사용된 데이터의 사용은 되돌릴 수 없습니다.",ark_checked:"확인일: 2026-11-04. 초대 행사는 현재 2026-12-31까지이며 자격과 최종 가격은 공식 규칙 및 결제 페이지 기준입니다.",ark_invite_rules:"초대 행사 규칙",ark_collaboration_rules:"협력 보상 규칙",ark_badge:"첫 주문 추가 5% 할인",ark_visit:"가입 / 구독",copy:"링크 복사",copied:"복사됨 ✓"},
+  ru:{ark_title:"Volcengine Ark Agent Plan",ark_intro:"Подписка на мультимодальные модели и Harness для AI-разработки и Agent-приложений.",ark_invitee:"Приглашённому: дополнительная скидка 5% на первый заказ Small или Medium при соблюдении условий.",ark_inviter:"Приглашающему: купон на 5% фактической оплаты первого заказа друга. Общего лимита наград за приглашения нет; вывод наличными невозможен.",ark_code_label:"Код приглашения: ",ark_code_note:"(подставляется по ссылке; при отсутствии введите вручную)",ark_collaboration:"Отдельная программа совместных вознаграждений требует добровольного разрешения на использование данных. Для поддерживаемых моделей и точек доступа на следующий день начисляется бесплатный пакет в объёме фактически собранных данных. В документации указано до 5 млн tokens на модель в день, срок действия 30 дней; актуальные условия и лимиты — на странице акции. Пакеты покрывают онлайн-инференс с оплатой за токены, а не квоту подписки Agent Plan. Участвуют не все модели.",ark_privacy:"Разрешённые входные и выходные данные могут использоваться для улучшения моделей. Не передавайте личные, клиентские или конфиденциальные данные без тщательной оценки. Отзыв останавливает дальнейший сбор, но использование уже разрешённых и использованных данных необратимо.",ark_checked:"Проверено: 2026-11-04. Текущий срок акции приглашений — до 2026-12-31. Условия и итоговая цена определяются официальными правилами и страницей оплаты.",ark_invite_rules:"Правила приглашений",ark_collaboration_rules:"Правила вознаграждений",ark_badge:"Ещё −5% на первый заказ",ark_visit:"Регистрация / подписка",copy:"Копировать ссылку",copied:"Скопировано ✓"}
+};
+function arkWords(){var code=document.documentElement.lang.split('-')[0];return ARK_I18N[code]||ARK_I18N.zh;}
+function setLang(code){
+  code=ARK_I18N[code]?code:'zh';document.documentElement.lang=code==='zh'?'zh-CN':code;
+  var words=ARK_I18N[code];
+  document.querySelectorAll('#ark-agent-plan [data-i18n]').forEach(function(el){if(words[el.dataset.i18n])el.textContent=words[el.dataset.i18n];});
+  var copy=document.querySelector('#ark-agent-plan .btn-copy');if(copy)copy.textContent=words.copy;
+}
+
 /* ===== 自动给每个「进入/注册」按钮注入「复制链接」 ===== */
 document.querySelectorAll(".list-card a.btn[href^='http'], .featured-card a.btn[href^='http'], .featured-top a.btn[href^='http']").forEach(function(a){
   var b = document.createElement("button");
@@ -599,9 +647,9 @@ document.querySelectorAll(".list-card a.btn[href^='http'], .featured-card a.btn[
     e.stopPropagation();
     var url = a.href;
     function done(){
-      b.textContent = "已复制 ✓";
+      b.textContent = a.closest('#ark-agent-plan') ? arkWords().copied : "已复制 ✓";
       b.classList.add("copied");
-      setTimeout(function(){ b.textContent = "复制链接"; b.classList.remove("copied"); }, 1600);
+      setTimeout(function(){ b.textContent = a.closest('#ark-agent-plan') ? arkWords().copy : "复制链接"; b.classList.remove("copied"); }, 1600);
     }
     function fallback(){
       var t = document.createElement("textarea");
@@ -617,6 +665,7 @@ document.querySelectorAll(".list-card a.btn[href^='http'], .featured-card a.btn[
   });
   a.insertAdjacentElement("afterend", b);
 });
+try{setLang(localStorage.getItem('gary-lang')||'zh');}catch(e){setLang('zh');}
 
 /* ===== 一键复制 RunningHub 邀请码 ===== */
 (function(){
