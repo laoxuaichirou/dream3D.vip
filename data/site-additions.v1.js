@@ -2,6 +2,13 @@
 /* 新条目使用真实主题分类；通过校验后再合并到下一版 docs.v*.js。 */
 const SITE_DOC_ADDITIONS = [
   {
+    t: "MiniMax H3 字幕问题实测：伪字幕与烧录字幕",
+    file: "articles/h3-subtitle.html",
+    cat: "ai-video",
+    date: "2026-11-06",
+    d: "H3 生成画面里冒字幕怎么处理：实测证明时间码/帧数/长否定清单是高风险结构、简洁自然语言句可消伪字、Character Swap 不是通用去字幕器，含 10 段对照小样"
+  },
+  {
     t: "火山方舟 API 价格速查：文本、生图、生视频（2026-11 口径）",
     file: "articles/volcengine-ark-pricing.html",
     cat: "briefing",
