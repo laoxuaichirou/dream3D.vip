@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国家超算互联网 11.11 攻略：0.1 元 5000 万 Tokens，新用户怎么领最划算</title>
+<meta name="description" content="国家超算互联网（SCNet）11.11 年终钜惠按官网活动页 2026-11-06 实况整理：新用户 0.1 元秒杀 5000 万 Tokens 量包（GLM-5.3-Flash / DeepSeek-V4.1-Flash-1017，1024K 上下文）、1 亿 Tokens 新用户额度、MaaS 专场价目、Token Plan 折扣、850 元优惠券，附规则坑点与使用建议。">
+<style>
+:root{
+  --bg:#070a10;--bg-2:#0c111b;--card:#101722;--card-2:#151d2b;
+  --line:#1f2a3b;--line-2:#2a3a52;
+  --text:#e6edf6;--text-2:#9fb0c6;--text-3:#65758c;
+  --accent:#3d7dff;--accent-2:#7fb0ff;--ok:#2ee6a8;--bad:#ff5d6c;--warn:#ffc53d;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(920px 540px at 84% -10%, rgba(61,125,255,.16), transparent 62%),
+    radial-gradient(720px 460px at 6% 2%, rgba(46,230,168,.06), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:17px;line-height:1.85;-webkit-font-smoothing:antialiased;padding:0 20px 100px;
+}
+.wrap{max-width:940px;margin:0 auto}
+.hero{padding:72px 0 44px;border-bottom:1px solid var(--line)}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent-2);font-weight:600;margin-bottom:22px}
+.kicker::before{content:"";width:26px;height:2px;background:linear-gradient(90deg,var(--accent),transparent)}
+h1{font-size:clamp(30px,4.6vw,46px);line-height:1.25;font-weight:800;letter-spacing:-.02em;margin-bottom:20px}
+h1 em{font-style:normal;background:linear-gradient(100deg,var(--accent) 0%,var(--accent-2) 55%,#fff 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lede{font-size:19px;color:var(--text-2);max-width:760px;margin-bottom:26px}
+.meta{display:flex;flex-wrap:wrap;gap:10px}
+.pill{font-size:13px;color:var(--text-2);border:1px solid var(--line-2);border-radius:999px;padding:4px 12px;background:var(--card)}
+.pill b{color:var(--accent-2);font-weight:600}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.toc a{font-size:13px;color:var(--text-2);border:1px solid var(--line);border-radius:8px;padding:5px 11px;
+  text-decoration:none;background:rgba(255,255,255,.02);transition:.2s}
+.toc a:hover{border-color:var(--accent);color:var(--text)}
+section{padding:52px 0;border-bottom:1px solid var(--line)}
+.sechead{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
+.num{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.1em}
+h2{font-size:clamp(22px,3vw,30px);font-weight:750;letter-spacing:-.01em;line-height:1.35}
+h3{font-size:19px;margin:26px 0 10px;font-weight:700}
+p{margin-bottom:14px;color:var(--text-2)}
+p strong,li strong{color:var(--text);font-weight:650}
+ul,ol{margin:0 0 16px 22px;color:var(--text-2)}
+li{margin-bottom:8px}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card);margin:18px 0}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:600px}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--card-2);color:var(--text);font-weight:650;font-size:14px;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num,th.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.best{color:var(--ok);font-weight:650}
+.hot{color:var(--accent-2);font-weight:650}
+.cut{color:var(--bad);font-weight:650}
+.muted{color:var(--text-3);font-size:14px}
+.card{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:22px 24px;margin:18px 0}
+.card h4{font-size:17px;margin-bottom:10px;color:var(--text)}
+.callout{border-left:3px solid var(--accent);background:linear-gradient(90deg,rgba(61,125,255,.09),transparent 70%);
+  border-radius:0 12px 12px 0;padding:16px 20px;margin:20px 0}
+.callout.warn{border-left-color:var(--warn);background:linear-gradient(90deg,rgba(255,197,61,.09),transparent 70%)}
+.callout.ok{border-left-color:var(--ok);background:linear-gradient(90deg,rgba(46,230,168,.08),transparent 70%)}
+.callout p{margin:0;color:var(--text-2)}
+.cta{background:linear-gradient(140deg,rgba(61,125,255,.16),rgba(127,176,255,.05));
+  border:1px solid var(--accent);border-radius:18px;padding:28px 30px;margin:26px 0 8px}
+.cta h3{margin:0 0 10px;font-size:21px}
+.cta p{color:var(--text-2);margin-bottom:18px}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:10px;font-size:15px;font-weight:650;
+  text-decoration:none;border:1px solid var(--line-2);color:var(--text);background:rgba(255,255,255,.03);transition:.2s}
+.btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),#6aa2ff);border-color:transparent;color:#fff}
+.btn.primary:hover{filter:brightness(1.08)}
+.disclose{font-size:13px;color:var(--text-3);margin-top:14px;line-height:1.7}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px}
+.tag{font-size:13px;color:var(--accent-2);background:rgba(61,125,255,.1);border:1px solid rgba(61,125,255,.3);
+  border-radius:999px;padding:3px 11px}
+footer{padding:40px 0 0;color:var(--text-3);font-size:13px;line-height:1.8}
+footer a{color:var(--text-2)}
+</style>
+<link rel="stylesheet" href="../site-design.css?v=2">
+<style id="site-article-palette">
+body.ds-enhanced{
+  --bg:#070a10;--card:#101722;--line:#1f2a3b;--text:#e6edf6;--accent:#3d7dff;--accent-2:#7fb0ff;
+  background:
+    radial-gradient(920px 540px at 84% -10%, rgba(61,125,255,.16), transparent 62%),
+    radial-gradient(720px 460px at 6% 2%, rgba(46,230,168,.06), transparent 60%),
+    #070a10 !important;
+  color:#e6edf6;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  line-height:1.85;
+  padding:92px 20px 100px;
+}
+body.ds-enhanced::before,body.ds-enhanced::after{display:none !important}
+body.ds-enhanced .hero{padding-top:26px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Promo Sheet · 2026-11-06</div>
+  <h1>0.1 元 = 5000 万 Tokens：<em>国家超算互联网 11.11，新用户怎么领最划算</em></h1>
+  <p class="lede">这次是国家队下场放价，不是野鸡中转站：新号 0.1 元能拿 5000 万 Tokens 量包（原价 ¥17～20.5），DeepSeek-V4.1-Flash-1017 和 GLM-5.3-Flash 都在秒杀名单里，1024K 上下文；另外还有 1 亿 Tokens 的新用户额度、850 元优惠券、Token Plan 5.4 折起。下面把官网活动页原样的价目、规则和坑点一次讲清，数据全部取自 2026-11-06 当天页面实际展示。</p>
+  <div class="meta">
+    <span class="pill">口径 <b>官网活动页 · 2026-11-06</b></span>
+    <span class="pill">秒杀档 <b>截止 11 月 14 日</b></span>
+    <span class="pill">活动期 <b>至 12 月 31 日</b></span>
+    <span class="pill">门槛 <b>新用户 + 实名认证</b></span>
+  </div>
+  <nav class="toc">
+    <a href="#s0">一页结论</a>
+    <a href="#s1">三重新人礼</a>
+    <a href="#s2">0.1 元秒杀</a>
+    <a href="#s3">MaaS 价目</a>
+    <a href="#s4">怎么用</a>
+    <a href="#s5">避坑清单</a>
+    <a href="#s6">注册入口</a>
+  </nav>
+</header>
+
+<section id="s0">
+  <div class="sechead"><span class="num">00</span><h2>一页结论</h2></div>
+  <div class="callout ok">
+    <p><strong>真正值钱的是「0.1 元秒杀」这一档。</strong>花 0.1 元拿到的是 5000 万 Tokens 的正式量包（页面原价 GLM-5.3-Flash ¥17.00、DeepSeek-V4.1-Flash-1017 ¥20.50），折算下来一万 tokens 不到 0.001 元——跑批量评测、长文档分析、给知识库建索引，这点钱等于白送。顺带还有一档 0.1 元的异构加速卡（50 卡时，原价 ¥300）。</p>
+  </div>
+  <div class="callout">
+    <p><strong>门槛只有两个：新用户、实名认证。</strong>每人限购 1 份，秒杀档页面标注截止 <strong>11 月 14 日</strong>，抢不到就只剩 MaaS 专场的折扣档（Kimi-K3 7 折、Qwen3.8-Max 6 折这类）。别指望用老号补票。</p>
+  </div>
+  <div class="callout warn">
+    <p><strong>「1 亿 Tokens」现在还不能领。</strong>11-06 当天活动页这一栏写的是「暂未开放领取，具体参与方式及活动规则将于上线后公布」；官方对媒体的口径是 11 月 9 日起新用户注册可领 1 亿词元（科学计算智能体应用额度，客户端领取）。所以正确顺序是：先注册攒资格，9 号再回来领，别在今天就到处找入口。</p>
+  </div>
+  <div class="callout warn">
+    <p><strong>Token Plan 是订阅，不是量包。</strong>27 元/月那档便宜是真的，但它是<strong>按月自动续费</strong>，取消次月续费得自己去「我的 - 订阅管理」点；已付当月不退。只想试水的，先别碰订阅。</p>
+  </div>
+</section>
+
+<section id="s1">
+  <div class="sechead"><span class="num">01</span><h2>三重新人礼：给什么、什么条件、现在能不能领</h2></div>
+  <p>官网 11.11 页把新人权益拆成三块。注意第一块有「四选一」限制，不是全给。</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>礼包</th><th>内容</th><th>限制</th><th>11-06 状态</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>新人礼 01</strong><br>AI 应用体验</td>
+        <td>Seedance 2.5（AI 视频生成，新用户每日随机免费次数）<br>光影智创（每日免费 3 个 10 秒视频，新用户再送 600 光豆）<br>赤鸟漫创（AI 短漫剧，新用户 ¥9.9 尝鲜）<br>TRAE 教育版（AI 编程，¥1 加油包 ≈ 5000 万 Tokens）</td>
+        <td>4 款里<strong>只能选 1 款</strong>，每个新账号限领/体验 1 次</td>
+        <td class="best">已开放</td>
+      </tr>
+      <tr>
+        <td><strong>新人礼 02</strong><br>1 亿 Tokens</td>
+        <td>新用户注册登录客户端即领（科学计算智能体应用额度，非 API 裸额度）</td>
+        <td>新用户</td>
+        <td class="hot">页面显示「暂未开放」，官方口径 11 月 9 日起</td>
+      </tr>
+      <tr>
+        <td><strong>新人礼 03</strong><br>0.1 元秒杀</td>
+        <td>见下一节价目，Token 量包 + 异构加速卡卡时</td>
+        <td>新用户，<strong>每人限购 1 份</strong>，库存有限</td>
+        <td class="best">已开放，档位截止 11 月 14 日</td>
+      </tr>
+    </tbody>
+  </table></div>
+  <p class="muted">页面原话：每位符合活动资格的新用户限选 1 款 AI 应用新人权益；具体适用资格、体验次数、优惠价格及使用期限以活动规则和页面实际展示为准。</p>
+</section>
+
+<section id="s2">
+  <div class="sechead"><span class="num">02</span><h2>0.1 元秒杀：这一档到底能抢什么</h2></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>商品</th><th class="num">量</th><th class="num">原价</th><th class="num">秒杀价</th><th>折算</th><th>截止</th></tr></thead>
+    <tbody>
+      <tr><td><strong>DeepSeek-V4.1-Flash-1017</strong><br><span class="muted">1024K 上下文 · 智能问答 / 长文档分析 / 代码与智能体任务 / 视觉理解</span></td><td class="num">5000 万 Tokens</td><td class="num">¥20.50</td><td class="num cut">¥0.10</td><td>≈ 0.05 折</td><td>11-14</td></tr>
+      <tr><td><strong>GLM-5.3-Flash</strong><br><span class="muted">1024K 上下文 · 代码生成 / AI4S / 科研辅助 / 数据分析</span></td><td class="num">5000 万 Tokens</td><td class="num">¥17.00</td><td class="num cut">¥0.10</td><td>≈ 0.06 折</td><td>11-14</td></tr>
+      <tr><td><strong>AI 计算异构加速卡 BW</strong><br><span class="muted">算力卡时包（跑模型/渲染/仿真用）</span></td><td class="num">50 卡时</td><td class="num">¥300.00</td><td class="num cut">¥0.10</td><td>≈ 0.003 折</td><td>11-14</td></tr>
+      <tr><td><strong>AI 计算异构加速卡 BW</strong></td><td class="num">200 卡时</td><td class="num">¥1200.00</td><td class="num num">¥50.00</td><td>≈ 0.42 折</td><td>11-14</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout">
+    <p><strong>怎么选：</strong>要跑文本任务就按模型挑——<strong>要长上下文和 Agent 工具调用选 DeepSeek-V4.1-Flash-1017，要代码生成和数据清洗选 GLM-5.3-Flash</strong>，两个都只要 0.1 元，但<strong>每人只限购 1 份</strong>，只能挑一个。真要跑本地模型、训练或渲染，才去看异构加速卡那两档。</p>
+  </div>
+  <p class="muted">页面原话：精选资源限时开抢，每人限购 1 份；秒杀商品、活动时间、库存及限购规则以页面实际展示为准。倒计时是实时的，抢之前先确认东西还在架上。</p>
+</section>
+
+<section id="s3">
+  <div class="sechead"><span class="num">03</span><h2>MaaS 特惠专场：抢不到秒杀，还有这些价</h2></div>
+  <p>MaaS 专场的活动期更长，页面写的是 <strong>2026.08.13 ～ 2026.12.31</strong>，秒杀档只是其中最狠的一小块。同一页面还挂着这些：</p>
+
+  <h3>0.1 元档（同样限新用户）</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>模型</th><th class="num">量</th><th class="num">原价</th><th class="num">秒杀价</th><th>页面标注</th></tr></thead>
+    <tbody>
+      <tr><td>DeepSeek-V4.1-Flash-1017</td><td class="num">5000 万</td><td class="num">¥20.50</td><td class="num cut">¥0.10</td><td>截止 11-14</td></tr>
+      <tr><td>GLM-5.3-Flash</td><td class="num">5000 万</td><td class="num">¥17.00</td><td class="num cut">¥0.10</td><td>截止 11-14</td></tr>
+      <tr><td>Qwen3.8-Flash<span class="muted"> · 1024K</span></td><td class="num">1000 万</td><td class="num">¥2.60</td><td class="num cut">¥0.10</td><td>限时 0.3 折</td></tr>
+      <tr><td>DeepSeek-V4.1-Flash<span class="muted"> · 1024K</span></td><td class="num">2000 万</td><td class="num">¥8.00</td><td class="num cut">¥0.10</td><td>限时 0.1 折</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>折扣档（新用户同样可买，力度小一些）</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>模型</th><th class="num">量</th><th class="num">原价</th><th class="num">秒杀价</th><th>页面标注</th></tr></thead>
+    <tbody>
+      <tr><td>Kimi-K3<span class="muted"> · 1M 上下文</span></td><td class="num">1000 万</td><td class="num">¥56.00</td><td class="num">¥39.00</td><td>7 折</td></tr>
+      <tr><td>Qwen3.8-Max<span class="muted"> · 991K 上下文</span></td><td class="num">1000 万</td><td class="num">¥33.60</td><td class="num">¥20.00</td><td>6 折</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Token Plan 订阅（按月自动续费）</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>档位</th><th>额度</th><th class="num">原价/月</th><th class="num">特惠价/月</th><th>折扣</th></tr></thead>
+    <tbody>
+      <tr><td>基础版</td><td>60000 Credits，入门 / 个人项目集成</td><td class="num">¥50</td><td class="num best">¥27</td><td>5.4 折</td></tr>
+      <tr><td>标准版</td><td>基础版 4 倍额度，日常办公 + 轻量开发</td><td class="num">¥185</td><td class="num">¥106</td><td>5.7 折</td></tr>
+      <tr><td>高级版</td><td>基础版 10 倍额度，高频开发</td><td class="num">¥440</td><td class="num">¥278</td><td>6.3 折</td></tr>
+      <tr><td>旗舰版</td><td>基础版 30 倍额度</td><td class="num">¥1274</td><td class="num">¥821</td><td>6.4 折</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted">新增适用模型：DeepSeek-V4.1-Flash-1017、GLM-5.3-Flash、Qwen3.8-Flash。</p>
+
+  <h3>精品特惠量包（大额一次买断，不订阅）</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>模型 · 量包</th><th class="num">原价</th><th class="num">特惠价</th><th>折扣</th></tr></thead>
+    <tbody>
+      <tr><td>GLM-5.3-Flash 特惠版 · 5 亿 Tokens（1024K）</td><td class="num">¥170</td><td class="num best">¥99</td><td>5.8 折</td></tr>
+      <tr><td>DeepSeek-V4-Flash-0731 特惠版 · 5 亿 Tokens（1M）</td><td class="num">¥395</td><td class="num">¥316</td><td>8 折</td></tr>
+      <tr><td>GLM-5.2 · 1 亿 Tokens（1024K）</td><td class="num">¥315</td><td class="num">¥220</td><td>7 折</td></tr>
+      <tr><td>GLM-5.2-Base 特惠版 · 1 亿 Tokens（128K）</td><td class="num">¥157</td><td class="num">¥130</td><td>8.3 折</td></tr>
+      <tr><td>Qwen3.8-Max 特惠版 · 1 亿 Tokens（991K）</td><td class="num">¥336</td><td class="num">¥305</td><td>9 折</td></tr>
+      <tr><td>Kimi-K3 特惠版 · 1 亿 Tokens（1M）</td><td class="num">¥564</td><td class="num">¥536</td><td>9.5 折</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>¥850 优惠券礼包（所有用户可领）</h3>
+  <p>满 2000 减 400、满 1500 减 300、满 1000 减 150，每个账号限领 1 次。但这三张券<strong>不能用来买 0.1 元秒杀商品、新人专享特惠和 Token Plan 套餐</strong>，只能抵「指定算力产品」——想用券先把要买的东西对一遍适用商品范围。</p>
+</section>
+
+<section id="s4">
+  <div class="sechead"><span class="num">04</span><h2>5000 万 Tokens 怎么用才不算浪费</h2></div>
+  <p>按第三方常用的粗口径（1 token ≈ 1.5 个汉字），5000 万 tokens 理论上能过 7000 万字级别的文本；实际会被系统提示词、工具调用、多轮重读吃掉一大截，别按满额算账。所以别拿它干这些事——</p>
+  <ul>
+    <li><strong>别拿它闲聊。</strong>日常对话几百 token 一轮，5000 万看着多，真聊起来也是几个月的事；要聊就把量留给能出活的任务。</li>
+    <li><strong>量包是按模型绑定的。</strong>商品名就写死了模型（GLM-5.3-Flash 的量包不能拿去调 DeepSeek），买之前先想清楚你的活儿要哪个模型——长上下文 + 工具调用偏 DeepSeek-V4.1-Flash-1017，代码和数据清洗偏 GLM-5.3-Flash。</li>
+    <li><strong>它最适合批处理。</strong>整库代码审计、论文集批量摘要、几十份合同/标书逐条比对、给知识库建 RAG 索引——这类活一次吃几十万 token，5000 万够你连着跑很多批。</li>
+    <li><strong>1024K 上下文是这批模型共同的卖点。</strong>能一次塞进整本手册或一个大模块，不用做切片；配合长文档任务，比买十几个小包更划算。</li>
+    <li><strong>接进自己的工具里用。</strong>拿到 key 后按平台控制台给的接口文档配置（端点、协议以控制台为准，我这边没实测不写死）；如果你也跑 Hermes 这类本地 Agent，非实时的批量活挂着跑，别和实时对话抢额度。</li>
+  </ul>
+  <div class="callout ok">
+    <p><strong>一句话用法：</strong>0.1 元买的这包，当「评测预算 + 批处理燃料」用；真正长期高频的日常对话，等 11 月 9 日那 1 亿客户端额度下来再说。</p>
+  </div>
+</section>
+
+<section id="s5">
+  <div class="sechead"><span class="num">05</span><h2>避坑清单（都是页面明文规则，不是我猜的）</h2></div>
+  <ol>
+    <li><strong>先实名。</strong>秒杀、领券都是「符合活动资格的新用户」限定；要走邀请奖励，被邀请人还必须完成注册 + 实名认证才算有效邀请。</li>
+    <li><strong>每人限购 1 份。</strong>秒杀不能叠加、不能给同一个账号补第二单。想多要额度，走精品特惠量包或 Token Plan。</li>
+    <li><strong>秒杀档到 11 月 14 日。</strong>活动整体到 12 月 31 日，但最划算的那一档是短窗口，库存还是实时的。</li>
+    <li><strong>Token Plan 自动续费。</strong>购买页会显著提示续费金额，可随时在「我的 - 订阅管理」取消次月续费，取消后次月生效、当月权益不受影响；已购买并生效不支持中途退款。平台原因导致服务持续不可用超 24 小时，才按剩余有效期折算退款或补偿。</li>
+    <li><strong>优惠券有适用红线。</strong>¥850 礼包里的券不能用于 0.1 元秒杀商品、新人专享特惠、Token Plan；每张券的截止时间以券详情页为准。</li>
+    <li><strong>「1 亿 Tokens」别抢跑。</strong>页面仍是「暂未开放领取」，官方口径 11 月 9 日起开放，客户端领取；现在去点只会看到待上线提示。</li>
+    <li><strong>价格和库存会变。</strong>本文所有数字是 2026-11-06 当天活动页展示值，平台随时可能调整；下单前以结算页实际价格为准。</li>
+  </ol>
+</section>
+
+<section id="s6">
+  <div class="sechead"><span class="num">06</span><h2>注册入口</h2></div>
+  <p>下面两个按钮：第一个是我的邀请链接（我挂了平台的推荐官，你走这个注册我能拿点奖励）；第二个是官方活动页原链接，不带任何邀请参数——你不喜欢走邀请就直接点官方那个，权益完全一样。</p>
+  <div class="cta">
+    <h3>新用户注册 → 抢 0.1 元量包</h3>
+    <p>注册后记得做实名认证，再去「活动中心 / 11.11 页」把秒杀档和 11 月 9 日的 1 亿额度各领一遍。</p>
+    <div class="tags">
+      <span class="tag">0.1 元 · 5000 万 Tokens</span>
+      <span class="tag">限购 1 份</span>
+      <span class="tag">秒杀档至 11-14</span>
+      <span class="tag">1 亿额度 11-09 起</span>
+    </div>
+    <div class="btns">
+      <a class="btn primary" href="https://www.scnet.cn/sso/register?service=https%3A%2F%2Fwww.scnet.cn%2Fac%2Fapi%2Fauth%2FloginSsoRedirect.action%3ForiginalUrl%3Dhttps%253A%252F%252Fwww.scnet.cn%252Fhome%252Fsubject%252Ftjg%252Findex.html%253Fshow%253Dtrue%2526inviterId%253D11461297073%2526marketActivityId%253DGy0KImwg" target="_blank" rel="noopener">用我的邀请链接注册 →</a>
+      <a class="btn" href="https://www.scnet.cn/home/subject/double11/index.html" target="_blank" rel="noopener">官方 11.11 活动页</a>
+      <a class="btn" href="https://www.scnet.cn/home/subject/maas/index.html" target="_blank" rel="noopener">MaaS 特惠专场</a>
+    </div>
+    <p class="disclose">披露：上面第一个链接含我的邀请码。你通过它注册并完成实名，我可获得 20 算力星（等价 ¥20 代金券，只能在平台内兑换资源/会员/优惠券，不可提现）。你该拿的新用户权益一分不少，价格也不会因为走邀请变贵；不想给我这点奖励，就点后面两个官方链接。</p>
+  </div>
+</section>
+
+<footer>
+  <p>数据口径：国家超算互联网 11.11 年终钜惠页 + MaaS 特惠专场页，2026-11-06 当天实际展示；「1 亿 Tokens 11 月 9 日起开放」取自官方对媒体的公开口径，页面当前仍标「暂未开放领取」。价格、库存、资格条件以平台结算页与活动规则为准，本文只做整理，不构成购买建议。</p>
+  <p>相关：<a href="../benefits.html">AI 福利汇总</a> · <a href="../knowledge.html">知识库</a> · <a href="../index.html">首页</a></p>
+</footer>
+
+</div>
+<script>
+/* 宽表格在窄屏溢出时插入横滑提示（真溢出才提示） */
+(function(){
+  document.querySelectorAll(".table-wrap, .ds-table-scroll").forEach(function(w){
+    if (w.scrollWidth - w.clientWidth > 8) {
+      var h=document.createElement("div");
+      h.className="swipe-hint";
+      h.textContent="↔ 表格可左右滑动查看完整内容";
+      h.style.cssText="font-size:12px;padding:7px 12px;border-top:1px solid var(--line,#1f2a3b);color:var(--text-3,#65758c)";
+      w.parentNode.insertBefore(h, w.nextSibling);
+    }
+  });
+})();
+</script>
+<script src="../site-shell.js?v=2"></script>
+</body>
+</html>

@@ -2,6 +2,20 @@
 /* 新条目使用真实主题分类；通过校验后再合并到下一版 docs.v*.js。 */
 const SITE_DOC_ADDITIONS = [
   {
+    t: "国家超算互联网 11.11 薅羊毛攻略：0.1 元 5000 万 Tokens（2026-11-06 口径）",
+    file: "articles/scnet-1111.html",
+    cat: "briefing",
+    date: "2026-11-06",
+    d: "新用户 0.1 元秒杀 5000 万 Tokens 量包（GLM-5.3-Flash / DeepSeek-V4.1-Flash-1017，1024K），另有 1 亿 Tokens 额度、MaaS 专场价目、Token Plan 折扣与领券/续费红线"
+  },
+  {
+    t: "国家超算互联网 11.11 薅羊毛攻略：0.1 元 5000 万 Tokens（2026-11-06 口径）",
+    file: "articles/scnet-1111.html",
+    cat: "ai-coding",
+    date: "2026-11-06",
+    d: "新用户 0.1 元秒杀 5000 万 Tokens 量包（GLM-5.3-Flash / DeepSeek-V4.1-Flash-1017，1024K），另有 1 亿 Tokens 额度、MaaS 专场价目、Token Plan 折扣与领券/续费红线"
+  },
+  {
     t: "MiniMax H3 字幕问题实测：伪字幕与烧录字幕",
     file: "articles/h3-subtitle.html",
     cat: "ai-video",
