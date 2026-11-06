@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 订阅怎么花钱才不亏｜2026-11 平台政策与多执行器工作链</title>
+<meta name="description" content="火山方舟 Coding Plan / Agent Plan、CodeBuddy/WorkBuddy 积分、ZCode 免费额度、DeepSeek 比价与多执行器工作链串联合规边界，含实测证据与待办清单。">
+<style>
+:root{
+  --bg:#0b0d10;
+  --bg-2:#11151a;
+  --card:#161b22;
+  --card-2:#1b2129;
+  --line:#252d38;
+  --line-2:#323c4a;
+  --text:#e8edf3;
+  --text-2:#a7b3c2;
+  --text-3:#6f7d8e;
+  --accent:#ff7a18;
+  --accent-2:#ffb066;
+  --ok:#2ee6a8;
+  --bad:#ff4d5e;
+  --warn:#ffc53d;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(900px 520px at 82% -8%, rgba(255,122,24,.13), transparent 62%),
+    radial-gradient(760px 460px at 8% 4%, rgba(46,230,168,.07), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:17px;line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+  padding:0 20px 100px;
+}
+.wrap{max-width:940px;margin:0 auto}
+
+
+/* ---------- 广告位 ---------- */
+.ad{border:1px solid var(--line-2);border-radius:16px;background:
+  linear-gradient(135deg,rgba(255,122,24,.07),rgba(46,230,168,.05)),var(--card);
+  padding:20px 22px;margin:34px 0;}
+.ad .tag{display:inline-block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-3);border:1px solid var(--line-2);border-radius:999px;padding:2px 10px;margin-bottom:12px}
+.ad h4{font-size:18px;margin-bottom:8px;color:var(--text)}
+.ad p{font-size:15px;color:var(--text-2);margin-bottom:12px}
+.ad .acts{display:flex;flex-wrap:wrap;gap:10px}
+.ad a.cta{display:inline-block;font-size:14px;font-weight:600;text-decoration:none;
+  color:#0b0d10;background:linear-gradient(100deg,var(--accent),var(--accent-2));
+  padding:9px 18px;border-radius:10px}
+.ad a.ghost{display:inline-block;font-size:14px;text-decoration:none;color:var(--accent-2);
+  border:1px solid var(--line-2);padding:9px 18px;border-radius:10px}
+.ad .note{font-size:12px;color:var(--text-3);margin-top:10px;margin-bottom:0}
+
+/* ---------- hero ---------- */
+.hero{padding:72px 0 44px;border-bottom:1px solid var(--line)}
+.kicker{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent-2);font-weight:600;margin-bottom:22px;
+}
+.kicker::before{content:"";width:26px;height:2px;background:linear-gradient(90deg,var(--accent),transparent)}
+h1{
+  font-size:clamp(30px,4.6vw,46px);line-height:1.25;font-weight:800;
+  letter-spacing:-.02em;margin-bottom:20px;
+}
+h1 em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--accent) 0%,var(--accent-2) 55%,#fff 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.lede{font-size:19px;color:var(--text-2);max-width:720px;margin-bottom:26px}
+.meta{display:flex;flex-wrap:wrap;gap:10px}
+.pill{
+  font-size:13px;color:var(--text-2);background:var(--card);
+  border:1px solid var(--line);border-radius:999px;padding:5px 13px;
+}
+.pill b{color:var(--text);font-weight:600}
+
+/* ---------- sections ---------- */
+section{padding:54px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+.sechead{display:flex;align-items:baseline;gap:14px;margin-bottom:26px}
+.num{
+  font-family:var(--mono);font-size:13px;color:var(--accent);
+  border:1px solid rgba(255,122,24,.35);background:rgba(255,122,24,.08);
+  border-radius:7px;padding:2px 9px;flex:0 0 auto;letter-spacing:.05em;
+}
+h2{font-size:clamp(22px,3vw,29px);font-weight:750;letter-spacing:-.01em;line-height:1.35}
+h3{font-size:18px;font-weight:700;margin:32px 0 12px;color:var(--text)}
+h3:first-child{margin-top:0}
+p{color:var(--text-2);margin-bottom:14px}
+p strong,li strong{color:var(--text);font-weight:650}
+ul,ol{margin:0 0 16px 22px;color:var(--text-2)}
+li{margin-bottom:8px}
+code{
+  font-family:var(--mono);font-size:.88em;background:rgba(255,255,255,.06);
+  border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--accent-2);
+  word-break:break-all;
+}
+a{color:var(--accent-2);text-decoration:none;border-bottom:1px solid rgba(255,176,102,.3)}
+
+/* ---------- stat cards ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin:26px 0}
+.stat{
+  background:linear-gradient(160deg,var(--card-2),var(--card));
+  border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;
+}
+.stat .k{font-size:12.5px;letter-spacing:.08em;color:var(--text-3);text-transform:uppercase;margin-bottom:8px}
+.stat .v{font-size:27px;font-weight:800;line-height:1.15;letter-spacing:-.02em}
+.stat .v small{font-size:14px;font-weight:600;color:var(--text-2);margin-left:4px}
+.stat .d{font-size:14px;color:var(--text-3);margin-top:7px;line-height:1.6}
+.stat.hot .v{color:var(--accent)}
+.stat.ok .v{color:var(--ok)}
+
+/* ---------- tables ---------- */
+.table-wrap{overflow-x:auto;margin:20px 0;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:700px}
+th,td{padding:13px 16px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{
+  background:var(--bg-2);color:var(--text-3);font-size:12.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;
+}
+tr:last-child td{border-bottom:0}
+td{color:var(--text-2)}
+td strong{color:var(--text)}
+tbody tr:hover{background:rgba(255,255,255,.022)}
+.yes{color:var(--ok);font-weight:700}
+.no{color:var(--bad);font-weight:700}
+.tag{
+  display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:5px;
+  letter-spacing:.03em;white-space:nowrap;
+}
+.tag.red{background:rgba(255,77,94,.14);color:#ff8390;border:1px solid rgba(255,77,94,.3)}
+.tag.green{background:rgba(46,230,168,.12);color:#69f0c2;border:1px solid rgba(46,230,168,.28)}
+.tag.orange{background:rgba(255,122,24,.14);color:var(--accent-2);border:1px solid rgba(255,122,24,.3)}
+
+/* ---------- callouts ---------- */
+.note{
+  border-left:3px solid var(--accent);background:rgba(255,122,24,.06);
+  border-radius:0 11px 11px 0;padding:16px 20px;margin:20px 0;font-size:15.5px;color:var(--text-2);
+}
+.note b{color:var(--accent-2)}
+.note.danger{border-color:var(--bad);background:rgba(255,77,94,.07)}
+.note.danger b{color:#ff8390}
+.note.ok{border-color:var(--ok);background:rgba(46,230,168,.06)}
+.note.ok b{color:#69f0c2}
+.note p:last-child{margin-bottom:0}
+
+/* ---------- timeline ---------- */
+.tl{position:relative;margin:26px 0 8px;padding-left:26px}
+.tl::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,var(--accent),rgba(255,122,24,.06))}
+.tl-item{position:relative;margin-bottom:22px}
+.tl-item::before{
+  content:"";position:absolute;left:-26px;top:8px;width:11px;height:11px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--accent);
+}
+.tl-item .d{font-family:var(--mono);font-size:14px;color:var(--accent);font-weight:700;letter-spacing:.03em}
+.tl-item .t{font-size:16px;font-weight:650;color:var(--text);margin:2px 0 4px}
+.tl-item .c{font-size:14.5px;color:var(--text-3);line-height:1.7}
+
+/* ---------- compare bar ---------- */
+.bars{margin:22px 0 6px}
+.bar-row{display:grid;grid-template-columns:150px 1fr 92px;gap:12px;align-items:center;margin-bottom:12px;font-size:14.5px}
+.bar-row .lbl{color:var(--text-2);text-align:right}
+.bar-track{background:var(--bg-2);border:1px solid var(--line);border-radius:6px;height:26px;overflow:hidden}
+.bar-fill{height:100%;border-radius:5px 0 0 5px;background:linear-gradient(90deg,rgba(255,122,24,.85),rgba(255,176,102,.55))}
+.bar-fill.dim{background:linear-gradient(90deg,rgba(110,125,142,.55),rgba(110,125,142,.25))}
+.bar-row .val{font-family:var(--mono);font-size:14px;color:var(--text);font-weight:700}
+
+/* ---------- grid cards ---------- */
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:22px 0}
+@media (max-width:700px){.grid2{grid-template-columns:1fr}}
+.mini{
+  background:var(--card);border:1px solid var(--line);border-radius:13px;padding:19px 21px;
+}
+.mini h4{font-size:16px;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:8px}
+.mini p{font-size:14.5px;margin-bottom:0;line-height:1.72;color:var(--text-3)}
+.mini p strong{color:var(--text-2)}
+.dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+.dot.o{background:var(--accent)}
+.dot.g{background:var(--ok)}
+.dot.r{background:var(--bad)}
+.dot.w{background:var(--warn)}
+
+/* ---------- redline list ---------- */
+.redlines{counter-reset:rl;display:grid;gap:12px;margin:22px 0}
+.redline{
+  counter-increment:rl;position:relative;padding:16px 20px 16px 58px;
+  background:linear-gradient(120deg,rgba(255,77,94,.08),var(--card));
+  border:1px solid rgba(255,77,94,.22);border-radius:12px;font-size:15.5px;color:var(--text-2);
+}
+.redline::before{
+  content:counter(rl);position:absolute;left:18px;top:15px;
+  width:24px;height:24px;border-radius:7px;background:rgba(255,77,94,.16);
+  color:#ff8390;font-family:var(--mono);font-size:13px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.redline b{color:#fff}
+
+/* ---------- code block ---------- */
+pre{
+  background:#0a0c0f;border:1px solid var(--line);border-radius:11px;
+  padding:16px 18px;overflow-x:auto;margin:18px 0;
+  font-family:var(--mono);font-size:13.5px;line-height:1.75;color:#b9c6d4;
+}
+pre .c{color:var(--text-3)}
+pre .g{color:var(--ok)}
+pre .y{color:var(--accent-2)}
+
+/* ---------- footer ---------- */
+footer{padding-top:40px;font-size:14px;color:var(--text-3);line-height:1.9}
+footer strong{color:var(--text-2)}
+
+@media (max-width:620px){
+  body{padding:0 15px 70px;font-size:16px}
+  .hero{padding:48px 0 34px}
+  .bar-row{grid-template-columns:1fr;gap:6px}
+  .bar-row .lbl{text-align:left}
+  .stat .v{font-size:23px}
+  table{font-size:13.5px;min-width:600px}
+  th,td{padding:10px 12px}
+}
+.swipe-hint{
+  display:block;font-size:12px;color:var(--text-3);letter-spacing:.04em;
+  padding:7px 0 0 4px;margin-bottom:-8px;
+}
+</style>
+<link rel="stylesheet" href="../site-design.css?v=2">
+<style id="site-article-palette">
+/* 本页自带暗色橙系调色板：在共享壳之后重新钉住，避免被站点主题令牌覆盖 */
+body.ds-enhanced{
+  --bg:#0b0d10;--bg-2:#11151a;--card:#161b22;--card-2:#1b2129;
+  --line:#252d38;--line-2:#323c4a;
+  --text:#e8edf3;--text-2:#a7b3c2;--text-3:#6f7d8e;
+  --accent:#ff7a18;--accent-2:#ffb066;
+  background:
+    radial-gradient(900px 520px at 82% -8%, rgba(255,122,24,.13), transparent 62%),
+    radial-gradient(760px 460px at 8% 4%, rgba(46,230,168,.07), transparent 60%),
+    #0b0d10 !important;
+  color:#e8edf3;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  line-height:1.85;
+  padding:92px 20px 100px;
+}
+body.ds-enhanced::before,body.ds-enhanced::after{display:none !important}
+body.ds-enhanced .hero{padding-top:26px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">2026 · 11 月实测与政策汇总</div>
+  <h1>AI 订阅怎么花钱才不亏：<br><em>平台政策、免费额度与多执行器工作链</em></h1>
+  <p class="lede">
+    火山方舟 Coding Plan / Agent Plan 的真实差价、CodeBuddy 那 2,000 积分到底是什么、
+    ZCode 的夜间免费额度能不能用、以及把几个 AI 编程工具串成一条流水线时——
+    哪些做法会直接把订阅跑成封号。
+  </p>
+  <div class="meta">
+    <span class="pill">整理日期 <b>2026-11-06</b></span>
+    <span class="pill">口径 <b>官方 / 实测 / 推断 分列</b></span>
+    <span class="pill">比价基准 <b>DeepSeek V4.1-Flash</b></span>
+  </div>
+</header>
+
+<!-- ============ 0 结论 ============ -->
+<section id="s0">
+  <div class="sechead"><span class="num">00</span><h2>一页结论</h2></div>
+
+  <div class="stats">
+    <div class="stat hot">
+      <div class="k">当前主力</div>
+      <div class="v">火山 + GLM</div>
+      <div class="d">Codex / Kimi 额度耗尽（4–5 天恢复），现由火山 Coding Plan Pro（¥49.9/月）与 GLM Coding Plan 顶</div>
+    </div>
+    <div class="stat ok">
+      <div class="k">周末额度</div>
+      <div class="v">5<small>亿 tokens</small></div>
+      <div class="d">ZCODE WEEKEND BUILD，GLM-5.3-Flash 专属，11/9 09:00 到期</div>
+    </div>
+    <div class="stat">
+      <div class="k">免费额度</div>
+      <div class="v">2,000<small>积分/月</small></div>
+      <div class="d">CodeBuddy / WorkBuddy，限时加赠至 11/30</div>
+    </div>
+    <div class="stat ok">
+      <div class="k">视觉 + 语音</div>
+      <div class="v">$0</div>
+      <div class="d">Agnes 生图 $0/张、$0/秒；语音走本地 IndexTTS</div>
+    </div>
+    <div class="stat">
+      <div class="k">非高峰半价</div>
+      <div class="v">50<small>%</small></div>
+      <div class="d">智谱：除工作日 14–18 全按半价；DeepSeek：除工作日 9–12、14–18 外半价，周末全天半价</div>
+    </div>
+    <div class="stat">
+      <div class="k">比价基准</div>
+      <div class="v">¥125<small>/月</small></div>
+      <div class="d">DeepSeek 官方重度 Agent 用量</div>
+    </div>
+  </div>
+
+  <h3>会花真金白银的三个日子</h3>
+  <div class="tl">
+    <div class="tl-item">
+      <div class="d">2026-11-08</div>
+      <div class="t">火山 2.5 折活动截止</div>
+      <div class="c">次月特惠需在首购"次日起"操作 → 实际可操作窗口可能只有 11/7–11/8。漏了，次月按 ¥200 算，多付 ¥150。</div>
+    </div>
+    <div class="tl-item">
+      <div class="d">2026-11-15</div>
+      <div class="t">CodeBuddy / WorkBuddy 的 Hy4 · Hy3 限免结束</div>
+      <div class="c">限免期间模型倍率 0.00x（不扣积分），桶空了才扣。结束后全额扣积分。</div>
+    </div>
+    <div class="tl-item">
+      <div class="d">2026-12-01 00:00</div>
+      <div class="t">WorkBuddy 积分刷新</div>
+      <div class="c">首月赠送的 2,000（500 基础 + 1,500 奖励）归零，之后回到 500/月基础额度。</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p><b>省钱的顺序不是找更便宜的单价</b>，而是：把包月配额打爆 → 把免费额度排进它自己的时间窗 → 批量任务交给最便宜但合规的通道 → 视觉语音一律 $0。</p>
+  </div>
+</section>
+
+<!-- ============ 1 平台事实 ============ -->
+<section id="s1">
+  <div class="sechead"><span class="num">01</span><h2>四家平台，各自能给什么</h2></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>平台</th><th>给你什么</th><th>窗口 / 限制</th><th>本机状态</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>火山方舟<br>Coding Plan</strong></td>
+          <td>Pro ¥49.9（原价 ¥200），14 个模型：豆包 Seed、GLM-5.3、DeepSeek V4.1、Kimi K3.1</td>
+          <td>额度<strong>只能编程工具内用</strong>；5h/周窗口</td>
+          <td><span class="tag green">已订</span> 等 API key</td>
+        </tr>
+        <tr>
+          <td><strong>CodeBuddy<br>/ WorkBuddy</strong></td>
+          <td>每月 2,000 积分（500 基础 + 1,500 限时奖励）</td>
+          <td>Hy4/Hy3 限免至 11/15；积分刷新 12/1</td>
+          <td><span class="tag green">CLI 已通</span> $0 实测</td>
+        </tr>
+        <tr>
+          <td><strong>ZCode</strong></td>
+          <td>每日 3 亿 tokens GLM-5.3-Flash</td>
+          <td>19:00 领 · <strong>23:00–9:00 用</strong> · 次日清零 · 并发 3</td>
+          <td><span class="tag orange">CLI 在·需 App 运行时</span></td>
+        </tr>
+        <tr>
+          <td><strong>GitHub Copilot</strong></td>
+          <td>Individual 订阅：Chat / Completions 各 100%</td>
+          <td>12/1 08:00 重置；<strong>不能当 API 用</strong></td>
+          <td><span class="tag green">订阅有效</span> CLI 未装</td>
+        </tr>
+        <tr>
+          <td><strong>DeepSeek 官方</strong></td>
+          <td>按量付费，闲时输入 ¥1/M、输出 ¥4/M</td>
+          <td>白天翻倍；缓存命中 ¥0.02/M</td>
+          <td><span class="tag green">在用</span> 仅夜间批处理</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>火山 Coding Plan 接入参数</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>项</th><th>值</th></tr></thead>
+      <tbody>
+        <tr><td>OpenAI 兼容</td><td><code>https://ark.cn-beijing.volces.com/api/coding/v3</code></td></tr>
+        <tr><td>Anthropic 兼容</td><td><code>https://ark.cn-beijing.volces.com/api/coding</code></td></tr>
+        <tr><td>❌ 禁用</td><td><code>/api/v3</code> —— 不抵额度，还额外出账单</td></tr>
+        <tr><td>控制台模式</td><td>model 填 <code>ark-code-latest</code>，3–5 分钟生效</td></tr>
+        <tr><td>优惠资格</td><td>新购 / 续费 / 升配<strong>共享同一资格</strong>，最多 2 个月，用完不重置</td></tr>
+        <tr><td>超额后付费</td><td><strong>需手动开启</strong>，默认关（避免意外账单）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>CodeBuddy 定价（分清版本，别按错档算）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>版本</th><th>基础积分/月</th><th>限时加赠</th><th>实得/月</th><th>价格</th></tr></thead>
+      <tbody>
+        <tr><td><strong>体验版</strong>（当前）</td><td>500</td><td>—</td><td>500</td><td>免费</td></tr>
+        <tr><td>标准版</td><td>2,000</td><td>2,000</td><td>4,000</td><td>¥99（连续 ¥70）</td></tr>
+        <tr><td>高级版</td><td>4,000</td><td>5,000</td><td>9,000</td><td>¥199（连续 ¥140）</td></tr>
+        <tr><td>旗舰版</td><td>20,000</td><td>30,000</td><td>50,000</td><td>¥999（连续 ¥700）</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 2 2000 积分真相 ============ -->
+<section id="s2">
+  <div class="sechead"><span class="num">02</span><h2>"每天 2,000 积分"是误读</h2></div>
+
+  <p>打开 WorkBuddy 的「套餐与积分」页，看到的是 <strong>2,000 / 2,000</strong>。但拆开看是三个数加出来的，而且刷新周期是<strong>按月</strong>：</p>
+
+  <div class="bars">
+    <div class="bar-row">
+      <div class="lbl">套餐基础积分</div>
+      <div class="bar-track"><div class="bar-fill dim" style="width:25%"></div></div>
+      <div class="val">500</div>
+    </div>
+    <div class="bar-row">
+      <div class="lbl">平台奖励积分</div>
+      <div class="bar-track"><div class="bar-fill" style="width:75%"></div></div>
+      <div class="val">1,500</div>
+    </div>
+    <div class="bar-row">
+      <div class="lbl">购买积分</div>
+      <div class="bar-track"><div class="bar-fill dim" style="width:0%"></div></div>
+      <div class="val">0</div>
+    </div>
+  </div>
+
+  <div class="note danger">
+    <p><b>三条修正，逐条对：</b></p>
+    <p>① 不是"每天"，是<strong>每月 2,000</strong>，页面写明「下次刷新时间 2026/12/01 00:00」。</p>
+    <p>② 其中 1,500 是<strong>「首月赠送个人标准版基础积分权益」</strong>，11/6 已领取，限时加赠 <strong>11/30 截止</strong> —— 属于一次性，不是长期额度。</p>
+    <p>③ 这是 <strong>WorkBuddy</strong> 的额度，不是 CodeBuddy 的。页面悬停写明：「当前仅用于 WorkBuddy。加入 BuddyOne 后，关联产品可共享 WorkBuddy 积分」→ <strong>默认不互通，要先加入 BuddyOne 并关联</strong>。</p>
+  </div>
+
+  <h3>那 CodeBuddy CLI 花的什么钱？</h3>
+  <p>实测结果是 <code>total_cost_usd: 0</code>、<code>permission_denials: []</code>，说明它<strong>没被拦、也没报扣费</strong>。这与"体验版不支持 CLI"的官方定价表矛盾——表格写的是体验版「—」、标准版起「✓」，但实际当前账号跑通了。</p>
+  <p>最可能的解释是 Hy4/Hy3 限免期（至 11/15）走了 0.00x 倍率。但 <strong>CLI 自报 $0 ≠ 平台没扣积分</strong>，还得去客户端看余额有没有动，这一步不能省。</p>
+</section>
+
+<!-- ============ 3 Agent Plan ============ -->
+<section id="s3">
+  <div class="sechead"><span class="num">03</span><h2>Agent Plan 为什么不该升</h2></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>对比项</th><th>Coding Plan</th><th>Agent Plan</th></tr></thead>
+      <tbody>
+        <tr><td>定位</td><td>编程</td><td>Agent / 多模态 / Harness</td></tr>
+        <tr><td>模型</td><td>语言 + 向量化</td><td>语言 + 向量化 + <strong>视觉（生图/生视频）+ 语音</strong></td></tr>
+        <tr><td>Harness</td><td>无</td><td>豆包搜索、Agent 记忆、CUA、AI Native 底座</td></tr>
+        <tr><td>档位</td><td>Lite ¥40 / Pro ¥200</td><td>Small ¥40 / Medium ¥200 / <strong>Large ¥500</strong> / Max ¥1000</td></tr>
+        <tr><td>计费</td><td>按调用次数</td><td>AFP 积分（Small 20,000 / Max 500,000）</td></tr>
+        <tr><td>视频生成</td><td>—</td><td><span class="no">仅 Large / Max</span></td></tr>
+        <tr><td>升降配</td><td>—</td><td><span class="no">仅升不降</span></td></tr>
+        <tr><td>API 直调</td><td><span class="no">禁止</span></td><td><span class="no">同样禁止</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid2">
+    <div class="mini">
+      <h4><span class="dot r"></span>它多给的，我们已有免费替代</h4>
+      <p>视觉 → Agnes <strong>$0/图、$0/秒</strong>；语音 → 本地 IndexTTS 克隆 + 免费 Edge TTS。<strong>为已有 $0 的能力付 ¥500/月，不合理。</strong></p>
+    </div>
+    <div class="mini">
+      <h4><span class="dot r"></span>就算买了也用不上</h4>
+      <p>Agent Plan <strong>同样禁止 API 调用</strong>。它的视觉模型只能在工具内手点，批量生图照样得走 Agnes。</p>
+    </div>
+    <div class="mini">
+      <h4><span class="dot r"></span>入门档是空壳</h4>
+      <p>Small ¥40 只有 20,000 AFP 且<strong>不支持视频</strong>；要视频必须 Large ¥500/月，是 Coding Plan 的 2.5 倍。</p>
+    </div>
+    <div class="mini">
+      <h4><span class="dot w"></span>仅升不降是单向门</h4>
+      <p>升上去就退不回 Coding Plan。想"试一下"，代价是锁死。重估条件只有一个：<strong>Agnes 涨价或停服。</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 比价 ============ -->
+<section id="s4">
+  <div class="sechead"><span class="num">04</span><h2>¥200 到底值不值：用数据判，别凭感觉</h2></div>
+
+  <p>DeepSeek V4.1-Flash 的官方价：闲时输入 ¥1/M、输出 ¥4/M；高峰翻倍；缓存命中 ¥0.02/M。按重度 Agent 用量折算，一个月大约 <strong>¥125</strong>。</p>
+
+  <div class="bars">
+    <div class="bar-row">
+      <div class="lbl">DeepSeek 重度</div>
+      <div class="bar-track"><div class="bar-fill dim" style="width:62%"></div></div>
+      <div class="val">¥125</div>
+    </div>
+    <div class="bar-row">
+      <div class="lbl">火山 Pro 原价</div>
+      <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+      <div class="val">¥200</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p><b>结论很反直觉：¥200 的 Pro 比重度用 DeepSeek 还贵 ¥75/月。</b></p>
+    <p>所以「订了 Coding Plan 就一定省钱」是错的。Pro 只有在实际用量<strong>远超 ¥200 等值</strong>时才划算——也就是长上下文反复读、批量反推、盲跑这类把 token 当水喝的场景。</p>
+  </div>
+
+  <h3>判定方法（这两个月边用边记）</h3>
+  <ul>
+    <li>每月到方舟控制台记一次额度用量，折算成 DeepSeek 等价成本</li>
+    <li>折算 <strong>&gt; ¥200/月</strong> → 第三月继续订 Pro</li>
+    <li>折算 <strong>&lt; ¥200/月</strong> → 第三月退订，回 DeepSeek 夜间批 + CodeBuddy/ZCode 免费额度</li>
+  </ul>
+  <p>别把 ¥49.9 当长期成本基准。那是前两个月的特价，第三季度开始真实成本是 ¥200。</p>
+</section>
+
+
+<div class="ad">
+  <span class="tag">合作推荐</span>
+  <h4>贞贞 API — 生图/生视频一站中转</h4>
+  <p>GPT Image 2.6 低价版 1K（支持 GIF）实测约 ¥0.044/张；Seedance 2.5、H3、Wan 3.0 也能调，OpenAI 兼容接口，改个 base_url 就能接进自己的工具。</p>
+  <div class="acts">
+    <a class="cta" href="https://api.seedance.nz/?s=TW7X" target="_blank" rel="noopener">去看贞贞 API</a>
+  </div>
+  <p class="note">含邀请链接，你下单我可能得到返佣，不影响你的价格。</p>
+</div>
+
+<!-- ============ 5 工作链 ============ -->
+<section id="s5">
+  <div class="sechead"><span class="num">05</span><h2>串成一条流水线：谁吃什么钱</h2></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>执行器</th><th>买单方</th><th>可用时段</th><th>适合什么</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Hermes</strong></td>
+          <td>火山 CP Pro / 硅基 / DeepSeek</td>
+          <td>全天</td>
+          <td>调度、判断、写文档、抓取、落盘</td>
+        </tr>
+        <tr>
+          <td><strong>Codex CLI</strong></td>
+          <td>火山 CP Pro（配 ark provider）/ ChatGPT 重置卡</td>
+          <td>全天</td>
+          <td>耗 token 的重活：盲跑、批量生成、代码</td>
+        </tr>
+        <tr>
+          <td><strong>CodeBuddy CLI</strong></td>
+          <td>CodeBuddy 积分（限免至 11/15）</td>
+          <td>全天，受积分限</td>
+          <td>中等任务、第二意见</td>
+        </tr>
+        <tr>
+          <td><strong>ZCode</strong></td>
+          <td>每日 3 亿 GLM-5.3-Flash</td>
+          <td><strong>23:00–9:00</strong></td>
+          <td>夜间零工（CLI 需 App 运行时，暂只能人肉）</td>
+        </tr>
+        <tr>
+          <td><strong>Copilot</strong></td>
+          <td>Individual 订阅额度</td>
+          <td>全天（按额度）</td>
+          <td><strong>不进自动化链</strong>：不能当 API；装官方 CLI 才是合法执行器</td>
+        </tr>
+        <tr>
+          <td><strong>DeepSeek 官方</strong></td>
+          <td>按量付费</td>
+          <td><strong>夜间 / 节假日</strong></td>
+          <td>脚本批处理、大批量文本处理</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>批量任务 ≠ ark key</h3>
+  <p>凡是"写个循环跑 N 条"的事，一律不许碰 Coding Plan 的 key。正确通道只有三条：</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>任务</th><th>正确通道</th></tr></thead>
+      <tbody>
+        <tr><td>批量文本处理、分类、归类</td><td>DeepSeek 官方（夜间半价）或 Hermes 对话内跑</td></tr>
+        <tr><td>批量反推盲跑</td><td><code>codex exec</code>（Codex 是官方支持客户端，合规）</td></tr>
+        <tr><td>大批量生图 / 视频</td><td>Agnes（$0）</td></tr>
+        <tr><td>语音克隆</td><td>本地 IndexTTS</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>前缀解决不了并发写</h3>
+  <p>给执行器加 <code>hermes_</code> / <code>codex_</code> / <code>zcode_</code> / <code>codebuddy_</code> 前缀，只能回答"这是谁干的"，<strong>不能防止两个进程同时写同一个文件</strong>。真正的护栏是这五条：</p>
+  <div class="grid2">
+    <div class="mini"><h4><span class="dot o"></span>run 独占目录</h4><p>每个任务一个 <code>任务总线/T-20261106-01/</code>，执行器只写自己的目录。</p></div>
+    <div class="mini"><h4><span class="dot o"></span>claim 租约</h4><p>用 <code>CreateNew</code> 独占创建 claim 文件，拿到才开工；抢不到直接退出，不重试。</p></div>
+    <div class="mini"><h4><span class="dot o"></span>manifest</h4><p>记 UTC 时间、CLI 版本、模型名、退出码、是否超时、产物 SHA256。</p></div>
+    <div class="mini"><h4><span class="dot o"></span>单写者台账</h4><p><code>_执行者.md</code> 每 run 一份；CSV 汇总只由 Hermes 一个人写。</p></div>
+  </div>
+
+  <h3>免费额度要设准入，别把窗口耗在排队上</h3>
+  <ul>
+    <li><strong>准入公式</strong>：预计时长 ≤（窗口结束 − 现在 − 提前停止接单时间）× 可用并发 × 0.7</li>
+    <li><strong>硬超时 + 杀整进程树</strong>（Windows 下 <code>taskkill /PID</code> 用单斜杠，MSYS 里 <code>//PID</code> 无效）</li>
+    <li><strong>熔断</strong>：失败率 &gt; 30% 或 p95 超阈值 → 停该执行器，任务转 Codex</li>
+    <li><strong>截止前停单</strong>，不赌"再跑一个"</li>
+  </ul>
+
+  <h3>ZCode 现在卡在哪</h3>
+  <p>本机跑的是<strong>正式安装版</strong> <code>G:\Zcode\ZCode.exe</code>（多进程 Electron），登录态在 <code>~/.zcode/</code>。<strong>CLI 入口是有的</strong>：</p>
+  <pre><span class="c">$ node G:/Zcode/resources/glm/zcode.cjs --help</span>
+zcode 0.17.1
+  -p, --prompt &lt;text&gt;     单次提问，不进 TUI
+  --mode build|edit|plan|yolo|guarded
+  --cwd &lt;path&gt;   --surface &lt;terminal|desktop&gt;
+  doctor · login [zai|bigmodel] · app-server · skills · plugins</pre>
+  <p>但<strong>裸跑 prompt 会失败</strong>：</p>
+  <pre><span class="c">$ node zcode.cjs -p "只回复两个字：正常" --mode plan</span>
+SdkError: Version negotiation failed:
+  the transport was closed during the server/discover probe
+<span class="c">// 日志真因：MCP server connection failed / Session runtime closed</span></pre>
+  <p>它默认挂 6–7 个 MCP（documents / pdf / presentations / spreadsheets / zcode-site / node_repl + image_search）。这些 server 需要 <strong>App 的会话运行时</strong>——由 App 自己拉起时 6/7 连上、63 个工具；脱离 App 就全挂。</p>
+  <div class="note">
+    <p><b>结论修正：不是"没有 CLI"，而是"CLI 存在，但被设计成由 App 拉起"。</b></p>
+    <p>要做自动化得走 <code>app-server</code> 协议（stdio），或等官方给独立 CLI 安装方式；现阶段只能当人肉工具用 TUI。另发现 <code>plugin:image-search</code> 报 <b>"coding plan is required"</b> —— 部分插件要付费套餐才给用。</p>
+  </div>
+
+  <h3>再往下挖：app-server 协议已打通 80%</h3>
+  <p><code>tui</code> 子命令这版没打包（<code>Cannot find package '@zcode/tui'</code>），但 <code>app-server</code> 能起来，吃的是自定义行分隔 JSON（<strong>不是标准 JSON-RPC</strong>，带 <code>jsonrpc</code> 字段直接被拒）。实测已经达成：</p>
+  <pre><span class="c">// 客户端必须应答服务端的请求，否则卡在 starting</span>
+[REQ]  session/requestRuntimePreferences  → {"nativeSearchEnhancementsEnabled": true}
+[STATE] ready
+[SID]  sess_c5319eb4-...
+[process/mcpTelemetry] configuredCount 6, connectedCount 6, <span class="g">failedCount 0</span>
+[SEND] session/send {"sessionId":"sess_...","content":"只回复两个字：正常"}
+[turn.started] → <span class="c">[turn-failed]</span>   <span class="c">// "model": {"available": []}</span></pre>
+  <p>会话能建、MCP 6/6 全连、prompt 能投递。卡在最后一步：<strong>模型注册表为空</strong>。</p>
+  <pre><span class="c">// 指定模型后报的错</span>
+Provider Registry 中不存在 Model: bigmodel/glm-5.3-flash</pre>
+  <p>根因：注册表由 App 启动时注入（OAuth 凭据换来的模型清单），CLI 侧没走这条注入。三步待试：① providerId 换成 <code>coding-plan:builtin:bigmodel-coding-plan</code>；② 补 requestRuntimePreferences 的白名单键；③ 抓 App 注入的参数。</p>
+  <div class="note danger">
+    <p><b>不要为了绕过去让脚本直调 api.z.ai</b> —— 那是订阅额度外调，属封号风险。协议没打通之前，ZCode 只算"人肉夜间工具"，不进自动调度。</p>
+  </div>
+</section>
+
+<!-- ============ 6 Copilot ============ -->
+<section id="s6-copilot">
+  <div class="sechead"><span class="num">06</span><h2>Copilot 那张卡片：订阅有效，但不能当 API</h2></div>
+
+  <p>你在 CC Switch 面板里看到的 Copilot，是你 GitHub 账号 <code>laoxuaichirou</code> 名下的 <strong>GitHub Copilot 个人版（Individual）</strong>：</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>项</th><th>读数（2026-11-06）</th></tr></thead>
+      <tbody>
+        <tr><td>套餐</td><td>Individual</td></tr>
+        <tr><td>Chat</td><td>剩余 100%，重置 24 天 16 小时（12/1 08:00）</td></tr>
+        <tr><td>Completions</td><td>剩余 100%，同上</td></tr>
+        <tr><td>计费</td><td>token-based</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note danger">
+    <p><b>能不能像火山 / DeepSeek 那样接进 Hermes？不能。</b></p>
+    <p>Copilot 没有官方 OpenAI / Anthropic 兼容端点，只有 GitHub 自家客户端的授权通道。拿它的 token 去接第三方工具或自建代理 = 违反 GitHub 条款，<strong>和"火山订阅 key 拿去 curl"是同一条红线</strong>。所以别切主 provider，也别让 CC Switch 把它当 Codex/Hermes 的上游。</p>
+  </div>
+
+  <p><strong>合规用法只有一种</strong>：GitHub 官方 <strong>Copilot CLI</strong>。本机已装好并跑通版本查询：</p>
+  <pre><span class="c">$ npm i -g @github/copilot</span>
+<span class="c">// 失败：AppData\Local\copilot 是 junction → 指向 Codex 的 MSIX 缓存（跨卷）→ EXDEV</span>
+<span class="c">$ winget install GitHub.Copilot</span>
+<span class="g">✓ MSI v1.0.106 → %LOCALAPPDATA%\GitHubCopilotCLI\copilot.exe</span>
+<span class="c">$ copilot --version</span>
+<span class="g">GitHub Copilot CLI 1.0.106.</span></pre>
+  <p>绕坑的关键是 <code>COPILOT_PKG_CACHE_HOME</code>（它要往那个 junction 里解包，跨卷必然失败），<strong>已写入你的用户环境变量</strong>指向 <code>G:\AIcoding\copilot-pkg</code>。</p>
+  <p>登录只能走 device flow：<strong>经典 PAT（ghp_）被明确拒绝</strong>，提示 <code>Classic Personal Access Tokens are not supported by Copilot</code>；fine-grained PAT 需要勾 "Copilot Requests" 权限。</p>
+
+  <h3>给它分配什么活（杂活专用）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>接</th><th>不接</th></tr></thead>
+      <tbody>
+        <tr><td>批量文件改名 / 归档 / 去重清单</td><td>需要长上下文推理的大活</td></tr>
+        <tr><td>代码 lint、格式化、死链检查</td><td>批量 LLM 生成（反推、盲跑、批量改写）</td></tr>
+        <tr><td>文档杂务：散落 md 汇总索引、补 front-matter</td><td>任何碰凭证的活（<code>.env</code>、<code>E:\Coding\KEY\</code>）</td></tr>
+        <tr><td>提交信息 / 变更摘要生成</td><td>拿它当 API 给脚本调用（违规）</td></tr>
+        <tr><td>一次性小脚本、小工具修补</td><td>替代 Hermes 做判断与调度</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>路由规则</strong>：单文件 / 短任务 / 有明确验收标准 / 纯机械 → Copilot CLI；要长上下文、跨文件推理、烧大 token → Hermes 或 Codex。</p>
+
+  <h3>顺便：Codex 的"已过期"不是订阅失效</h3>
+  <p>界面显示 Codex「已过期」，实际是 <strong>ChatGPT 周额度用完，5 天后自动恢复</strong>。订阅没断，别为这个去重订。</p>
+  <p>影响的只是这 5 天的路由：耗 token 的重活暂时只能给 CodeBuddy CLI（限免期）、火山 CP（等 key）、或 DeepSeek 夜间（花钱）。</p>
+
+  <div class="note">
+    <p><b>安全提醒</b>：<code>~/.cc-switch/copilot_auth.json</code> 里存着你的 GitHub token（40 位）。这个文件不要外发、不要打进任何分享包。</p>
+  </div>
+</section>
+
+<!-- ============ 6 红线 ============ -->
+<section id="s6">
+  <div class="sechead"><span class="num">07</span><h2>五条会封号或白花钱的红线</h2></div>
+
+  <div class="redlines">
+    <div class="redline"><b>ark key 只许编程工具自己发请求</b>。Hermes、Codex、Claude Code、Cursor、Cline、OpenCode 是官方清单内的；curl、python requests、Postman、脚本循环一律判滥用。</div>
+    <div class="redline"><b>批量推理不吃订阅额度</b>。方舟 Batch Inference 是标准服务的 5 折后付费，另一条计费链路，别指望它省套餐钱。</div>
+    <div class="redline"><b>base_url 必须带 /coding</b>。写成 <code>/api/v3</code> 既不抵额度，还会额外出账单——花两份钱办一件事。</div>
+    <div class="redline"><b>超额后付费是手动开关</b>，默认关。额度耗尽时不会自动续，别以为是"用超了没事"。</div>
+    <div class="redline"><b>Agent Plan 仅升不降</b>。想"试一下"的代价是锁死档位，退不回 Coding Plan。</div>
+  </div>
+
+  <div class="note danger">
+    <p><b>最贵的一次错，可能就发生在一行 curl 上。</b>验证一个 key 通不通，看着无害，但它恰好是"非编程工具直调专属端点"的教科书样本。正确做法：让工具自己发一句话。</p>
+  </div>
+</section>
+
+<!-- ============ 7 实测 ============ -->
+<section id="s7">
+  <div class="sechead"><span class="num">08</span><h2>实测证据（可复核）</h2></div>
+
+  <p>CodeBuddy CLI 的探针，就是上文说的"让工具自己发"：</p>
+  <pre><span class="c">$ codebuddy -p "只回复两个字：正常" --output-format json</span>
+{
+  <span class="y">"result"</span>: <span class="g">"正常"</span>,
+  <span class="y">"total_cost_usd"</span>: 0,
+  <span class="y">"num_turns"</span>: 3,
+  <span class="y">"usage"</span>: {
+    <span class="y">"input_tokens"</span>: 25421,
+    <span class="y">"cache_read_input_tokens"</span>: 16832,
+    <span class="y">"output_tokens"</span>: 65
+  },
+  <span class="y">"permission_denials"</span>: []
+}</pre>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>事实</th><th>证据</th></tr></thead>
+      <tbody>
+        <tr><td>CodeBuddy CLI 可用</td><td><code>--version</code> → 2.180.0；<code>-p</code> 返回"正常"，2.9s，$0</td></tr>
+        <tr><td>登录态与 IDE 独立</td><td>未登录时报 <code>Authentication required. Please use /login</code></td></tr>
+        <tr><td>桌面 <code>buddycn</code> 是 IDE</td><td><code>--help</code> 输出 VS Code 参数（<code>--diff</code>/<code>--merge</code>/<code>--goto</code>）</td></tr>
+        <tr><td>ZCode 在跑</td><td><code>Get-Process</code> → <code>ZCode-3.10.2-win-x64</code> PID 84504</td></tr>
+        <tr><td>ZCode CLI 入口缺失</td><td>7z 列不出结构，<code>zcode.cjs</code> 未出现</td></tr>
+        <tr><td>WorkBuddy 2,000 的构成</td><td>页面：500 基础 + 0 购买 + 1,500 奖励；刷新 2026/12/01</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 模型轮换 ============ -->
+<section id="s9m">
+  <div class="sechead"><span class="num">09</span><h2>模型轮换：主力换成火山 + GLM 之后怎么排</h2></div>
+
+  <div class="note">
+    <p><b>现状（2026-11-06 19:00 实测）</b>：Codex 额度用尽（约 4–5 天恢复）、Kimi for Coding 同（约 4 天），两者配置不动；ZCode 的 Start Plan <b>今天被限额一次</b>，切到 GLM-5.3 继续，<b>GLM-5.3 没有视觉能力</b>，Flash 才有。所以当期主力 = <b>火山 + GLM</b>。</p>
+  </div>
+
+  <h3>三条硬事实（决定怎么排）</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>事实</th><th>内容</th><th>后果</th></tr></thead>
+    <tbody>
+      <tr><td>Hermes 是官方允许的客户端</td><td>智谱文档把 <b>Hermes Agent</b> 列进 GLM Coding Plan 支持工具（属"通用 Agent 工具"，次级调度、尽力交付）</td><td>Coding Plan 接 Hermes 合规，但<b>高负载会排队限流</b>，不能当唯一主力</td></tr>
+      <tr><td>端点必须对</td><td>GLM：<code>https://open.bigmodel.cn/api/coding/paas/v4</code>；火山：<code>https://ark.cn-beijing.volces.com/api/coding/v3</code></td><td>填成 <code>/api/v3</code> 或标准端点 = 不抵套餐额度、按量扣钱</td></tr>
+      <tr><td>非高峰窗口不同</td><td>智谱：除<b>工作日 14:00–18:00</b> 外全按 50% 积分抵扣；DeepSeek：除<b>工作日 9–12、14–18</b> 外半价，周末全天半价</td><td>同一件事放对时段，积分能用一倍</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>周末这张卡（真实存在）</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>项</th><th>读数</th></tr></thead>
+    <tbody>
+      <tr><td>活动</td><td>ZCODE WEEKEND BUILD（ZCode 官方，免费领）</td></tr>
+      <tr><td>额度</td><td><b>500,000,000 tokens</b>，GLM-5.3-Flash 专属</td></tr>
+      <tr><td>生效 / 到期</td><td>2026-11-06 23:00 生效 → <b>2026-11-09 09:00 到期</b>（过期清零）</td></tr>
+      <tr><td>范围</td><td>只在 ZCode 内使用；Hermes 吃的是 Coding Plan 积分，两者不互通</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><p>淘宝 ¥0.11 的"7 天优享体验卡"是<b>另一个产品</b>（5,000 积分 / 7 天 / 原价 ¥39.90），与 WEEKEND BUILD 的 5 亿不是一回事。Start Plan 生效期间天猫直充大概率失败。</p></div>
+
+  <h3>排法（待确认后配置）</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>层</th><th>走谁</th><th>适用</th></tr></thead>
+    <tbody>
+      <tr><td>L1 默认</td><td>GLM Coding Plan · <code>GLM-5.3</code></td><td>日常对话、写码小改、文本类批量；避开工作日 14–18</td></tr>
+      <tr><td>L2 重活</td><td>火山 Coding Plan · <code>deepseek-v4.1-flash</code> / <code>glm-5.3-flash</code></td><td>长上下文、批量、GLM 被限流时接管</td></tr>
+      <tr><td>L3 兜底</td><td>DeepSeek 官方 <code>ds4</code></td><td>前两层都失败才用；真金白银，尽量排非高峰</td></tr>
+      <tr><td>视觉链</td><td><code>GLM-5.3-Flash</code> → 硅基 GLM-4.5V / Qwen3-VL</td><td>任何看图任务；<b>GLM-5.3 无视觉，别用它看图</b></td></tr>
+      <tr><td>恢复后</td><td>Codex（4–5 天）、Kimi（约 4 天）</td><td>配置不删，先放链尾，恢复后可直接启用</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ 8 待办 ============ -->
+<section id="s8">
+  <div class="sechead"><span class="num">10</span><h2>还没做完的九件事</h2></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>事项</th><th>状态</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>火山 key 已在本机（<code>VOLC_ARK_API_KEY</code>），接入时端点必须是 <code>/api/coding/v3</code>；Hermes 内发一句话验证</td><td><span class="tag orange">待接入</span></td></tr>
+        <tr><td>2</td><td>11/7 去控制台锁次月 ¥49.9</td><td><span class="tag orange">已设闹钟</span></td></tr>
+        <tr><td>3</td><td>核对 CodeBuddy CLI 是否扣积分</td><td><span class="tag orange">待做</span></td></tr>
+        <tr><td>4</td><td>ZCode 周末额度：WEEKEND BUILD 5 亿 Flash 已领取，11/6 23:00 生效、11/9 09:00 到期</td><td><span class="tag ok">已领取</span></td></tr><tr><td>4b</td><td>模型轮换配置（新增 glm-coding provider + volc-coding 端点 + 视觉链）</td><td><span class="tag orange">待你确认</span></td></tr>
+        <tr><td>5</td><td>ZCode CLI 入口（换正式版 or 当人肉零工）</td><td><span class="tag red">未定</span></td></tr>
+        <tr><td>6</td><td>每月记火山额度用量，折算 DeepSeek 等价成本</td><td><span class="tag red">待建台账</span></td></tr>
+        <tr><td>7</td><td>第三月 ¥200 是否续订（&gt; ¥200 才续）</td><td><span class="tag red">未到期</span></td></tr>
+        <tr><td>8</td><td>加入 BuddyOne 关联产品（要积分互通才需要）</td><td><span class="tag red">未决策</span></td></tr>
+        <tr><td>9</td><td>要不要装 GitHub Copilot CLI 当第 5 执行器</td><td><span class="tag red">未决策</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<div class="ad">
+  <span class="tag">合作推荐</span>
+  <h4>RunningHub — 云端跑 ComfyUI，不占本地显卡</h4>
+  <p>国内站 runninghub.cn、国际站 runninghub.ai，同一套工作流两边都能跑，按次计费。</p>
+  <div class="acts">
+    <a class="cta" href="https://www.runninghub.cn/?inviteCode=cn-v1085" target="_blank" rel="noopener">国内站</a>
+    <a class="ghost" href="https://www.runninghub.ai/?inviteCode=rh-v1394" target="_blank" rel="noopener">国际站</a>
+  </div>
+  <p class="note">含邀请链接，你注册我可能得到返佣，不影响你的价格。</p>
+</div>
+
+<footer>
+  <p><strong>口径说明</strong>：文中「官方」指平台官方文档或官方 Agent 答复；「实测」指本机 2026-11-06 实际运行结果；「推断」指按规则推导、需人工确认的结论（已单独标注）。</p>
+  <p><strong>价格与额度会变</strong>：所有优惠、限免、积分规则都以平台当期页面为准，本文只记录 2026-11-06 这一天的口径。</p>
+  <p>整理：Hermes ｜ 2026-11-06</p>
+</footer>
+
+</div>
+<script>
+// 表格溢出时自动插入"可左右滑动"提示（仅当容器真的溢出）
+document.querySelectorAll('.table-wrap').forEach(function(w){
+  if (w.scrollWidth - w.clientWidth > 8) {
+    var h = document.createElement('span');
+    h.className = 'swipe-hint';
+    h.textContent = '↔ 表格可左右滑动查看完整内容';
+    w.parentNode.insertBefore(h, w);
+  }
+});
+</script>
+<style>
+.donate-strip{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:90;writing-mode:vertical-rl;padding:14px 8px;font-size:14px;letter-spacing:.2em;color:var(--accent);background:var(--card);border:1px solid var(--line-2);border-left:none;border-radius:0 10px 10px 0;cursor:pointer;transition:all .2s;user-select:none}
+.donate-strip:hover{color:var(--accent-2);padding-right:14px}
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-mask.show{opacity:1;pointer-events:auto}
+.modal-card{background:var(--card);border:1px solid var(--line-2);border-radius:16px;padding:28px 32px;text-align:center;max-width:340px;width:90%}
+.modal-title{font-size:17px;color:var(--accent-2);font-weight:600;margin-bottom:8px}
+.modal-desc{font-size:13px;color:var(--text-2);margin-bottom:16px;line-height:1.7}
+.modal-qr img{width:220px;height:220px;border-radius:10px;border:1px solid var(--line);display:block;margin:0 auto 16px}
+.modal-close{background:transparent;border:1px solid var(--line-2);color:var(--text-2);padding:8px 26px;border-radius:999px;cursor:pointer;font-size:13px}
+.modal-close:hover{color:var(--accent);border-color:var(--accent)}
+@media(max-width:700px){.donate-strip{display:none}}
+</style>
+<div class="donate-strip" id="donateBtn">打赏作者</div>
+<div class="modal-mask" id="donateModal">
+  <div class="modal-card">
+    <div class="modal-title">请作者喝杯咖啡</div>
+    <div class="modal-desc">如果你觉得本站对你有帮助，微信扫码支持一下，任意金额都是鼓励</div>
+    <div class="modal-qr"><img src="../wx-pay.jpg" alt="微信收款码"></div>
+    <button class="modal-close" id="donateClose">关闭</button>
+  </div>
+</div>
+<script>
+(function(){var b=document.getElementById('donateBtn'),m=document.getElementById('donateModal'),c=document.getElementById('donateClose');
+if(!b||!m)return;
+b.addEventListener('click',function(){m.classList.add('show')});
+c.addEventListener('click',function(){m.classList.remove('show')});
+m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('show')});
+})();
+</script>
+<script src="../site-shell.js?v=2"></script>
+</body>
+</html>

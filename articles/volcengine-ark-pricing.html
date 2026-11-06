@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>火山方舟按量价格速查｜文本 · 生图 · 生视频（2026-11）</title>
+<meta name="description" content="火山方舟 2026-11 官方价格整理：DeepSeek V4.1 Flash 经济档/标准档、GLM-5.3 Flash、Kimi K3.1 Pro、豆包 Seed 2.1 系列文本价，Seedream 5.0 生图价，Seedance 2.5/2.0 生视频价，附实测成本与选型建议。">
+<style>
+:root{
+  --bg:#0b0d10;--bg-2:#11151a;--card:#161b22;--card-2:#1b2129;
+  --line:#252d38;--line-2:#323c4a;
+  --text:#e8edf3;--text-2:#a7b3c2;--text-3:#6f7d8e;
+  --accent:#ff7a18;--accent-2:#ffb066;--ok:#2ee6a8;--bad:#ff4d5e;--warn:#ffc53d;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(900px 520px at 82% -8%, rgba(255,122,24,.13), transparent 62%),
+    radial-gradient(760px 460px at 8% 4%, rgba(46,230,168,.07), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:17px;line-height:1.85;-webkit-font-smoothing:antialiased;padding:0 20px 100px;
+}
+.wrap{max-width:940px;margin:0 auto}
+.hero{padding:72px 0 44px;border-bottom:1px solid var(--line)}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent-2);font-weight:600;margin-bottom:22px}
+.kicker::before{content:"";width:26px;height:2px;background:linear-gradient(90deg,var(--accent),transparent)}
+h1{font-size:clamp(30px,4.6vw,46px);line-height:1.25;font-weight:800;letter-spacing:-.02em;margin-bottom:20px}
+h1 em{font-style:normal;background:linear-gradient(100deg,var(--accent) 0%,var(--accent-2) 55%,#fff 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lede{font-size:19px;color:var(--text-2);max-width:720px;margin-bottom:26px}
+.meta{display:flex;flex-wrap:wrap;gap:10px}
+.pill{font-size:13px;color:var(--text-2);border:1px solid var(--line-2);border-radius:999px;padding:4px 12px;background:var(--card)}
+.pill b{color:var(--accent-2);font-weight:600}
+section{padding:52px 0;border-bottom:1px solid var(--line)}
+.sechead{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
+.num{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.1em}
+h2{font-size:clamp(22px,3vw,30px);font-weight:750;letter-spacing:-.01em;line-height:1.35}
+h3{font-size:19px;margin:26px 0 10px;font-weight:700}
+p{margin-bottom:14px;color:var(--text-2)}
+p strong,li strong{color:var(--text);font-weight:650}
+ul,ol{margin:0 0 16px 22px;color:var(--text-2)}
+li{margin-bottom:8px}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card);margin:18px 0}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:560px}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line)}
+th{background:var(--card-2);color:var(--text);font-weight:650;font-size:14px;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.num,th.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.best{color:var(--ok);font-weight:650}
+.hot{color:var(--accent-2);font-weight:650}
+.muted{color:var(--text-3);font-size:14px}
+.card{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:22px 24px;margin:18px 0}
+.card h4{font-size:17px;margin-bottom:10px}
+.callout{border-left:3px solid var(--accent);background:linear-gradient(90deg,rgba(255,122,24,.08),transparent 70%);
+  border-radius:0 12px 12px 0;padding:16px 20px;margin:20px 0}
+.callout.warn{border-left-color:var(--warn);background:linear-gradient(90deg,rgba(255,197,61,.08),transparent 70%)}
+.callout.ok{border-left-color:var(--ok);background:linear-gradient(90deg,rgba(46,230,168,.08),transparent 70%)}
+.callout p:last-child{margin-bottom:0}
+code{font-family:var(--mono);font-size:.92em;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:6px;color:var(--accent-2)}
+pre{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow-x:auto;margin:16px 0}
+pre code{background:none;padding:0;color:var(--text-2);font-size:13.5px;line-height:1.7}
+.ad{border:1px solid var(--line-2);border-radius:16px;background:
+  linear-gradient(135deg,rgba(255,122,24,.07),rgba(46,230,168,.05)),var(--card);padding:20px 22px;margin:34px 0}
+.ad .tag{display:inline-block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-3);border:1px solid var(--line-2);border-radius:999px;padding:2px 10px;margin-bottom:12px}
+.ad h4{font-size:18px;margin-bottom:8px;color:var(--text)}
+.ad p{font-size:15px;color:var(--text-2);margin-bottom:12px}
+.ad .acts{display:flex;flex-wrap:wrap;gap:10px}
+.ad a.cta{display:inline-block;font-size:14px;font-weight:600;text-decoration:none;color:#0b0d10;
+  background:linear-gradient(100deg,var(--accent),var(--accent-2));padding:9px 18px;border-radius:10px}
+.ad a.ghost{display:inline-block;font-size:14px;text-decoration:none;color:var(--accent-2);
+  border:1px solid var(--line-2);padding:9px 18px;border-radius:10px}
+.ad .note{font-size:12px;color:var(--text-3);margin-top:10px;margin-bottom:0}
+footer{padding:40px 0 0;color:var(--text-3);font-size:14px}
+footer p{margin-bottom:10px;color:var(--text-3)}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.toc a{font-size:13px;color:var(--text-2);text-decoration:none;border:1px solid var(--line-2);
+  border-radius:999px;padding:4px 12px;background:var(--card)}
+.toc a:hover{border-color:var(--accent);color:var(--accent-2)}
+</style>
+<link rel="stylesheet" href="../site-design.css?v=2">
+<style id="site-article-palette">
+/* 本页自带暗色橙系调色板：在共享壳之后重新钉住，避免被站点主题令牌覆盖 */
+body.ds-enhanced{
+  --bg:#0b0d10;--bg-2:#11151a;--card:#161b22;--card-2:#1b2129;
+  --line:#252d38;--line-2:#323c4a;
+  --text:#e8edf3;--text-2:#a7b3c2;--text-3:#6f7d8e;
+  --accent:#ff7a18;--accent-2:#ffb066;
+  background:
+    radial-gradient(900px 520px at 82% -8%, rgba(255,122,24,.13), transparent 62%),
+    radial-gradient(760px 460px at 8% 4%, rgba(46,230,168,.07), transparent 60%),
+    #0b0d10 !important;
+  color:#e8edf3;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  line-height:1.85;
+  padding:92px 20px 100px;
+}
+body.ds-enhanced::before,body.ds-enhanced::after{display:none !important}
+body.ds-enhanced .hero{padding-top:26px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Price Sheet · 2026-11-06</div>
+  <h1>火山方舟价格速查：<em>文本贵不贵，视频才是真花钱</em></h1>
+  <p class="lede">把火山方舟这一轮的按量价目拆成三张表——文本、生图、生视频，全部换算成「一次真实任务要花多少钱」。价格为官方价格页 2026-11-05 版本，实测数据来自本机 2026-11-06 实际调用。</p>
+  <div class="meta">
+    <span class="pill">口径 <b>官方价目 + 本机实测</b></span>
+    <span class="pill">模型 <b>12 个逐个探活</b></span>
+    <span class="pill">成本 <b>按元/百万 token 与元/张、元/秒</b></span>
+  </div>
+  <nav class="toc">
+    <a href="#s0">一页结论</a>
+    <a href="#s1">文本模型</a>
+    <a href="#s2">生图</a>
+    <a href="#s3">生视频</a>
+    <a href="#s4">实测</a>
+    <a href="#s5">场景成本</a>
+    <a href="#s6">选型</a>
+    <a href="#s7">接进 Hermes</a>
+  </nav>
+</header>
+
+<section id="s0">
+  <div class="sechead"><span class="num">00</span><h2>一页结论</h2></div>
+  <div class="callout ok">
+    <p><strong>文本单价是这批里最低的。</strong>DeepSeek V4.1 Flash 经济档闲时输入 ¥0.80/百万、输出 ¥3.20/百万，缓存命中低到 ¥0.016/百万。一轮 3.5 万上下文 + 500 输出的对话，靠缓存大约 <strong>¥0.002</strong>。</p>
+  </div>
+  <div class="callout">
+    <p><strong>生图要看跟谁比。</strong>Seedream 5.0 Flash ¥0.12/张、Pro（≤261 万像素）¥0.30/张；同价位的中转渠道还有更低的——本机昨天实测 GPT Image 2.6 低价版 1K（支持 GIF）约 ¥0.044/张。量小无所谓，长期批量出图这张差价会累积，别只看一家。</p>
+  </div>
+  <div class="callout warn">
+    <p><strong>视频是唯一需要算账的。</strong>Seedance 2.5 720p 约 ¥1.51/秒，一条 15 秒 ≈ ¥22.6；1080p 约 ¥3.74/秒，一条 30 秒 ≈ ¥112。同样需求用 Seedance 2.0-mini 720p（¥0.50/秒）只要 ¥7.5。</p>
+  </div>
+  <p class="muted">高峰时段加价一倍：周一至周五 09:00–12:00、14:00–18:00（北京时间）。其余时间全按闲时算，把批量任务排在晚上，等于直接五折。</p>
+  <div class="callout">
+    <p><strong>本文所有官方单价都只能当「标准参考线」。</strong>官方按量适合测一条、偶尔用；长期成批出片换成云端包月，同一模型同一分辨率能低到 1/8（详见生视频章节的折算表）。判断依据不是单价，是你一个月到底要出多少秒。</p>
+  </div>
+</section>
+
+<section id="s1">
+  <div class="sechead"><span class="num">01</span><h2>文本模型：元 / 百万 token</h2></div>
+  <p>下表为在线推理（常规档）。同一个模型在闲时和高峰是两个价，缓存命中的价格往往只有输入价的几十分之一——所以「上下文反复读」这类场景，缓存才是真正决定成本的东西。</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>模型</th><th class="num">入力（闲时）</th><th class="num">入力（高峰）</th><th class="num">缓存命中</th><th class="num">出力</th></tr></thead>
+    <tbody>
+      <tr><td><strong>DeepSeek V4.1 Flash 经济档</strong><div class="muted">deepseek-v4-1-flash-economy</div></td><td class="num best">0.80</td><td class="num">1.60</td><td class="num best">0.016</td><td class="num best">3.20</td></tr>
+      <tr><td>DeepSeek V4.1 Flash 标准档<div class="muted">deepseek-v4-1-flash</div></td><td class="num">1.00</td><td class="num">2.00</td><td class="num">0.02</td><td class="num">4.00</td></tr>
+      <tr><td>GLM-5.3 Flash<div class="muted">glm-5.3-flash</div></td><td class="num">0.80</td><td class="num">同价</td><td class="num">0.23</td><td class="num">2.80</td></tr>
+      <tr><td>豆包 Seed 2.1 Lite<div class="muted">doubao-seed-2.1-lite</div></td><td class="num">0.80</td><td class="num">同价</td><td class="num">0.16</td><td class="num">2.70</td></tr>
+      <tr><td>豆包 Seed 2.0 Mini（≤32K）<div class="muted">doubao-seed-2.0-mini</div></td><td class="num">0.20</td><td class="num">同价</td><td class="num">0.04</td><td class="num">2.00</td></tr>
+      <tr><td>豆包 Seed 2.0 Mini（32K–128K）</td><td class="num">0.40</td><td class="num">同价</td><td class="num">0.08</td><td class="num">4.00</td></tr>
+      <tr><td>豆包 Seed 2.0 Mini（128K–256K）</td><td class="num">0.80</td><td class="num">同价</td><td class="num">0.16</td><td class="num">8.00</td></tr>
+      <tr><td>豆包 Seed 2.1 Turbo（≤256K）</td><td class="num">3.00</td><td class="num">同价</td><td class="num">0.60</td><td class="num">15.00</td></tr>
+      <tr><td>豆包 Seed 2.1 Pro</td><td class="num">6.00</td><td class="num">同价</td><td class="num">1.20</td><td class="num">30.00</td></tr>
+      <tr><td>GLM-5.2</td><td class="num">8.00</td><td class="num">同价</td><td class="num">2.00</td><td class="num">28.00</td></tr>
+      <tr><td>DeepSeek V4 Pro</td><td class="num">9.00</td><td class="num">同价</td><td class="num">0.30</td><td class="num">27.00</td></tr>
+      <tr><td><strong>Kimi K3.1 Pro</strong><div class="muted">kimi-k3.1-pro</div></td><td class="num hot">13.00</td><td class="num">同价</td><td class="num">1.30</td><td class="num hot">68.00</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="muted">单位：元/百万 token。豆包 Seed 2.1 Lite 另支持音频输入 ¥12.00/百万；缓存存储费 ¥0.017/百万 token/小时，量级可忽略。低优推理（在线推理低优档）约为常规档 50%。</p>
+
+  <div class="card">
+    <h4>看着便宜其实更贵的情况</h4>
+    <p>GLM-5.3 Flash 输出（¥2.80）比 DeepSeek 经济档（¥3.20）便宜 12%，但它的缓存命中价是 <strong>¥0.23 对 ¥0.016</strong>——差 14 倍。凡是「长上下文反复对话」的用法，DeepSeek 经济档反而更省；只有短对话、输出量大时才轮到 GLM 占优。</p>
+  </div>
+</section>
+
+<div class="ad">
+  <span class="tag">合作推荐</span>
+  <h4>贞贞 API — 生图/生视频一站中转，单张低到几分钱</h4>
+  <p>接口稳定、价格划算：GPT Image 2.6 低价版 1K（支持 GIF 输出）实测约 ¥0.044/张；Seedance 2.5、H3、Wan 3.0 也能调。OpenAI 兼容接口，改个 base_url 就能接进自己的工具。</p>
+  <div class="acts">
+    <a class="cta" href="https://api.seedance.nz/?s=TW7X" target="_blank" rel="noopener">去看贞贞 API</a>
+  </div>
+  <p class="note">含邀请链接，你下单我可能得到返佣，不影响你的价格。</p>
+</div>
+
+<section id="s2">
+  <div class="sechead"><span class="num">02</span><h2>生图：元 / 张</h2></div>
+  <p>Seedream 系列按张计费，输入图基本免费（Pro 首张免费、第 2 张起 ¥0.02），所以「图生图」的成本几乎只取决于出图数量和像素档。</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>模型</th><th class="num">输入图</th><th class="num">输出图</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Seedream 5.0 Flash</strong></td><td class="num best">免费</td><td class="num best">0.12</td><td>本表内最便宜的一档</td></tr>
+      <tr><td>Seedream 5.0 Lite</td><td class="num">免费</td><td class="num">0.22</td><td></td></tr>
+      <tr><td>Seedream 5.0 Pro</td><td class="num">首张免费，第 2 张起 0.02</td><td class="num">0.30 / 0.60</td><td>≤261 万像素 ¥0.30；&gt;261 万像素 ¥0.60</td></tr>
+      <tr><td>Seedream 5.0 Pro（图层拆分）</td><td class="num">同上</td><td class="num">0.15 / 0.30</td><td>按每个图层所在像素档计费</td></tr>
+      <tr><td>Seedream 4.5</td><td class="num">免费</td><td class="num">0.25</td><td></td></tr>
+      <tr><td>Seedream 4.0</td><td class="num">免费</td><td class="num">0.20</td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="muted">因审核失败未出的图不计费。计费公式：单次请求 = Σ（输入图 × 输入单价）+ Σ（输出图 × 对应像素档单价）。</p>
+  <div class="callout">
+    <p><strong>一句实话：火山不是出图最便宜的。</strong>Seedream 5.0 Flash ¥0.12/张 在中低价位，但不等于地板价。本机 2026-11-05 实测 GPT Image 2.6 低价版（1K，支持 GIF 输出）约 <strong>¥0.044/张</strong>，同样的 10 张图是 ¥0.44 对 ¥1.2。差别在日常批量任务上会累积成真金白银——所以「顺手用火山」和「特意去比价」是两件事，长期出图建议两家都留着，按任务量选。</p>
+  </div>
+</section>
+
+<section id="s3">
+  <div class="sechead"><span class="num">03</span><h2>生视频：按秒，分辨率决定一切</h2></div>
+  <h3>Seedance 2.5 · 输入不含视频</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>分辨率</th><th class="num">5 秒一条</th><th class="num">每秒</th><th class="num">15 秒</th><th class="num">30 秒</th></tr></thead>
+    <tbody>
+      <tr><td>480p</td><td class="num">3.36</td><td class="num">0.67</td><td class="num">10.05</td><td class="num">20.10</td></tr>
+      <tr><td>720p</td><td class="num">7.56</td><td class="num">1.51</td><td class="num">22.65</td><td class="num">45.30</td></tr>
+      <tr><td>1080p</td><td class="num hot">18.71</td><td class="num hot">3.74</td><td class="num hot">56.10</td><td class="num hot">112.20</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h3>Seedance 2.5 · 输入包含视频（改视频 / 续写，输出 5 秒）</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>分辨率</th><th class="num">输入 2–4 秒</th><th class="num">输入 30 秒</th></tr></thead>
+    <tbody>
+      <tr><td>480p</td><td class="num">3.63</td><td class="num">14.12</td></tr>
+      <tr><td>720p</td><td class="num">8.16</td><td class="num">31.75</td></tr>
+      <tr><td>1080p</td><td class="num">20.12</td><td class="num">78.25</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h3>老版本更便宜（Seedance 2.0 系列，5 秒）</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>分辨率</th><th class="num">2.0</th><th class="num">2.0-fast</th><th class="num">2.0-mini</th></tr></thead>
+    <tbody>
+      <tr><td>480p</td><td class="num">2.31（0.46/s）</td><td class="num">1.86（0.37/s）</td><td class="num best">1.16（0.23/s）</td></tr>
+      <tr><td>720p</td><td class="num">4.97（0.99/s）</td><td class="num">4.00（0.80/s）</td><td class="num best">2.48（0.50/s）</td></tr>
+      <tr><td>1080p</td><td class="num">12.39（2.48/s）</td><td class="num">不支持</td><td class="num">不支持</td></tr>
+      <tr><td>4K</td><td class="num">25.27（5.05/s）</td><td class="num">不支持</td><td class="num">不支持</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout warn">
+    <p><strong>输入含视频时有「最低 token 用量」限制</strong>：估算用量低于下限就按下限收钱。准确金额以 API 返回的 <code>usage.completion_tokens</code> 为准，别自己拿秒数乘单价当定论。</p>
+  </div>
+
+  <!-- ===== 活动区块 开始：双十一 · 2026-11-15 到期（换活动只改这一段）===== -->
+  <h3>但官方价只是「标准参考线」，不是长期出片的最优解</h3>
+  <p>上面这套是按量后付费的单价，适合「偶尔测一条」。真正长期出视频的人，走云端包月渠道的单位成本能压到官方的几分之一——同一张 Seedance 2.5、同样 720P，包月档折后价如下（2026 双十一活动，<strong>2026-11-15 到期</strong>）：</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>档位</th><th class="num">活动价</th><th class="num">原价</th><th class="num">Seedance 2.5 · 720P</th><th class="num">对比官方 ¥1.51/s</th><th class="num">回本需出片</th></tr></thead>
+    <tbody>
+      <tr><td>优享版</td><td class="num">3,399</td><td class="num">7,499</td><td class="num">¥0.733/s</td><td class="num">约 1/2</td><td class="num">≈ 73 分钟</td></tr>
+      <tr><td>进阶版</td><td class="num">5,899</td><td class="num">14,999</td><td class="num">¥0.641/s</td><td class="num">约 1/2.4</td><td class="num">≈ 113 分钟</td></tr>
+      <tr><td>创作版</td><td class="num">8,799</td><td class="num">25,999</td><td class="num">¥0.554/s</td><td class="num">约 1/2.7</td><td class="num">≈ 153 分钟</td></tr>
+      <tr><td>超能版</td><td class="num">9,999</td><td class="num">33,999</td><td class="num">¥0.492/s</td><td class="num">约 1/3</td><td class="num">≈ 164 分钟</td></tr>
+      <tr><td><strong>超能版 Plus</strong></td><td class="num">16,999</td><td class="num">59,999</td><td class="num best">¥0.18/s（有参）</td><td class="num best">约 1/8.4</td><td class="num">≈ 213 分钟</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="muted">另有折上立减 ¥300–3,000（随档位），实际到手更低于表内活动价；「有参」指带参考素材（视频/参考图）的模式。回本时长按「包月价 ÷（官方秒价 − 包月秒价）」折算，只算与官方按量相比省下的差额，不含其他消耗。</p>
+  <div class="ad">
+    <span class="tag">合作推荐 · 双十一</span>
+    <h4>RunningHub 包月 — 同一张 Seedance 2.5，720P 低至 ¥0.18/秒</h4>
+    <p>五档包月（¥3,399 起），2.5 720P 折后 ¥0.733 一直到 ¥0.18/秒（Plus 档·有参），另有折上立减 ¥300–3,000。<strong>活动 2026-11-15 到期</strong>，到期恢复原价。</p>
+    <div class="acts">
+  <a class="cta" href="https://www.runninghub.cn/?inviteCode=cn-v1085" target="_blank" rel="noopener">国内站 runninghub.cn</a>
+  <a class="ghost" href="https://www.runninghub.ai/?inviteCode=rh-v1394" target="_blank" rel="noopener">国际站 runninghub.ai</a>
+    </div>
+    <p class="note">含邀请链接，你注册我可能得到返佣，不影响你的价格；档位价格以站内当期页面为准。</p>
+  </div>
+
+  <!-- ===== 活动区块 结束 ===== -->
+
+  <div class="callout">
+    <p><strong>怎么选：</strong>偶尔出一条、要先试效果 → 走官方按量（Seedance 2.0-mini 720P ¥0.50/s 最省，或 2.5 的 480p ¥0.67/s）；<strong>长期、成批出片</strong> → 包月云端渠道，一分钟 720P 从 ¥90.6 降到 ¥10.8 起（Plus 档），出一部十分钟的成片就够回本。</p>
+  </div>
+</section>
+
+<section id="s4">
+  <div class="sechead"><span class="num">04</span><h2>本机实测：视觉能力与真实账单</h2></div>
+  <p><strong>测试方法</strong>：拿一张黑金风格的教程封面（含四行中文标题和①②③④序号），先由人眼确定标准答案，再让 <code>deepseek-v4-1-flash-economy</code> 盲测，逐字比对。</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>项目</th><th>结果</th></tr></thead>
+    <tbody>
+      <tr><td>四行中文标题逐字识别</td><td class="best">✅ 全对，含 ①②③④ 序号</td></tr>
+      <tr><td>构图判断（左线稿猫 / 右真实猫照片）</td><td class="best">✅ 正确区分</td></tr>
+      <tr><td>配色描述（黑底 / 亮黄主标 / 白色副标）</td><td class="best">✅ 正确</td></tr>
+      <tr><td>耗时</td><td>34.5 秒（含 706 个推理 token）</td></tr>
+      <tr><td>本次账单</td><td class="best">≈ ¥0.0032</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout warn">
+    <p><strong>踩过的坑：推理模型的 max_tokens 必须给足。</strong>这个模型是推理模型，简单 OCR 也要吃掉约 700 个 reasoning token。把 <code>max_tokens</code> 设成 600 的时候，输出 <code>content</code> 会是空字符串，token 全记在 reasoning 上——看着像「模型没反应」，其实是预算被推理吃完了。测视觉或短任务一律给到 2000 以上。</p>
+  </div>
+  <p class="muted">另外：火山方舟把这批模型挂上去，不等于你的账号能调用，还得在控制台逐个开通（开通本身免费，按量计费）。未开通时接口返回 <code>ModelNotOpen</code>；模型 id 写错返回 <code>InvalidEndpointOrModel.NotFound</code>。</p>
+</section>
+
+<section id="s5">
+  <div class="sechead"><span class="num">05</span><h2>换成真实任务要花多少钱</h2></div>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>任务</th><th>模型</th><th class="num">成本</th></tr></thead>
+    <tbody>
+      <tr><td>一轮对话（3.5 万上下文 + 500 输出，缓存命中）</td><td>DeepSeek V4.1 Flash 经济档</td><td class="num best">≈ ¥0.002</td></tr>
+      <tr><td>同上</td><td>GLM-5.3 Flash</td><td class="num">≈ ¥0.009</td></tr>
+      <tr><td>同上</td><td>豆包 Seed 2.1 Pro</td><td class="num">≈ ¥0.057</td></tr>
+      <tr><td>同上</td><td>Kimi K3.1 Pro</td><td class="num hot">≈ ¥0.080</td></tr>
+      <tr><td>10 张 2K 封面</td><td>Seedream 5.0 Flash</td><td class="num best">¥1.2</td></tr>
+      <tr><td>10 张 2K 封面</td><td>Seedream 5.0 Pro</td><td class="num">¥3.0</td></tr>
+      <tr><td>15 秒 720p 视频</td><td>Seedance 2.0-mini</td><td class="num best">¥7.5</td></tr>
+      <tr><td>15 秒 720p 视频</td><td>Seedance 2.5</td><td class="num">¥22.65</td></tr>
+      <tr><td>30 秒 1080p 视频</td><td>Seedance 2.0</td><td class="num">¥74.4</td></tr>
+      <tr><td>30 秒 1080p 视频</td><td>Seedance 2.5</td><td class="num hot">¥112.2</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="muted">文本类按闲时价，高峰时段翻倍；视频价不分时段。</p>
+</section>
+
+<section id="s6">
+  <div class="sechead"><span class="num">06</span><h2>怎么选：按用途配，不按价格配</h2></div>
+  <div class="card"><h4>日常干活 / 批量脚本 → DeepSeek V4.1 Flash 经济档</h4><p>便宜、带视觉（OCR 实测满分）、1M 上下文、缓存命中价 ¥0.016/百万，长上下文反复读的时候这一项直接决定成本高低。缺点：推理模型，输出预算要给足。</p></div>
+  <div class="card"><h4>更强的多模态判断 → 豆包 Seed 2.1 Pro</h4><p>视觉理解比 Flash 系稳，适合看图改图、版式检查这类不能出错的活。价格是经济档的 7–20 倍，别拿它跑批量。</p></div>
+  <div class="card"><h4>硬推理（写方案、审代码、长逻辑链）→ Kimi K3.1 Pro</h4><p>全表最贵（输出 ¥68/百万），一次复杂推理几分钱到几毛钱。当「关键时刻的手」，别当日常腿。</p></div>
+  <div class="card"><h4>超长文档低成本处理 → 豆包 Seed 2.0 Mini</h4><p>32K 内输入只要 ¥0.20/百万，是目前能拿到的最低档。分段读文档、批量抽取信息用它。</p></div>
+  <div class="card"><h4>出图 → 先比价，再决定用哪家</h4><p>Seedream 5.0 Flash ¥0.12/张属于中低价位，不是最便宜的那档。本机实测 GPT Image 2.6 低价版 1K（支持 GIF）约 ¥0.044/张，单张差价约 2.7 倍——批量出图时这个倍数很实在。需要精细控制和图层拆分时才上 Seedream Pro（¥0.30/张）。</p></div>
+  <div class="card"><h4>出视频 → 官方价当基准，长期走包月</h4><p>官方按量只用来「测一条、看效果」：草稿镜头用 Seedance 2.0-mini（720p ¥0.50/秒），定稿再上更高分辨率。真要长期出片就得换包月云端渠道——同样 Seedance 2.5 720P，官方 ¥1.51/秒，包月档折后 ¥0.733 到 ¥0.18/秒，差 2–8 倍。判断标准很简单：<strong>一个月出得够不够回本线那一两小时</strong>。</p></div>
+</section>
+
+<section id="s7">
+  <div class="sechead"><span class="num">07</span><h2>接进 Hermes / 自己工具的方式</h2></div>
+  <p>火山方舟是 OpenAI 兼容接口，标准按量 key 直接填即可：</p>
+  <pre><code>base_url: https://ark.cn-beijing.volces.com/api/v3
+api_key:  ark-xxxxxxxx           # 控制台「API Key 管理」创建
+model:    deepseek-v4-1-flash-economy-261017</code></pre>
+  <div class="callout">
+    <p><strong>一个必须知道的排障点</strong>：请求失败时，很多客户端会静默降级到备用模型，你看到的回答是备用模型给的，账单也记在备用模型上。所以验证「到底哪个模型在干活」，要看调用返回的 <code>model</code> / <code>provider</code> 字段，不能看模型自己说「我是谁」。</p>
+  </div>
+  <p class="muted">模型 id 带日期后缀（如 <code>-261017</code>），平台会下架旧 id——配置里留一条注释记下「当前在用的是哪个」，比事后猜便宜得多。</p>
+</section>
+
+<div class="ad">
+  <span class="tag">合作推荐</span>
+  <h4>两条路，按你的用法选</h4>
+  <p><strong>长期成批出视频 → RunningHub 包月</strong>：Seedance 2.5 720P 折后 ¥0.733 起、Plus 档低至 ¥0.18/秒，双十一活动 2026-11-15 到期。<br>
+  <strong>走 API 自己搭链路 → 贞贞 API</strong>：接口稳定、价格划算，GPT Image 2.6 低价版 1K 支持 GIF 约 ¥0.044/张，生图生视频一站搞定。</p>
+  <div class="acts">
+    <a class="cta" href="https://www.runninghub.cn/?inviteCode=cn-v1085" target="_blank" rel="noopener">RH 国内站</a>
+    <a class="ghost" href="https://www.runninghub.ai/?inviteCode=rh-v1394" target="_blank" rel="noopener">RH 国际站</a>
+    <a class="ghost" href="https://api.seedance.nz/?s=TW7X" target="_blank" rel="noopener">贞贞 API</a>
+  </div>
+  <p class="note">均含邀请链接，你注册/下单我可能得到返佣，不影响你的价格。</p>
+</div>
+  <p class="note">含邀请链接，你注册我可能得到返佣，不影响你的价格。</p>
+</div>
+
+<footer>
+  <p><strong>口径说明</strong>：价格为火山方舟官方价格页 2026-11-05 版本；「实测」指本机 2026-11-06 实际调用结果（含账单与耗时）。</p>
+  <p><strong>价格会变</strong>：模型 id 带日期后缀，平台会下架旧版本、也会调价。本文只记录 2026-11-06 这一天的口径，下单前请以控制台实时价格为准。</p>
+  <p>整理：Hermes ｜ 2026-11-06</p>
+</footer>
+
+</div>
+<style>
+.donate-strip{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:90;writing-mode:vertical-rl;padding:14px 8px;font-size:14px;letter-spacing:.2em;color:var(--accent);background:var(--card);border:1px solid var(--line-2);border-left:none;border-radius:0 10px 10px 0;cursor:pointer;transition:all .2s;user-select:none}
+.donate-strip:hover{color:var(--accent-2);padding-right:14px}
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-mask.show{opacity:1;pointer-events:auto}
+.modal-card{background:var(--card);border:1px solid var(--line-2);border-radius:16px;padding:28px 32px;text-align:center;max-width:340px;width:90%}
+.modal-title{font-size:17px;color:var(--accent-2);font-weight:600;margin-bottom:8px}
+.modal-desc{font-size:13px;color:var(--text-2);margin-bottom:16px;line-height:1.7}
+.modal-qr img{width:220px;height:220px;border-radius:10px;border:1px solid var(--line);display:block;margin:0 auto 16px}
+.modal-close{background:transparent;border:1px solid var(--line-2);color:var(--text-2);padding:8px 26px;border-radius:999px;cursor:pointer;font-size:13px}
+.modal-close:hover{color:var(--accent);border-color:var(--accent)}
+@media(max-width:700px){.donate-strip{display:none}}
+</style>
+<div class="donate-strip" id="donateBtn">打赏作者</div>
+<div class="modal-mask" id="donateModal">
+  <div class="modal-card">
+    <div class="modal-title">请作者喝杯咖啡</div>
+    <div class="modal-desc">如果你觉得本站对你有帮助，微信扫码支持一下，任意金额都是鼓励</div>
+    <div class="modal-qr"><img src="../wx-pay.jpg" alt="微信收款码"></div>
+    <button class="modal-close" id="donateClose">关闭</button>
+  </div>
+</div>
+<script>
+(function(){var b=document.getElementById('donateBtn'),m=document.getElementById('donateModal'),c=document.getElementById('donateClose');
+if(!b||!m)return;
+b.addEventListener('click',function(){m.classList.add('show')});
+c.addEventListener('click',function(){m.classList.remove('show')});
+m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('show')});
+})();
+</script>
+<script src="../site-shell.js?v=2"></script>
+</body>
+</html>

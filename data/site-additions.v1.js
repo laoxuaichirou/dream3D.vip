@@ -2,6 +2,34 @@
 /* 新条目使用真实主题分类；通过校验后再合并到下一版 docs.v*.js。 */
 const SITE_DOC_ADDITIONS = [
   {
+    t: "火山方舟 API 价格速查：文本、生图、生视频（2026-11 口径）",
+    file: "articles/volcengine-ark-pricing.html",
+    cat: "briefing",
+    date: "2026-11-06",
+    d: "火山方舟 2026-11 官方价目整理：文本十二档、Seedream 生图、Seedance 2.5 与 2.0 视频价，含本机实测成本、包月折算与选型建议"
+  },
+  {
+    t: "火山方舟 API 价格速查：文本、生图、生视频（2026-11 口径）",
+    file: "articles/volcengine-ark-pricing.html",
+    cat: "ai-video",
+    date: "2026-11-06",
+    d: "火山方舟 2026-11 官方价目整理：文本十二档、Seedream 生图、Seedance 2.5 与 2.0 视频价，含本机实测成本、包月折算与选型建议"
+  },
+  {
+    t: "AI 订阅怎么花钱才不亏：平台政策与多执行器工作链",
+    file: "articles/ai-subscription-workchain.html",
+    cat: "briefing",
+    date: "2026-11-06",
+    d: "四家平台套餐对比、免费额度的真实口径、五条封号红线与本机多执行器工作链，附实测证据与待办清单"
+  },
+  {
+    t: "AI 订阅怎么花钱才不亏：平台政策与多执行器工作链",
+    file: "articles/ai-subscription-workchain.html",
+    cat: "ai-coding",
+    date: "2026-11-06",
+    d: "四家平台套餐对比、免费额度的真实口径、五条封号红线与本机多执行器工作链，附实测证据与待办清单"
+  },
+  {
     t: "Hermes 配置优先级：先配什么，后配什么？",
     file: "articles/hermes-configuration-priorities.html",
     cat: "briefing",
