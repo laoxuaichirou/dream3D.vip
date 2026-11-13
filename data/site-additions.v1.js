@@ -1,6 +1,13 @@
 /* 站点增量条目：与版本化主数据分离，避免修改 data/docs.v*.js。 */
 /* 新条目使用真实主题分类；通过校验后再合并到下一版 docs.v*.js。 */
 const SITE_DOC_ADDITIONS = [
+  {
+    t: "RunningHub 改版后，会员这笔账怎么算？（2026-11 口径）",
+    file: "articles/runninghub-membership-2026.html",
+    cat: "runninghub",
+    date: "2026-11-13",
+    d: "Seedance 生成价没变、算力时价上涨；老钱包与 RH 币折积分；新旧会员套餐折扣与双十一加赠对比，附会员页核对截图"
+  },
 { t:"硅基流动模型比价与场景选择", file:"articles/siliconflow-pricing.html", cat:"ai-coding", date:"2026-11-09", d:"GLM-5.3-Flash vs DeepSeek-V4.1-Flash 等四款模型价格、缓存价与场景选型" },
   {
     t: "国家超算互联网 11.11 薅羊毛攻略：0.1 元 5000 万 Tokens（2026-11-06 口径）",
