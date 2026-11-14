@@ -303,10 +303,11 @@ body>*{position:relative;z-index:1}
   <div class="container">
     <h1><span>视频教程</span></h1>
     <p>精选 B 站教程，点击封面站内播放。国内外均可观看，视频流走 B 站官方 CDN。</p>
-    <span class="note">48 期精选 · 持续补充</span>
+    <span class="note">88 期精选 · 持续补充</span>
   </div>
   <div class="container chip-nav">
     <a class="chip" href="#newest" data-spy="newest">🆕 最新更新</a>
+    <a class="chip" href="#agent" data-spy="agent">🤖 Agent 公开课</a>
     <a class="chip" href="#runninghub" data-spy="runninghub">🚀 RunningHub</a>
     <a class="chip" href="#ai-video" data-spy="ai-video">🎬 AI 视频</a>
     <a class="chip" href="#ai-tools" data-spy="ai-tools">🧰 AI 工具与项目</a>
@@ -326,6 +327,14 @@ body>*{position:relative;z-index:1}
   </div>
   <p class="section-desc">最近发布的视频，按发布日期倒序自动排列；每个分类内仍按推荐观看顺序保留。</p>
   <div class="video-grid" data-section="__newest"></div>
+</section>
+
+<section class="section" id="agent">
+  <div class="section-title">
+    <span class="icon">🤖</span><h2>Agent 公开课</h2><span class="count">5 期</span>
+  </div>
+  <p class="section-desc">从名词科普、工具选型到落地实操，普通人也能跟做的 Agent 系列。</p>
+  <div class="video-grid" data-section="agent"></div>
 </section>
 
 <section class="section" id="runninghub">
@@ -431,7 +440,7 @@ body>*{position:relative;z-index:1}
   <p>© 2025 Gary AIGC · 视频托管于 B 站，点击封面加载播放</p>
 </footer>
 
-<script src="data/videos.v2.js?v=20260928c"></script>
+<script src="data/videos.v2.js?v=20261115a"></script>
 <script>
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
 const RECENT_DAYS = 45;                     /* 🆕 徽标窗口：发布 45 天内 */
