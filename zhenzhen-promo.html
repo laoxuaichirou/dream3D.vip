@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>贞贞 API · H3 视频低至 ¥0.30/条</title>
+<meta name="description" content="贞贞 API：H3 按秒计费 15 秒 1440P 低至 ¥0.30，Seedance 2.5 按秒高质量出片，GPT Image 2.6 低价生图。创作体验季新账号免费额度。">
+<link rel="stylesheet" href="site-design.css?v=2">
+<style>
+.zz-page{
+  --zz-accent:var(--ds-signal,#d8ff3e);
+  --zz-panel:var(--bg-card,#10171d);
+  --zz-panel2:var(--bg-card-hover,#162129);
+  --zz-line:var(--border,rgba(224,238,245,.12));
+  --zz-line-hi:var(--border-hover,rgba(213,255,67,.52));
+  --zz-text:var(--text,#f2f5ef);
+  --zz-copy:var(--text-dim,#c1ccd0);
+  --zz-muted:var(--text-muted,#77858c);
+  --zz-ok:var(--ds-ok,#79e6aa);
+  --zz-r:20px; --zz-r-sm:12px;
+  font-family:var(--ds-font,Inter,system-ui,"PingFang SC","Microsoft YaHei",sans-serif);
+  color:var(--zz-text);
+  padding-bottom:64px;
+}
+.zz-wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.zz-page a{color:inherit;text-decoration:none}
+.zz-page ::selection{background:var(--zz-accent);color:#0a0f0b}
+
+/* hero */
+.zz-hero{position:relative;overflow:hidden;border:1px solid var(--zz-line);border-radius:26px;
+  background:linear-gradient(135deg,var(--zz-panel2) 0%,var(--zz-panel) 60%,var(--zz-panel) 100%);
+  padding:46px 44px 42px;margin:6px 0 26px}
+.zz-hero::after{content:"";position:absolute;right:-80px;top:-120px;width:360px;height:360px;border-radius:50%;
+  background:radial-gradient(circle,var(--zz-accent),transparent 70%);opacity:.10;pointer-events:none}
+.zz-eyebrow{display:inline-block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--zz-accent);border:1px solid var(--zz-line-hi);border-radius:999px;padding:5px 14px;margin-bottom:20px}
+.zz-hero h1{font-size:clamp(30px,4.4vw,50px);line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:0 0 14px}
+.zz-hero h1 .p{color:var(--zz-accent)}
+.zz-hero .sub{font-size:17px;color:var(--zz-copy);line-height:1.7;max-width:52em;margin:0 0 26px}
+.zz-hero .sub b{color:var(--zz-text)}
+.zz-cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.zz-btn{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:700;
+  background:var(--zz-accent);color:#0a0f0b;border:1px solid transparent;border-radius:11px;padding:13px 24px;
+  transition:transform .16s ease,filter .16s ease;cursor:pointer}
+.zz-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+.zz-btn.ghost{background:transparent;color:var(--zz-text);border-color:var(--zz-line)}
+.zz-btn.ghost:hover{border-color:var(--zz-line-hi);color:var(--zz-accent)}
+.zz-note{margin-top:20px;font-size:13px;color:var(--zz-muted)}
+
+/* section */
+.zz-sec{margin:48px 0}
+.zz-sec-head{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.zz-sec-head .ic{font-size:18px}
+.zz-sec-head h2{font-size:clamp(20px,2.4vw,28px);font-weight:800;letter-spacing:-.02em;margin:0}
+.zz-sec-head h2::before{content:"// ";color:var(--zz-accent);font-weight:800}
+
+/* three lines */
+.zz-grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.zz-card{border:1px solid var(--zz-line);border-radius:18px;background:var(--zz-panel);padding:24px 22px;display:flex;flex-direction:column}
+.zz-card .tag{display:inline-block;font-size:12px;color:var(--zz-accent);background:var(--zz-panel2);
+  border:1px solid var(--zz-line);border-radius:999px;padding:3px 11px;margin-bottom:14px;align-self:flex-start}
+.zz-card h3{font-size:20px;font-weight:800;margin:0 0 6px}
+.zz-card .price{font-family:var(--ds-display,Inter,sans-serif);font-size:30px;font-weight:800;letter-spacing:-.02em;color:var(--zz-accent);margin:2px 0 4px}
+.zz-card .price small{font-size:14px;color:var(--zz-copy);font-weight:600;letter-spacing:0}
+.zz-card .desc{font-size:14px;color:var(--zz-copy);line-height:1.7;margin:8px 0 0}
+.zz-card .mini{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.zz-card .mini li{font-size:12px;color:var(--zz-muted);border:1px solid var(--zz-line);border-radius:8px;padding:3px 9px}
+
+/* price table */
+.zz-table{border:1px solid var(--zz-line);border-radius:16px;overflow:hidden;background:var(--zz-panel)}
+.zz-tr{display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,1.1fr) minmax(0,1.6fr);gap:16px;padding:15px 22px;border-bottom:1px solid var(--zz-line);align-items:baseline}
+.zz-tr:last-child{border-bottom:none}
+.zz-tr.head{background:var(--zz-panel2);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--zz-muted);font-weight:700}
+.zz-tr .m{font-weight:700;color:var(--zz-text)}
+.zz-tr .t{color:var(--zz-copy);font-size:14px}
+.zz-tr .v{font-family:var(--ds-display,Inter,sans-serif);font-weight:700;color:var(--zz-accent);font-variant-numeric:tabular-nums}
+.zz-tr .v small{color:var(--zz-muted);font-weight:400;font-size:12.5px}
+
+/* trial */
+.zz-trial{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.zz-trial .item{border:1px solid var(--zz-line);border-radius:14px;background:var(--zz-panel);padding:16px 18px}
+.zz-trial .item .n{font-size:14px;font-weight:800;color:var(--zz-text);margin-bottom:4px}
+.zz-trial .item .d{font-size:13px;color:var(--zz-copy);line-height:1.6}
+.zz-trial .item .e{font-size:12px;color:var(--zz-muted);margin-top:6px}
+.zz-disc{margin-top:14px;font-size:12.5px;color:var(--zz-muted);line-height:1.6}
+
+/* cta */
+.zz-foot{border:1px solid var(--zz-line-hi);border-radius:22px;background:linear-gradient(135deg,var(--zz-panel2),var(--zz-panel));padding:38px 36px;display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
+.zz-foot h2{font-size:clamp(22px,3vw,30px);font-weight:800;margin:0 0 8px}
+.zz-foot p{font-size:14px;color:var(--zz-copy);margin:0;max-width:44em}
+.zz-foot .acts{display:flex;flex-direction:column;gap:10px;min-width:220px}
+.zz-foot .acts .zz-btn{justify-content:center}
+.zz-copy{background:transparent;border:1px solid var(--zz-line);color:var(--zz-copy);border-radius:11px;padding:11px 18px;font-size:15px;cursor:pointer;font-family:inherit}
+.zz-copy:hover{border-color:var(--zz-line-hi);color:var(--zz-accent)}
+.zz-legal{margin-top:26px;font-size:12px;color:var(--zz-muted);line-height:1.7;max-width:70em}
+
+@media (max-width:860px){
+  .zz-grid3,.zz-trial{grid-template-columns:1fr}
+  .zz-hero{padding:32px 24px}
+  .zz-foot{padding:28px 22px}
+}
+@media (max-width:600px){
+  .zz-wrap{padding:0 16px}
+  .zz-tr{grid-template-columns:1fr;gap:4px;padding:14px 16px}
+  .zz-tr.head{display:none}
+  .zz-tr .m{font-size:15px}
+}
+</style>
+</head>
+<body>
+<div class="zz-page">
+ <div class="zz-wrap">
+
+  <!-- 1 · HERO -->
+  <div class="zz-hero">
+    <span class="zz-eyebrow">MINIMAX H3 · 按秒计费 · 官方公告价</span>
+    <h1>一条 15 秒 1440P 视频，低至 <span class="p">¥0.30</span></h1>
+    <p class="sub"><b>角色替换 · 数字人 · 文戏 · 武戏</b> 四工作流配齐，256 并发批量出片，不用排队。</p>
+    <div class="zz-cta-row">
+      <a class="zz-btn" href="https://www.zzai.app/?s=TW7X" target="_blank" rel="noopener">注册开始做 →</a>
+      <a class="zz-btn ghost" href="#zz-price">先看价格 ↓</a>
+    </div>
+    <p class="zz-note">官方公告价 · 口径 2026-11-25 · 以控制台实时价为准</p>
+  </div>
+
+  <!-- 2 · 三条线怎么选 -->
+  <div class="zz-sec">
+    <div class="zz-sec-head"><span class="ic">🎯</span><h2>三条线，按需选</h2></div>
+    <div class="zz-grid3">
+      <div class="zz-card">
+        <span class="tag">低价走量</span>
+        <h3>H3 视频</h3>
+        <div class="price">¥0.30<small> / 15秒 1440P</small></div>
+        <div class="desc">按秒 ¥0.02，10 元≈33 条。适合批量短剧、漫剧、账号日更。</div>
+        <ul class="mini"><li>角色替换</li><li>数字人</li><li>文戏</li><li>武戏</li></ul>
+      </div>
+      <div class="zz-card">
+        <span class="tag">高质量出片</span>
+        <h3>Seedance 2.5 / 2.0</h3>
+        <div class="price">¥0.32<small> / 秒起</small></div>
+        <div class="desc">按秒计费的高端模型，主打画质、多模态参考与成片能力。</div>
+        <ul class="mini"><li>文生视频</li><li>图生视频</li><li>多模态参考</li></ul>
+      </div>
+      <div class="zz-card">
+        <span class="tag">低价生图</span>
+        <h3>GPT Image 2.6</h3>
+        <div class="price">¥0.04<small> / 张 1K</small></div>
+        <div class="desc">10 元≈250 张，支持 10 图参考 + 2K/4K 输出。新账号 5 次免费。</div>
+        <ul class="mini"><li>10 图参考</li><li>2K/4K</li><li>5 次免费</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 · 价格表 -->
+  <div class="zz-sec" id="zz-price">
+    <div class="zz-sec-head"><span class="ic">💠</span><h2>价格一览</h2></div>
+    <div class="zz-table">
+      <div class="zz-tr head"><span class="m">用途</span><span class="t">代表模型 / 档位</span><span class="v">价格</span></div>
+      <div class="zz-tr"><span class="m">H3 视频</span><span class="t">minimax-h3 · 1440P</span><span class="v">¥0.30 <small>/15秒（10元≈33条）</small></span></div>
+      <div class="zz-tr"><span class="m">Seedance 2.5 最便宜</span><span class="t">flash-multi · 480P</span><span class="v">¥0.32 <small>/秒（5秒≈¥1.62）</small></span></div>
+      <div class="zz-tr"><span class="m">Seedance 2.5 实测</span><span class="t">flash-t2v · 480P</span><span class="v">¥0.45 <small>/秒（5秒实测¥2.228）</small></span></div>
+      <div class="zz-tr"><span class="m">Seedance 2.5 高质量</span><span class="t">standard-t2v · 720P / 1080P</span><span class="v">¥1.50 / ¥1.90 <small>/秒</small></span></div>
+      <div class="zz-tr"><span class="m">GPT Image 2.6</span><span class="t">lowprice · 1K</span><span class="v">¥0.04 <small>/张（10元≈250张）</small></span></div>
+    </div>
+    <p class="zz-disc">每秒价为目录显示价（2026-11-25）；真实扣费 = 任务 quota ÷ 500000（汇率 1）。更便宜档：2.0-mini 480P ¥0.21/秒、2.0-fast 480P ¥0.34/秒。实际以控制台实时价为准。</p>
+  </div>
+
+  <!-- 4 · 免费福利 -->
+  <div class="zz-sec">
+    <div class="zz-sec-head"><span class="ic">🎁</span><h2>创作体验季 · 新账号免费体验</h2></div>
+    <div class="zz-trial">
+      <div class="item"><div class="n">GPT Image 2.6</div><div class="d">5 次免费 1K 生图，失败返还次数</div><div class="e">截止 2027/11/13</div></div>
+      <div class="item"><div class="n">Moss Image</div><div class="d">5 次免费生图，失败返还次数</div><div class="e">截止 2026/12/31</div></div>
+      <div class="item"><div class="n">画布 Agent</div><div class="d">连续 10 天、每天 10 次免费回复</div><div class="e">受活动每日预算限制</div></div>
+    </div>
+    <p class="zz-disc">免费次数为每位用户的一次性额度，非每日刷新；规则与截止以官方「创作体验季」页面为准。</p>
+  </div>
+
+  <!-- 5 · CTA -->
+  <div class="zz-sec">
+    <div class="zz-foot">
+      <div>
+        <h2>现在注册，按秒开始做</h2>
+        <p>这是我的推广链接——通过它注册，我能拿一点平台返利，像请我喝杯水。你的价格和权益不变；不想给返利就点官方站。</p>
+      </div>
+      <div class="acts">
+        <a class="zz-btn" href="https://www.zzai.app/?s=TW7X" target="_blank" rel="noopener">注册贞贞 API →</a>
+        <button class="zz-copy" id="zzCopy" type="button">复制推广链接</button>
+      </div>
+    </div>
+    <p class="zz-legal">口径说明：¥0.30/条为 15 秒 1440P H3 按秒计费（2026-11 官方公告）；Seedance 每秒价与 GPT Image 2.6 ¥0.04/张为目录显示价（2026-11-25），flash-t2v 480P 5 秒实测扣费 ¥2.228；模型与并发为本机 2026-11-25 实测。折算按公告价，实际以控制台实时价为准。</p>
+  </div>
+
+ </div>
+</div>
+
+<script src="site-shell.js?v=2"></script>
+<script>
+(function(){
+  var btn=document.getElementById('zzCopy');
+  if(!btn)return;
+  var url='https://www.zzai.app/?s=TW7X';
+  btn.addEventListener('click',function(){
+    function done(ok){ var en=document.documentElement.lang==='en';
+      btn.textContent = en ? (ok?'Copied ✓':'Copy failed') : (ok?'已复制 ✓':'复制失败，请手动复制');
+      setTimeout(function(){ btn.textContent = en?'Copy referral link':'复制推广链接'; },2000); }
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(function(){done(true);},fallback); }
+    else fallback();
+    function fallback(){ var ta=document.createElement('textarea'); ta.value=url; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select(); var ok=false; try{ok=document.execCommand('copy');}catch(e){} document.body.removeChild(ta); done(ok); }
+  });
+})();
+</script>
+<script>
+(function(){
+  var EN = {"MINIMAX H3 · 按秒计费 · 官方公告价": "MINIMAX H3 · per-second billing · official price", "一条 15 秒 1440P 视频，低至": "One 15s 1440P video, from", "角色替换 · 数字人 · 文戏 · 武戏": "Character swap · Digital human · Drama · Action", "四工作流配齐，256 并发批量出片，不用排队。": "four workflows included, 256 concurrent for batch output — no queueing.", "注册开始做 →": "Sign up & start →", "先看价格 ↓": "See pricing ↓", "官方公告价 · 口径 2026-11-25 · 以控制台实时价为准": "Official announced price · as of 2026-11-25 · live console price prevails", "三条线，按需选": "Three lines, pick by need", "低价走量": "Low-cost volume", "H3 视频": "H3 video", "/ 15秒 1440P": "/ 15s 1440P", "按秒 ¥0.02，10 元≈33 条。适合批量短剧、漫剧、账号日更。": "¥0.02/s, ¥10 ≈ 33 clips. For batch short dramas, comics and daily posting.", "角色替换": "Character swap", "数字人": "Digital human", "文戏": "Drama", "武戏": "Action", "高质量出片": "High-quality output", "/ 秒起": "/ s, from", "按秒计费的高端模型，主打画质、多模态参考与成片能力。": "Premium per-second model for image quality, multimodal reference and finished film.", "文生视频": "Text-to-video", "图生视频": "Image-to-video", "多模态参考": "Multimodal reference", "低价生图": "Low-cost image gen", "/ 张 1K": "/ image at 1K", "10 元≈250 张，支持 10 图参考 + 2K/4K 输出。新账号 5 次免费。": "¥10 ≈ 250 images, 10-image reference + 2K/4K output. 5 free for new accounts.", "10 图参考": "10-image reference", "5 次免费": "5 free", "价格一览": "Price overview", "用途": "Use", "代表模型 / 档位": "Model / tier", "价格": "Price", "/15秒（10元≈33条）": "/15s (¥10 ≈ 33 clips)", "Seedance 2.5 最便宜": "Seedance 2.5 cheapest", "/秒（5秒≈¥1.62）": "/s (5s ≈ ¥1.62)", "Seedance 2.5 实测": "Seedance 2.5 measured", "/秒（5秒实测¥2.228）": "/s (5s measured ¥2.228)", "Seedance 2.5 高质量": "Seedance 2.5 high quality", "/秒": "/s", "/张（10元≈250张）": "/image (¥10 ≈ 250)", "每秒价为目录显示价（2026-11-25）；真实扣费 = 任务 quota ÷ 500000（汇率 1）。更便宜档：2.0-mini 480P ¥0.21/秒、2.0-fast 480P ¥0.34/秒。实际以控制台实时价为准。": "Per-second prices are catalog list prices (2026-11-25); real charge = task quota ÷ 500000 (rate 1). Cheaper tiers: 2.0-mini 480P ¥0.21/s, 2.0-fast 480P ¥0.34/s. Live console price prevails.", "创作体验季 · 新账号免费体验": "Creation Season · free trial for new accounts", "5 次免费 1K 生图，失败返还次数": "5 free 1K image gens, failed tasks refunded", "截止 2027/11/13": "ends 2027/11/13", "5 次免费生图，失败返还次数": "5 free image gens, failed tasks refunded", "截止 2026/12/31": "ends 2026/12/31", "画布 Agent": "Canvas Agent", "连续 10 天、每天 10 次免费回复": "10 free replies/day for 10 consecutive days", "受活动每日预算限制": "subject to the daily campaign budget", "免费次数为每位用户的一次性额度，非每日刷新；规则与截止以官方「创作体验季」页面为准。": "Free counts are a one-time quota per user, not daily; rules and end dates follow the official “Creation Season” page.", "现在注册，按秒开始做": "Sign up now, start per-second", "这是我的推广链接——通过它注册，我能拿一点平台返利，像请我喝杯水。你的价格和权益不变；不想给返利就点官方站。": "This is my referral link — sign up through it and I get a small rebate, like buying me a coffee. Your price and rights stay the same; skip the rebate and just use the official site.", "注册贞贞 API →": "Sign up for Zhenzhen API →", "复制推广链接": "Copy referral link", "口径说明：¥0.30/条为 15 秒 1440P H3 按秒计费（2026-11 官方公告）；Seedance 每秒价与 GPT Image 2.6 ¥0.04/张为目录显示价（2026-11-25），flash-t2v 480P 5 秒实测扣费 ¥2.228；模型与并发为本机 2026-11-25 实测。折算按公告价，实际以控制台实时价为准。": "Basis: ¥0.30/clip is 15s 1440P H3 per-second (2026-11 official announcement); Seedance per-second prices and GPT Image 2.6 ¥0.04/image are catalog list prices (2026-11-25), flash-t2v 480P 5s measured at ¥2.228; models and concurrency verified locally 2026-11-25. Conversions use announced prices; live console price prevails."};
+  var root = document.querySelector('.zz-page');
+  if(!root || window.__zzI18n) return;
+  window.__zzI18n = 1;
+  var CJK=/[\u4e00-\u9fff]/;
+  var saved=[]; var ZH_TITLE=document.title;
+  var EN_TITLE="Zhenzhen API · H3 video from ¥0.30/clip";
+  function collect(){
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
+      var p=n.parentNode&&n.parentNode.nodeName;
+      if(p==='SCRIPT'||p==='STYLE')return NodeFilter.FILTER_REJECT;
+      return (n.nodeValue&&CJK.test(n.nodeValue))?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+    }});
+    var n; while(n=w.nextNode()){ saved.push([n,n.nodeValue]); }
+  }
+  function apply(code){
+    var en=(code==='en');
+    document.documentElement.lang = en?'en':(code==='zh'?'zh-CN':code);
+    for(var i=0;i<saved.length;i++){
+      var node=saved[i][0], zh=saved[i][1];
+      if(!node.parentNode) continue;
+      var target;
+      if(!en){ target=zh; }
+      else { var core=zh.trim(), t=EN[core];
+        if(t==null){ target=zh; }
+        else { var lead=(zh.match(/^\s*/)||[''])[0], trail=(zh.match(/\s*$/)||[''])[0]; target=lead+t+trail; } }
+      if(node.nodeValue!==target) node.nodeValue=target;
+    }
+    document.title = en?EN_TITLE:ZH_TITLE;
+    var cb=document.getElementById('zzCopy');
+    if(cb){ var cbt=en?'Copy referral link':'复制推广链接'; if(cb.textContent!==cbt) cb.textContent=cbt; }
+  }
+  window.setLang=function(code){ apply(code); };
+  collect();
+  var init='zh'; try{ init=localStorage.getItem('gary-lang')||'zh'; }catch(e){}
+  apply(init==='en'?'en':(init==='zh'?'zh':init));
+})();
+</script>
+</body>
+</html>
