@@ -1,7 +1,21 @@
 /* 站点增量条目：与版本化主数据分离，避免修改 data/docs.v*.js。 */
 /* 新条目使用真实主题分类；通过校验后再合并到下一版 docs.v*.js。 */
 const SITE_DOC_ADDITIONS = [
+
   {
+    t: "五个开源 TTS 实测：方言、外语、数字读法该用哪个",
+    file: "articles/tts-voice-selection.html",
+    cat: "briefing",
+    date: "2026-11-26",
+    d: "CPM2 / FireRed / IndexTTS 2.5 / Qwen3 同批文案实听 280 条：上海话、粤语、川鲁豫方言，日葡韩俄法外语，英语数字三种解法，附可照抄参数与耗时显存"
+  },
+  {
+    t: "五个开源 TTS 实测：方言、外语、数字读法该用哪个",
+    file: "articles/tts-voice-selection.html",
+    cat: "ai-video",
+    date: "2026-11-26",
+    d: "配音选型速查：哪种话交给哪个模型、哪些配置会让方言或音色翻车，含 5 组可照抄参数与本地资源占用表"
+  },  {
     t: "RunningHub 改版，对你有什么影响？（2026-11 口径）",
     file: "articles/runninghub-membership-2026.html",
     cat: "runninghub",

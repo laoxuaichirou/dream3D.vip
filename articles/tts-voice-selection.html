@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>五个开源 TTS 实测：方言、外语、数字读法该用哪个 | 老许爱吃肉</title>
+<meta name="description" content="把 CPM2、FireRed、Vox CPMSpeech、IndexTTS 2.5、Qwen3 放在同一批文案上本地实听 280 条：粤语、四川话、山东话、河南话、上海话，日语葡语韩语俄语法语，英语数字读法，情绪与显存耗时。只讲结论和怎么选。">
+<link rel="stylesheet" href="../site-design.css?v=2">
+<style>
+:root{
+  --tts-line: rgba(200,200,200,.20);
+  --tts-ok:#7ddcaa; --tts-warn:#f0bd6a; --tts-bad:#f09c95;
+  --tts-ok-bg:rgba(125,220,170,.12); --tts-warn-bg:rgba(240,189,106,.14); --tts-bad-bg:rgba(240,156,149,.12);
+}
+html[data-theme="light-cool"],html[data-theme="light-warm"]{
+  --tts-line: rgba(30,30,30,.16);
+  --tts-ok:#1f7a52; --tts-warn:#96601a; --tts-bad:#a83e36;
+  --tts-ok-bg:rgba(31,122,82,.10); --tts-warn-bg:rgba(150,96,26,.12); --tts-bad-bg:rgba(168,62,54,.10);
+}
+body{padding-top:96px;background:var(--bg,var(--ds-ink));color:var(--text,var(--ds-text));font-family:var(--ds-font,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px 90px}
+.hero{padding:30px 0 26px;border-bottom:1px solid var(--border,var(--ds-line))}
+.kicker{font-size:14px;letter-spacing:.06em;color:var(--text-muted,var(--ds-muted));margin:0 0 14px}
+h1{font-size:clamp(30px,4.2vw,46px);line-height:1.3;margin:0 0 18px;letter-spacing:-.02em}
+.lead{font-size:18px;line-height:1.85;color:var(--text-dim,var(--ds-copy));max-width:860px;margin:0 0 14px}
+.lead b{color:var(--text,var(--ds-text))}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.pill{font-size:13px;padding:4px 11px;border-radius:999px;background:var(--bg-panel,var(--ds-panel));border:1px solid var(--border,var(--ds-line));color:var(--text-dim,var(--ds-copy))}
+.pill.hot{color:var(--tts-warn);background:var(--tts-warn-bg);border-color:transparent}
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;padding:14px 0;border-bottom:1px solid var(--border,var(--ds-line));margin-bottom:6px}
+nav.toc a{font-size:14px;padding:5px 10px;border-radius:6px;text-decoration:none;color:var(--text-dim,var(--ds-copy));border:1px solid transparent}
+nav.toc a:hover{color:var(--accent,var(--ds-signal));border-color:var(--border,var(--ds-line))}
+section{padding:36px 0 6px;border-bottom:1px dashed var(--border,var(--ds-line))}
+section:last-of-type{border-bottom:0}
+h2{font-size:26px;line-height:1.4;margin:6px 0 8px}
+h2 small{display:block;font-size:15px;font-weight:400;color:var(--text-muted,var(--ds-muted));margin-top:6px}
+h3{font-size:19px;margin:26px 0 10px}
+p{line-height:1.85;margin:0 0 14px}
+ul,ol{line-height:1.9;padding-left:22px;margin:0 0 16px}
+li{margin:4px 0}
+code{font-family:Consolas,"SF Mono",monospace;font-size:.92em;padding:1px 5px;border-radius:4px;background:var(--bg-panel,var(--ds-panel))}
+pre{background:var(--bg-panel,var(--ds-panel));border:1px solid var(--border,var(--ds-line));border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:13px;line-height:1.7;margin:0 0 16px}
+pre code{background:none;padding:0;font-size:13px}
+.tbl{overflow-x:auto;border:1px solid var(--border,var(--ds-line));border-radius:12px;margin:0 0 20px;background:var(--bg-card,var(--ds-panel-solid))}
+table{width:100%;border-collapse:collapse;font-size:15px;line-height:1.75;text-align:left}
+th,td{padding:12px 14px;border-bottom:1px solid var(--tts-line);vertical-align:top}
+th{font-size:13px;font-weight:600;color:var(--text-muted,var(--ds-muted));background:var(--bg-panel,var(--ds-panel));white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600}
+td.num{font-family:Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tag{display:inline-block;font-size:12px;padding:1px 7px;border-radius:4px;margin-left:4px}
+.tag.ok{color:var(--tts-ok);background:var(--tts-ok-bg)}
+.tag.warn{color:var(--tts-warn);background:var(--tts-warn-bg)}
+.tag.bad{color:var(--tts-bad);background:var(--tts-bad-bg)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin:0 0 20px}
+.card{border:1px solid var(--border,var(--ds-line));border-radius:12px;padding:18px 20px;background:var(--bg-card,var(--ds-panel-solid))}
+.card h3{margin:0 0 4px;font-size:18px}
+.card .sub{font-size:13px;color:var(--text-muted,var(--ds-muted));margin:0 0 12px}
+.card dl{margin:0;font-size:15px;line-height:1.8}
+.card dt{font-weight:600;color:var(--tts-ok);margin-top:10px;font-size:14px}
+.card dt.no{color:var(--tts-bad)}
+.card dd{margin:2px 0 0}
+.quote{border-left:3px solid var(--accent,var(--ds-signal));padding:2px 0 2px 16px;margin:14px 0 18px;color:var(--text-dim,var(--ds-copy));font-size:16px}
+.quote span{display:block;font-size:13px;color:var(--text-muted,var(--ds-muted));margin-top:6px}
+.note{border:1px solid var(--border,var(--ds-line));border-left:3px solid var(--tts-warn);background:var(--bg-panel,var(--ds-panel));border-radius:8px;padding:14px 16px;font-size:15px;line-height:1.8;margin:0 0 20px}
+.note b{color:var(--tts-warn)}
+.small{font-size:14px;color:var(--text-muted,var(--ds-muted));line-height:1.75}
+footer{padding:26px 0 0;font-size:14px;color:var(--text-muted,var(--ds-muted))}
+@media(max-width:767px){
+  body{padding-top:76px}
+  .wrap{padding:0 16px 70px}
+  section{padding:28px 0 4px}
+  table{font-size:14px;min-width:640px}
+  th,td{padding:10px 12px}
+  h2{font-size:22px}
+  .lead{font-size:17px}
+}
+@media(max-width:480px){ table{min-width:560px} }
+</style>
+</head>
+<body class="page-tts">
+<main class="wrap">
+
+<header class="hero">
+  <p class="kicker">本地实测 · 280 条样本 · 2026-11-01 记录</p>
+  <h1>五个开源 TTS 引擎，哪种话该交给谁</h1>
+  <p class="lead">我把 <b>CPM2、FireRed、Vox CPMSpeech、IndexTTS 2.5、Qwen3</b> 这五个能在家用显卡上跑起来的开源语音模型，放在同一批文案上听了一遍：五类中文方言、五种外语、英语数字读法、情绪控制，外加本地耗时和显存。</p>
+  <p class="lead">结论只有一句：<b>它们都能出声，但「像不像我」「方言对不对」「数字读得准不准」这三件事经常互相打架</b>，没有全能选手，只能按场景挑。下面直接给选择表，不绕弯。</p>
+  <div class="pills">
+    <span class="pill hot">情绪克隆这轮没成</span>
+    <span class="pill">参考音：我自己的中文录音</span>
+    <span class="pill">RTX 4070 Ti SUPER 16G</span>
+    <span class="pill">结论只对本次条件有效</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="目录">
+  <a href="#pick">照着选</a>
+  <a href="#models">各引擎脾气</a>
+  <a href="#dialect">方言</a>
+  <a href="#foreign">外语</a>
+  <a href="#numbers">英语数字</a>
+  <a href="#params">能照抄的参数</a>
+  <a href="#perf">耗时与显存</a>
+  <a href="#emotion">情绪</a>
+  <a href="#limits">边界</a>
+</nav>
+
+<section id="pick">
+  <h2>01 直接照着选<small>左边是你想做的，中间是实测能用的，最后一列是踩过的坑。</small></h2>
+  <div class="tbl">
+  <table>
+    <thead><tr><th>我要做什么</th><th>用哪个</th><th>必须满足的条件</th><th>别踩这个坑</th></tr></thead>
+    <tbody>
+      <tr><td>上海话 + 像我</td><td>FireRed Base（数字展开）<br>CPM2 可控克隆（指令留空）</td><td>用我自己的中文参考音，10 步、CFG 2.0</td><td>CPM2 加「上海话」指令反而混着说；CPM2 的 Hi-Fi 数字展开会读成普通话</td></tr>
+      <tr><td>粤语</td><td>FireRed、CPM2 效果都不错<br>Qwen3 可接受</td><td>本人参考音</td><td>IndexTTS 这条直接变普通话</td></tr>
+      <tr><td>四川话</td><td>Qwen 组（Base / 内置 Eric / 设计版）</td><td>同方言参考，或用内置成都声线</td><td>音色不是我的，不能当「像我」用</td></tr>
+      <tr><td>山东话 / 河南话</td><td>只有 Qwen3 Base</td><td>同方言公开参考</td><td>Qwen 设计版山东变陕西、河南没成；其它引擎全读普通话</td></tr>
+      <tr><td>日语自然句</td><td>四家都能用：Index（最快）· CPM2 · FireRed · Qwen3 Base</td><td>本人参考音</td><td>只验证了自然句，数字和长文另算</td></tr>
+      <tr><td>葡语</td><td>CPM2 首选，Qwen3 Base 备选</td><td>本人参考音</td><td>FireRed 这条被我从「应该没问题」改判成「乱说、含糊」</td></tr>
+      <tr><td>韩语</td><td>日常聊天：Qwen3 Base<br>正式旁白：CPM2</td><td>本人参考音</td><td>FireRed 咬字偏含糊</td></tr>
+      <tr><td>俄语</td><td>三条都行：CPM2 最快 · Qwen 省显存 · FireRed 较清晰</td><td>本人参考音</td><td>只是这一组的取舍，不是语种排名</td></tr>
+      <tr><td>法语</td><td>CPM2</td><td>本人参考音</td><td>FireRed 咬字别扭，Qwen 听感接近 FireRed</td></tr>
+      <tr><td>英语，原文数字不能改</td><td>IndexTTS 2.5 当先试基线</td><td>本人参考音</td><td>不保证任意数字都对；只换音色嵌入的 Qwen 版仍中英混读</td></tr>
+      <tr><td>英语，允许另存一份朗读稿</td><td>Qwen3 Base + 数字/缩写展开</td><td>仍是本人参考音</td><td>展示稿可以留数字，但别拿这条去宣布「原文直读已修好」</td></tr>
+      <tr><td>英语，原文不改但可以换声音</td><td>Qwen3 / CPM2 用 8.08 秒英语参考</td><td>已换说话人</td><td>数字全读英语了，但那不是我的声音</td></tr>
+      <tr><td>要新音色 + 兴奋语气</td><td>FireRed Instruct 普通话设计版</td><td>提示词造新音色，不用参考音</td><td>只证明它能做语气，不是我的克隆</td></tr>
+      <tr><td>情绪克隆（像我 + 情绪到位）</td><td>这轮先别用</td><td>—</td><td>没有一版同时做到「像我的音色 + 目标情绪」</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="models">
+  <h2>02 每个引擎的脾气<small>同样是开源模型，强项完全不在一个方向。</small></h2>
+  <div class="cards">
+
+    <div class="card">
+      <h3>CPM2 <span class="tag ok">外语稳妥</span></h3>
+      <p class="sub">Vox CPMSpeech · 支持可控克隆与 Hi-Fi 两档</p>
+      <dl>
+        <dt>强在</dt>
+        <dd>本人音色的外语自然句；葡语、法语这组听感最舒服；韩语做正式旁白；上海话用「可控克隆 + 不加指令」明确成功。</dd>
+        <dt class="no">弱在</dt>
+        <dd>情绪克隆这批音色明显跑偏；上海话 Hi-Fi + 本人参考读数字会变成普通话；加了方言指令反而混说。</dd>
+        <dt>拿来做什么</dt>
+        <dd>普通多语配音第一顺位；葡 / 法 / 韩正式腔优先。</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <h3>Qwen3 Base <span class="tag ok">方言最全</span></h3>
+      <p class="sub">Qwen3 TTS · 另有内置声线与设计版</p>
+      <dl>
+        <dt>强在</dt>
+        <dd>韩语像日常聊天；日语 / 葡语 / 俄语自然句可接受；山东话、河南话是唯一能用的；英语数字展开版被认可。</dd>
+        <dt class="no">弱在</dt>
+        <dd>英语原文数字输入有中英混读反例；法语不如 CPM2；方言用公开参考时，音色就不是我了。</dd>
+        <dt>拿来做什么</dt>
+        <dd>日常韩语；山东 / 河南方言；允许另存朗读稿的英语；显存吃紧时的备选。</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <h3>FireRed Base <span class="tag ok">上海话最强</span></h3>
+      <p class="sub">FireRedTTS3 · 方言列表最细</p>
+      <dl>
+        <dt>强在</dt>
+        <dd>上海话 + 本人音色 + 数字展开明确成功，数字原文版也成；粤语组效果好；日语可接受；俄语这组更清晰。</dd>
+        <dt class="no">弱在</dt>
+        <dd>葡语这条内容被否决、含糊；韩语 / 法语咬字不如 CPM2；本次推理显存峰值偏高。</dd>
+        <dt>拿来做什么</dt>
+        <dd>本人上海话、粤语首选；日语 / 俄语备选。别把它和 Instruct 版混着比。</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <h3>IndexTTS 2.5 <span class="tag warn">方言不行</span></h3>
+      <p class="sub">Index · 情绪控制接口最全</p>
+      <dl>
+        <dt>强在</dt>
+        <dd>旧英语数字原文组评价好；日语自然句本人音色、速度快。</dd>
+        <dt class="no">弱在</dt>
+        <dd>五类方言基本都读成普通话或带口音普通话；情绪控制这批音色改变、目标情绪不明显。</dd>
+        <dt>拿来做什么</dt>
+        <dd>英语数字原文的先试基线；日语备选。方言和本人情绪克隆不优先。</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <h3>FireRed Instruct <span class="tag warn">只做新音色</span></h3>
+      <p class="sub">提示词驱动的语气版本</p>
+      <dl>
+        <dt>强在</dt>
+        <dd>普通话「兴奋分享」设计版，是这轮听过最贴合语气要求的一条。</dd>
+        <dt class="no">弱在</dt>
+        <dd>愤怒 / 悲伤不明显或语速不对；上海话组读普通话、疑似吞字；设计版没有证明能保留本人音色。</dd>
+        <dt>拿来做什么</dt>
+        <dd>不要求「像我」、只想快速造一个新声线讲兴奋内容时用。</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <h3>Qwen3 内置 / 设计 <span class="tag warn">不算克隆</span></h3>
+      <p class="sub">CustomVoice 固定声线 · VoiceDesign 提示词造声线</p>
+      <dl>
+        <dt>强在</dt>
+        <dd>Eric 成都声线归在四川话成功组；设计版上海话成功；普通话低沉、慢速能听出来。</dd>
+        <dt class="no">弱在</dt>
+        <dd>愤怒 / 悲伤 / 兴奋目标不稳定；内置声线不是我，不能拿来比相似度；设计版山东变陕西。</dd>
+        <dt>拿来做什么</dt>
+        <dd>允许换声线的场景。绝不能当「本人克隆已通过」。</dd>
+      </dl>
+    </div>
+
+  </div>
+</section>
+
+<section id="dialect">
+  <h2>03 方言：说对 ≠ 像我<small>这是最容易误解的一块：方言对了，声音往往已经不是我了。</small></h2>
+
+  <p>五种方言跑下来，只有三种能同时满足「方言正确」和「音色像我」，而且都要特定配置：上海话（FireRed Base、CPM2 可控克隆）、粤语（FireRed、CPM2）。四川话、山东话、河南话能说，但音色是参考音或内置声线的，不是我的。</p>
+
+  <div class="tbl">
+  <table>
+    <thead><tr><th>方言</th><th>能用 / 已认可</th><th>问题</th><th>结论范围</th></tr></thead>
+    <tbody>
+      <tr><td>粤语</td><td>FireRed、CPM2 效果都不错<br>Qwen3 加了自己的语气，仍可接受</td><td>Index 变成普通话</td><td>组级反馈，没锁定每个变体</td></tr>
+      <tr><td>四川话</td><td>Qwen 组都成功</td><td>音色不是参考音色；其余引擎输出普通话</td><td>内置 Eric / 设计版 / 同方言参考三种，别混称克隆</td></tr>
+      <tr><td>山东话</td><td>只有 Qwen3 Base</td><td>Qwen 设计版变陕西话；其余全普通话</td><td>方言成功，但本人音色没单独确认</td></tr>
+      <tr><td>河南话</td><td>只有 Qwen3 Base</td><td>其余组不成功</td><td>没逐项指定错成了什么口音，不硬编</td></tr>
+      <tr><td>上海话</td><td>FireRed Base、CPM2 有同时保住本人音色与上海话的版本；Qwen3 Base 同方言参考版成功</td><td>换原文、换朗读稿、换参考、加指令都会反转结果</td><td>Index 是「上海口音普通话」，不算说对</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>上海话：测最细的一组</h3>
+  <div class="tbl">
+  <table>
+    <thead><tr><th>条件</th><th>引擎</th><th>听到的结果</th><th>怎么用</th></tr></thead>
+    <tbody>
+      <tr><td>数字展开 + 本人参考</td><td>FireRed Base</td><td>上海话，也是我的音色 <span class="tag ok">可复用</span></td><td>10 步、CFG 2.0，照抄参数即可</td></tr>
+      <tr><td>可控克隆，指令留空</td><td>CPM2</td><td>本人音色 + 上海话 <span class="tag ok">可复用</span></td><td>CFG 2.0、10 步、风格词留空</td></tr>
+      <tr><td>可控克隆，加「上海话」指令</td><td>CPM2</td><td>混着说，像湖南人说普通话</td><td>别加方言指令，加了就废</td></tr>
+      <tr><td>数字展开 + 本人参考</td><td>CPM2 Hi-Fi</td><td>普通话，不是上海话</td><td>和可控克隆分开记，别混用</td></tr>
+      <tr><td>数字展开 + 同语公开参考</td><td>FireRed / CPM2 / Qwen3 Base</td><td>都成功，但换了说话人</td><td>Qwen 那条是参考音本身的音色</td></tr>
+      <tr><td>同语参考 + CFG 1.6</td><td>CPM2 Hi-Fi</td><td>上海话通过，但开头多读了一个「在」</td><td>方言对不代表逐字忠实</td></tr>
+      <tr><td>数字展开</td><td>FireRed Instruct</td><td>多处听不清、疑似吞字</td><td>清晰度没过，上海话用 Base 不用 Instruct</td></tr>
+      <tr><td>方言设计（无参考音）</td><td>Qwen3 VoiceDesign</td><td>上海话成功</td><td>是造新音色，不是我的克隆</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="foreign">
+  <h2>04 外语：先看想要什么语气<small>同一句话、同一个参考音，几家都能听懂，差别在语气和咬字。</small></h2>
+
+  <p>五种外语的自然句我都听了同内容多版本。凡是标「我的音色」的，都是听感确认像本人；听不清内容的语言（葡、俄、法），只记录跨模型听评，不冒充母语者逐字校对。</p>
+
+  <div class="tbl">
+  <table>
+    <thead><tr><th>语言</th><th>听感结论</th><th>怎么选</th><th>要记住的区别</th></tr></thead>
+    <tbody>
+      <tr><td>日语</td><td>四引擎这句都是「我的音色、听着可以」</td><td>Index / FireRed / CPM2 / Qwen3 都能用，按耗时和显存取舍</td><td>只验证了自然句，长文另算</td></tr>
+      <tr><td>葡萄牙语</td><td>CPM2 自然清晰、有抑扬顿挫；Qwen 同内容但不如它</td><td>CPM2 优先，Qwen 备选</td><td>FireRed 这条内容被否定，含糊且不对</td></tr>
+      <tr><td>韩语</td><td>三条内容一致、都是本人音色；Qwen 像家常话，CPM2 像正式演讲</td><td>日常交谈用 Qwen，正式旁白用 CPM2</td><td>FireRed 较含糊，别用</td></tr>
+      <tr><td>俄语</td><td>三条都可接受、内容一致；FireRed 这组更清晰</td><td>要快选 CPM2，要省显存选 Qwen，要清晰选 FireRed</td><td>只是本组取舍，不是语种排名</td></tr>
+      <tr><td>法语</td><td>CPM2 最自然；FireRed 咬字别扭；Qwen 接近 FireRed</td><td>CPM2</td><td>Qwen 这条没单独确认音色相似度</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="numbers">
+  <h2>05 英语数字：三种处境，三种解法<small>这是实测里最实用的一块，数字读错是最容易被观众听出来的。</small></h2>
+
+  <ul>
+    <li><b>原文数字不能改</b>：IndexTTS 2.5 当先试基线（旧英文组评价好，新旧基线逐字节复现）。但它不保证任意数字都对。</li>
+    <li><b>允许另存一份朗读稿</b>：Qwen3 Base + 数字/缩写全展开，数字全部用英语读出来，这条被确认没问题。展示稿仍可保留数字，两套稿分开存。</li>
+    <li><b>原文要留、但可以换声音</b>：Qwen3 / CPM2 换 8.08 秒官方英语参考后数字全英语；FireRed 同参考版也明显改善、能自然听懂。代价是说话人已经不是我了。</li>
+  </ul>
+
+  <div class="note">
+    <b>反面教材</b>：只换音色嵌入、原文不改的 Qwen 版本，仍然中英混读。这类配置不能算「数字读法修好了」。
+  </div>
+
+  <div class="quote">
+    「毕竟你改了文案，现在没什么问题……但有些文案，不适合改成英文该咋办？」
+    <span>—— 英语数字展开版通过时我留下的疑问，也是我建议两套稿分开存的原因</span>
+  </div>
+</section>
+
+<section id="params">
+  <h2>06 能照抄的参数<small>这些是本次实际调用值。不能脱离参考音、模式直接套到别的用途上。</small></h2>
+
+  <h3>FireRed Base · 上海话（本人参考音）</h3>
+  <pre><code>language: ZH_Shanghai   n_timesteps: 10   inference_cfg: 2.0
+do_tn: true   do_split: true
+token_max_n: 80   token_min_n: 60   merge_len: 20   cross_fade_ms: 50.0
+dtype: bfloat16   stop_threshold: 0.5
+前端: 本地 wetext，不调 LLM API</code></pre>
+
+  <h3>CPM2 · 上海话（可控克隆，指令必须留空）</h3>
+  <pre><code>mode: controllable   cfg_value: 2.0   inference_timesteps: 10
+min_len: 2   max_len: 2048
+normalize: false   denoise: false   retry_badcase: false
+style_instruction: ""        ← 关键，写「上海话」会混说</code></pre>
+
+  <h3>CPM2 · 外语自然句（Hi-Fi 档）</h3>
+  <pre><code>mode: hi_fi   cfg_value: 2.0   inference_timesteps: 10
+min_len: 2   max_len: 2048
+normalize: false   denoise: false   style_instruction: ""</code></pre>
+
+  <h3>IndexTTS 2.5 · 自然句</h3>
+  <pre><code>temperature: 0.8   top_p: 0.8   top_k: 30   num_beams: 3
+max_mel_tokens: 1500   max_text_tokens_per_segment: 120
+interval_silence: 200   duration_factor: 1.0   lang: ZH / JA / EN</code></pre>
+
+  <h3>Qwen3 Base · 自然句与方言</h3>
+  <pre><code>do_sample: true   temperature: 0.9   top_p: 1.0   top_k: 50
+repetition_penalty: 1.05   max_new_tokens: 2048
+subtalker 采样参数与上面一致   attention: sdpa   dtype: bfloat16</code></pre>
+
+  <p class="small">英语数字展开那次另有一版把 temperature 调到 0.6 的重复测试样本，结论相同；两版共存只为验证稳定性，不把重复样本算成新结论。</p>
+</section>
+
+<section id="perf">
+  <h2>07 听感都接受时，再比资源<small>下面都是原测试记录，没有重跑 GPU。</small></h2>
+
+  <p class="small">生成耗时是整段合成时间，不是首音延迟；不同请求的负载与冷热状态不同，适合做选型参考，不是严格性能排名。显存是推理期 PyTorch allocated / reserved 峰值，不含驱动、其它进程和加载瞬间；不能拿 4.19 GiB 这个数字去承诺 4GB 显存能用。</p>
+
+  <div class="tbl">
+  <table>
+    <thead><tr><th>语言</th><th>模型</th><th>音频长度</th><th>生成耗时</th><th>推理分配峰值</th><th>保留池峰值</th></tr></thead>
+    <tbody>
+      <tr><td>日语</td><td>IndexTTS 2.5</td><td class="num">7.91s</td><td class="num">5.88s</td><td class="num">6.61 GiB</td><td class="num">6.79 GiB</td></tr>
+      <tr><td>日语</td><td>FireRed Base</td><td class="num">8.00s</td><td class="num">8.46s</td><td class="num">7.25 GiB</td><td class="num">7.45 GiB</td></tr>
+      <tr><td>日语</td><td>CPM2</td><td class="num">8.16s</td><td class="num">7.70s</td><td class="num">5.55 GiB</td><td class="num">5.82 GiB</td></tr>
+      <tr><td>日语</td><td>Qwen3 Base</td><td class="num">8.08s</td><td class="num">33.72s</td><td class="num">4.21 GiB</td><td class="num">4.37 GiB</td></tr>
+      <tr><td>葡萄牙语</td><td>FireRed Base</td><td class="num">6.88s</td><td class="num">7.27s</td><td class="num">7.25 GiB</td><td class="num">7.43 GiB</td></tr>
+      <tr><td>葡萄牙语</td><td>CPM2</td><td class="num">8.96s</td><td class="num">8.86s</td><td class="num">5.58 GiB</td><td class="num">5.86 GiB</td></tr>
+      <tr><td>葡萄牙语</td><td>Qwen3 Base</td><td class="num">9.60s</td><td class="num">38.87s</td><td class="num">4.24 GiB</td><td class="num">4.46 GiB</td></tr>
+      <tr><td>韩语</td><td>FireRed Base</td><td class="num">8.96s</td><td class="num">21.11s</td><td class="num">7.26 GiB</td><td class="num">7.45 GiB</td></tr>
+      <tr><td>韩语</td><td>CPM2</td><td class="num">7.84s</td><td class="num">9.02s</td><td class="num">5.54 GiB</td><td class="num">5.81 GiB</td></tr>
+      <tr><td>韩语</td><td>Qwen3 Base</td><td class="num">8.08s</td><td class="num">35.94s</td><td class="num">4.21 GiB</td><td class="num">4.45 GiB</td></tr>
+      <tr><td>俄语</td><td>FireRed Base</td><td class="num">6.72s</td><td class="num">16.37s</td><td class="num">7.25 GiB</td><td class="num">7.43 GiB</td></tr>
+      <tr><td>俄语</td><td>CPM2</td><td class="num">6.88s</td><td class="num">6.87s</td><td class="num">5.52 GiB</td><td class="num">5.97 GiB</td></tr>
+      <tr><td>俄语</td><td>Qwen3 Base</td><td class="num">7.12s</td><td class="num">28.21s</td><td class="num">4.19 GiB</td><td class="num">4.40 GiB</td></tr>
+      <tr><td>法语</td><td>FireRed Base</td><td class="num">8.16s</td><td class="num">20.10s</td><td class="num">7.25 GiB</td><td class="num">7.45 GiB</td></tr>
+      <tr><td>法语</td><td>CPM2</td><td class="num">8.32s</td><td class="num">8.13s</td><td class="num">5.56 GiB</td><td class="num">5.87 GiB</td></tr>
+      <tr><td>法语</td><td>Qwen3 Base</td><td class="num">9.76s</td><td class="num">16.91s</td><td class="num">4.24 GiB</td><td class="num">4.57 GiB</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>一句话读法：<b>要快要稳选 CPM2（多在 6–9 秒）；要省显存选 Qwen3（约 4.2 GiB，但经常 30 秒以上）；FireRed 显存峰值最高（7.25 GiB），上海的方言优势值这个代价。</b></p>
+</section>
+
+<section id="emotion">
+  <h2>08 情绪：这轮先别指望<small>「像我」和「情绪到位」在现有开源方案里还没同时成立。</small></h2>
+
+  <p>24 条情绪样本里听了 17 条就停了。四个模型在愤怒、低沉悲伤、兴奋分享三个目标上，要么音色变了，要么情绪只是「有点着急」「有点像分享好消息」，达不到要求。</p>
+
+  <div class="quote">
+    「md 烦死了！效果都不行，音色也变了」
+    <span>—— 英语愤怒组听到 IndexTTS 那条时的原话</span>
+  </div>
+
+  <p>唯一的正面特例是 FireRed Instruct 的普通话「兴奋分享」设计版：语气确实是这轮里最贴的一句。但它用的是提示词造出来的新音色、没有参考音，所以只能说明「它能做语气」，不能说明「它保住了我的声音」。</p>
+
+  <div class="note">
+    这批情绪样本共用同一句「先别着急、检查连接……」的文案，文意本身和愤怒 / 悲伤的目标不完全匹配，这是实验设计的限制。它不推翻失败结论，但也说明这一块还没测到位——所以这轮不下「模型做不到」的定论，只说「现在这套配置不行」。
+  </div>
+</section>
+
+<section id="limits">
+  <h2>09 这份结论的边界</h2>
+  <ul>
+    <li><b>只对本次条件有效</b>：同一句文案、同一份参考音、同一组参数。换原文、换朗读稿、换参考，结果可能反转（上海话那组已经出现过）。</li>
+    <li><b>组级反馈 ≠ 每个版本都通过</b>：粤语「效果不错」是模型组判断，没有逐一锁定每个变体；音色相似度也没逐条单评。</li>
+    <li><b>非母语者听评</b>：葡语、俄语、法语我听不懂内容，只记录跨模型听感对比，不做母语逐字校验。</li>
+    <li><b>硬件是 16G 单卡</b>：耗时和显存只代表 RTX 4070 Ti SUPER 16G 上的这一次，不是所有机器。</li>
+    <li><b>不做「最佳参数」</b>：这些值是本次真实调用值，不是普遍最优。Vox 的 Hi-Fi、可控克隆，Qwen 的 Base、内置、设计，是三条不同的音色路径，不能互相套用。</li>
+  </ul>
+
+  <footer>
+    <p>记录于 2026-11-01，本地 RTX 4070 Ti SUPER 16G，280 条样本 · 51 条逐条听评。原始记录、参数与我当时的原话都留在本地，需要复核可以问我要。</p>
+  </footer>
+</section>
+
+</main>
+<script src="../site-shell.js?v=2"></script>
+<script>
+(function(){
+  var hint="↔ 表格可左右滑动查看完整内容";
+  function mark(){
+    document.querySelectorAll(".tbl,.ds-table-scroll").forEach(function(w){
+      if(w.scrollWidth-w.clientWidth>8 && !(w.nextElementSibling && w.nextElementSibling.className==="swipe-hint")){
+        var s=document.createElement("div"); s.className="swipe-hint"; s.textContent=hint;
+        w.parentNode.insertBefore(s, w.nextSibling);
+      }
+    });
+  }
+  setTimeout(mark,120); window.addEventListener("load",mark);
+})();
+</script>
+<style>.swipe-hint{display:block;font-size:13px;color:var(--text-muted,var(--ds-muted));margin:-12px 0 18px}</style>
+</body>
+</html>
